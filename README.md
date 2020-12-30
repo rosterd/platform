@@ -1,5 +1,11 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+This repo will hold all things related to the Rosterd platform.  The solution is structured in the following way:
+- assets (this will hold all the static access eg: pictures, files, etc)
+- scripts (this will hold all the build/release yaml scripts for the app and cloud resources)
+- src
+  - backend (this will contain all the backend apis / microservices)
+  - databases (this will contains all the db schemas and upgrade/roll back scripts)
+  - ui (this will contain all the UI's -> admin app + mobile app)
 
 # Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
@@ -9,12 +15,7 @@ TODO: Guide users through getting your code up and running on their own system. 
 4.	API references
 
 # Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+TODO: Describe and show how to build your code and run the tests.
 
 # Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+TODO: Explain how other users and developers can contribute to make your code better.
