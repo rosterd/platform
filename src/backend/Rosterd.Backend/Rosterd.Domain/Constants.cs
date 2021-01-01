@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Rosterd.Domain
+{
+    public static class Constants
+    {
+        /// <summary>
+        /// A collection of constants used through out the app
+        /// </summary>
+        public static class ApplicationKeys
+        {
+            /// <summary>
+            ///     The user name that needs to be presented to see the swagger ui
+            /// </summary>
+            public const string SwaggerAccessUserName = "testuser";
+
+            /// <summary>
+            ///     The password that needs to be presented to see the swagger ui
+            /// </summary>
+            public const string SwaggerAccessPassword = "e562322c-d9fe-486d-8537-5975c3d84ebb";
+
+            /// <summary>
+            /// Api that needs to be presented for every anonymous call (ie: all API's that don't require authentication)
+            /// </summary>
+            public const string AnonymousApiKey = "3c752809-4776-4b8a-b7b3-ff8e704793ac";
+        }
+
+        /// <summary>
+        ///  A collection of all the keys used to cache data
+        /// </summary>
+        public static class CacheKeys
+        {
+            /// <summary>
+            ///     Key that holds all the tenants for a given auth0id
+            /// </summary>
+            public static string TenantToAuth0Id(string auth0Id) => $"Tenant_{auth0Id}";
+
+            /// <summary>
+            ///     Key that holds all the staff for a given auth0id
+            /// </summary>
+            public static string StaffToAuth0Id(string auth0Id) => $"Staff_{auth0Id}";
+
+            /// <summary>
+            ///     Key that holds all the TenantIdToAuth0Id's
+            /// </summary>
+            public static string TenantIdToAuth0Id(string auth0Id) => $"TenantId_{auth0Id}";
+        }
+    }
+}
