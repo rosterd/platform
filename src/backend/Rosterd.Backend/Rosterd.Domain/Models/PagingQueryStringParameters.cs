@@ -1,6 +1,6 @@
 namespace Rosterd.Domain.Models
 {
-    public abstract class PagingQueryStringParameters
+    public class PagingQueryStringParameters
     {
         private const int _maxPageSize = 50;
 

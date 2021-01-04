@@ -22,6 +22,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Data.SqlServer", "Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj", "{B1CBAB94-6362-4E96-A9D7-B837B01A6654}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Services.Resources", "Rosterd.Services.Resources\Rosterd.Services.Resources.csproj", "{548A15E8-7367-4990-87DA-C20FB145005C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,9 +44,21 @@ Global
 		{2D04EE3E-050F-46F8-BF9D-92D2CCA27E27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D04EE3E-050F-46F8-BF9D-92D2CCA27E27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D04EE3E-050F-46F8-BF9D-92D2CCA27E27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1CBAB94-6362-4E96-A9D7-B837B01A6654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1CBAB94-6362-4E96-A9D7-B837B01A6654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1CBAB94-6362-4E96-A9D7-B837B01A6654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1CBAB94-6362-4E96-A9D7-B837B01A6654}.Release|Any CPU.Build.0 = Release|Any CPU
+		{548A15E8-7367-4990-87DA-C20FB145005C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{548A15E8-7367-4990-87DA-C20FB145005C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{548A15E8-7367-4990-87DA-C20FB145005C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{548A15E8-7367-4990-87DA-C20FB145005C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B1CBAB94-6362-4E96-A9D7-B837B01A6654} = {4A70353B-1B5B-4B38-9200-2D91E301472B}
+		{548A15E8-7367-4990-87DA-C20FB145005C} = {C16B881C-491C-4B94-92DA-ACE6A9D489BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2DA4ED17-3CA8-499E-A97F-35DAF7C0E6C3}

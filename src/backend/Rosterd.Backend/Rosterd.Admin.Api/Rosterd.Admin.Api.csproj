@@ -37,12 +37,15 @@
 
   <ItemGroup>
     <Folder Include="Infrastructure\" />
+    <Folder Include="Orchestrators\" />
     <Folder Include="Responses\" />
     <Folder Include="Requests\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj" />
     <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
+    <ProjectReference Include="..\Rosterd.Services.Resources\Rosterd.Services.Resources.csproj" />
   </ItemGroup>
 
 </Project>

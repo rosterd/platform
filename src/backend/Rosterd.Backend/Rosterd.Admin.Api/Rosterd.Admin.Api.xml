@@ -4,6 +4,26 @@
         <name>Rosterd.Admin.Api</name>
     </assembly>
     <members>
+        <member name="M:Rosterd.Admin.Api.Controllers.BaseApiController.IsProvidedApiKeyValid(System.String)">
+            <summary>
+            Checks if the api key given is valid (ie: its compared against our constant)
+            </summary>
+            <param name="apiKey"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Rosterd.Admin.Api.Controllers.ResourcesController">
+            <summary>
+            All actions related to resources
+            </summary>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.ResourcesController.Get">
+            <summary>
+            Gets all the resources
+            THIS IS JUST FOR TESTING API CONNECTIVITY FOR NOW
+            </summary>
+            <param name="id">the resource id</param>
+            <returns></returns>
+        </member>
         <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.ApplicationBuilderExtensions.UseSwaggerAuthenticationCheck(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
             Add the swagger authentication middleware responsible for making sure Swagger UI is not open to public

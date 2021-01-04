@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rosterd.Admin.Api.Infrastructure.Configs;
+using Rosterd.Data.SqlServer.Context;
+using Rosterd.Services.Resources;
+using Rosterd.Services.Resources.Interfaces;
 
 namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 {
@@ -21,26 +24,29 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //Services
-            
+            services.AddScoped<IResourceService, ResourceService>();
+
+
             //User context
-            
+
             //Db contexts
+            services.AddScoped<IRosterdDbContext, RosterdDbContext>();
         }
 
         public static void RegisterDatabaseDependencies(this IServiceCollection services, IConfiguration config, IWebHostEnvironment hostingEnvironment)
         {
-            ////Main SQL Server connection
-            //var connectionString = config.GetConnectionString("SQLDBConnectionString");
-            //if (hostingEnvironment.IsDevelopment() && string.IsNullOrWhiteSpace(connectionString))
-            //{
-            //    services.AddDbContextPool<RosterdDbContext>((sp, op) =>
-            //        op.UseInMemoryDatabase(databaseName: "InMemoryDatabase")
-            //            .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
-            //}
-            //else
-            //{
-            //    services.AddDbContextPool<RosterdDbContext>((sp, op) => op.UseSqlServer(connectionString));
-            //}
+            //Main SQL Server connection
+            var connectionString = config.GetConnectionString("SQLDBConnectionString");
+            if (hostingEnvironment.IsDevelopment() && string.IsNullOrWhiteSpace(connectionString))
+            {
+                services.AddDbContextPool<RosterdDbContext>((sp, op) =>
+                    op.UseInMemoryDatabase(databaseName: "InMemoryDatabase")
+                        .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
+            }
+            else
+            {
+                services.AddDbContextPool<RosterdDbContext>((sp, op) => op.UseSqlServer(connectionString));
+            }
         }
     }
 }

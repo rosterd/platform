@@ -96,8 +96,8 @@ namespace Rosterd.Admin.Api
 
             //Adds authentication middleware to the pipeline so authentication will be performed automatically on each request to host
             //Adds authorization middleware to the pipeline to make sure the Api endpoint cannot be accessed by anonymous clients
-            app.UseAuthentication();
-            app.UseAuthorization();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
 
             //Enable Swagger and SwaggerUI (for swagger we have our own basic auth so its not available to everyone)
             app.UseSwaggerAuthenticationCheck();
@@ -106,8 +106,8 @@ namespace Rosterd.Admin.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecks("/health").RequireAuthorization();
-                endpoints.MapControllers().RequireAuthorization();
+                endpoints.MapHealthChecks("/health");//.RequireAuthorization();
+                endpoints.MapControllers();//.RequireAuthorization();
             });
         }
     }

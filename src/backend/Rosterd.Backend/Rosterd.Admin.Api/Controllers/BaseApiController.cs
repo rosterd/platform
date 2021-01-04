@@ -5,7 +5,7 @@ using Rosterd.Domain;
 
 namespace Rosterd.Admin.Api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status400BadRequest)] //All validation failures and model state errors
     [ProducesResponseType(StatusCodes.Status404NotFound)]
