@@ -24,7 +24,7 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //Services
-            services.AddScoped<IResourceService, ResourceService>();
+            services.AddScoped<IStaffService, StaffService>();
 
 
             //User context

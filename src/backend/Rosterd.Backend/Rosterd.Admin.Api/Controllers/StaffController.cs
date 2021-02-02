@@ -11,15 +11,15 @@ namespace Rosterd.Admin.Api.Controllers
     /// All actions related to resources
     /// </summary>
     [ApiVersion("1.0")]
-    public class ResourcesController : BaseApiController
+    public class StaffController : BaseApiController
     {
-        private readonly ILogger<ResourcesController> _logger;
-        private readonly IResourceService _resourcesService;
+        private readonly ILogger<StaffController> _logger;
+        private readonly IStaffService _staffService;
 
-        public ResourcesController(ILogger<ResourcesController> logger, IResourceService resourcesService) : base()
+        public StaffController(ILogger<StaffController> logger, IStaffService resourcesService) : base()
         {
             _logger = logger;
-            _resourcesService = resourcesService;
+            _staffService = resourcesService;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="id">the resource id</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PagedList<ResourceModel>> Get() =>
-            (await _resourcesService.GetResources(new PagingQueryStringParameters()));
+        public async Task<PagedList<StaffModel>> Get() =>
+            (await _staffService.GetStaff(new PagingQueryStringParameters()));
     }
 }

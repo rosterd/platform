@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="AzureSql" id="Project_d0e" database="AzureSql" >
+	<schema name="dbo" catalogname="rosterd" >
+		<table name="Capability" row_count="0" >
+			<column name="CapabilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" autoincrement="y" />
+			<column name="CapabilityName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<index name="Pk_FacilityFeature_FacilityFeatureId" unique="PRIMARY_KEY" >
+				<column name="CapabilityId" />
+			</index>
+		</table>
+		<table name="Facility" row_count="0" >
+			<column name="FacilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" autoincrement="y" />
+			<column name="FacilityName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="OrganzationId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<index name="Pk_Facility_FacilityId" unique="PRIMARY_KEY" >
+				<column name="FacilityId" />
+			</index>
+			<fk name="Fk_Facility_Organization" to_schema="rosterd.dbo" to_table="Organization" >
+				<fk_column name="OrganzationId" pk="OrganizationId" />
+			</fk>
+		</table>
+		<table name="FacilityCapability" row_count="0" >
+			<column name="FacilityCapabilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" autoincrement="y" />
+			<column name="FacilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="CapabilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<index name="Pk_FacilityCapability_FacilityCapabilityId" unique="PRIMARY_KEY" >
+				<column name="FacilityCapabilityId" />
+			</index>
+			<fk name="Fk_FacilityCapability_Capability" to_schema="rosterd.dbo" to_table="Capability" >
+				<fk_column name="CapabilityId" pk="CapabilityId" />
+			</fk>
+			<fk name="Fk_FacilityCapability_Facility" to_schema="rosterd.dbo" to_table="Facility" >
+				<fk_column name="FacilityId" pk="FacilityId" />
+			</fk>
+		</table>
+		<table name="Organization" row_count="0" >
+			<column name="OrganizationId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" autoincrement="y" />
+			<column name="OrganizationName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<index name="Pk_Organization_OrganizationId" unique="PRIMARY_KEY" >
+				<column name="OrganizationId" />
+			</index>
+		</table>
+		<table name="Resource" row_count="2" >
+			<column name="ResourceId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" autoincrement="y" />
+			<column name="FirstName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="MiddleName" type="nvarchar" length="1000" decimal="0" jt="12" />
+			<column name="LastName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<index name="Pk_Resource_ResourceId" unique="PRIMARY_KEY" >
+				<column name="ResourceId" />
+			</index>
+		</table>
+		<table name="sysdiagrams" row_count="1" >
+			<column name="diagram_id" type="int" length="10" decimal="0" jt="4" mandatory="y" autoincrement="y" />
+			<column name="name" type="sysname" length="128" decimal="0" jt="12" mandatory="y" />
+			<column name="principal_id" type="int" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="version" type="int" length="10" decimal="0" jt="4" />
+			<column name="definition" type="varbinary(max)" length="0" decimal="0" jt="-3" />
+			<index name="PK__sysdiagr__C2B05B6104F46102" unique="PRIMARY_KEY" >
+				<column name="diagram_id" />
+			</index>
+			<index name="UK_principal_name" unique="UNIQUE_KEY" >
+				<column name="principal_id" />
+				<column name="name" />
+			</index>
+		</table>
+		<procedure name="sp_alterdiagram" id="Procedure_11a2" isSystem="false" params_known="y" >
+			<string><![CDATA[	CREATE PROCEDURE dbo.sp_alterdiagram
+	(
+		@diagramname 	sysname,
+		@owner_id	int	= null,
+		@version 	int,
+		@definition 	varbinary(max)
+	)
+	WITH EXECUTE AS 'dbo'
+	AS
+	BEGIN
+		set nocount on
+	
+		declare @theId 			int
+		declare @retval 		int
+		declare @IsDbo 			int
+		
+		declare @UIDFound 		int
+		declare @DiagId			int
+		declare @ShouldChangeUID	int
+	
+		if(@diagramname is null)
+		begin
+			RAISERROR ('Invalid ARG', 16, 1)
+			return -1
+		end
+	
+		execute as caller;
+		select @theId = DATABASE_PRINCIPAL_ID();	 
+		select @IsDbo = IS_MEMBER(N'db_owner'); 
+		if(@owner_id is null)
+			select @owner_id = @theId;
+		revert;
+	
+		select @ShouldChangeUID = 0
+		select @DiagId = diagram_id, @UIDFound = principal_id from dbo.sysdiagrams where principal_id = @owner_id and name = @diagramname 
+		
+		if(@DiagId IS NULL or (@IsDbo = 0 and @theId <> @UIDFound))
+		begin
+			RAISERROR ('Diagram does not exist or you do not have permission.', 16, 1);
+			return -3
+		end
+	
+		if(@IsDbo <> 0)
+		begin
+			if(@UIDFound is null or USER_NAME(@UIDFound) is null) -- invalid principal_id
+			begin
+				select @ShouldChangeUID = 1 ;
+			end
+		end
+		-- update dds data			
+		update dbo.sysdiagrams set definition = @definition where diagram_id = @DiagId ;
+		-- change owner
+		if(@ShouldChangeUID = 1)
+			update dbo.sysdiagrams set principal_id = @theId where diagram_id = @DiagId ;
+		-- update dds version
+		if(@version is not null)
+			update dbo.sysdiagrams set version = @version where diagram_id = @DiagId ;
+		return 0
+	END
+	]]></string>
+			<input_param name="@diagramname" jt="12" type="sysname" />
+			<input_param name="@owner_id" jt="4" type="int" />
+			<input_param name="@version" jt="4" type="int" />
+			<input_param name="@definition" jt="2004" type="image" />
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<procedure name="sp_creatediagram" id="Procedure_1532" isSystem="false" params_known="y" >
+			<string><![CDATA[	CREATE PROCEDURE dbo.sp_creatediagram
+	(
+		@diagramname 	sysname,
+		@owner_id		int	= null, 	
+		@version 		int,
+		@definition 	varbinary(max)
+	)
+	WITH EXECUTE AS 'dbo'
+	AS
+	BEGIN
+		set nocount on
+	
+		declare @theId int
+		declare @retval int
+		declare @IsDbo	int
+		declare @userName sysname
+		if(@version is null or @diagramname is null)
+		begin
+			RAISERROR (N'E_INVALIDARG', 16, 1);
+			return -1
+		end
+	
+		execute as caller;
+		select @theId = DATABASE_PRINCIPAL_ID(); 
+		select @IsDbo = IS_MEMBER(N'db_owner');
+		revert; 
+		
+		if @owner_id is null
+		begin
+			select @owner_id = @theId;
+		end
+		else
+		begin
+			if @theId <> @owner_id
+			begin
+				if @IsDbo = 0
+				begin
+					RAISERROR (N'E_INVALIDARG', 16, 1);
+					return -1
+				end
+				select @theId = @owner_id
+			end
+		end
+		-- next 2 line only for test, will be removed after define name unique
+		if EXISTS(select diagram_id from dbo.sysdiagrams where principal_id = @theId and name = @diagramname)
+		begin
+			RAISERROR ('The name is already used.', 16, 1);
+			return -2
+		end
+	
+		insert into dbo.sysdiagrams(name, principal_id , version, definition)
+				VALUES(@diagramname, @theId, @version, @definition) ;
+		
+		select @retval = @@IDENTITY 
+		return @retval
+	END
+	]]></string>
+			<input_param name="@diagramname" jt="12" type="sysname" />
+			<input_param name="@owner_id" jt="4" type="int" />
+			<input_param name="@version" jt="4" type="int" />
+			<input_param name="@definition" jt="2004" type="image" />
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<procedure name="sp_dropdiagram" id="Procedure_1925" isSystem="false" params_known="y" >
+			<string><![CDATA[	CREATE PROCEDURE dbo.sp_dropdiagram
+	(
+		@diagramname 	sysname,
+		@owner_id	int	= null
+	)
+	WITH EXECUTE AS 'dbo'
+	AS
+	BEGIN
+		set nocount on
+		declare @theId 			int
+		declare @IsDbo 			int
+		
+		declare @UIDFound 		int
+		declare @DiagId			int
+	
+		if(@diagramname is null)
+		begin
+			RAISERROR ('Invalid value', 16, 1);
+			return -1
+		end
+	
+		EXECUTE AS CALLER;
+		select @theId = DATABASE_PRINCIPAL_ID();
+		select @IsDbo = IS_MEMBER(N'db_owner'); 
+		if(@owner_id is null)
+			select @owner_id = @theId;
+		REVERT; 
+		
+		select @DiagId = diagram_id, @UIDFound = principal_id from dbo.sysdiagrams where principal_id = @owner_id and name = @diagramname 
+		if(@DiagId IS NULL or (@IsDbo = 0 and @UIDFound <> @theId))
+		begin
+			RAISERROR ('Diagram does not exist or you do not have permission.', 16, 1)
+			return -3
+		end
+	
+		delete from dbo.sysdiagrams where diagram_id = @DiagId;
+	
+		return 0;
+	END
+	]]></string>
+			<input_param name="@diagramname" jt="12" type="sysname" />
+			<input_param name="@owner_id" jt="4" type="int" />
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<procedure name="sp_helpdiagramdefinition" id="Procedure_1897" isSystem="false" params_known="y" >
+			<string><![CDATA[	CREATE PROCEDURE dbo.sp_helpdiagramdefinition
+	(
+		@diagramname 	sysname,
+		@owner_id	int	= null 		
+	)
+	WITH EXECUTE AS N'dbo'
+	AS
+	BEGIN
+		set nocount on
+		declare @theId 		int
+		declare @IsDbo 		int
+		declare @DiagId		int
+		declare @UIDFound	int
+	
+		if(@diagramname is null)
+		begin
+			RAISERROR (N'E_INVALIDARG', 16, 1);
+			return -1
+		end
+	
+		execute as caller;
+		select @theId = DATABASE_PRINCIPAL_ID();
+		select @IsDbo = IS_MEMBER(N'db_owner');
+		if(@owner_id is null)
+			select @owner_id = @theId;
+		revert; 
+	
+		select @DiagId = diagram_id, @UIDFound = principal_id from dbo.sysdiagrams where principal_id = @owner_id and name = @diagramname;
+		if(@DiagId IS NULL or (@IsDbo = 0 and @UIDFound <> @theId ))
+		begin
+			RAISERROR ('Diagram does not exist or you do not have permission.', 16, 1);
+			return -3
+		end
+		select version, definition FROM dbo.sysdiagrams where diagram_id = @DiagId ; 
+		return 0
+	END
+	]]></string>
+			<input_param name="@diagramname" jt="12" type="sysname" />
+			<input_param name="@owner_id" jt="4" type="int" />
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<procedure name="sp_helpdiagrams" id="Procedure_2244" isSystem="false" params_known="y" >
+			<string><![CDATA[	CREATE PROCEDURE dbo.sp_helpdiagrams
+	(
+		@diagramname sysname = NULL,
+		@owner_id int = NULL
+	)
+	WITH EXECUTE AS N'dbo'
+	AS
+	BEGIN
+		DECLARE @user sysname
+		DECLARE @dboLogin bit
+		EXECUTE AS CALLER;
+			SET @user = USER_NAME();
+			SET @dboLogin = CONVERT(bit,IS_MEMBER('db_owner'));
+		REVERT;
+		SELECT
+			[Database] = DB_NAME(),
+			[Name] = name,
+			[ID] = diagram_id,
+			[Owner] = USER_NAME(principal_id),
+			[OwnerID] = principal_id
+		FROM
+			sysdiagrams
+		WHERE
+			(@dboLogin = 1 OR USER_NAME(principal_id) = @user) AND
+			(@diagramname IS NULL OR name = @diagramname) AND
+			(@owner_id IS NULL OR principal_id = @owner_id)
+		ORDER BY
+			4, 5, 1
+	END
+	]]></string>
+			<input_param name="@diagramname" jt="12" type="sysname" />
+			<input_param name="@owner_id" jt="4" type="int" />
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<procedure name="sp_renamediagram" id="Procedure_26c4" isSystem="false" params_known="y" >
+			<string><![CDATA[	CREATE PROCEDURE dbo.sp_renamediagram
+	(
+		@diagramname 		sysname,
+		@owner_id		int	= null,
+		@new_diagramname	sysname
+	
+	)
+	WITH EXECUTE AS 'dbo'
+	AS
+	BEGIN
+		set nocount on
+		declare @theId 			int
+		declare @IsDbo 			int
+		
+		declare @UIDFound 		int
+		declare @DiagId			int
+		declare @DiagIdTarg		int
+		declare @u_name			sysname
+		if((@diagramname is null) or (@new_diagramname is null))
+		begin
+			RAISERROR ('Invalid value', 16, 1);
+			return -1
+		end
+	
+		EXECUTE AS CALLER;
+		select @theId = DATABASE_PRINCIPAL_ID();
+		select @IsDbo = IS_MEMBER(N'db_owner'); 
+		if(@owner_id is null)
+			select @owner_id = @theId;
+		REVERT;
+	
+		select @u_name = USER_NAME(@owner_id)
+	
+		select @DiagId = diagram_id, @UIDFound = principal_id from dbo.sysdiagrams where principal_id = @owner_id and name = @diagramname 
+		if(@DiagId IS NULL or (@IsDbo = 0 and @UIDFound <> @theId))
+		begin
+			RAISERROR ('Diagram does not exist or you do not have permission.', 16, 1)
+			return -3
+		end
+	
+		-- if((@u_name is not null) and (@new_diagramname = @diagramname))	-- nothing will change
+		--	return 0;
+	
+		if(@u_name is null)
+			select @DiagIdTarg = diagram_id from dbo.sysdiagrams where principal_id = @theId and name = @new_diagramname
+		else
+			select @DiagIdTarg = diagram_id from dbo.sysdiagrams where principal_id = @owner_id and name = @new_diagramname
+	
+		if((@DiagIdTarg is not null) and  @DiagId <> @DiagIdTarg)
+		begin
+			RAISERROR ('The name is already used.', 16, 1);
+			return -2
+		end		
+	
+		if(@u_name is null)
+			update dbo.sysdiagrams set [name] = @new_diagramname, principal_id = @theId where diagram_id = @DiagId
+		else
+			update dbo.sysdiagrams set [name] = @new_diagramname where diagram_id = @DiagId
+		return 0
+	END
+	]]></string>
+			<input_param name="@diagramname" jt="12" type="sysname" />
+			<input_param name="@owner_id" jt="4" type="int" />
+			<input_param name="@new_diagramname" jt="12" type="sysname" />
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<procedure name="sp_upgraddiagrams" id="Procedure_466" isSystem="false" params_known="y" >
+			<string><![CDATA[	CREATE PROCEDURE dbo.sp_upgraddiagrams
+	AS
+	BEGIN
+		IF OBJECT_ID(N'dbo.sysdiagrams') IS NOT NULL
+			return 0;
+	
+		CREATE TABLE dbo.sysdiagrams
+		(
+			name sysname NOT NULL,
+			principal_id int NOT NULL,	-- we may change it to varbinary(85)
+			diagram_id int PRIMARY KEY IDENTITY,
+			version int,
+	
+			definition varbinary(max)
+			CONSTRAINT UK_principal_name UNIQUE
+			(
+				principal_id,
+				name
+			)
+		);
+
+		/* Add this if we need to have some form of extended properties for diagrams */
+		/*
+		IF OBJECT_ID(N'dbo.sysdiagram_properties') IS NULL
+		BEGIN
+			CREATE TABLE dbo.sysdiagram_properties
+			(
+				diagram_id int,
+				name sysname,
+				value varbinary(max) NOT NULL
+			)
+		END
+		*/
+		IF OBJECT_ID(N'dbo.dtproperties') IS NOT NULL
+		begin
+			insert into dbo.sysdiagrams
+			(
+				[name],
+				[principal_id],
+				[version],
+				[definition]
+			)
+			select	 
+				convert(sysname, dgnm.[uvalue]),
+				DATABASE_PRINCIPAL_ID(N'dbo'),			-- will change to the sid of sa
+				0,							-- zero for old format, dgdef.[version],
+				dgdef.[lvalue]
+			from dbo.[dtproperties] dgnm
+				inner join dbo.[dtproperties] dggd on dggd.[property] = 'DtgSchemaGUID' and dggd.[objectid] = dgnm.[objectid]	
+				inner join dbo.[dtproperties] dgdef on dgdef.[property] = 'DtgSchemaDATA' and dgdef.[objectid] = dgnm.[objectid]
+				
+			where dgnm.[property] = 'DtgSchemaNAME' and dggd.[uvalue] like N'_EA3E6268-D998-11CE-9454-00AA00A3F36E_' 
+			return 2;
+		end
+		return 1;
+	END
+	]]></string>
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<function name="fn_diagramobjects" id="Function_26d6" isSystem="false" params_known="n" >
+			<string><![CDATA[	CREATE FUNCTION dbo.fn_diagramobjects() 
+	RETURNS int
+	WITH EXECUTE AS N'dbo'
+	AS
+	BEGIN
+		declare @id_upgraddiagrams		int
+		declare @id_sysdiagrams			int
+		declare @id_helpdiagrams		int
+		declare @id_helpdiagramdefinition	int
+		declare @id_creatediagram	int
+		declare @id_renamediagram	int
+		declare @id_alterdiagram 	int 
+		declare @id_dropdiagram		int
+		declare @InstalledObjects	int
+		select @InstalledObjects = 0
+		select 	@id_upgraddiagrams = object_id(N'dbo.sp_upgraddiagrams'),
+			@id_sysdiagrams = object_id(N'dbo.sysdiagrams'),
+			@id_helpdiagrams = object_id(N'dbo.sp_helpdiagrams'),
+			@id_helpdiagramdefinition = object_id(N'dbo.sp_helpdiagramdefinition'),
+			@id_creatediagram = object_id(N'dbo.sp_creatediagram'),
+			@id_renamediagram = object_id(N'dbo.sp_renamediagram'),
+			@id_alterdiagram = object_id(N'dbo.sp_alterdiagram'), 
+			@id_dropdiagram = object_id(N'dbo.sp_dropdiagram')
+		if @id_upgraddiagrams is not null
+			select @InstalledObjects = @InstalledObjects + 1
+		if @id_sysdiagrams is not null
+			select @InstalledObjects = @InstalledObjects + 2
+		if @id_helpdiagrams is not null
+			select @InstalledObjects = @InstalledObjects + 4
+		if @id_helpdiagramdefinition is not null
+			select @InstalledObjects = @InstalledObjects + 8
+		if @id_creatediagram is not null
+			select @InstalledObjects = @InstalledObjects + 16
+		if @id_renamediagram is not null
+			select @InstalledObjects = @InstalledObjects + 32
+		if @id_alterdiagram  is not null
+			select @InstalledObjects = @InstalledObjects + 64
+		if @id_dropdiagram is not null
+			select @InstalledObjects = @InstalledObjects + 128
+		
+		return @InstalledObjects 
+	END
+	]]></string>
+		</function>
+	</schema>
+	<connector name="AzureSql" database="AzureSql" driver_class="net.sourceforge.jtds.jdbc.Driver" driver_jar="jtds-1.3.1.jar" driver_desc="JTDS Driver&#13;SQL Server Authentication" host="sqls-rosterd-prod.database.windows.net" port="1433" instance="rosterd" user="rosterd-admin-user" passwd="SzY2cHRoMXNTQGY1" />
+	<layout name="Default Layout" id="Layout_1834" show_relation="columns" >
+		<entity schema="rosterd.dbo" name="Capability" color="C7F4BE" x="288" y="272" />
+		<entity schema="rosterd.dbo" name="Facility" color="C7F4BE" x="288" y="80" />
+		<entity schema="rosterd.dbo" name="FacilityCapability" color="C7F4BE" x="48" y="80" />
+		<entity schema="rosterd.dbo" name="Organization" color="C7F4BE" x="496" y="80" />
+		<entity schema="rosterd.dbo" name="Resource" color="BED3F4" x="768" y="80" />
+		<group name="Resource" color="ECF0F7" >
+			<entity schema="rosterd.dbo" name="Resource" />
+		</group>
+		<group name="FacilityCapability" color="EEF7EC" >
+			<entity schema="rosterd.dbo" name="FacilityCapability" />
+			<entity schema="rosterd.dbo" name="Facility" />
+			<entity schema="rosterd.dbo" name="Capability" />
+			<entity schema="rosterd.dbo" name="Organization" />
+		</group>
+	</layout>
+	<layout name="Sample Layout with Tools" id="Layout_dc9" show_column_type="y" show_relation="columns" >
+		<entity schema="rosterd.dbo" name="Capability" color="C7F4BE" x="320" y="336" />
+		<entity schema="rosterd.dbo" name="Facility" color="C7F4BE" x="320" y="144" />
+		<entity schema="rosterd.dbo" name="FacilityCapability" color="C7F4BE" x="48" y="144" />
+		<entity schema="rosterd.dbo" name="Organization" color="C7F4BE" x="608" y="144" />
+		<entity schema="rosterd.dbo" name="Resource" color="BED3F4" x="960" y="144" />
+		<entity schema="rosterd.dbo" name="sysdiagrams" color="BED3F4" x="1248" y="144" />
+		<callout x="320" y="48" pointer="Round" >
+			<comment><![CDATA[This is a sample layout with tools. 
+For better understanding the schema create multiple layouts with same or different tables. 
+Double-click on any table, column or foreign key to edit.]]></comment>
+		</callout>
+		<script name="Sample SQL Editor" id="Editor_1a33" language="SQL" >
+			<string><![CDATA[SELECT FacilityId, FacilityName, OrganzationId
+FROM
+	dbo.Facility y;]]></string>
+		</script>
+		<browser id="Browse_16c0" name="Sample Relational Data Explorer" confirm_updates="y" >
+			<browse_table schema="rosterd.dbo" entity="Facility" x="20" y="20" width="400" height="300" >
+				<browse_table schema="rosterd.dbo" entity="FacilityCapability" fk="Fk_FacilityCapability_Facility" x="440" y="20" width="500" height="350" >
+					<browse_table schema="rosterd.dbo" entity="Capability" fk="Fk_FacilityCapability_Capability" x="960" y="20" width="500" height="350" record_view="y" />
+				</browse_table>
+			</browse_table>
+		</browser>
+		<query id="Query_1e8a" name="Sample Query Builder" >
+			<query_table schema="rosterd.dbo" name="Facility" alias="f" x="48" y="48" >
+				<column name="FacilityId" />
+				<column name="FacilityName" />
+				<column name="OrganzationId" />
+				<query_table schema="rosterd.dbo" name="FacilityCapability" alias="f1" x="224" y="48" fk="Fk_FacilityCapability_Facility" type="Inner Join" >
+					<column name="FacilityCapabilityId" />
+					<column name="FacilityId" />
+					<column name="CapabilityId" />
+					<query_table schema="rosterd.dbo" name="Capability" alias="c" x="448" y="48" fk="Fk_FacilityCapability_Capability" type="Inner Join" >
+						<column name="CapabilityId" />
+						<column name="CapabilityName" />
+					</query_table>
+				</query_table>
+			</query_table>
+		</query>
+		<form name="Sample Analyst BI" id="Form_146d" template="Centered Page" view="frame" >
+			<body name="Body" template="Grid" pos="0,0,0,0,f,f" layout="{{-2,-2},{-2}}" scroll="n" html="n" >
+				<cell type="chart" name="Line" template="Line" pos="0,0,1,0,f,f" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="FacilityId" type="-5" />
+						<var name="FacilityName" />
+						<var name="OrganzationId" type="-5" />
+						<script ><![CDATA[SELECT * FROM dbo.Facility]]></script>
+					</form_script>
+				</cell>
+			</body>
+		</form>
+	</layout>
+</project>

@@ -11,12 +11,26 @@
             <param name="apiKey"></param>
             <returns></returns>
         </member>
-        <member name="T:Rosterd.Admin.Api.Controllers.ResourcesController">
+        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.Get">
+            <summary>
+            Gets all the resources 
+            </summary>
+            <param name="id">the resource id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.Get">
+            <summary>
+            Gets all the resources 
+            </summary>
+            <param name="id">the resource id</param>
+            <returns></returns>
+        </member>
+        <member name="T:Rosterd.Admin.Api.Controllers.StaffController">
             <summary>
             All actions related to resources
             </summary>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.ResourcesController.Get">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.Get">
             <summary>
             Gets all the resources 
             </summary>

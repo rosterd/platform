@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Rosterd.Domain.Models.Resources
 {
-    public class ResourceModel
+    public class StaffModel
     {
-        public long ResourceId { get; set; }
+        public long StaffId { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         [StringLength(1000, MinimumLength = 1)]
