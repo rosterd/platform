@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="AzureSql" id="Project_d0e" database="AzureSql" >
+<project name="AzureSql" id="Project_183e" database="AzureSql" >
 	<schema name="dbo" catalogname="rosterd" >
 		<table name="Capability" row_count="0" >
-			<column name="CapabilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" autoincrement="y" />
+			<column name="CapabilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<identity><![CDATA[identity]]></identity>
+			</column>
 			<column name="CapabilityName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
 			<index name="Pk_FacilityFeature_FacilityFeatureId" unique="PRIMARY_KEY" >
 				<column name="CapabilityId" />
 			</index>
 		</table>
 		<table name="Facility" row_count="0" >
-			<column name="FacilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" autoincrement="y" />
+			<column name="FacilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<identity><![CDATA[identity]]></identity>
+			</column>
 			<column name="FacilityName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
 			<column name="OrganzationId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="Address" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="Suburb" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="City" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="Country" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="PhoneNumber1" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="PhoneNumber2" type="nvarchar" length="1000" decimal="0" jt="12" />
 			<index name="Pk_Facility_FacilityId" unique="PRIMARY_KEY" >
 				<column name="FacilityId" />
 			</index>
@@ -20,7 +30,9 @@
 			</fk>
 		</table>
 		<table name="FacilityCapability" row_count="0" >
-			<column name="FacilityCapabilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" autoincrement="y" />
+			<column name="FacilityCapabilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<identity><![CDATA[identity]]></identity>
+			</column>
 			<column name="FacilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<column name="CapabilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<index name="Pk_FacilityCapability_FacilityCapabilityId" unique="PRIMARY_KEY" >
@@ -33,24 +45,131 @@
 				<fk_column name="FacilityId" pk="FacilityId" />
 			</fk>
 		</table>
+		<table name="Job" row_count="0" >
+			<column name="JobId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<identity><![CDATA[identity]]></identity>
+			</column>
+			<column name="JobTitle" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="Description" type="varchar" length="8000" decimal="0" jt="12" mandatory="y" />
+			<column name="FacilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="JobStartDateTimeUTC" type="datetime2" length="7" decimal="0" jt="92" mandatory="y" />
+			<column name="JobEndDateTimeUTC" type="datetime2" length="7" decimal="0" jt="92" mandatory="y" />
+			<column name="Comments" type="nvarchar" length="1000" decimal="0" jt="12" />
+			<column name="GracePeriodToCancelMinutes" type="bigint" length="19" decimal="0" jt="-5" />
+			<column name="NoGracePeriod" type="bit" length="1" decimal="0" jt="-7" />
+			<index name="Pk_Job_JobId" unique="PRIMARY_KEY" >
+				<column name="JobId" />
+			</index>
+		</table>
+		<table name="JobStatus" row_count="0" >
+			<column name="JobStatusId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<identity><![CDATA[identity]]></identity>
+			</column>
+			<column name="JobStatusName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="Description" type="nvarchar" length="1000" decimal="0" jt="12" />
+			<index name="Pk_JobStatus_JobStatusId" unique="PRIMARY_KEY" >
+				<column name="JobStatusId" />
+			</index>
+		</table>
+		<table name="JobStatusChange" row_count="0" >
+			<column name="JobStatusChangeId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<identity><![CDATA[identity]]></identity>
+			</column>
+			<column name="JobId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="JobStatusId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="JobStatusChangeDateTimeUTC" type="datetime2" length="1" decimal="0" jt="92" mandatory="y" >
+				<defo><![CDATA[switchoffset(sysdatetimeoffset(),'+00:00')]]></defo>
+			</column>
+			<column name="JobStatusChangeReason" type="nvarchar" length="1000" decimal="0" jt="12" />
+			<index name="Pk_JobStatusChange_JobStatusChangeId" unique="PRIMARY_KEY" >
+				<column name="JobStatusChangeId" />
+			</index>
+			<fk name="Fk_JobStatusChange_Job" to_schema="rosterd.dbo" to_table="Job" >
+				<fk_column name="JobId" pk="JobId" />
+			</fk>
+			<fk name="Fk_JobStatusChange_JobStatus" to_schema="rosterd.dbo" to_table="JobStatus" >
+				<fk_column name="JobStatusId" pk="JobStatusId" />
+			</fk>
+		</table>
+		<table name="Jobskill" row_count="0" >
+			<column name="JobSkillId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="JobId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="SkillId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<index name="Pk_Jobskill_JobSkillId" unique="PRIMARY_KEY" >
+				<column name="JobSkillId" />
+			</index>
+			<fk name="Fk_Jobskill_Job" to_schema="rosterd.dbo" to_table="Job" >
+				<fk_column name="JobId" pk="JobId" />
+			</fk>
+		</table>
 		<table name="Organization" row_count="0" >
-			<column name="OrganizationId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" autoincrement="y" />
+			<column name="OrganizationId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<identity><![CDATA[identity]]></identity>
+			</column>
 			<column name="OrganizationName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="Address" type="nvarchar" length="1000" decimal="0" jt="12" />
 			<index name="Pk_Organization_OrganizationId" unique="PRIMARY_KEY" >
 				<column name="OrganizationId" />
 			</index>
 		</table>
-		<table name="Resource" row_count="2" >
-			<column name="ResourceId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" autoincrement="y" />
+		<table name="Skill" row_count="0" >
+			<column name="SkillId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="Skill" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="Description" type="nvarchar" length="1000" decimal="0" jt="12" />
+			<index name="Pk_Skill_SkillId" unique="PRIMARY_KEY" >
+				<column name="SkillId" />
+			</index>
+		</table>
+		<table name="Staff" row_count="2" >
+			<column name="StaffId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<identity><![CDATA[identity]]></identity>
+			</column>
 			<column name="FirstName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
 			<column name="MiddleName" type="nvarchar" length="1000" decimal="0" jt="12" />
 			<column name="LastName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="JobTitle" type="nvarchar" length="1000" decimal="0" jt="12" />
+			<column name="IsAvailable" type="bit" length="1" decimal="0" jt="-7" mandatory="y" />
+			<column name="DateOfBirth" type="date" length="10" decimal="0" jt="91" />
+			<column name="Email" type="nvarchar" length="1000" decimal="0" jt="12" />
+			<column name="HomePhoneNumber" type="nvarchar" length="1000" decimal="0" jt="12" />
+			<column name="MobilePhoneNumber" type="nvarchar" length="1000" decimal="0" jt="12" />
+			<column name="OtherPhoneNumber" type="nvarchar" length="1000" decimal="0" jt="12" />
+			<column name="Address" type="nvarchar" length="1000" decimal="0" jt="12" />
+			<column name="Comments" type="nvarchar" length="1000" decimal="0" jt="12" />
 			<index name="Pk_Resource_ResourceId" unique="PRIMARY_KEY" >
-				<column name="ResourceId" />
+				<column name="StaffId" />
 			</index>
 		</table>
-		<table name="sysdiagrams" row_count="1" >
-			<column name="diagram_id" type="int" length="10" decimal="0" jt="4" mandatory="y" autoincrement="y" />
+		<table name="StaffFacility" row_count="0" >
+			<column name="StaffFacilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<identity><![CDATA[identity]]></identity>
+			</column>
+			<column name="StaffId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="FacilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<index name="Pk_StaffFacility_StaffFacilityId" unique="PRIMARY_KEY" >
+				<column name="StaffFacilityId" />
+			</index>
+			<fk name="Fk_StaffFacility_Staff" to_schema="rosterd.dbo" to_table="Staff" >
+				<fk_column name="StaffId" pk="StaffId" />
+			</fk>
+		</table>
+		<table name="StaffSkill" row_count="0" >
+			<column name="StaffSkillId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<identity><![CDATA[identity]]></identity>
+			</column>
+			<column name="StaffId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="SkillId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<index name="Pk_StaffSkill_StaffSkillId" unique="PRIMARY_KEY" >
+				<column name="StaffSkillId" />
+			</index>
+			<fk name="Fk_StaffSkill_Staff" to_schema="rosterd.dbo" to_table="Staff" >
+				<fk_column name="StaffId" pk="StaffId" />
+			</fk>
+		</table>
+		<table name="sysdiagrams" row_count="2" >
+			<column name="diagram_id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
+				<identity><![CDATA[identity]]></identity>
+			</column>
 			<column name="name" type="sysname" length="128" decimal="0" jt="12" mandatory="y" />
 			<column name="principal_id" type="int" length="10" decimal="0" jt="4" mandatory="y" />
 			<column name="version" type="int" length="10" decimal="0" jt="4" />
@@ -63,7 +182,7 @@
 				<column name="name" />
 			</index>
 		</table>
-		<procedure name="sp_alterdiagram" id="Procedure_11a2" isSystem="false" params_known="y" >
+		<procedure name="sp_alterdiagram" id="Procedure_2356" isSystem="false" params_known="y" >
 			<string><![CDATA[	CREATE PROCEDURE dbo.sp_alterdiagram
 	(
 		@diagramname 	sysname,
@@ -130,7 +249,7 @@
 			<input_param name="@definition" jt="2004" type="image" />
 			<result_param name="@RETURN_VALUE" jt="4" type="int" />
 		</procedure>
-		<procedure name="sp_creatediagram" id="Procedure_1532" isSystem="false" params_known="y" >
+		<procedure name="sp_creatediagram" id="Procedure_1cb9" isSystem="false" params_known="y" >
 			<string><![CDATA[	CREATE PROCEDURE dbo.sp_creatediagram
 	(
 		@diagramname 	sysname,
@@ -194,7 +313,7 @@
 			<input_param name="@definition" jt="2004" type="image" />
 			<result_param name="@RETURN_VALUE" jt="4" type="int" />
 		</procedure>
-		<procedure name="sp_dropdiagram" id="Procedure_1925" isSystem="false" params_known="y" >
+		<procedure name="sp_dropdiagram" id="Procedure_1b71" isSystem="false" params_known="y" >
 			<string><![CDATA[	CREATE PROCEDURE dbo.sp_dropdiagram
 	(
 		@diagramname 	sysname,
@@ -239,7 +358,7 @@
 			<input_param name="@owner_id" jt="4" type="int" />
 			<result_param name="@RETURN_VALUE" jt="4" type="int" />
 		</procedure>
-		<procedure name="sp_helpdiagramdefinition" id="Procedure_1897" isSystem="false" params_known="y" >
+		<procedure name="sp_helpdiagramdefinition" id="Procedure_ec6" isSystem="false" params_known="y" >
 			<string><![CDATA[	CREATE PROCEDURE dbo.sp_helpdiagramdefinition
 	(
 		@diagramname 	sysname,
@@ -281,7 +400,7 @@
 			<input_param name="@owner_id" jt="4" type="int" />
 			<result_param name="@RETURN_VALUE" jt="4" type="int" />
 		</procedure>
-		<procedure name="sp_helpdiagrams" id="Procedure_2244" isSystem="false" params_known="y" >
+		<procedure name="sp_helpdiagrams" id="Procedure_192c" isSystem="false" params_known="y" >
 			<string><![CDATA[	CREATE PROCEDURE dbo.sp_helpdiagrams
 	(
 		@diagramname sysname = NULL,
@@ -316,7 +435,7 @@
 			<input_param name="@owner_id" jt="4" type="int" />
 			<result_param name="@RETURN_VALUE" jt="4" type="int" />
 		</procedure>
-		<procedure name="sp_renamediagram" id="Procedure_26c4" isSystem="false" params_known="y" >
+		<procedure name="sp_renamediagram" id="Procedure_1d10" isSystem="false" params_known="y" >
 			<string><![CDATA[	CREATE PROCEDURE dbo.sp_renamediagram
 	(
 		@diagramname 		sysname,
@@ -383,7 +502,7 @@
 			<input_param name="@new_diagramname" jt="12" type="sysname" />
 			<result_param name="@RETURN_VALUE" jt="4" type="int" />
 		</procedure>
-		<procedure name="sp_upgraddiagrams" id="Procedure_466" isSystem="false" params_known="y" >
+		<procedure name="sp_upgraddiagrams" id="Procedure_634" isSystem="false" params_known="y" >
 			<string><![CDATA[	CREATE PROCEDURE dbo.sp_upgraddiagrams
 	AS
 	BEGIN
@@ -443,7 +562,7 @@
 	]]></string>
 			<result_param name="@RETURN_VALUE" jt="4" type="int" />
 		</procedure>
-		<function name="fn_diagramobjects" id="Function_26d6" isSystem="false" params_known="n" >
+		<function name="fn_diagramobjects" id="Function_139a" isSystem="false" params_known="n" >
 			<string><![CDATA[	CREATE FUNCTION dbo.fn_diagramobjects() 
 	RETURNS int
 	WITH EXECUTE AS N'dbo'
@@ -490,72 +609,136 @@
 		</function>
 	</schema>
 	<connector name="AzureSql" database="AzureSql" driver_class="net.sourceforge.jtds.jdbc.Driver" driver_jar="jtds-1.3.1.jar" driver_desc="JTDS Driver&#13;SQL Server Authentication" host="sqls-rosterd-prod.database.windows.net" port="1433" instance="rosterd" user="rosterd-admin-user" passwd="SzY2cHRoMXNTQGY1" />
-	<layout name="Default Layout" id="Layout_1834" show_relation="columns" >
-		<entity schema="rosterd.dbo" name="Capability" color="C7F4BE" x="288" y="272" />
-		<entity schema="rosterd.dbo" name="Facility" color="C7F4BE" x="288" y="80" />
-		<entity schema="rosterd.dbo" name="FacilityCapability" color="C7F4BE" x="48" y="80" />
-		<entity schema="rosterd.dbo" name="Organization" color="C7F4BE" x="496" y="80" />
-		<entity schema="rosterd.dbo" name="Resource" color="BED3F4" x="768" y="80" />
-		<group name="Resource" color="ECF0F7" >
-			<entity schema="rosterd.dbo" name="Resource" />
+	<layout name="Default Layout" id="Layout_2492" show_relation="columns" >
+		<entity schema="rosterd.dbo" name="Capability" color="C7F4BE" x="528" y="80" />
+		<entity schema="rosterd.dbo" name="Facility" color="C7F4BE" x="64" y="80" />
+		<entity schema="rosterd.dbo" name="FacilityCapability" color="C7F4BE" x="288" y="80" />
+		<entity schema="rosterd.dbo" name="Job" color="F4DDBE" x="768" y="80" />
+		<entity schema="rosterd.dbo" name="JobStatus" color="F4DDBE" x="1360" y="80" />
+		<entity schema="rosterd.dbo" name="JobStatusChange" color="F4DDBE" x="1056" y="80" />
+		<entity schema="rosterd.dbo" name="Jobskill" color="F4DDBE" x="1056" y="368" />
+		<entity schema="rosterd.dbo" name="Organization" color="C7F4BE" x="48" y="368" />
+		<entity schema="rosterd.dbo" name="Skill" color="BED3F4" x="976" y="624" />
+		<entity schema="rosterd.dbo" name="Staff" color="FFFFFF" x="176" y="544" />
+		<entity schema="rosterd.dbo" name="StaffFacility" color="FFFFFF" x="432" y="544" />
+		<entity schema="rosterd.dbo" name="StaffSkill" color="FFFFFF" x="432" y="688" />
+		<group name="Skills &amp; Qualifications" color="ECF0F7" >
+			<entity schema="rosterd.dbo" name="Skill" />
 		</group>
-		<group name="FacilityCapability" color="EEF7EC" >
-			<entity schema="rosterd.dbo" name="FacilityCapability" />
+		<group name="Jobs" color="F7F2EC" >
+			<entity schema="rosterd.dbo" name="Job" />
+			<entity schema="rosterd.dbo" name="JobStatusChange" />
+			<entity schema="rosterd.dbo" name="Jobskill" />
+			<entity schema="rosterd.dbo" name="JobStatus" />
+		</group>
+		<group name="Facility" color="EEF7EC" >
 			<entity schema="rosterd.dbo" name="Facility" />
+			<entity schema="rosterd.dbo" name="FacilityCapability" />
 			<entity schema="rosterd.dbo" name="Capability" />
 			<entity schema="rosterd.dbo" name="Organization" />
 		</group>
+		<group name="Staff" color="CCCC33" >
+			<entity schema="rosterd.dbo" name="StaffFacility" />
+			<entity schema="rosterd.dbo" name="StaffSkill" />
+			<entity schema="rosterd.dbo" name="Staff" />
+		</group>
 	</layout>
-	<layout name="Sample Layout with Tools" id="Layout_dc9" show_column_type="y" show_relation="columns" >
-		<entity schema="rosterd.dbo" name="Capability" color="C7F4BE" x="320" y="336" />
-		<entity schema="rosterd.dbo" name="Facility" color="C7F4BE" x="320" y="144" />
-		<entity schema="rosterd.dbo" name="FacilityCapability" color="C7F4BE" x="48" y="144" />
-		<entity schema="rosterd.dbo" name="Organization" color="C7F4BE" x="608" y="144" />
-		<entity schema="rosterd.dbo" name="Resource" color="BED3F4" x="960" y="144" />
-		<entity schema="rosterd.dbo" name="sysdiagrams" color="BED3F4" x="1248" y="144" />
-		<callout x="320" y="48" pointer="Round" >
-			<comment><![CDATA[This is a sample layout with tools. 
-For better understanding the schema create multiple layouts with same or different tables. 
-Double-click on any table, column or foreign key to edit.]]></comment>
-		</callout>
-		<script name="Sample SQL Editor" id="Editor_1a33" language="SQL" >
-			<string><![CDATA[SELECT FacilityId, FacilityName, OrganzationId
+	<layout name="Sample Layout with Tools" id="Layout_269d" show_column_type="y" show_relation="columns" >
+		<entity schema="rosterd.dbo" name="Capability" color="C7F4BE" x="640" y="48" />
+		<entity schema="rosterd.dbo" name="Facility" color="C7F4BE" x="64" y="48" />
+		<entity schema="rosterd.dbo" name="FacilityCapability" color="C7F4BE" x="368" y="48" />
+		<entity schema="rosterd.dbo" name="Job" color="F4DDBE" x="976" y="48" />
+		<entity schema="rosterd.dbo" name="JobStatus" color="F4DDBE" x="1664" y="48" />
+		<entity schema="rosterd.dbo" name="JobStatusChange" color="F4DDBE" x="1296" y="48" />
+		<entity schema="rosterd.dbo" name="Jobskill" color="F4DDBE" x="1296" y="336" />
+		<entity schema="rosterd.dbo" name="Organization" color="C7F4BE" x="48" y="336" />
+		<entity schema="rosterd.dbo" name="Skill" color="BED3F4" x="976" y="656" />
+		<entity schema="rosterd.dbo" name="Staff" color="C7F4BE" x="368" y="336" />
+		<entity schema="rosterd.dbo" name="StaffFacility" color="C7F4BE" x="704" y="336" />
+		<entity schema="rosterd.dbo" name="StaffSkill" color="C7F4BE" x="704" y="688" />
+		<entity schema="rosterd.dbo" name="sysdiagrams" color="BED3F4" x="1248" y="656" />
+		<script name="Sample SQL Editor" id="Editor_d3b" language="SQL" >
+			<string><![CDATA[SELECT FacilityId, FacilityName, OrganzationId, Address, Suburb, City, Country, PhoneNumber1, PhoneNumber2
 FROM
-	dbo.Facility y;]]></string>
+	dbo.Facility y;
+GO]]></string>
 		</script>
-		<browser id="Browse_16c0" name="Sample Relational Data Explorer" confirm_updates="y" >
+		<browser id="Browse_26f5" name="Sample Relational Data Explorer" confirm_updates="y" >
 			<browse_table schema="rosterd.dbo" entity="Facility" x="20" y="20" width="400" height="300" >
 				<browse_table schema="rosterd.dbo" entity="FacilityCapability" fk="Fk_FacilityCapability_Facility" x="440" y="20" width="500" height="350" >
 					<browse_table schema="rosterd.dbo" entity="Capability" fk="Fk_FacilityCapability_Capability" x="960" y="20" width="500" height="350" record_view="y" />
 				</browse_table>
 			</browse_table>
 		</browser>
-		<query id="Query_1e8a" name="Sample Query Builder" >
+		<query id="Query_136" name="Sample Query Builder" >
 			<query_table schema="rosterd.dbo" name="Facility" alias="f" x="48" y="48" >
 				<column name="FacilityId" />
 				<column name="FacilityName" />
 				<column name="OrganzationId" />
-				<query_table schema="rosterd.dbo" name="FacilityCapability" alias="f1" x="224" y="48" fk="Fk_FacilityCapability_Facility" type="Inner Join" >
+				<column name="Address" />
+				<column name="Suburb" />
+				<column name="City" />
+				<column name="Country" />
+				<column name="PhoneNumber1" />
+				<column name="PhoneNumber2" />
+				<query_table schema="rosterd.dbo" name="FacilityCapability" alias="f1" x="240" y="48" fk="Fk_FacilityCapability_Facility" type="Inner Join" >
 					<column name="FacilityCapabilityId" />
 					<column name="FacilityId" />
 					<column name="CapabilityId" />
-					<query_table schema="rosterd.dbo" name="Capability" alias="c" x="448" y="48" fk="Fk_FacilityCapability_Capability" type="Inner Join" >
+					<query_table schema="rosterd.dbo" name="Capability" alias="c" x="464" y="48" fk="Fk_FacilityCapability_Capability" type="Inner Join" >
 						<column name="CapabilityId" />
 						<column name="CapabilityName" />
 					</query_table>
 				</query_table>
 			</query_table>
 		</query>
-		<form name="Sample Analyst BI" id="Form_146d" template="Centered Page" view="frame" >
-			<body name="Body" template="Grid" pos="0,0,0,0,f,f" layout="{{-2,-2},{-2}}" scroll="n" html="n" >
-				<cell type="chart" name="Line" template="Line" pos="0,0,1,0,f,f" >
+		<form name="Sample Data Analyst" id="Form_1f19" template="Centered Page" view="frame" >
+			<var name="samplePageNumber" type="4" value="0" mandatory="n" />
+			<var name="sampleRecordsPerPage" type="4" value="100" mandatory="n" />
+			<body name="Body" template="Grid" pos="0,0,0,0,f,f" layout="{{-2,-2,-2,-2,-1},{-2,-2,-2}}" scroll="n" html="n" >
+				<cell type="href" name="" template="Plain" disabled="${!sampleHasNextPage}" pos="3,2,3,2,l,c" glyph="FA-ANGLE_RIGHT" ref_id="Form_1f19" >
+					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
+				</cell>
+				<cell type="href" name="" template="Plain" disabled="${samplePageNumber&lt;1}" pos="1,2,1,2,l,c" glyph="FA-ANGLE_LEFT" ref_id="Form_1f19" >
+					<var name="samplePageNumber" value="${Math.max(0,samplePageNumber-1)}" />
+				</cell>
+				<cell type="href" name="" template="Plain" disabled="${samplePageNumber&lt;1}" pos="0,2,0,2,l,c" glyph="FA-ANGLE_DOUBLE_LEFT" ref_id="Form_1f19" >
+					<var name="samplePageNumber" value="0" />
+				</cell>
+				<cell type="label" name="Page ${samplePageNumber+1}" template="Plain" pos="2,2,2,2,l,c" />
+				<tableview name="sample" template="Table" css="table table-striped table-bordered table-sm table-hover" pos="0,1,4,1,f,f" layout="{{-2,-2,-2,-2,-2,-2,-2,-2,-2},{-2,-2}}" scroll="n" html="n" header_rows="1" >
 					<form_script type="DataSource" language="SQL" >
 						<var name="FacilityId" type="-5" />
 						<var name="FacilityName" />
 						<var name="OrganzationId" type="-5" />
+						<var name="Address" />
+						<var name="Suburb" />
+						<var name="City" />
+						<var name="Country" />
+						<var name="PhoneNumber1" />
+						<var name="PhoneNumber2" />
 						<script ><![CDATA[SELECT * FROM dbo.Facility]]></script>
 					</form_script>
-				</cell>
+					<cell type="label" name="${Address}" template="Plain" pos="3,1,3,1,l,c" />
+					<cell type="label" name="${City}" template="Plain" pos="5,1,5,1,l,c" />
+					<cell type="label" name="${Country}" template="Plain" pos="6,1,6,1,l,c" />
+					<cell type="label" name="${FacilityId}" template="Plain" pos="0,1,0,1,l,c" />
+					<cell type="label" name="${FacilityName}" template="Plain" pos="1,1,1,1,l,c" />
+					<cell type="label" name="${OrganzationId}" template="Plain" pos="2,1,2,1,l,c" />
+					<cell type="label" name="${PhoneNumber1}" template="Plain" pos="7,1,7,1,l,c" />
+					<cell type="label" name="${PhoneNumber2}" template="Plain" pos="8,1,8,1,l,c" />
+					<cell type="label" name="${Suburb}" template="Plain" pos="4,1,4,1,l,c" />
+					<cell type="label" name="Address" template="Plain" pos="3,0,3,0,c,c" />
+					<cell type="label" name="City" template="Plain" pos="5,0,5,0,c,c" />
+					<cell type="label" name="Country" template="Plain" pos="6,0,6,0,c,c" />
+					<cell type="label" name="FacilityId" template="Plain" pos="0,0,0,0,c,c" />
+					<cell type="label" name="FacilityName" template="Plain" pos="1,0,1,0,c,c" />
+					<cell type="label" name="OrganzationId" template="Plain" pos="2,0,2,0,c,c" />
+					<cell type="label" name="PhoneNumber1" template="Plain" pos="7,0,7,0,c,c" />
+					<cell type="label" name="PhoneNumber2" template="Plain" pos="8,0,8,0,c,c" />
+					<cell type="label" name="Suburb" template="Plain" pos="4,0,4,0,c,c" />
+				</tableview>
+				<cell type="label" name="sample" template="H3" pos="0,0,1,0,l,c" />
 			</body>
 		</form>
 	</layout>

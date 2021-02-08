@@ -379,3 +379,4 @@ yarn-error.log*
 .history/
 
 Strieq.Admin.Api.xml
+src/databases/RosterdModel.dbs.bak
