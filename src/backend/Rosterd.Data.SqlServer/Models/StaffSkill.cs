@@ -9,17 +9,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rosterd.Data.SqlServer.Models
 {
-    public partial class Resource
+    public partial class StaffSkill
     {
         [Key]
-        public long ResourceId { get; set; }
-        [Required]
-        [StringLength(1000)]
-        public string FirstName { get; set; }
-        [StringLength(1000)]
-        public string MiddleName { get; set; }
-        [Required]
-        [StringLength(1000)]
-        public string LastName { get; set; }
+        public long StaffSkillId { get; set; }
+        public long StaffId { get; set; }
+        public long SkillId { get; set; }
+
+        [ForeignKey(nameof(StaffId))]
+        [InverseProperty("StaffSkill")]
+        public virtual Staff Staff { get; set; }
     }
 }

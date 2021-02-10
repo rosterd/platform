@@ -25,14 +25,47 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Job]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[JobSkill]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[JobStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[JobStatusChange]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Organization]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Resource]",
+         "Name": "[dbo].[Skill]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Staff]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[StaffFacility]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[StaffSkill]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Tenant]",
          "ObjectType": 0
       }
    ],
+   "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
    "UseFluentApiOnly": false,

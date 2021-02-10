@@ -18,10 +18,16 @@ namespace Rosterd.Data.SqlServer.Models
 
         [Key]
         public long OrganizationId { get; set; }
+        public long TenantId { get; set; }
         [Required]
         [StringLength(1000)]
         public string OrganizationName { get; set; }
+        [StringLength(1000)]
+        public string Address { get; set; }
 
+        [ForeignKey(nameof(TenantId))]
+        [InverseProperty("Organization")]
+        public virtual Tenant Tenant { get; set; }
         [InverseProperty("Organzation")]
         public virtual ICollection<Facility> Facility { get; set; }
     }

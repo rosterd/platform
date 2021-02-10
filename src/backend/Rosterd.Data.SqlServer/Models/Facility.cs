@@ -22,6 +22,23 @@ namespace Rosterd.Data.SqlServer.Models
         [StringLength(1000)]
         public string FacilityName { get; set; }
         public long OrganzationId { get; set; }
+        [Required]
+        [StringLength(1000)]
+        public string Address { get; set; }
+        [Required]
+        [StringLength(1000)]
+        public string Suburb { get; set; }
+        [Required]
+        [StringLength(1000)]
+        public string City { get; set; }
+        [Required]
+        [StringLength(1000)]
+        public string Country { get; set; }
+        [Required]
+        [StringLength(1000)]
+        public string PhoneNumber1 { get; set; }
+        [StringLength(1000)]
+        public string PhoneNumber2 { get; set; }
 
         [ForeignKey(nameof(OrganzationId))]
         [InverseProperty(nameof(Organization.Facility))]

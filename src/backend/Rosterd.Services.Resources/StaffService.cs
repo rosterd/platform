@@ -17,8 +17,8 @@ namespace Rosterd.Services.Resources
 
         public async Task<PagedList<StaffModel>> GetStaff(PagingQueryStringParameters pagingParameters)
         {
-            var query = _context.Resource;
-            var pagedList = await PagingHelper<Resource>.ToPagingHelper(query, pagingParameters.PageNumber, pagingParameters.PageSize);
+            var query = _context.Staff;
+            var pagedList = await PagingHelper<Staff>.ToPagingHelper(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
 
             var domainModelStaff = pagedList.Select(s => new StaffModel {FirstName = s.FirstName, LastName = s.LastName}).ToList();

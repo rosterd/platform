@@ -106,11 +106,15 @@
 			<column name="OrganizationId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<identity><![CDATA[identity]]></identity>
 			</column>
+			<column name="TenantId" type="bigint" jt="-5" mandatory="y" />
 			<column name="OrganizationName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
 			<column name="Address" type="nvarchar" length="1000" decimal="0" jt="12" />
 			<index name="Pk_Organization_OrganizationId" unique="PRIMARY_KEY" >
 				<column name="OrganizationId" />
 			</index>
+			<fk name="Fk_Organization_Tenant" to_schema="rosterd.dbo" to_table="Tenant" >
+				<fk_column name="TenantId" pk="TenantId" />
+			</fk>
 		</table>
 		<table name="Skill" row_count="0" >
 			<column name="SkillId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
@@ -165,6 +169,15 @@
 			<fk name="Fk_StaffSkill_Staff" to_schema="rosterd.dbo" to_table="Staff" >
 				<fk_column name="StaffId" pk="StaffId" />
 			</fk>
+		</table>
+		<table name="Tenant" >
+			<column name="TenantId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<identity><![CDATA[identity]]></identity>
+			</column>
+			<column name="TenantName" type="nvarchar" length="1000" jt="12" mandatory="y" />
+			<index name="Pk_Tenant_TenantId" unique="PRIMARY_KEY" >
+				<column name="TenantId" />
+			</index>
 		</table>
 		<table name="sysdiagrams" row_count="2" >
 			<column name="diagram_id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
@@ -610,18 +623,19 @@
 	</schema>
 	<connector name="AzureSql" database="AzureSql" driver_class="net.sourceforge.jtds.jdbc.Driver" driver_jar="jtds-1.3.1.jar" driver_desc="JTDS Driver&#13;SQL Server Authentication" host="sqls-rosterd-prod.database.windows.net" port="1433" instance="rosterd" user="rosterd-admin-user" passwd="SzY2cHRoMXNTQGY1" />
 	<layout name="Default Layout" id="Layout_2492" show_relation="columns" >
-		<entity schema="rosterd.dbo" name="Capability" color="C7F4BE" x="528" y="80" />
-		<entity schema="rosterd.dbo" name="Facility" color="C7F4BE" x="64" y="80" />
-		<entity schema="rosterd.dbo" name="FacilityCapability" color="C7F4BE" x="288" y="80" />
-		<entity schema="rosterd.dbo" name="Job" color="F4DDBE" x="768" y="80" />
-		<entity schema="rosterd.dbo" name="JobStatus" color="F4DDBE" x="1360" y="80" />
-		<entity schema="rosterd.dbo" name="JobStatusChange" color="F4DDBE" x="1056" y="80" />
-		<entity schema="rosterd.dbo" name="Jobskill" color="F4DDBE" x="1056" y="368" />
-		<entity schema="rosterd.dbo" name="Organization" color="C7F4BE" x="48" y="368" />
-		<entity schema="rosterd.dbo" name="Skill" color="BED3F4" x="976" y="624" />
-		<entity schema="rosterd.dbo" name="Staff" color="FFFFFF" x="176" y="544" />
-		<entity schema="rosterd.dbo" name="StaffFacility" color="FFFFFF" x="432" y="544" />
-		<entity schema="rosterd.dbo" name="StaffSkill" color="FFFFFF" x="432" y="688" />
+		<entity schema="rosterd.dbo" name="Capability" color="C7F4BE" x="672" y="352" />
+		<entity schema="rosterd.dbo" name="Facility" color="C7F4BE" x="352" y="304" />
+		<entity schema="rosterd.dbo" name="FacilityCapability" color="C7F4BE" x="592" y="80" />
+		<entity schema="rosterd.dbo" name="Job" color="F4DDBE" x="864" y="96" />
+		<entity schema="rosterd.dbo" name="JobStatus" color="F4DDBE" x="1184" y="352" />
+		<entity schema="rosterd.dbo" name="JobStatusChange" color="F4DDBE" x="1152" y="96" />
+		<entity schema="rosterd.dbo" name="Jobskill" color="F4DDBE" x="896" y="368" />
+		<entity schema="rosterd.dbo" name="Organization" color="C7F4BE" x="288" y="96" />
+		<entity schema="rosterd.dbo" name="Skill" color="BED3F4" x="1088" y="672" />
+		<entity schema="rosterd.dbo" name="Staff" color="FFFFFF" x="320" y="624" />
+		<entity schema="rosterd.dbo" name="StaffFacility" color="FFFFFF" x="576" y="624" />
+		<entity schema="rosterd.dbo" name="StaffSkill" color="FFFFFF" x="576" y="768" />
+		<entity schema="rosterd.dbo" name="Tenant" color="E6E64D" x="48" y="128" />
 		<group name="Skills &amp; Qualifications" color="ECF0F7" >
 			<entity schema="rosterd.dbo" name="Skill" />
 		</group>
@@ -641,6 +655,9 @@
 			<entity schema="rosterd.dbo" name="StaffFacility" />
 			<entity schema="rosterd.dbo" name="StaffSkill" />
 			<entity schema="rosterd.dbo" name="Staff" />
+		</group>
+		<group name="Tenants" color="FFFF66" >
+			<entity schema="rosterd.dbo" name="Tenant" />
 		</group>
 	</layout>
 	<layout name="Sample Layout with Tools" id="Layout_269d" show_column_type="y" show_relation="columns" >
@@ -696,27 +713,28 @@ GO]]></string>
 			<var name="samplePageNumber" type="4" value="0" mandatory="n" />
 			<var name="sampleRecordsPerPage" type="4" value="100" mandatory="n" />
 			<body name="Body" template="Grid" pos="0,0,0,0,f,f" layout="{{-2,-2,-2,-2,-1},{-2,-2,-2}}" scroll="n" html="n" >
-				<cell type="href" name="" template="Plain" disabled="${!sampleHasNextPage}" pos="3,2,3,2,l,c" glyph="FA-ANGLE_RIGHT" ref_id="Form_1f19" >
-					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
+				<cell type="href" name="" template="Plain" disabled="${samplePageNumber&lt;1}" pos="0,2,0,2,l,c" glyph="FA-ANGLE_DOUBLE_LEFT" ref_id="Form_1f19" >
+					<var name="samplePageNumber" value="0" />
 				</cell>
 				<cell type="href" name="" template="Plain" disabled="${samplePageNumber&lt;1}" pos="1,2,1,2,l,c" glyph="FA-ANGLE_LEFT" ref_id="Form_1f19" >
 					<var name="samplePageNumber" value="${Math.max(0,samplePageNumber-1)}" />
 				</cell>
-				<cell type="href" name="" template="Plain" disabled="${samplePageNumber&lt;1}" pos="0,2,0,2,l,c" glyph="FA-ANGLE_DOUBLE_LEFT" ref_id="Form_1f19" >
-					<var name="samplePageNumber" value="0" />
+				<cell type="href" name="" template="Plain" disabled="${!sampleHasNextPage}" pos="3,2,3,2,l,c" glyph="FA-ANGLE_RIGHT" ref_id="Form_1f19" >
+					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
 				</cell>
 				<cell type="label" name="Page ${samplePageNumber+1}" template="Plain" pos="2,2,2,2,l,c" />
+				<cell type="label" name="sample" template="H3" pos="0,0,1,0,l,c" />
 				<tableview name="sample" template="Table" css="table table-striped table-bordered table-sm table-hover" pos="0,1,4,1,f,f" layout="{{-2,-2,-2,-2,-2,-2,-2,-2,-2},{-2,-2}}" scroll="n" html="n" header_rows="1" >
 					<form_script type="DataSource" language="SQL" >
 						<var name="FacilityId" type="-5" />
-						<var name="FacilityName" />
+						<var name="FacilityName" type="-1" />
 						<var name="OrganzationId" type="-5" />
-						<var name="Address" />
-						<var name="Suburb" />
-						<var name="City" />
-						<var name="Country" />
-						<var name="PhoneNumber1" />
-						<var name="PhoneNumber2" />
+						<var name="Address" type="-1" />
+						<var name="Suburb" type="-1" />
+						<var name="City" type="-1" />
+						<var name="Country" type="-1" />
+						<var name="PhoneNumber1" type="-1" />
+						<var name="PhoneNumber2" type="-1" />
 						<script ><![CDATA[SELECT * FROM dbo.Facility]]></script>
 					</form_script>
 					<cell type="label" name="${Address}" template="Plain" pos="3,1,3,1,l,c" />
@@ -738,7 +756,6 @@ GO]]></string>
 					<cell type="label" name="PhoneNumber2" template="Plain" pos="8,0,8,0,c,c" />
 					<cell type="label" name="Suburb" template="Plain" pos="4,0,4,0,c,c" />
 				</tableview>
-				<cell type="label" name="sample" template="H3" pos="0,0,1,0,l,c" />
 			</body>
 		</form>
 	</layout>
