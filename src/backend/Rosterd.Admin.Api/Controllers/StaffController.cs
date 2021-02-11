@@ -16,10 +16,10 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly ILogger<StaffController> _logger;
         private readonly IStaffService _staffService;
 
-        public StaffController(ILogger<StaffController> logger, IStaffService resourcesService) : base()
+        public StaffController(ILogger<StaffController> logger, IStaffService staffService) : base()
         {
             _logger = logger;
-            _staffService = resourcesService;
+            _staffService = staffService;
         }
 
         /// <summary>
@@ -30,5 +30,17 @@ namespace Rosterd.Admin.Api.Controllers
         [HttpGet]
         public async Task<PagedList<StaffModel>> Get() =>
             (await _staffService.GetStaff(new PagingQueryStringParameters()));
+
+        [HttpGet("{staffId:long}")]
+        public async Task<StaffModel> GetStaffById(long staffId) =>
+             (await _staffService.GetStaffById(staffId));
+
+        [HttpDelete("{staffId:long}")]
+        public async Task<IActionResult> DeleteStaff(long staffId) =>
+            (await _staffService.DeleteStaff(staffId));
+
+        [HttpPost]
+        public async Task<IActionResult> CreateStaff(StaffModel staffModel) =>
+            (await _staffService.PostStaff(staffModel));
     }
 }

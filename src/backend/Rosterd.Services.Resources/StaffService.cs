@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
@@ -15,6 +16,8 @@ namespace Rosterd.Services.Resources
 
         public StaffService(IRosterdDbContext context) => _context = context;
 
+        public Task<IActionResult> DeleteStaff(long staffId) => throw new System.NotImplementedException();
+
         public async Task<PagedList<StaffModel>> GetStaff(PagingQueryStringParameters pagingParameters)
         {
             var query = _context.Staff;
@@ -26,5 +29,9 @@ namespace Rosterd.Services.Resources
             return new PagedList<StaffModel>(domainModelStaff, domainModelStaff.Count, pagedList.CurrentPage, pagedList.PageSize,
                 pagedList.TotalPages);
         }
+
+        public Task<StaffModel> GetStaffById(long staffId) => throw new System.NotImplementedException();
+
+        public Task<IActionResult> PostStaff(StaffModel staffModel) => throw new System.NotImplementedException();
     }
 }

@@ -25,6 +25,9 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 
             //Services
             services.AddScoped<IStaffService, StaffService>();
+            services.AddScoped<IFacilityService, FacilityService>();
+            services.AddScoped<ISkillService, SkillService>();
+            services.AddScoped<IJobService, JobService>();
 
 
             //User context
