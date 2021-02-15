@@ -27,5 +27,17 @@ namespace Rosterd.Admin.Api.Controllers
         [HttpGet]
         public async Task<PagedList<FacilityModel>> Get() =>
             (await _facilityService.GetFacilities(new PagingQueryStringParameters()));
-    }
+
+        [HttpGet("{facilityId:long}")]
+        public async Task<FacilityModel> GetFacilityById(long facilityId) =>
+           (await _facilityService.GetFacilityById(facilityId));
+
+        [HttpDelete("{facilityId:long}")]
+        public async Task<IActionResult> DeleteFacility(long facilityId) =>
+            (await _facilityService.DeleteFacility(facilityId));
+
+        [HttpPost]
+        public async Task<IActionResult> CreateFacility(FacilityModel facilityModel) =>
+            (await _facilityService.PostFacility(facilityModel));
+        }
 }
