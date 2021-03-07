@@ -9,11 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rosterd.Data.SqlServer.Models
 {
+    [Table("JobStatus")]
     public partial class JobStatus
     {
         public JobStatus()
         {
-            JobStatusChange = new HashSet<JobStatusChange>();
+            JobStatusChanges = new HashSet<JobStatusChange>();
         }
 
         [Key]
@@ -24,7 +25,7 @@ namespace Rosterd.Data.SqlServer.Models
         [StringLength(1000)]
         public string Description { get; set; }
 
-        [InverseProperty("JobStatus")]
-        public virtual ICollection<JobStatusChange> JobStatusChange { get; set; }
+        [InverseProperty(nameof(JobStatusChange.JobStatus))]
+        public virtual ICollection<JobStatusChange> JobStatusChanges { get; set; }
     }
 }

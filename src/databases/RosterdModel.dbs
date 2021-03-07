@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="AzureSql" id="Project_183e" database="AzureSql" >
 	<schema name="dbo" catalogname="rosterd" >
-		<table name="Capability" row_count="0" >
+		<table name="Capability" generator_rows="25" row_count="0" >
 			<column name="CapabilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<identity><![CDATA[identity]]></identity>
 			</column>
-			<column name="CapabilityName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="CapabilityName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" regexp="((Corporate|Technical|National|International|Business|Consumer|Accessory)Sales|Technical|Marketing|Accounting|Cutomer|Service|Prepaid Customer|Corporate Care|Web)" />
 			<index name="Pk_FacilityFeature_FacilityFeatureId" unique="PRIMARY_KEY" >
 				<column name="CapabilityId" />
 			</index>
 		</table>
-		<table name="Facility" row_count="0" >
+		<table name="Facility" generator_rows="20" row_count="0" >
 			<column name="FacilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<identity><![CDATA[identity]]></identity>
 			</column>
-			<column name="FacilityName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="FacilityName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" regexp="(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY)-[A-Z]{2}" />
 			<column name="OrganzationId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<column name="Address" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
 			<column name="Suburb" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
@@ -29,7 +29,7 @@
 				<fk_column name="OrganzationId" pk="OrganizationId" />
 			</fk>
 		</table>
-		<table name="FacilityCapability" row_count="0" >
+		<table name="FacilityCapability" generator_rows="50" row_count="0" >
 			<column name="FacilityCapabilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<identity><![CDATA[identity]]></identity>
 			</column>
@@ -45,7 +45,7 @@
 				<fk_column name="FacilityId" pk="FacilityId" />
 			</fk>
 		</table>
-		<table name="Job" row_count="0" >
+		<table name="Job" generator_rows="0" row_count="0" >
 			<column name="JobId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<identity><![CDATA[identity]]></identity>
 			</column>
@@ -61,7 +61,18 @@
 				<column name="JobId" />
 			</index>
 		</table>
-		<table name="JobStatus" row_count="0" >
+		<table name="JobSkill" prior="Jobskill" generator_rows="0" row_count="0" >
+			<column name="JobSkillId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="JobId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="SkillId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<index name="Pk_Jobskill_JobSkillId" unique="PRIMARY_KEY" >
+				<column name="JobSkillId" />
+			</index>
+			<fk name="Fk_Jobskill_Job" to_schema="rosterd.dbo" to_table="Job" >
+				<fk_column name="JobId" pk="JobId" />
+			</fk>
+		</table>
+		<table name="JobStatus" generator_rows="0" row_count="0" >
 			<column name="JobStatusId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<identity><![CDATA[identity]]></identity>
 			</column>
@@ -71,7 +82,7 @@
 				<column name="JobStatusId" />
 			</index>
 		</table>
-		<table name="JobStatusChange" row_count="0" >
+		<table name="JobStatusChange" generator_rows="0" row_count="0" >
 			<column name="JobStatusChangeId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<identity><![CDATA[identity]]></identity>
 			</column>
@@ -91,23 +102,12 @@
 				<fk_column name="JobStatusId" pk="JobStatusId" />
 			</fk>
 		</table>
-		<table name="Jobskill" row_count="0" >
-			<column name="JobSkillId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
-			<column name="JobId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
-			<column name="SkillId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
-			<index name="Pk_Jobskill_JobSkillId" unique="PRIMARY_KEY" >
-				<column name="JobSkillId" />
-			</index>
-			<fk name="Fk_Jobskill_Job" to_schema="rosterd.dbo" to_table="Job" >
-				<fk_column name="JobId" pk="JobId" />
-			</fk>
-		</table>
-		<table name="Organization" row_count="0" >
+		<table name="Organization" generator_rows="2" row_count="0" >
 			<column name="OrganizationId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<identity><![CDATA[identity]]></identity>
 			</column>
 			<column name="TenantId" type="bigint" jt="-5" mandatory="y" />
-			<column name="OrganizationName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="OrganizationName" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" regexp="(Re|Ad|Par|Tru|Thru|In|Bar|Cip|Dop|End|Em|Fro|Gro|Hap|Kli|Lom|Mon|Qwi|Rap|Sup|Sur|Tip|Tup|Un|Up|Var|Win|Zee)(ban|cad|dud|dim|er|frop|glib|hup|jub|kil|mun|nip|peb|pick|quest|rob|sap|sip|tan|tin|tum|ven|wer|werp|zap)(il|ic|im|in|up|ad|ack|am|on|ep|ed|ef|eg|aqu|ef|edg|op|oll|omm|ew|an|ex|pl)?(icator|or|ar|ax|an|ex|istor|entor|antor|in|over|ower|azz)(([ -]?Pro|Duplex|Multi){0}) (Direct|WorldWide|Holdings|International) (Inc|Company|Group|Corp.)?" />
 			<column name="Address" type="nvarchar" length="1000" decimal="0" jt="12" />
 			<index name="Pk_Organization_OrganizationId" unique="PRIMARY_KEY" >
 				<column name="OrganizationId" />
@@ -116,15 +116,15 @@
 				<fk_column name="TenantId" pk="TenantId" />
 			</fk>
 		</table>
-		<table name="Skill" row_count="0" >
+		<table name="Skill" generator_rows="25" row_count="0" >
 			<column name="SkillId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
-			<column name="Skill" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" />
+			<column name="Skill" type="nvarchar" length="1000" decimal="0" jt="12" mandatory="y" regexp="((Corporate|Technical|National|International|Business|Consumer|Accessory)Sales|Technical|Marketing|Accounting|Cutomer|Service|Prepaid Customer|Corporate Care|Web)" />
 			<column name="Description" type="nvarchar" length="1000" decimal="0" jt="12" />
 			<index name="Pk_Skill_SkillId" unique="PRIMARY_KEY" >
 				<column name="SkillId" />
 			</index>
 		</table>
-		<table name="Staff" row_count="2" >
+		<table name="Staff" generator_rows="15" row_count="2" >
 			<column name="StaffId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<identity><![CDATA[identity]]></identity>
 			</column>
@@ -144,7 +144,7 @@
 				<column name="StaffId" />
 			</index>
 		</table>
-		<table name="StaffFacility" row_count="0" >
+		<table name="StaffFacility" generator_rows="50" row_count="0" >
 			<column name="StaffFacilityId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<identity><![CDATA[identity]]></identity>
 			</column>
@@ -157,7 +157,7 @@
 				<fk_column name="StaffId" pk="StaffId" />
 			</fk>
 		</table>
-		<table name="StaffSkill" row_count="0" >
+		<table name="StaffSkill" generator_rows="50" row_count="0" >
 			<column name="StaffSkillId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<identity><![CDATA[identity]]></identity>
 			</column>
@@ -170,11 +170,11 @@
 				<fk_column name="StaffId" pk="StaffId" />
 			</fk>
 		</table>
-		<table name="Tenant" >
+		<table name="Tenant" generator_rows="1" >
 			<column name="TenantId" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<identity><![CDATA[identity]]></identity>
 			</column>
-			<column name="TenantName" type="nvarchar" length="1000" jt="12" mandatory="y" />
+			<column name="TenantName" type="nvarchar" length="1000" jt="12" mandatory="y" regexp="(Re|Ad|Par|Tru|Thru|In|Bar|Cip|Dop|End|Em|Fro|Gro|Hap|Kli|Lom|Mon|Qwi|Rap|Sup|Sur|Tip|Tup|Un|Up|Var|Win|Zee)(ban|cad|dud|dim|er|frop|glib|hup|jub|kil|mun|nip|peb|pick|quest|rob|sap|sip|tan|tin|tum|ven|wer|werp|zap)(il|ic|im|in|up|ad|ack|am|on|ep|ed|ef|eg|aqu|ef|edg|op|oll|omm|ew|an|ex|pl)?(icator|or|ar|ax|an|ex|istor|entor|antor|in|over|ower|azz)" />
 			<index name="Pk_Tenant_TenantId" unique="PRIMARY_KEY" >
 				<column name="TenantId" />
 			</index>
@@ -621,20 +621,20 @@
 	]]></string>
 		</function>
 	</schema>
-	<connector name="AzureSql" database="AzureSql" driver_class="net.sourceforge.jtds.jdbc.Driver" driver_jar="jtds-1.3.1.jar" driver_desc="JTDS Driver&#13;SQL Server Authentication" host="sqls-rosterd-prod.database.windows.net" port="1433" instance="rosterd" user="rosterd-admin-user" passwd="SzY2cHRoMXNTQGY1" />
+	<connector name="AzureSql" database="AzureSql" host="sqls-rosterd-prod.database.windows.net" port="1433" instance="rosterd" user="rosterd-admin-user" passwd="SzY2cHRoMXNTQGY1" />
 	<layout name="Default Layout" id="Layout_2492" show_relation="columns" >
 		<entity schema="rosterd.dbo" name="Capability" color="C7F4BE" x="672" y="352" />
 		<entity schema="rosterd.dbo" name="Facility" color="C7F4BE" x="352" y="304" />
 		<entity schema="rosterd.dbo" name="FacilityCapability" color="C7F4BE" x="592" y="80" />
-		<entity schema="rosterd.dbo" name="Job" color="F4DDBE" x="864" y="96" />
-		<entity schema="rosterd.dbo" name="JobStatus" color="F4DDBE" x="1184" y="352" />
-		<entity schema="rosterd.dbo" name="JobStatusChange" color="F4DDBE" x="1152" y="96" />
-		<entity schema="rosterd.dbo" name="Jobskill" color="F4DDBE" x="896" y="368" />
+		<entity schema="rosterd.dbo" name="Job" color="F4DDBE" x="848" y="112" />
+		<entity schema="rosterd.dbo" name="JobSkill" color="F4DDBE" x="880" y="384" />
+		<entity schema="rosterd.dbo" name="JobStatus" color="F4DDBE" x="1168" y="368" />
+		<entity schema="rosterd.dbo" name="JobStatusChange" color="F4DDBE" x="1136" y="112" />
 		<entity schema="rosterd.dbo" name="Organization" color="C7F4BE" x="288" y="96" />
-		<entity schema="rosterd.dbo" name="Skill" color="BED3F4" x="1088" y="672" />
-		<entity schema="rosterd.dbo" name="Staff" color="FFFFFF" x="320" y="624" />
-		<entity schema="rosterd.dbo" name="StaffFacility" color="FFFFFF" x="576" y="624" />
-		<entity schema="rosterd.dbo" name="StaffSkill" color="FFFFFF" x="576" y="768" />
+		<entity schema="rosterd.dbo" name="Skill" color="BED3F4" x="848" y="560" />
+		<entity schema="rosterd.dbo" name="Staff" color="FFFFFF" x="416" y="560" />
+		<entity schema="rosterd.dbo" name="StaffFacility" color="FFFFFF" x="672" y="560" />
+		<entity schema="rosterd.dbo" name="StaffSkill" color="FFFFFF" x="672" y="704" />
 		<entity schema="rosterd.dbo" name="Tenant" color="E6E64D" x="48" y="128" />
 		<group name="Skills &amp; Qualifications" color="ECF0F7" >
 			<entity schema="rosterd.dbo" name="Skill" />
@@ -642,7 +642,7 @@
 		<group name="Jobs" color="F7F2EC" >
 			<entity schema="rosterd.dbo" name="Job" />
 			<entity schema="rosterd.dbo" name="JobStatusChange" />
-			<entity schema="rosterd.dbo" name="Jobskill" />
+			<entity schema="rosterd.dbo" name="JobSkill" />
 			<entity schema="rosterd.dbo" name="JobStatus" />
 		</group>
 		<group name="Facility" color="EEF7EC" >
@@ -665,9 +665,9 @@
 		<entity schema="rosterd.dbo" name="Facility" color="C7F4BE" x="64" y="48" />
 		<entity schema="rosterd.dbo" name="FacilityCapability" color="C7F4BE" x="368" y="48" />
 		<entity schema="rosterd.dbo" name="Job" color="F4DDBE" x="976" y="48" />
+		<entity schema="rosterd.dbo" name="JobSkill" color="F4DDBE" x="1296" y="336" />
 		<entity schema="rosterd.dbo" name="JobStatus" color="F4DDBE" x="1664" y="48" />
 		<entity schema="rosterd.dbo" name="JobStatusChange" color="F4DDBE" x="1296" y="48" />
-		<entity schema="rosterd.dbo" name="Jobskill" color="F4DDBE" x="1296" y="336" />
 		<entity schema="rosterd.dbo" name="Organization" color="C7F4BE" x="48" y="336" />
 		<entity schema="rosterd.dbo" name="Skill" color="BED3F4" x="976" y="656" />
 		<entity schema="rosterd.dbo" name="Staff" color="C7F4BE" x="368" y="336" />
@@ -713,17 +713,16 @@ GO]]></string>
 			<var name="samplePageNumber" type="4" value="0" mandatory="n" />
 			<var name="sampleRecordsPerPage" type="4" value="100" mandatory="n" />
 			<body name="Body" template="Grid" pos="0,0,0,0,f,f" layout="{{-2,-2,-2,-2,-1},{-2,-2,-2}}" scroll="n" html="n" >
-				<cell type="href" name="" template="Plain" disabled="${samplePageNumber&lt;1}" pos="0,2,0,2,l,c" glyph="FA-ANGLE_DOUBLE_LEFT" ref_id="Form_1f19" >
-					<var name="samplePageNumber" value="0" />
+				<cell type="href" name="" template="Plain" disabled="${!sampleHasNextPage}" pos="3,2,3,2,l,c" glyph="FA-ANGLE_RIGHT" ref_id="Form_1f19" >
+					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
 				</cell>
 				<cell type="href" name="" template="Plain" disabled="${samplePageNumber&lt;1}" pos="1,2,1,2,l,c" glyph="FA-ANGLE_LEFT" ref_id="Form_1f19" >
 					<var name="samplePageNumber" value="${Math.max(0,samplePageNumber-1)}" />
 				</cell>
-				<cell type="href" name="" template="Plain" disabled="${!sampleHasNextPage}" pos="3,2,3,2,l,c" glyph="FA-ANGLE_RIGHT" ref_id="Form_1f19" >
-					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
+				<cell type="href" name="" template="Plain" disabled="${samplePageNumber&lt;1}" pos="0,2,0,2,l,c" glyph="FA-ANGLE_DOUBLE_LEFT" ref_id="Form_1f19" >
+					<var name="samplePageNumber" value="0" />
 				</cell>
 				<cell type="label" name="Page ${samplePageNumber+1}" template="Plain" pos="2,2,2,2,l,c" />
-				<cell type="label" name="sample" template="H3" pos="0,0,1,0,l,c" />
 				<tableview name="sample" template="Table" css="table table-striped table-bordered table-sm table-hover" pos="0,1,4,1,f,f" layout="{{-2,-2,-2,-2,-2,-2,-2,-2,-2},{-2,-2}}" scroll="n" html="n" header_rows="1" >
 					<form_script type="DataSource" language="SQL" >
 						<var name="FacilityId" type="-5" />
@@ -756,6 +755,7 @@ GO]]></string>
 					<cell type="label" name="PhoneNumber2" template="Plain" pos="8,0,8,0,c,c" />
 					<cell type="label" name="Suburb" template="Plain" pos="4,0,4,0,c,c" />
 				</tableview>
+				<cell type="label" name="sample" template="H3" pos="0,0,1,0,l,c" />
 			</body>
 		</form>
 	</layout>

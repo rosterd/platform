@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rosterd.Data.SqlServer.Models
 {
+    [Table("Skill")]
     public partial class Skill
     {
         [Key]
         public long SkillId { get; set; }
         [Required]
-        [Column("Skill")]
         [StringLength(1000)]
-        public string Skill1 { get; set; }
+        public string SkillName { get; set; }
         [StringLength(1000)]
         public string Description { get; set; }
     }

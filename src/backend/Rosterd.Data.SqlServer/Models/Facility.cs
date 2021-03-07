@@ -9,11 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rosterd.Data.SqlServer.Models
 {
+    [Table("Facility")]
     public partial class Facility
     {
         public Facility()
         {
-            FacilityCapability = new HashSet<FacilityCapability>();
+            FacilityCapabilities = new HashSet<FacilityCapability>();
         }
 
         [Key]
@@ -41,9 +42,9 @@ namespace Rosterd.Data.SqlServer.Models
         public string PhoneNumber2 { get; set; }
 
         [ForeignKey(nameof(OrganzationId))]
-        [InverseProperty(nameof(Organization.Facility))]
+        [InverseProperty(nameof(Organization.Facilities))]
         public virtual Organization Organzation { get; set; }
-        [InverseProperty("Facility")]
-        public virtual ICollection<FacilityCapability> FacilityCapability { get; set; }
+        [InverseProperty(nameof(FacilityCapability.Facility))]
+        public virtual ICollection<FacilityCapability> FacilityCapabilities { get; set; }
     }
 }

@@ -8,19 +8,19 @@ namespace Rosterd.Data.SqlServer.Context
 {
     public interface IRosterdDbContext
     {
-        DbSet<Capability> Capability { get; set; }
-        DbSet<Facility> Facility { get; set; }
-        DbSet<FacilityCapability> FacilityCapability { get; set; }
-        DbSet<Job> Job { get; set; }
-        DbSet<JobStatus> JobStatus { get; set; }
-        DbSet<JobStatusChange> JobStatusChange { get; set; }
-        DbSet<JobSkill> JobSkill { get; set; }
-        DbSet<Organization> Organization { get; set; }
-        DbSet<Skill> Skill { get; set; }
+        DbSet<Capability> Capabilities { get; set; }
+        DbSet<Facility> Facilities { get; set; }
+        DbSet<FacilityCapability> FacilityCapabilities { get; set; }
+        DbSet<Job> Jobs { get; set; }
+        DbSet<JobSkill> JobSkills { get; set; }
+        DbSet<JobStatus> JobStatuses { get; set; }
+        DbSet<JobStatusChange> JobStatusChanges { get; set; }
+        DbSet<Organization> Organizations { get; set; }
+        DbSet<Skill> Skills { get; set; }
+        DbSet<StaffFacility> StaffFacilities { get; set; }
+        DbSet<StaffSkill> StaffSkills { get; set; }
+        DbSet<Tenant> Tenants { get; set; }
         DbSet<Staff> Staff { get; set; }
-        DbSet<StaffFacility> StaffFacility { get; set; }
-        DbSet<StaffSkill> StaffSkill { get; set; }
-        DbSet<Tenant> Tenant { get; set; }
 
 
         DatabaseFacade Database { get; }

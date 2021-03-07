@@ -9,15 +9,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rosterd.Data.SqlServer.Models
 {
+    [Table("JobSkill")]
     public partial class JobSkill
     {
         [Key]
         public long JobSkillId { get; set; }
         public long JobId { get; set; }
         public long SkillId { get; set; }
+        [StringLength(1000)]
+        public string SkillName { get; set; }
 
         [ForeignKey(nameof(JobId))]
-        [InverseProperty("JobSkill")]
+        [InverseProperty("JobSkills")]
         public virtual Job Job { get; set; }
     }
 }

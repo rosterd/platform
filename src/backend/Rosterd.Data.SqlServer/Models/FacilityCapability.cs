@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rosterd.Data.SqlServer.Models
 {
+    [Table("FacilityCapability")]
     public partial class FacilityCapability
     {
         [Key]
@@ -17,10 +18,10 @@ namespace Rosterd.Data.SqlServer.Models
         public long CapabilityId { get; set; }
 
         [ForeignKey(nameof(CapabilityId))]
-        [InverseProperty("FacilityCapability")]
+        [InverseProperty("FacilityCapabilities")]
         public virtual Capability Capability { get; set; }
         [ForeignKey(nameof(FacilityId))]
-        [InverseProperty("FacilityCapability")]
+        [InverseProperty("FacilityCapabilities")]
         public virtual Facility Facility { get; set; }
     }
 }

@@ -7,8 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rosterd.Admin.Api.Infrastructure.Configs;
 using Rosterd.Data.SqlServer.Context;
-using Rosterd.Services.Resources;
-using Rosterd.Services.Resources.Interfaces;
+using Rosterd.Services.Facilities;
+using Rosterd.Services.Facilities.Interfaces;
+using Rosterd.Services.Skills;
+using Rosterd.Services.Skills.Interfaces;
+using Rosterd.Services.Staff;
+using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 {
@@ -25,7 +29,10 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 
             //Services
             services.AddScoped<IStaffService, StaffService>();
-
+            services.AddScoped<IStaffFacilitiesService, StaffFacilitiesService>();
+            services.AddScoped<IStaffSkillsService, StaffSkillsService>();
+            services.AddScoped<IFacilitiesService, FacilitiesService>();
+            services.AddScoped<ISkillsService, SkillsService>();
 
             //User context
 

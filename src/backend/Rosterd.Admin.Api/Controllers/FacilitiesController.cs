@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Rosterd.Domain.Models;
-using Rosterd.Domain.Models.Resources;
-using Rosterd.Services.Resources.Interfaces;
+using Rosterd.Domain.Models.FacilitiesModels;
+using Rosterd.Services.Facilities.Interfaces;
 
 namespace Rosterd.Admin.Api.Controllers
 {
@@ -11,21 +11,12 @@ namespace Rosterd.Admin.Api.Controllers
     public class FacilitiesController: BaseApiController
     {
         private readonly ILogger<FacilitiesController> _logger;
-        private readonly IFacilityService _facilityService;
+        private readonly IFacilitiesService _facilitiesService;
 
-        public FacilitiesController(ILogger<FacilitiesController> logger, IFacilityService facilityService) : base()
+        public FacilitiesController(ILogger<FacilitiesController> logger, IFacilitiesService facilitiesService) : base()
         {
             _logger = logger;
-            _facilityService = facilityService;
+            _facilitiesService = facilitiesService;
         }
-
-        /// <summary>
-        /// Gets all the resources 
-        /// </summary>
-        /// <param name="id">the resource id</param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<PagedList<FacilityModel>> Get() =>
-            (await _facilityService.GetFacilities(new PagingQueryStringParameters()));
     }
 }

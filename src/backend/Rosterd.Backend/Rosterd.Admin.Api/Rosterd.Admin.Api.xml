@@ -11,30 +11,46 @@
             <param name="apiKey"></param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.Get">
-            <summary>
-            Gets all the resources 
-            </summary>
-            <param name="id">the resource id</param>
-            <returns></returns>
-        </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.Get">
-            <summary>
-            Gets all the resources 
-            </summary>
-            <param name="id">the resource id</param>
-            <returns></returns>
-        </member>
         <member name="T:Rosterd.Admin.Api.Controllers.StaffController">
             <summary>
             All actions related to resources
             </summary>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.Get">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.GetAllStaff(System.Nullable{System.Int32},Rosterd.Domain.Models.PagingQueryStringParameters)">
             <summary>
             Gets all the resources 
             </summary>
-            <param name="id">the resource id</param>
+            <param name="facilityId">The facility id to filter all the list of Staff by</param>
+            <param name="pagingParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.AddNewStaffMember(Rosterd.Admin.Api.Requests.Staff.AddUpdateStaffRequest)">
+            <summary>
+            Adds a new Staff member
+            </summary>
+            <param name="request">The Staff member to add</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.UpdateStaffMember(Rosterd.Admin.Api.Requests.Staff.AddUpdateStaffRequest)">
+            <summary>
+            Update a Staff member details
+            </summary>
+            <param name="request">The Staff member to update</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.RemoveStaffMember(System.Nullable{System.Int32})">
+            <summary>
+            Makes a Staff member as inactive
+            </summary>
+            <param name="staffId">The Staff member to mark as inactive</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.MoveStaffMemberToAnotherFacility(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Moves a staff member from their existing facility to another facility
+            </summary>
+            <param name="facilityId">The facility id to move</param>
+            <param name="staffId">The staff id</param>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.ApplicationBuilderExtensions.UseSwaggerAuthenticationCheck(Microsoft.AspNetCore.Builder.IApplicationBuilder)">

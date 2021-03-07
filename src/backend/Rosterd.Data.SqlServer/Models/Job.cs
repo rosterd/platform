@@ -9,13 +9,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rosterd.Data.SqlServer.Models
 {
+    [Table("Job")]
     [Index(nameof(JobId), Name = "Unq_Job_JobId", IsUnique = true)]
     public partial class Job
     {
         public Job()
         {
-            JobSkill = new HashSet<JobSkill>();
-            JobStatusChange = new HashSet<JobStatusChange>();
+            JobSkills = new HashSet<JobSkill>();
+            JobStatusChanges = new HashSet<JobStatusChange>();
         }
 
         [Key]
@@ -36,9 +37,9 @@ namespace Rosterd.Data.SqlServer.Models
         public long? GracePeriodToCancelMinutes { get; set; }
         public bool? NoGracePeriod { get; set; }
 
-        [InverseProperty("Job")]
-        public virtual ICollection<JobSkill> JobSkill { get; set; }
-        [InverseProperty("Job")]
-        public virtual ICollection<JobStatusChange> JobStatusChange { get; set; }
+        [InverseProperty(nameof(JobSkill.Job))]
+        public virtual ICollection<JobSkill> JobSkills { get; set; }
+        [InverseProperty(nameof(JobStatusChange.Job))]
+        public virtual ICollection<JobStatusChange> JobStatusChanges { get; set; }
     }
 }

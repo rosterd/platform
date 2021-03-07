@@ -9,11 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rosterd.Data.SqlServer.Models
 {
+    [Table("Tenant")]
     public partial class Tenant
     {
         public Tenant()
         {
-            Organization = new HashSet<Organization>();
+            Organizations = new HashSet<Organization>();
         }
 
         [Key]
@@ -22,7 +23,7 @@ namespace Rosterd.Data.SqlServer.Models
         [StringLength(1000)]
         public string TenantName { get; set; }
 
-        [InverseProperty("Tenant")]
-        public virtual ICollection<Organization> Organization { get; set; }
+        [InverseProperty(nameof(Organization.Tenant))]
+        public virtual ICollection<Organization> Organizations { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Rosterd.Domain.Models.Resources
+namespace Rosterd.Domain.Models.FacilitiesModels
 {
     public class FacilityModel
     {

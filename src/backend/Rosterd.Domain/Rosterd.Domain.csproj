@@ -5,8 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Facilities\" />
-    <Folder Include="Models\Organizations\" />
+    <Compile Remove="Models\Organizations\**" />
+    <EmbeddedResource Remove="Models\Organizations\**" />
+    <None Remove="Models\Organizations\**" />
   </ItemGroup>
 
 </Project>

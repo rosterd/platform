@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rosterd.Data.SqlServer.Models
 {
+    [Table("JobStatusChange")]
     public partial class JobStatusChange
     {
         [Key]
@@ -21,10 +22,10 @@ namespace Rosterd.Data.SqlServer.Models
         public string JobStatusChangeReason { get; set; }
 
         [ForeignKey(nameof(JobId))]
-        [InverseProperty("JobStatusChange")]
+        [InverseProperty("JobStatusChanges")]
         public virtual Job Job { get; set; }
         [ForeignKey(nameof(JobStatusId))]
-        [InverseProperty("JobStatusChange")]
+        [InverseProperty("JobStatusChanges")]
         public virtual JobStatus JobStatus { get; set; }
     }
 }

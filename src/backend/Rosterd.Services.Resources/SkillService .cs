@@ -4,7 +4,7 @@ using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models;
-using Rosterd.Domain.Models.Resources;
+using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Services.Resources.Interfaces;
 
 namespace Rosterd.Services.Resources
