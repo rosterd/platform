@@ -11,6 +11,11 @@
             <param name="apiKey"></param>
             <returns></returns>
         </member>
+        <member name="T:Rosterd.Admin.Api.Controllers.JobsController">
+            <summary>
+            All actions related to resources
+            </summary>
+        </member>
         <member name="T:Rosterd.Admin.Api.Controllers.StaffController">
             <summary>
             All actions related to resources

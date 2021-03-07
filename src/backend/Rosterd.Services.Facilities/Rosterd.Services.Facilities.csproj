@@ -9,4 +9,8 @@
     <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mappers\" />
+  </ItemGroup>
+
 </Project>
