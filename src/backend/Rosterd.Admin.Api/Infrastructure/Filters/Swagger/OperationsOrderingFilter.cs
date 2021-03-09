@@ -11,14 +11,12 @@ namespace Rosterd.Admin.Api.Infrastructure.Filters.Swagger
     {
         public void Apply(OpenApiDocument openApiDoc, DocumentFilterContext context)
         {
-            Dictionary<KeyValuePair<string, OpenApiPathItem>, int> paths = new Dictionary<KeyValuePair<string, OpenApiPathItem>, int>();
+            var paths = new Dictionary<KeyValuePair<string, OpenApiPathItem>, int>();
             foreach (var path in openApiDoc.Paths)
             {
-                var orderAttribute = context.ApiDescriptions.FirstOrDefault(x => x.RelativePath.Replace("/", string.Empty)
-                        .Equals(path.Key.Replace("/", string.Empty), StringComparison.InvariantCultureIgnoreCase))?
-                    .ActionDescriptor?.EndpointMetadata?.FirstOrDefault(x => x is OperationOrderAttribute) as OperationOrderAttribute;
-
-                if (orderAttribute == null)
+                if (!(context.ApiDescriptions.FirstOrDefault(x => x.RelativePath.Replace("/", string.Empty)
+                        .Equals(path.Key.Replace("/", string.Empty), StringComparison.OrdinalIgnoreCase))?
+                    .ActionDescriptor?.EndpointMetadata?.FirstOrDefault(x => x is OperationOrderAttribute) is OperationOrderAttribute orderAttribute))
                     throw new ArgumentNullException("there is no order for operation " + path.Key);
 
                 var order = orderAttribute.Order;
