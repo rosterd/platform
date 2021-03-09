@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Rosterd.Admin.Api.Infrastructure.Filters.Swagger;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.StaffModels;
@@ -18,11 +19,13 @@ namespace Rosterd.Admin.Api.Controllers
     {
         private readonly ILogger<StaffController> _logger;
         private readonly IStaffService _staffService;
+        private readonly IStaffSkillsService _staffSkillsService;
 
-        public StaffController(ILogger<StaffController> logger, IStaffService resourcesService) : base()
+        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService) : base()
         {
             _logger = logger;
-            _staffService = resourcesService;
+            _staffService = staffService;
+            _staffSkillsService = staffSkillsService;
         }
 
         /// <summary>
@@ -32,7 +35,8 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<PagedList<StaffModel>>> GetAllStaff([FromQuery] int? facilityId, [FromQuery] PagingQueryStringParameters pagingParameters)
+        [OperationOrderAttribute(1)]
+        public async Task<ActionResult<PagedList<StaffModel>>> GetAllStaff([FromQuery] long? facilityId, [FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
             PagedList<StaffModel> pagedList;
@@ -51,6 +55,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Staff member to add</param>
         /// <returns></returns>
         [HttpPost]
+        [OperationOrderAttribute(2)]
         public async Task<ActionResult> AddNewStaffMember([FromBody] AddUpdateStaffRequest request)
         {
             await _staffService.CreateStaffMember(request.StaffToAddOrUpdate);
@@ -63,6 +68,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Staff member to update</param>
         /// <returns></returns>
         [HttpPut]
+        [OperationOrderAttribute(3)]
         public async Task<ActionResult> UpdateStaffMember([FromBody] AddUpdateStaffRequest request)
         {
             await _staffService.UpdateStaffMember(request.StaffToAddOrUpdate);
@@ -76,7 +82,8 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="staffId">The Staff member to mark as inactive</param>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<ActionResult> RemoveStaffMember([FromQuery] [Required] int? staffId)
+        [OperationOrderAttribute(4)]
+        public async Task<ActionResult> RemoveStaffMember([FromQuery] [Required] long? staffId)
         {
             await _staffService.RemoveStaffMember(staffId.Value);
             return Ok();
@@ -89,16 +96,38 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="staffId">The staff id</param>
         /// <returns></returns>
         [HttpPut("facilities")]
-        public async Task<ActionResult> MoveStaffMemberToAnotherFacility([FromQuery] [Required] int? facilityId, [Required] int? staffId)
+        [OperationOrderAttribute(5)]
+        public async Task<ActionResult> MoveStaffMemberToAnotherFacility([FromQuery] [Required] long? facilityId, [Required] long? staffId)
         {
             await _staffService.MoveStaffMemberToAnotherFacility(staffId.Value, facilityId.Value);
             return Ok();
         }
 
-        //TODO:
-        //PATCH add skills to staff
-        //PATCH add faility to staff
-        //DELETE remove facility from staff
-        //DELETE remove all skills from staff
+        /// <summary>
+        /// Adds a collection of skills to the staff member
+        /// </summary>
+        /// <param name="staffId">The staff id</param>
+        /// <param name="request">The skills to add</param>
+        /// <returns></returns>
+        [HttpPut("skills")]
+        [OperationOrderAttribute(6)]
+        public async Task<ActionResult> AddSkillToStaff([FromQuery][Required] long? staffId, [FromBody] AddSkillsToStaffRequest request)
+        {
+            await _staffSkillsService.UpdateAllSkillsForStaff(staffId.Value, request.SkillsToAdd);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Removes all skills from a staff member
+        /// </summary>
+        /// <param name="staffId">The staff id</param>
+        /// <returns></returns>
+        [HttpDelete("skills")]
+        [OperationOrderAttribute(7)]
+        public async Task<ActionResult> DeleteAllSkillsForStaff([FromQuery][Required] long? staffId)
+        {
+            await _staffSkillsService.RemoveAllSkillsForStaff(staffId.Value);
+            return Ok();
+        }
     }
 }

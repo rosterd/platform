@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Rosterd.Admin.Api.Infrastructure.Filters
+namespace Rosterd.Admin.Api.Infrastructure.Filters.Swagger
 {
     public class LowercaseDocumentFilter : IDocumentFilter
     {

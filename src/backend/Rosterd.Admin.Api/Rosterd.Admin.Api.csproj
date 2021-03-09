@@ -36,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\" />
     <Folder Include="Orchestrators\" />
     <Folder Include="Responses\" />
   </ItemGroup>

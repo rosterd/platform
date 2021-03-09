@@ -24,17 +24,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Data.SqlServer", "Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj", "{B1CBAB94-6362-4E96-A9D7-B837B01A6654}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Services.Staff", "Rosterd.Services.Staff\Rosterd.Services.Staff.csproj", "{9A2D3608-C9B1-438C-92B4-FD5037EF7D22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Staff", "Rosterd.Services.Staff\Rosterd.Services.Staff.csproj", "{9A2D3608-C9B1-438C-92B4-FD5037EF7D22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Infrastructure.Extensions", "Rosterd.Infrastructure.Extensions\Rosterd.Infrastructure.Extensions.csproj", "{14FAA1F1-E9B0-426F-B16A-5168F2AB39C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Infrastructure.Extensions", "Rosterd.Infrastructure.Extensions\Rosterd.Infrastructure.Extensions.csproj", "{14FAA1F1-E9B0-426F-B16A-5168F2AB39C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Infrastructure.Security", "Rosterd.Infrastructure.Security\Rosterd.Infrastructure.Security.csproj", "{F68402D4-C4BA-470B-BF78-DB88401DA654}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Infrastructure.Security", "Rosterd.Infrastructure.Security\Rosterd.Infrastructure.Security.csproj", "{F68402D4-C4BA-470B-BF78-DB88401DA654}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Services.Facilities", "Rosterd.Services.Facilities\Rosterd.Services.Facilities.csproj", "{2238BE82-4BEE-420F-8594-C4326D0935A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Facilities", "Rosterd.Services.Facilities\Rosterd.Services.Facilities.csproj", "{2238BE82-4BEE-420F-8594-C4326D0935A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Services.Skills", "Rosterd.Services.Skills\Rosterd.Services.Skills.csproj", "{19335D21-C73D-4BE2-9335-35E981338835}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Skills", "Rosterd.Services.Skills\Rosterd.Services.Skills.csproj", "{19335D21-C73D-4BE2-9335-35E981338835}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Services.Jobs", "Rosterd.Services.Jobs\Rosterd.Services.Jobs.csproj", "{A5403D0D-7017-4DC6-875B-907D2EE31A90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Jobs", "Rosterd.Services.Jobs\Rosterd.Services.Jobs.csproj", "{A5403D0D-7017-4DC6-875B-907D2EE31A90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Services.Mappers", "Rosterd.Services.Mappers\Rosterd.Services.Mappers.csproj", "{4A6C09C9-58AA-413E-8D8F-86C65DD2608C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,10 @@ Global
 		{A5403D0D-7017-4DC6-875B-907D2EE31A90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5403D0D-7017-4DC6-875B-907D2EE31A90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5403D0D-7017-4DC6-875B-907D2EE31A90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A6C09C9-58AA-413E-8D8F-86C65DD2608C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A6C09C9-58AA-413E-8D8F-86C65DD2608C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A6C09C9-58AA-413E-8D8F-86C65DD2608C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A6C09C9-58AA-413E-8D8F-86C65DD2608C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +100,7 @@ Global
 		{2238BE82-4BEE-420F-8594-C4326D0935A7} = {C16B881C-491C-4B94-92DA-ACE6A9D489BF}
 		{19335D21-C73D-4BE2-9335-35E981338835} = {C16B881C-491C-4B94-92DA-ACE6A9D489BF}
 		{A5403D0D-7017-4DC6-875B-907D2EE31A90} = {C16B881C-491C-4B94-92DA-ACE6A9D489BF}
+		{4A6C09C9-58AA-413E-8D8F-86C65DD2608C} = {C16B881C-491C-4B94-92DA-ACE6A9D489BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2DA4ED17-3CA8-499E-A97F-35DAF7C0E6C3}

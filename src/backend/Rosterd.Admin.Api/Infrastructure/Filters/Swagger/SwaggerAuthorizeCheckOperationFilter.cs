@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Rosterd.Admin.Api.Infrastructure.Filters
+namespace Rosterd.Admin.Api.Infrastructure.Filters.Swagger
 {
     public class SwaggerAuthorizeCheckOperationFilter : IOperationFilter
     {

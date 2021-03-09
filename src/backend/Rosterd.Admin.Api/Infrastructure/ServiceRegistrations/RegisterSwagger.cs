@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Rosterd.Admin.Api.Infrastructure.Filters;
+using Rosterd.Admin.Api.Infrastructure.Filters.Swagger;
 
 namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 {
@@ -29,6 +30,8 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 
             //Document Filters
             options.DocumentFilter<LowercaseDocumentFilter>();
+            options.DocumentFilter<SwaggerCustomControllerOrderingFilter>();
+            options.DocumentFilter<OperationsOrderingFilter>();
 
             //Security
             options.AddSecurityDefinition("Bearer",

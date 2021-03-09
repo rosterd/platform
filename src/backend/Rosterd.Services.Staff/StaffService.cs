@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -5,9 +6,11 @@ using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models;
+using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Models.StaffModels;
+using Rosterd.Services.Mappers;
 using Rosterd.Services.Staff.Interfaces;
-using Rosterd.Services.Staff.Mappers;
+
 
 namespace Rosterd.Services.Staff
 {
@@ -18,7 +21,7 @@ namespace Rosterd.Services.Staff
         public StaffService(IRosterdDbContext context) => _context = context;
 
         ///<inheritdoc/>
-        public async Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, int facilityId)
+        public async Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId)
         {
             var query = _context.Staff
                 .Where(s => s.IsActive == true)
@@ -43,7 +46,7 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task<StaffModel> GetStaff(int staffId)
+        public async Task<StaffModel> GetStaff(long staffId)
         {
             var staff = await _context.Staff.FindAsync(staffId);
             return staff?.ToDomainModel();
@@ -68,7 +71,7 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task RemoveStaffMember(int staffId)
+        public async Task RemoveStaffMember(long staffId)
         {
             var staff = await _context.Staff.FindAsync(staffId);
             if (staff != null)
@@ -79,7 +82,7 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task MoveStaffMemberToAnotherFacility(int staffId, int facilityId)
+        public async Task MoveStaffMemberToAnotherFacility(long staffId, long facilityId)
         {
             var staff = await _context.Staff.FindAsync(staffId);
             var facility = await _context.Facilities.FindAsync(facilityId);

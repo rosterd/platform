@@ -11,6 +11,7 @@ namespace Rosterd.Admin.Api.Controllers
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)] //Fatal error
     [ProducesResponseType(StatusCodes.Status429TooManyRequests)] //Sent if too many requests coming in
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)] //Custom business validation error
     [ProducesResponseType(StatusCodes.Status200OK)] //Success
     [ProducesResponseType(StatusCodes.Status401Unauthorized)] //Sent if no JWT or bearer token sent to the API
     [ProducesResponseType(StatusCodes.Status403Forbidden)] //Sent if there is a valid JWT but the user (auth0Id) does not exist in our system or no valid API for anonymous API's

@@ -12,7 +12,7 @@ namespace Rosterd.Services.Staff.Interfaces
         /// <param name="pagingParameters"></param>
         /// <param name="facilityId"></param>
         /// <returns></returns>
-        Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, int facilityId);
+        Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId);
 
         /// <summary>
         /// Gets all the staff members
@@ -26,7 +26,7 @@ namespace Rosterd.Services.Staff.Interfaces
         /// </summary>
         /// <param name="staffId"></param>
         /// <returns></returns>
-        Task<StaffModel> GetStaff(int staffId);
+        Task<StaffModel> GetStaff(long staffId);
 
         /// <summary>
         /// Adds a new staff member
@@ -47,7 +47,7 @@ namespace Rosterd.Services.Staff.Interfaces
         /// </summary>
         /// <param name="staffId"></param>
         /// <returns></returns>
-        Task RemoveStaffMember(int staffId);
+        Task RemoveStaffMember(long staffId);
 
         /// <summary>
         /// Moves a staff member to another facility
@@ -55,6 +55,6 @@ namespace Rosterd.Services.Staff.Interfaces
         /// <param name="staffId"></param>
         /// <param name="facilityId"></param>
         /// <returns></returns>
-        Task MoveStaffMemberToAnotherFacility(int staffId, int facilityId);
+        Task MoveStaffMemberToAnotherFacility(long staffId, long facilityId);
     }
 }

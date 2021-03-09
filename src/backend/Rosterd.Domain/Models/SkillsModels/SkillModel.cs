@@ -5,5 +5,7 @@ namespace Rosterd.Domain.Models.SkillsModels
         public long SkillId { get; set; }
 
         public string SkillName { get; set; }
+
+        public string SkillDescription { get; set; }
     }
 }
