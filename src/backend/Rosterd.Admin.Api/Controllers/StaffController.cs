@@ -48,6 +48,7 @@ namespace Rosterd.Admin.Api.Controllers
             return pagedList;
         }
 
+        /// <summary>
         /// Get Staff by Id
         /// </summary>
         /// <returns></returns>

@@ -40,6 +40,7 @@ namespace Rosterd.Admin.Api.Controllers
             return pagedList;
         }
 
+        /// <summary>
         /// Get Skill by Id
         /// </summary>
         /// <returns></returns>
