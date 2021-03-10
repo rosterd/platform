@@ -7,5 +7,6 @@ namespace Rosterd.Domain.Models.SkillsModels
         public string SkillName { get; set; }
 
         public string SkillDescription { get; set; }
+
     }
 }

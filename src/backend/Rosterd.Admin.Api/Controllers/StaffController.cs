@@ -6,7 +6,6 @@ using Rosterd.Admin.Api.Infrastructure.Filters.Swagger;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.StaffModels;
-using Rosterd.Services.Staff;
 using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.Admin.Api.Controllers
