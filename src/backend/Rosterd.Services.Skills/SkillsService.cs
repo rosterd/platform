@@ -3,8 +3,8 @@ using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.SkillsModels;
+using Rosterd.Services.Mappers;
 using Rosterd.Services.Skills.Interfaces;
-using Rosterd.Services.Skills.Mappers;
 
 namespace Rosterd.Services.Skills
 {

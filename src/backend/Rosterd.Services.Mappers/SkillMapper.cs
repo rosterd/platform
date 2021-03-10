@@ -4,7 +4,7 @@ using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Infrastructure.Extensions;
 
-namespace Rosterd.Services.Skills.Mappers
+namespace Rosterd.Services.Mappers
 {
     public static class SkillMapper
     {

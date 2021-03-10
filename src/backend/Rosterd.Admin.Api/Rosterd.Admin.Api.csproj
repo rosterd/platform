@@ -40,6 +40,7 @@
     <Folder Include="Responses\" />
     <Folder Include="Requests\Skills\" />
     <Folder Include="Requests\Job\" />
+    <Folder Include="Requests\Facility\" />
   </ItemGroup>
 
   <ItemGroup>

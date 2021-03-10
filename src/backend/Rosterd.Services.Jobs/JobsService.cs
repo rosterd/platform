@@ -4,7 +4,7 @@ using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.Resources;
 using Rosterd.Services.Jobs.Interfaces;
-using Rosterd.Services.Jobs.Mappers;
+using Rosterd.Services.Mappers;
 
 namespace Rosterd.Services.Jobs
 {

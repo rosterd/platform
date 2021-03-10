@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Rosterd.Data.SqlServer.Helpers;
+using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.Resources;
-using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Infrastructure.Extensions;
 
-namespace Rosterd.Services.Jobs.Mappers
+namespace Rosterd.Services.Mappers
 {
     public static class JobMapper
     {
@@ -22,9 +22,6 @@ namespace Rosterd.Services.Jobs.Mappers
                 Comments = dataModel.Comments,
                 GracePeriodToCancelMinutes = dataModel.GracePeriodToCancelMinutes,
                 NoGracePeriod = dataModel.NoGracePeriod,
-                //JobSkills = dataModel.JobSkills,
-                //JobStatusChanges = dataModel.JobStatusChange
-
             };
 
             var jobSkills = dataModel.JobSkills.AlwaysList();
@@ -91,6 +88,40 @@ namespace Rosterd.Services.Jobs.Mappers
                 GracePeriodToCancelMinutes = domainModel.GracePeriodToCancelMinutes,
                 NoGracePeriod = domainModel.NoGracePeriod
             };
+
+            var jobSkillModels = domainModel.JobSkills.AlwaysList();
+            if (jobSkillModels.IsNotNullOrEmpty())
+            {
+                foreach (var jobSkillModel in jobSkillModels)
+                {
+                    var skill = new JobSkill
+                    {
+                        JobSkillId = jobSkillModel.JobSkillId,
+                        SkillId = jobSkillModel.SkillId,
+                        SkillName = jobSkillModel.SkillName,
+                        JobId = jobSkillModel.JobId
+                    };
+                    jobToSave.JobSkills.Add(skill);
+                }
+            }
+
+            var jobStatusChangeModels = domainModel.JobStatusChanges.AlwaysList();
+            if (jobStatusChangeModels.IsNotNullOrEmpty())
+            {
+                foreach (var jobStatusChangeModel in jobStatusChangeModels)
+                {
+                    var jobStatusChange = new JobStatusChange
+                    {
+                        JobStatusChangeId = jobStatusChangeModel.JobStatusChangeId,
+                        JobId = jobStatusChangeModel.JobId,
+                        JobStatusId = jobStatusChangeModel.JobStatusId,
+                        JobStatusChangeDateTimeUtc = jobStatusChangeModel.JobStatusChangeDateTimeUtc,
+                        JobStatusChangeReason = jobStatusChangeModel.JobStatusChangeReason
+                    };
+                    jobToSave.JobStatusChanges.Add(jobStatusChange);
+                }
+            }
+
 
             return jobToSave;
         }
