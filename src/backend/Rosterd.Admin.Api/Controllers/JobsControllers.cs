@@ -42,13 +42,24 @@ namespace Rosterd.Admin.Api.Controllers
             return pagedList;
         }
 
+        /// Get Job by Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [OperationOrderAttribute(2)]
+        public async Task<ActionResult<JobModel>> GetJobById(string? id)
+        {
+            var jobModel = await _jobService.GetJob(long.Parse(id));
+            return jobModel;
+        }
+
         /// <summary>
         /// Adds a new Job
         /// </summary>
         /// <param name="request">The Job to add</param>
         /// <returns></returns>
         [HttpPost]
-        [OperationOrderAttribute(2)]
+        [OperationOrderAttribute(3)]
         public async Task<ActionResult> AddNewJob([FromBody] AddUpdateJobRequest request)
         {
             await _jobService.CreateJob(request.JobToAddOrUpdate);
@@ -61,7 +72,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Job to update</param>
         /// <returns></returns>
         [HttpPut]
-        [OperationOrderAttribute(3)]
+        [OperationOrderAttribute(4)]
         public async Task<ActionResult> UpdateJob([FromBody] AddUpdateJobRequest request)
         {
             await _jobService.UpdateJob(request.JobToAddOrUpdate);
@@ -75,7 +86,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="jobId">The Job to be deleted</param>
         /// <returns></returns>
         [HttpDelete]
-        [OperationOrderAttribute(4)]
+        [OperationOrderAttribute(5)]
         public async Task<ActionResult> RemoveJob([FromQuery][Required] long? jobId)
         {
             await _jobService.RemoveJob(jobId.Value);

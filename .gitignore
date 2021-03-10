@@ -9,7 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-
+src/backend/Rosterd.Admin.Api/C:
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

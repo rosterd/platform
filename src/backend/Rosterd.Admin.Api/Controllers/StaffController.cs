@@ -48,6 +48,17 @@ namespace Rosterd.Admin.Api.Controllers
             return pagedList;
         }
 
+        /// Get Staff by Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [OperationOrderAttribute(2)]
+        public async Task<ActionResult<StaffModel>> GetStaffById(string? id)
+        {
+            var staffModel = await _staffService.GetStaff(long.Parse(id));
+            return staffModel;
+        }
+
         /// <summary>
         /// Adds a new Staff member
         /// </summary>

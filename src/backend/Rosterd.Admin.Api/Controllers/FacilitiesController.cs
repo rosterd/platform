@@ -29,7 +29,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [OperationOrderAttribute(1)]
-        public async Task<ActionResult<PagedList<FacilityModel>>> GetAllFacilitys([FromQuery] PagingQueryStringParameters pagingParameters)
+        public async Task<ActionResult<PagedList<FacilityModel>>> GetAllFacilities([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
             PagedList<FacilityModel> pagedList;
@@ -39,6 +39,17 @@ namespace Rosterd.Admin.Api.Controllers
             return pagedList;
         }
 
+        /// <summary>
+        /// Get Facility by Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [OperationOrderAttribute(2)]
+        public async Task<ActionResult<FacilityModel>> GetFacilityById(string? id)
+        { 
+            var facilityModel = await _facilitiesService.GetFacility(long.Parse(id));
+            return facilityModel;
+        }
 
         /// <summary>
         /// Adds a new Facility
@@ -46,7 +57,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Facility to add</param>
         /// <returns></returns>
         [HttpPost]
-        [OperationOrderAttribute(2)]
+        [OperationOrderAttribute(3)]
         public async Task<ActionResult> AddNewFacility([FromBody] AddUpdateFacilityRequest request)
         {
             await _facilitiesService.CreateFacility(request.FacilityToAddOrUpdate);
@@ -59,7 +70,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Facility to update</param>
         /// <returns></returns>
         [HttpPut]
-        [OperationOrderAttribute(3)]
+        [OperationOrderAttribute(4)]
         public async Task<ActionResult> UpdateFacility([FromBody] AddUpdateFacilityRequest request)
         {
             await _facilitiesService.UpdateFacility(request.FacilityToAddOrUpdate);
@@ -73,7 +84,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="facilityId">The Facility to be deleted</param>
         /// <returns></returns>
         [HttpDelete]
-        [OperationOrderAttribute(4)]
+        [OperationOrderAttribute(5)]
         public async Task<ActionResult> RemoveFacility([FromQuery][Required] long? facilityId)
         {
             await _facilitiesService.RemoveFacility(facilityId.Value);

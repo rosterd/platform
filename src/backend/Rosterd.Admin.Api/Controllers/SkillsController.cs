@@ -40,13 +40,24 @@ namespace Rosterd.Admin.Api.Controllers
             return pagedList;
         }
 
+        /// Get Skill by Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [OperationOrderAttribute(2)]
+        public async Task<ActionResult<SkillModel>> GetSkillById(string? id)
+        {
+            var skillModel = await _skillService.GetSkill(long.Parse(id));
+            return skillModel;
+        }
+
         /// <summary>
         /// Adds a new Skill
         /// </summary>
         /// <param name="request">The Skill to add</param>
         /// <returns></returns>
         [HttpPost]
-        [OperationOrderAttribute(2)]
+        [OperationOrderAttribute(3)]
         public async Task<ActionResult> AddNewSkill([FromBody] AddUpdateSkillRequest request)
         {
             await _skillService.CreateSkill(request.SkillToAddOrUpdate);
@@ -59,7 +70,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Skill to update</param>
         /// <returns></returns>
         [HttpPut]
-        [OperationOrderAttribute(3)]
+        [OperationOrderAttribute(4)]
         public async Task<ActionResult> UpdateSkill([FromBody] AddUpdateSkillRequest request)
         {
             await _skillService.UpdateSkill(request.SkillToAddOrUpdate);
@@ -73,7 +84,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="skillId">The Skill to be deleted</param>
         /// <returns></returns>
         [HttpDelete]
-        [OperationOrderAttribute(4)]
+        [OperationOrderAttribute(5)]
         public async Task<ActionResult> RemoveSkill([FromQuery][Required] long? skillId)
         {
             await _skillService.RemoveSkill(skillId.Value);
