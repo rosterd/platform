@@ -1,4 +1,4 @@
-using Rosterd.Domain.Models.Resources;
+using Rosterd.Domain.Models.JobModels;
 
 namespace Rosterd.Admin.Api.Requests.Job
 {

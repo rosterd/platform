@@ -54,9 +54,9 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<StaffModel>> GetStaffById(string? id)
+        public async Task<ActionResult<StaffModel>> GetStaffById([Required] long? id)
         {
-            var staffModel = await _staffService.GetStaff(long.Parse(id));
+            var staffModel = await _staffService.GetStaff(id.Value);
             return staffModel;
         }
 

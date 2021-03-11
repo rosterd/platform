@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Domain.Models;
-using Rosterd.Domain.Models.Resources;
+using Rosterd.Domain.Models.JobModels;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Mappers;
 

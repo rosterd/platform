@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Rosterd.Admin.Api.Infrastructure.Filters.Swagger;
 using Rosterd.Admin.Api.Requests.Job;
 using Rosterd.Domain.Models;
-using Rosterd.Domain.Models.Resources;
+using Rosterd.Domain.Models.JobModels;
 using Rosterd.Services.Jobs.Interfaces;
 
 namespace Rosterd.Admin.Api.Controllers
@@ -48,9 +48,9 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<JobModel>> GetJobById(string? id)
+        public async Task<ActionResult<JobModel>> GetJobById([Required] long? id)
         {
-            var jobModel = await _jobService.GetJob(long.Parse(id));
+            var jobModel = await _jobService.GetJob(id.Value);
             return jobModel;
         }
 

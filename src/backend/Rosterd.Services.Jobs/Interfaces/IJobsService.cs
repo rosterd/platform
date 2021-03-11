@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Rosterd.Domain.Models;
-using Rosterd.Domain.Models.Resources;
+using Rosterd.Domain.Models.JobModels;
 
 namespace Rosterd.Services.Jobs.Interfaces
 {

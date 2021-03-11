@@ -10,4 +10,7 @@
     <None Remove="Models\Organizations\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\OrganizationModels\" />
+  </ItemGroup>
 </Project>

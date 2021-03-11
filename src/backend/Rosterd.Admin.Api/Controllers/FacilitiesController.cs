@@ -45,9 +45,9 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<FacilityModel>> GetFacilityById(string? id)
+        public async Task<ActionResult<FacilityModel>> GetFacilityById([Required] long? id)
         { 
-            var facilityModel = await _facilitiesService.GetFacility(long.Parse(id));
+            var facilityModel = await _facilitiesService.GetFacility(id.Value);
             return facilityModel;
         }
 

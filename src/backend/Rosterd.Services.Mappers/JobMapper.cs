@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
-using Rosterd.Domain.Models.Resources;
+using Rosterd.Domain.Models.JobModels;
 using Rosterd.Infrastructure.Extensions;
 
 namespace Rosterd.Services.Mappers
@@ -23,37 +23,6 @@ namespace Rosterd.Services.Mappers
                 GracePeriodToCancelMinutes = dataModel.GracePeriodToCancelMinutes,
                 NoGracePeriod = dataModel.NoGracePeriod,
             };
-
-            var jobSkills = dataModel.JobSkills.AlwaysList();
-            if (jobSkills.IsNotNullOrEmpty())
-            {
-                foreach (var jobSkill in jobSkills)
-                {
-                    var skill = new JobSkillModel {
-                        JobSkillId = jobSkill.JobSkillId,
-                        SkillId = jobSkill.SkillId,
-                        SkillName = jobSkill.SkillName,
-                        JobId = jobSkill.JobId
-                    };
-                    jobModel.JobSkills.Add(skill);
-                }
-            }
-
-            var jobStatusChanges = dataModel.JobStatusChanges.AlwaysList();
-            if (jobStatusChanges.IsNotNullOrEmpty())
-            {
-                foreach (var jobStatusChange in jobStatusChanges)
-                {
-                    var jobStatusChangeModel = new JobStatusChangeModel {
-                        JobStatusChangeId = jobStatusChange.JobStatusChangeId,
-                        JobId = jobStatusChange.JobId,
-                        JobStatusId = jobStatusChange.JobStatusId,
-                        JobStatusChangeDateTimeUtc= jobStatusChange.JobStatusChangeDateTimeUtc,
-                        JobStatusChangeReason = jobStatusChange.JobStatusChangeReason
-                    };
-                    jobModel.JobStatusChanges.Add(jobStatusChangeModel);
-                }
-            }
 
             return jobModel;
         }

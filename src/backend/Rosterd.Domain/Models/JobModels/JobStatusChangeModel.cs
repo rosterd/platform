@@ -1,5 +1,7 @@
 using System;
-namespace Rosterd.Domain.Models.Resources
+using System.ComponentModel.DataAnnotations;
+
+namespace Rosterd.Domain.Models.JobModels
 {
     public class JobStatusChangeModel
     {
@@ -7,6 +9,7 @@ namespace Rosterd.Domain.Models.Resources
         public long JobId { get; set; }
         public long JobStatusId { get; set; }
         public DateTime JobStatusChangeDateTimeUtc { get; set; }
+        [StringLength(1000)]
         public string JobStatusChangeReason { get; set; }
     }
 }

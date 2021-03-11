@@ -46,9 +46,9 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<SkillModel>> GetSkillById(string? id)
+        public async Task<ActionResult<SkillModel>> GetSkillById([Required] long? id)
         {
-            var skillModel = await _skillService.GetSkill(long.Parse(id));
+            var skillModel = await _skillService.GetSkill(id.Value);
             return skillModel;
         }
 

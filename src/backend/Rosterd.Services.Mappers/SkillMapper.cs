@@ -14,7 +14,7 @@ namespace Rosterd.Services.Mappers
             {
                 SkillId = dataModel.SkillId,
                 SkillName = dataModel.SkillName,
-                SkillDescription = dataModel.Description
+                Description = dataModel.Description
 
             };
 
@@ -43,7 +43,7 @@ namespace Rosterd.Services.Mappers
             {
                 SkillId = domainModel.SkillId,
                 SkillName = domainModel.SkillName,
-                Description = domainModel.SkillDescription
+                Description = domainModel.Description
             };
 
             return skillToSave;
