@@ -74,24 +74,6 @@ namespace Rosterd.Services.Mappers
                 }
             }
 
-            var jobStatusChangeModels = domainModel.JobStatusChanges.AlwaysList();
-            if (jobStatusChangeModels.IsNotNullOrEmpty())
-            {
-                foreach (var jobStatusChangeModel in jobStatusChangeModels)
-                {
-                    var jobStatusChange = new JobStatusChange
-                    {
-                        JobStatusChangeId = jobStatusChangeModel.JobStatusChangeId,
-                        JobId = jobStatusChangeModel.JobId,
-                        JobStatusId = jobStatusChangeModel.JobStatusId,
-                        JobStatusChangeDateTimeUtc = jobStatusChangeModel.JobStatusChangeDateTimeUtc,
-                        JobStatusChangeReason = jobStatusChangeModel.JobStatusChangeReason
-                    };
-                    jobToSave.JobStatusChanges.Add(jobStatusChange);
-                }
-            }
-
-
             return jobToSave;
         }
     }
