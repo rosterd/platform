@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
-import Box from "@material-ui/core/Box";
-import { makeStyles } from "@material-ui/core/styles";
+import React, {useContext} from 'react';
+import Box from '@material-ui/core/Box';
+import {makeStyles} from '@material-ui/core/styles';
 
-import AppContext from "../../utility/AppContext";
-import Layouts from "./Layouts";
-import { ContentView } from "../../index";
-import useStyles from "../../../shared/jss/common/common.style";
-import AppContextPropsType from "../../../types/AppContextPropsType";
-import LayoutContextProvider from "./LayoutContextProvider";
+import AppContext from '../../utility/AppContext';
+import Layouts from './Layouts';
+import {ContentView} from '../../index';
+import useStyles from '../../../shared/jss/common/common.style';
+import AppContextPropsType from '../../../types/AppContextPropsType';
+import LayoutContextProvider from './LayoutContextProvider';
 
 const useStyle = makeStyles(() => ({
   appAuth: {
@@ -16,7 +16,6 @@ const useStyle = makeStyles(() => ({
     position: 'relative',
     height: '100vh',
     backgroundColor: '#f3f4f6',
-    background: `url(/assets/images/auth-background.jpg) no-repeat center center`,
     backgroundSize: 'cover',
 
     '& .scrollbar-container': {
@@ -38,7 +37,7 @@ interface CremaLayoutProps {}
 
 const CremaLayout: React.FC<CremaLayoutProps> = () => {
   useStyles();
-  const {navStyle,user} = useContext<AppContextPropsType>(AppContext);
+  const {navStyle, user} = useContext<AppContextPropsType>(AppContext);
   const AppLayout = Layouts[navStyle];
   const classes = useStyle();
   return (

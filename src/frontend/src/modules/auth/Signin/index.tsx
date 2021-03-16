@@ -6,11 +6,11 @@ import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {makeStyles} from '@material-ui/core/styles';
 import {Fonts} from '../../../shared/constants/AppEnums';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   imgRoot: {
     cursor: 'pointer',
     display: 'inline-block',
-    width: 140,
+    width: 120,
   },
   cardRoot: {
     maxWidth: '36rem',
@@ -51,7 +51,7 @@ const Signin: React.FC<{}> = () => {
       <Box mb={{xs: 6, md: 8, xl: 18}} textAlign='center'>
         <img
           className={classes.imgRoot}
-          src='/assets/images/logo-white-with-name.png'
+          src='/assets/images/logo-white-with-name.svg'
           alt='crema-logo'
         />
       </Box>
