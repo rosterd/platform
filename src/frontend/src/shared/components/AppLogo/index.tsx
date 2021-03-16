@@ -16,7 +16,7 @@ const AppLogo = () => {
       alignItems: 'center',
     },
     logo: {
-      height: 28,
+      height: 30,
       marginRight: 10,
     },
   }));
