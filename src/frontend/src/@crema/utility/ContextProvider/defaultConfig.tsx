@@ -23,11 +23,11 @@ const defaultConfig: any = {
         default: '#F4F7FE',
       },
       primary: {
-        main: '#0A8FDC',
+        main: '#0B1C5E',
         contrastText: '#fff',
       },
       secondary: {
-        main: '#F04F47',
+        main: '#2EDBAD',
       },
       sidebar: {
         bgColor: '#313541',
@@ -131,12 +131,12 @@ const defaultConfig: any = {
       },
     },
   },
-  themeStyle: ThemeStyle.MODERN,
+  themeStyle: ThemeStyle.STANDARD,
   themeMode: ThemeMode.SEMI_DARK,
   navStyle: NavStyle.STANDARD,
   layoutType: LayoutType.FULL_WIDTH,
   footerType: FooterType.FLUID,
-  headerType: HeaderType.DARK,
+  headerType: HeaderType.LIGHT,
   rtAnim: RouteTransition.NONE,
   footer: false,
   locale: {

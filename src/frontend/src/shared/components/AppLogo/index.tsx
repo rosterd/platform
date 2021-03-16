@@ -16,7 +16,7 @@ const AppLogo = () => {
       alignItems: 'center',
     },
     logo: {
-      height: 25,
+      height: 28,
       marginRight: 10,
     },
   }));
@@ -40,11 +40,10 @@ const AppLogo = () => {
           src={
             themeMode === ThemeMode.DARK
               ? '/assets/images/logo-white-with-name.png'
-              : '/assets/images/logo-white-with-name.svg'
+              : '/assets/images/rosterd_logo.svg'
           }
           alt='rosterd-logo'
         />
-       
       </Hidden>
     </Box>
   );
