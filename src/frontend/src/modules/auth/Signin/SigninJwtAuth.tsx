@@ -1,30 +1,32 @@
-import React, { useContext } from "react";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { Checkbox } from "@material-ui/core";
-import { Form, Formik, useField } from "formik";
-import * as yup from "yup";
-import InfoView from "../../../@crema/core/InfoView";
-import Box from "@material-ui/core/Box";
-import IntlMessages from "../../../@crema/utility/IntlMessages";
-import { useIntl } from "react-intl";
-import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import { Link, useHistory } from "react-router-dom";
-import { AuthType, Fonts } from "shared/constants/AppEnums";
-import AppContextPropsType, { CremaTheme } from "../../../types/AppContextPropsType";
+import React, {useContext} from 'react';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import {Checkbox} from '@material-ui/core';
+import {Form, Formik, useField} from 'formik';
+import * as yup from 'yup';
+import InfoView from '../../../@crema/core/InfoView';
+import Box from '@material-ui/core/Box';
+import IntlMessages from '../../../@crema/utility/IntlMessages';
+import {useIntl} from 'react-intl';
+import {makeStyles} from '@material-ui/core/styles';
+import clsx from 'clsx';
+import {Link, useHistory} from 'react-router-dom';
+import {AuthType, Fonts} from 'shared/constants/AppEnums';
+import AppContextPropsType, {
+  CremaTheme,
+} from '../../../types/AppContextPropsType';
 import {
   fetchError,
   fetchStart,
   fetchSuccess,
-  useInfoViewActionsContext
-} from "../../../@crema/core/InfoView/InfoViewContext";
-import { fetchDataApi, saveDataApi } from "../../../@crema/utility/ApiHook";
-import { setAuthToken } from "../../../@crema/services/ApiConfig";
-import { defaultUser } from "../../../shared/constants/AppConst";
-import AppContext from "../../../@crema/utility/AppContext";
+  useInfoViewActionsContext,
+} from '../../../@crema/core/InfoView/InfoViewContext';
+import {fetchDataApi, saveDataApi} from '../../../@crema/utility/ApiHook';
+import {setAuthToken} from '../../../@crema/services/ApiConfig';
+import {defaultUser} from '../../../shared/constants/AppConst';
+import AppContext from '../../../@crema/utility/AppContext';
 
-const useStyles = makeStyles((theme:CremaTheme) => ({
+const useStyles = makeStyles((theme: CremaTheme) => ({
   formRoot: {
     textAlign: 'left',
     [theme.breakpoints.up('xl')]: {
@@ -85,18 +87,15 @@ const MyTextField = (props: any) => {
 };
 
 const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email('Invalid Email')
-    .required('Email required'),
+  email: yup.string().email('Invalid Email').required('Email required'),
   password: yup.string().required('Password required'),
 });
 
 interface UserSigninProps {}
 
-const SigninJwtAuth: React.FC<UserSigninProps> = props => {
+const SigninJwtAuth: React.FC<UserSigninProps> = (props) => {
   const dispatch = useInfoViewActionsContext()!;
-  const { updateAuthUser} = useContext<AppContextPropsType>(AppContext);
+  const {updateAuthUser} = useContext<AppContextPropsType>(AppContext);
   const history = useHistory();
 
   const onGoToForgetPassword = () => {
@@ -107,14 +106,14 @@ const SigninJwtAuth: React.FC<UserSigninProps> = props => {
 
   const classes = useStyles(props);
 
-  const onSigninUser = (data:{email:string, password:string}) => {
+  const onSigninUser = (data: {email: string; password: string}) => {
     dispatch(fetchStart());
     saveDataApi(`auth`, data)
-      .then((data:any) => {
+      .then((data: any) => {
         console.log('data: ', data);
         setAuthToken(data.token);
         fetchDataApi('auth')
-          .then((data:any) => {
+          .then((data: any) => {
             console.log('data: ', data);
             updateAuthUser({
               authType: AuthType.JWT_AUTH,
@@ -148,7 +147,7 @@ const SigninJwtAuth: React.FC<UserSigninProps> = props => {
           validationSchema={validationSchema}
           onSubmit={(data, {setSubmitting}) => {
             setSubmitting(true);
-            onSigninUser({email: data.email, password: data.password})
+            onSigninUser({email: data.email, password: data.password});
             setSubmitting(false);
           }}>
           {({isSubmitting}) => (
@@ -206,7 +205,7 @@ const SigninJwtAuth: React.FC<UserSigninProps> = props => {
                 justifyContent={{sm: 'space-between'}}>
                 <Button
                   variant='contained'
-                  color='secondary'
+                  color='primary'
                   type='submit'
                   disabled={isSubmitting}
                   className={classes.btnRoot}>
