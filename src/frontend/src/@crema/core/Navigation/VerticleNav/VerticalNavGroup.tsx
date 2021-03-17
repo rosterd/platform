@@ -1,14 +1,14 @@
-import React, { useContext, useMemo } from "react";
-import { ListItem } from "@material-ui/core";
-import clsx from "clsx";
-import VerticalCollapse from "./VerticalCollapse";
-import VerticalItem from "./VerticalItem";
-import IntlMessages from "../../../utility/IntlMessages";
-import useStyles from "./VerticalNavGroup.style";
-import AppContext from "../../../utility/AppContext";
-import { checkPermission } from "../../../utility/Utils";
-import { NavItemProps } from "../../../../modules/routesConfig";
-import AppContextPropsType from "../../../../types/AppContextPropsType";
+import React, {useContext, useMemo} from 'react';
+import {ListItem} from '@material-ui/core';
+import clsx from 'clsx';
+import VerticalCollapse from './VerticalCollapse';
+import VerticalItem from './VerticalItem';
+import IntlMessages from '../../../utility/IntlMessages';
+import useStyles from './VerticalNavGroup.style';
+import AppContext from '../../../utility/AppContext';
+import {checkPermission} from '../../../utility/Utils';
+import {NavItemProps} from '../../../../modules/routesConfig';
+import AppContextPropsType from '../../../../types/AppContextPropsType';
 
 interface VerticalNavGroupProps {
   item: NavItemProps;

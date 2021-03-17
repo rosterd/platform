@@ -14,9 +14,12 @@ import AppContextPropsType from '../../../../types/AppContextPropsType';
 interface MiniSidebarToggleProps {}
 
 const MiniSidebarToggle: React.FC<MiniSidebarToggleProps> = () => {
-  const {footer, themeStyle, layoutType, footerType} = useContext<
-    AppContextPropsType
-  >(AppContext);
+  const {
+    footer,
+    themeStyle,
+    layoutType,
+    footerType,
+  } = useContext<AppContextPropsType>(AppContext);
   const classes = useStyles({footer, themeStyle});
 
   return (

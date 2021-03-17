@@ -54,7 +54,7 @@ const SecondaryColorPicker: React.FC<SecondaryColorPickerProps> = () => {
         <Box className={classes.cpPopover} onClick={() => setVisibility(false)}>
           <SketchPicker
             color={secondary}
-            onChangeComplete={color => {
+            onChangeComplete={(color) => {
               theme.palette.secondary.main = color.hex;
               updateTheme!(theme);
             }}

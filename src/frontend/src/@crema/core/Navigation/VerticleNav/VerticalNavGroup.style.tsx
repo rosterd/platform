@@ -11,12 +11,12 @@ const useStyles = makeStyles((theme: CremaTheme) => {
       paddingLeft:
         theme.direction === 'ltr'
           ? (props: {level: number; themeMode: ThemeMode}) =>
-          24 + 40 * props.level
+              24 + 40 * props.level
           : 12,
       paddingRight:
         theme.direction === 'rtl'
           ? (props: {level: number; themeMode: ThemeMode}) =>
-          24 + 40 * props.level
+              24 + 40 * props.level
           : 12,
       color: (props: {level: number; themeMode: ThemeMode}) =>
         props.themeMode === ThemeMode.LIGHT

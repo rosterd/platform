@@ -19,7 +19,7 @@ const routesConfig: NavItemProps[] = [
     messageId: 'sidebar.dashboard',
     type: 'item',
     icon: 'dashboard',
-    url:'/dashboard'
+    url: '/dashboard',
   },
   {
     id: 'resources',
@@ -27,7 +27,7 @@ const routesConfig: NavItemProps[] = [
     messageId: 'sidebar.resources',
     type: 'item',
     icon: 'group',
-    url:'/resources'
+    url: '/resources',
   },
   {
     id: 'skills',
@@ -35,7 +35,7 @@ const routesConfig: NavItemProps[] = [
     messageId: 'sidebar.skills',
     type: 'item',
     icon: 'directionsRun',
-    url:'/skills'
+    url: '/skills',
   },
   {
     id: 'facilities',
@@ -43,7 +43,7 @@ const routesConfig: NavItemProps[] = [
     messageId: 'sidebar.facilities',
     type: 'item',
     icon: 'business',
-    url:'/facilities'
+    url: '/facilities',
   },
   {
     id: 'jobs',
@@ -51,7 +51,7 @@ const routesConfig: NavItemProps[] = [
     messageId: 'sidebar.jobs',
     type: 'item',
     icon: 'work',
-    url:'/jobs'
+    url: '/jobs',
   },
   {
     id: 'reports',
@@ -59,7 +59,7 @@ const routesConfig: NavItemProps[] = [
     messageId: 'sidebar.reports',
     type: 'item',
     icon: 'assessment',
-    url:'/reports'
+    url: '/reports',
   },
 ];
 export default routesConfig;

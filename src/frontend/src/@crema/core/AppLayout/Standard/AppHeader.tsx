@@ -1,20 +1,23 @@
-import React, { useState } from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import LanguageSwitcher from "../../LanguageSwitcher";
-import Hidden from "@material-ui/core/Hidden";
-import Box from "@material-ui/core/Box";
-import useStyles from "./AppHeader.style";
-import HeaderMessages from "../../HeaderMessages";
-import Notifications from "../../Notifications";
-import AppLogo from "../../../../shared/components/AppLogo";
-import clsx from "clsx";
-import { toggleNavCollapsed, useLayoutActionsContext } from "../LayoutContextProvider";
+import React, {useState} from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import LanguageSwitcher from '../../LanguageSwitcher';
+import Hidden from '@material-ui/core/Hidden';
+import Box from '@material-ui/core/Box';
+import useStyles from './AppHeader.style';
+import HeaderMessages from '../../HeaderMessages';
+import Notifications from '../../Notifications';
+import AppLogo from '../../../../shared/components/AppLogo';
+import clsx from 'clsx';
+import {
+  toggleNavCollapsed,
+  useLayoutActionsContext,
+} from '../LayoutContextProvider';
 
 interface AppHeaderProps {}
 

@@ -17,7 +17,7 @@ import {Breakpoints} from '@material-ui/core/styles/createBreakpoints';
 import {ComponentsProps} from '@material-ui/core/styles/props';
 import {Shadows} from '@material-ui/core/styles/shadows';
 import {Palette} from '@material-ui/core/styles/createPalette';
-import { AuthUser } from "./models/AuthUser";
+import {AuthUser} from './models/AuthUser';
 
 interface CremaPalette extends Palette {
   type: PaletteType;
@@ -142,7 +142,7 @@ export interface CremaTheme extends Theme {
 }
 
 export default interface AppContextPropsType {
-  user: AuthUser|null;
+  user: AuthUser | null;
   theme: CremaTheme;
   initialPath: string;
   routes: any;
@@ -178,7 +178,7 @@ export default interface AppContextPropsType {
   updateSecondaryColor?: (secondaryColor: string) => void;
   changeLocale: (locale: LanguageProps) => void;
   changeNavStyle: (navStyle: NavStyle) => void;
-  updateAuthUser: (user: AuthUser|null) => void;
-  setInitialPath: (path: string|undefined) => void;
+  updateAuthUser: (user: AuthUser | null) => void;
+  setInitialPath: (path: string | undefined) => void;
   changeRTAnim?: (routeTransition: RouteTransition) => void;
 }

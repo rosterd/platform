@@ -14,9 +14,12 @@ import AppContextPropsType from '../../../../types/AppContextPropsType';
 interface DefaultLayoutProps {}
 
 const DefaultLayout: React.FC<DefaultLayoutProps> = () => {
-  const {themeStyle, footer, layoutType, footerType} = useContext<
-    AppContextPropsType
-  >(AppContext);
+  const {
+    themeStyle,
+    footer,
+    layoutType,
+    footerType,
+  } = useContext<AppContextPropsType>(AppContext);
   const classes = useStyles({themeStyle, footer});
 
   return (

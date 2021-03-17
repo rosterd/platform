@@ -13,12 +13,12 @@ const useStyles = makeStyles((theme: CremaTheme) => {
       paddingLeft:
         theme.direction === 'ltr'
           ? (props: {level: number; themeMode: ThemeMode}) =>
-          24 + 40 * props.level
+              24 + 40 * props.level
           : 24,
       paddingRight:
         theme.direction === 'rtl'
           ? (props: {level: number; themeMode: ThemeMode}) =>
-          24 + 40 * props.level
+              24 + 40 * props.level
           : 24,
 
       '& .nav-item-text': {

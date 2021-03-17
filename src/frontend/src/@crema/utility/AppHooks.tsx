@@ -1,11 +1,15 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthType } from "../../shared/constants/AppEnums";
-import { defaultUser } from "../../shared/constants/AppConst";
-import jwtAxios from "../services/ApiConfig";
-import { AuthUser } from "../../types/models/AuthUser";
-import { fetchStart, fetchSuccess, useInfoViewActionsContext } from "../core/InfoView/InfoViewContext";
-import AppContext from "./AppContext";
-import AppContextPropsType from "../../types/AppContextPropsType";
+import {useContext, useEffect, useState} from 'react';
+import {AuthType} from '../../shared/constants/AppEnums';
+import {defaultUser} from '../../shared/constants/AppConst';
+import jwtAxios from '../services/ApiConfig';
+import {AuthUser} from '../../types/models/AuthUser';
+import {
+  fetchStart,
+  fetchSuccess,
+  useInfoViewActionsContext,
+} from '../core/InfoView/InfoViewContext';
+import AppContext from './AppContext';
+import AppContextPropsType from '../../types/AppContextPropsType';
 
 export const useAuthToken = (): [boolean, AuthUser | null] => {
   const [loading, setLoading] = useState(true);
@@ -26,14 +30,14 @@ export const useAuthToken = (): [boolean, AuthUser | null] => {
 
         dispatch(fetchSuccess());
         updateAuthUser({
-            authType: AuthType.JWT_AUTH,
-            displayName: res.data.name,
-            email: res.data.email,
-            role: defaultUser.role,
-            token: res.data._id,
-            uid: res.data._id,
-            photoURL: res.data.avatar,
-          });
+          authType: AuthType.JWT_AUTH,
+          displayName: res.data.name,
+          email: res.data.email,
+          role: defaultUser.role,
+          token: res.data._id,
+          uid: res.data._id,
+          photoURL: res.data.avatar,
+        });
         return;
       } catch (err) {
         dispatch(fetchSuccess());
@@ -47,7 +51,7 @@ export const useAuthToken = (): [boolean, AuthUser | null] => {
       });
     };
     checkAuth();
-  }, [dispatch,updateAuthUser]);
+  }, [dispatch, updateAuthUser]);
 
   return [loading, user];
 };

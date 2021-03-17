@@ -37,7 +37,7 @@ export const useWidth = () => {
 
 export const createRoutes = (routeConfigs: any[]) => {
   let allRoutes: any[] = [];
-  routeConfigs.forEach(config => {
+  routeConfigs.forEach((config) => {
     allRoutes = [...allRoutes, ...setRoutes(config)];
   });
   return allRoutes;
@@ -46,7 +46,7 @@ export const createRoutes = (routeConfigs: any[]) => {
 export const setRoutes = (config: any) => {
   let routes = [...config.routes];
   if (config.auth) {
-    routes = routes.map(route => {
+    routes = routes.map((route) => {
       let auth = route.auth
         ? [...config.auth, ...route.auth]
         : [...config.auth];
@@ -91,9 +91,7 @@ export const getCustomDateTime = (
     return moment().format(format) as string;
   } else {
     // @ts-ignore
-    return moment()
-      .add(value, unit)
-      .format(format) as string;
+    return moment().add(value, unit).format(format) as string;
   }
 };
 
@@ -131,7 +129,7 @@ export const checkPermission = (
     return !userRole || userRole.length === 0;
   }
   if (userRole && Array.isArray(userRole) && Array.isArray(routeAuth)) {
-    return routeAuth.some(r => userRole.indexOf(r) >= 0);
+    return routeAuth.some((r) => userRole.indexOf(r) >= 0);
   }
   return routeAuth.indexOf(userRole) >= 0;
 };

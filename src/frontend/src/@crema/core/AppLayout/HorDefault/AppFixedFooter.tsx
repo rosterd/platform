@@ -5,7 +5,7 @@ import {Button, makeStyles} from '@material-ui/core';
 import clsx from 'clsx';
 import AppContextPropsType from '../../../../types/AppContextPropsType';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   footer: {
     position: 'fixed',
     left: 0,

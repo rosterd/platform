@@ -52,7 +52,7 @@ const SidebarColorPicker: React.FC<SidebarColorPickerProps> = () => {
         <Box className={classes.cpPopover} onClick={() => setVisibility(false)}>
           <SketchPicker
             color={sidebarColor}
-            onChangeComplete={color => {
+            onChangeComplete={(color) => {
               theme.palette.sidebar.bgColor = color.hex;
               updateTheme!(theme);
             }}

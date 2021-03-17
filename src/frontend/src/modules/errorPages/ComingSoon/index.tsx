@@ -1,18 +1,21 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import { Form, Formik, useField } from "formik";
-import * as yup from "yup";
-import InfoView from "@crema/core/InfoView";
-import IntlMessages from "../../../@crema/utility/IntlMessages";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import { grey } from "@material-ui/core/colors";
-import { makeStyles } from "@material-ui/core";
-import { Fonts } from "../../../shared/constants/AppEnums";
-import AppAnimate from "../../../@crema/core/AppAnimate";
-import { useIntl } from "react-intl";
-import { showMessage, useInfoViewActionsContext } from "../../../@crema/core/InfoView/InfoViewContext";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import {Form, Formik, useField} from 'formik';
+import * as yup from 'yup';
+import InfoView from '@crema/core/InfoView';
+import IntlMessages from '../../../@crema/utility/IntlMessages';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import {grey} from '@material-ui/core/colors';
+import {makeStyles} from '@material-ui/core';
+import {Fonts} from '../../../shared/constants/AppEnums';
+import AppAnimate from '../../../@crema/core/AppAnimate';
+import {useIntl} from 'react-intl';
+import {
+  showMessage,
+  useInfoViewActionsContext,
+} from '../../../@crema/core/InfoView/InfoViewContext';
 
 const useStyles = makeStyles(() => {
   return {

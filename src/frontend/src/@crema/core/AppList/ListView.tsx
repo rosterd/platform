@@ -70,7 +70,7 @@ const ListView: React.FC<ListViewProps> = ({
   if (border) {
     style = {...style, ...borderStyle};
   }
-  useBottomScrollListener(onEndReached, 200,2000,{}, true);
+  useBottomScrollListener(onEndReached, 200, 2000, {}, true);
   return (
     <Box style={{...style}} {...rest} flex={1}>
       <AppAnimateGroup>

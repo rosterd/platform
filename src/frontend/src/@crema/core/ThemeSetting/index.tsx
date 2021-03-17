@@ -263,7 +263,7 @@ const ThemeSetting: React.FC<ThemeSettingProps> = () => {
                 <IntlMessages id='customizer.navigationStyles' />
               </Box>
               <Box className={classes.navOption}>
-                {navStyles.map(navLayout => {
+                {navStyles.map((navLayout) => {
                   return (
                     <Box className={classes.navOptionItem} key={navLayout.id}>
                       <Box
@@ -289,7 +289,7 @@ const ThemeSetting: React.FC<ThemeSettingProps> = () => {
                 <IntlMessages id='customizer.layoutTypes' />
               </Box>
               <Box className={classes.navOption}>
-                {layoutTypes.map(layout => {
+                {layoutTypes.map((layout) => {
                   return (
                     <Box className={classes.navOptionItem} key={layout.id}>
                       <Box
@@ -333,7 +333,7 @@ const ThemeSetting: React.FC<ThemeSettingProps> = () => {
                   className={classes.selectBox}
                   value={footerType}
                   labelWidth={100}
-                  onChange={e => setFooterType!(e.target.value as FooterType)}
+                  onChange={(e) => setFooterType!(e.target.value as FooterType)}
                   inputProps={{
                     name: 'rt',
                     id: 'outlined-rt',
@@ -356,7 +356,7 @@ const ThemeSetting: React.FC<ThemeSettingProps> = () => {
                   className={classes.selectBox}
                   value={rtAnim}
                   labelWidth={100}
-                  onChange={e =>
+                  onChange={(e) =>
                     changeRTAnim!(e.target.value as RouteTransition)
                   }
                   inputProps={{

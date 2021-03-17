@@ -1,6 +1,6 @@
-import React from "react";
-import { Loader, MessageView } from "../../../@crema";
-import { useInfoViewContext } from "./InfoViewContext";
+import React from 'react';
+import {Loader, MessageView} from '../../../@crema';
+import {useInfoViewContext} from './InfoViewContext';
 
 interface InfoViewProps {}
 

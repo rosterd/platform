@@ -1,14 +1,14 @@
-import React, { CSSProperties, ReactNode, useContext, useState } from "react";
-import InfoView from "@crema/core/InfoView";
-import { Box } from "@material-ui/core";
-import Hidden from "@material-ui/core/Hidden";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import { Fonts } from "../../../shared/constants/AppEnums";
-import Card from "@material-ui/core/Card";
-import useStyles from "./index.style";
-import { AppContext } from "../../index";
-import AppSidebar from "./AppSidebar";
+import React, {CSSProperties, ReactNode, useContext, useState} from 'react';
+import InfoView from '@crema/core/InfoView';
+import {Box} from '@material-ui/core';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import {Fonts} from '../../../shared/constants/AppEnums';
+import Card from '@material-ui/core/Card';
+import useStyles from './index.style';
+import {AppContext} from '../../index';
+import AppSidebar from './AppSidebar';
 
 interface AppsContainerProps {
   title?: string | ReactNode;

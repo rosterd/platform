@@ -24,7 +24,7 @@ const Scrollbar: React.FC<ScrollbarProps> = React.forwardRef((props, ref) => {
 
   return (
     <PerfectScrollbar
-      ref={ref => {
+      ref={(ref) => {
         // @ts-ignore
         _scrollBarRef = ref;
       }}

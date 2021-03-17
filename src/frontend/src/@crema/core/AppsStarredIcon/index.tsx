@@ -14,7 +14,7 @@ const AppsStarredIcon: React.FC<AppsStarredIconProps> = ({item, onChange}) => {
       icon={<StarBorderIcon />}
       checkedIcon={<StarIcon />}
       checked={item.isStarred}
-      onChange={event => onChange(event.target.checked, item)}
+      onChange={(event) => onChange(event.target.checked, item)}
     />
   );
 };

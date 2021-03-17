@@ -1,20 +1,20 @@
-import React, { useContext } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import { useAuthUser } from "../../../@crema/utility/AppHooks";
-import AppContext from "../../../@crema/utility/AppContext";
-import clsx from "clsx";
-import { makeStyles } from "@material-ui/core";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Box from "@material-ui/core/Box";
-import { orange } from "@material-ui/core/colors";
-import { Fonts, ThemeMode } from "../../constants/AppEnums";
-import AppContextPropsType from "../../../types/AppContextPropsType";
-import { AuthUser } from "../../../types/models/AuthUser";
-import { setAuthToken } from "../../../@crema/services/ApiConfig";
+import React, {useContext} from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import {useAuthUser} from '../../../@crema/utility/AppHooks';
+import AppContext from '../../../@crema/utility/AppContext';
+import clsx from 'clsx';
+import {makeStyles} from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Box from '@material-ui/core/Box';
+import {orange} from '@material-ui/core/colors';
+import {Fonts, ThemeMode} from '../../constants/AppEnums';
+import AppContextPropsType from '../../../types/AppContextPropsType';
+import {AuthUser} from '../../../types/models/AuthUser';
+import {setAuthToken} from '../../../@crema/services/ApiConfig';
 
-const useStyles = makeStyles(theme => {
+const useStyles = makeStyles((theme) => {
   return {
     crUserInfo: {
       backgroundColor: 'rgba(0,0,0,.08)',
@@ -59,7 +59,9 @@ const useStyles = makeStyles(theme => {
 });
 
 const UserInfo: React.FC<{}> = () => {
-  const {themeMode,updateAuthUser} = useContext<AppContextPropsType>(AppContext);
+  const {themeMode, updateAuthUser} = useContext<AppContextPropsType>(
+    AppContext,
+  );
   const user: AuthUser | null = useAuthUser();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -118,9 +120,7 @@ const UserInfo: React.FC<{}> = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}>
                 <MenuItem>My account</MenuItem>
-                <MenuItem onClick={onUserSignout}>
-                  Logout
-                </MenuItem>
+                <MenuItem onClick={onUserSignout}>Logout</MenuItem>
               </Menu>
             </Box>
           </Box>

@@ -7,8 +7,8 @@ const jwtAxios = axios.create({
   },
 });
 jwtAxios.interceptors.response.use(
-  res => res,
-  err => {
+  (res) => res,
+  (err) => {
     if (err.response && err.response.data.msg === 'Token is not valid') {
       console.log('Need to logout user');
       // store.dispatch({type: LOGOUT});

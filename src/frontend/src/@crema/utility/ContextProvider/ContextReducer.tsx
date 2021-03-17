@@ -1,5 +1,9 @@
-import { ThemeMode, ThemeStyle, ThemeStyleRadius } from "../../../shared/constants/AppEnums";
-import { isBreakPointDown } from "../Utils";
+import {
+  ThemeMode,
+  ThemeStyle,
+  ThemeStyleRadius,
+} from '../../../shared/constants/AppEnums';
+import {isBreakPointDown} from '../Utils';
 
 export const ThemeSetting = {
   UPDATE_AUTH_USER: 'UPDATE_AUTH_USER',

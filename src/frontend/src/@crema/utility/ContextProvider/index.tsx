@@ -1,10 +1,16 @@
-import React, { useCallback, useReducer } from "react";
-import defaultConfig from "./defaultConfig";
-import AppContext from "../AppContext";
-import routes from "../../../modules";
-import { contextReducer, ThemeSetting } from "./ContextReducer";
-import { CremaTheme } from "../../../types/AppContextPropsType";
-import { FooterType, LayoutType, RouteTransition, ThemeMode, ThemeStyle } from "../../../shared/constants/AppEnums";
+import React, {useCallback, useReducer} from 'react';
+import defaultConfig from './defaultConfig';
+import AppContext from '../AppContext';
+import routes from '../../../modules';
+import {contextReducer, ThemeSetting} from './ContextReducer';
+import {CremaTheme} from '../../../types/AppContextPropsType';
+import {
+  FooterType,
+  LayoutType,
+  RouteTransition,
+  ThemeMode,
+  ThemeStyle,
+} from '../../../shared/constants/AppEnums';
 
 export const ContextState = {
   user: null,
@@ -24,10 +30,7 @@ export const ContextState = {
   secondary: defaultConfig.theme.palette.secondary.main,
 };
 const ContextProvider: React.FC<React.ReactNode> = ({children}) => {
-  const [state, dispatch] = useReducer(
-    contextReducer,
-    ContextState
-  );
+  const [state, dispatch] = useReducer(contextReducer, ContextState);
 
   const setFooter = (footer: boolean) => {
     dispatch({type: ThemeSetting.SET_FOOTER, payload: footer});
@@ -57,7 +60,7 @@ const ContextProvider: React.FC<React.ReactNode> = ({children}) => {
     dispatch({type: ThemeSetting.CHANGE_LOCALE, payload: locale});
   };
 
-  const changeNavStyle = useCallback(navStyle => {
+  const changeNavStyle = useCallback((navStyle) => {
     dispatch({type: ThemeSetting.CHANGE_NAV_STYLE, payload: navStyle});
   }, []);
 
@@ -83,7 +86,7 @@ const ContextProvider: React.FC<React.ReactNode> = ({children}) => {
     dispatch({type: ThemeSetting.UPDATE_THEME, payload: theme});
   };
 
-  const setRTL = useCallback(rtl => {
+  const setRTL = useCallback((rtl) => {
     dispatch({type: ThemeSetting.SET_RTL, payload: rtl});
   }, []);
 

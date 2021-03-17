@@ -57,7 +57,7 @@ const PrimaryColorPicker: React.FC<PrimaryColorPickerProps> = () => {
           onClick={() => setVisibility(!visible)}>
           <SketchPicker
             color={primary}
-            onChangeComplete={color => {
+            onChangeComplete={(color) => {
               theme.palette.primary.main = color.hex;
               updateTheme!(theme);
             }}

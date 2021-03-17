@@ -1,14 +1,14 @@
-import React, { ReactNode, useContext, useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { matchRoutes } from "react-router-config";
-import qs from "qs";
-import AppContext from "./AppContext";
-import { useAuthToken } from "./AppHooks";
-import { Loader } from "../index";
-import { checkPermission } from "./Utils";
-import { initialUrl } from "../../shared/constants/AppConst";
-import AppContextPropsType from "../../types/AppContextPropsType";
-import { NavStyle, ThemeMode, ThemeStyle } from "../../shared/constants/AppEnums";
+import React, {ReactNode, useContext, useEffect} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
+import {matchRoutes} from 'react-router-config';
+import qs from 'qs';
+import AppContext from './AppContext';
+import {useAuthToken} from './AppHooks';
+import {Loader} from '../index';
+import {checkPermission} from './Utils';
+import {initialUrl} from '../../shared/constants/AppConst';
+import AppContextPropsType from '../../types/AppContextPropsType';
+import {NavStyle, ThemeMode, ThemeStyle} from '../../shared/constants/AppEnums';
 
 interface AuthRoutesProps {
   children: ReactNode;
@@ -53,7 +53,7 @@ const AuthRoutes: React.FC<AuthRoutesProps> = ({children}) => {
     }
 
     setInitPath();
-  }, [ isPermitted, setInitialPath, initialPath, pathname]);
+  }, [isPermitted, setInitialPath, initialPath, pathname]);
 
   useEffect(() => {
     function handleQueryParams() {

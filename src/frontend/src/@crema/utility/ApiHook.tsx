@@ -1,6 +1,6 @@
 import httpClient from '../services/ApiConfig';
 
-export const fetchDataApi = (url:string) => {
+export const fetchDataApi = (url: string) => {
   console.log('fetchDataApi', url);
   return new Promise((resolve, reject) => {
     httpClient
@@ -15,7 +15,7 @@ export const fetchDataApi = (url:string) => {
     return Promise.resolve();
   });
 };
-export const saveDataApi = (url:string, payload:any) => {
+export const saveDataApi = (url: string, payload: any) => {
   console.log('url, payload', url, payload);
   return new Promise((resolve, reject) => {
     httpClient
@@ -30,7 +30,7 @@ export const saveDataApi = (url:string, payload:any) => {
     return Promise.resolve();
   });
 };
-export const updateDataApi = (url:string, payload:any) => {
+export const updateDataApi = (url: string, payload: any) => {
   return new Promise((resolve, reject) => {
     httpClient
       .put(url, payload)
@@ -44,7 +44,7 @@ export const updateDataApi = (url:string, payload:any) => {
     return Promise.resolve();
   });
 };
-export const deleteDataApi = (url:string) => {
+export const deleteDataApi = (url: string) => {
   return new Promise((resolve, reject) => {
     httpClient
       .delete(url)

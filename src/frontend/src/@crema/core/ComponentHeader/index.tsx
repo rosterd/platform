@@ -7,7 +7,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Fonts} from '../../../shared/constants/AppEnums';
 import AppAnimate from '../AppAnimate';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   containerHeader: {
     display: 'flex',
     flexDirection: 'column',

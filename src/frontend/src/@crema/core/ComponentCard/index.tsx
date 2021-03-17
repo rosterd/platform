@@ -13,7 +13,7 @@ import Box from '@material-ui/core/Box';
 import {Fonts} from '../../../shared/constants/AppEnums';
 import AppAnimate from '../AppAnimate';
 
-const useStyles = makeStyles(theme => {
+const useStyles = makeStyles((theme) => {
   return {
     root: {
       borderRadius: 8,

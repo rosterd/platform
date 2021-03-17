@@ -1,15 +1,21 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { Collapse, Icon, IconButton, ListItem, ListItemText } from "@material-ui/core";
-import { useLocation } from "react-router-dom";
-import clsx from "clsx";
-import VerticalItem from "./VerticalItem";
-import AppContext from "../../../utility/AppContext";
-import Box from "@material-ui/core/Box";
-import IntlMessages from "../../../utility/IntlMessages";
-import useStyles from "./VerticalCollapase.style";
-import { checkPermission } from "../../../utility/Utils";
-import AppContextPropsType from "../../../../types/AppContextPropsType";
-import { NavItemProps } from "../../../../modules/routesConfig";
+import React, {useContext, useEffect, useMemo, useState} from 'react';
+import {
+  Collapse,
+  Icon,
+  IconButton,
+  ListItem,
+  ListItemText,
+} from '@material-ui/core';
+import {useLocation} from 'react-router-dom';
+import clsx from 'clsx';
+import VerticalItem from './VerticalItem';
+import AppContext from '../../../utility/AppContext';
+import Box from '@material-ui/core/Box';
+import IntlMessages from '../../../utility/IntlMessages';
+import useStyles from './VerticalCollapase.style';
+import {checkPermission} from '../../../utility/Utils';
+import AppContextPropsType from '../../../../types/AppContextPropsType';
+import {NavItemProps} from '../../../../modules/routesConfig';
 
 const needsToBeOpened = (pathname: string, item: NavItemProps): boolean => {
   if (pathname) {

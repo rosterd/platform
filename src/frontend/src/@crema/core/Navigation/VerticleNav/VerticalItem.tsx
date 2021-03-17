@@ -1,14 +1,14 @@
-import React, { useContext, useMemo } from "react";
-import { Icon, ListItem, ListItemText } from "@material-ui/core";
-import clsx from "clsx";
-import { Badge, NavLink } from "../../../index";
-import Box from "@material-ui/core/Box";
-import IntlMessages from "../../../utility/IntlMessages";
-import useStyles from "./VerticalItem.style";
-import AppContext from "../../../utility/AppContext";
-import { checkPermission } from "../../../utility/Utils";
-import { NavItemProps } from "../../../../modules/routesConfig";
-import AppContextPropsType from "../../../../types/AppContextPropsType";
+import React, {useContext, useMemo} from 'react';
+import {Icon, ListItem, ListItemText} from '@material-ui/core';
+import clsx from 'clsx';
+import {Badge, NavLink} from '../../../index';
+import Box from '@material-ui/core/Box';
+import IntlMessages from '../../../utility/IntlMessages';
+import useStyles from './VerticalItem.style';
+import AppContext from '../../../utility/AppContext';
+import {checkPermission} from '../../../utility/Utils';
+import {NavItemProps} from '../../../../modules/routesConfig';
+import AppContextPropsType from '../../../../types/AppContextPropsType';
 
 interface VerticalItemProps {
   item: NavItemProps;

@@ -1,6 +1,6 @@
 import {makeStyles} from '@material-ui/core';
 
-const useStyles = makeStyles(theme => {
+const useStyles = makeStyles((theme) => {
   return {
     appMain: {
       height: '100vh',

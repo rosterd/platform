@@ -6,7 +6,7 @@ import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {makeStyles} from '@material-ui/core/styles';
 import {Fonts} from '../../../shared/constants/AppEnums';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   imgRoot: {
     cursor: 'pointer',
     display: 'inline-block',

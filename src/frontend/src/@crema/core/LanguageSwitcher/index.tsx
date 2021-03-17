@@ -92,9 +92,12 @@ interface LanguageSwitcherProps {
 const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   iconOnly = false,
 }) => {
-  const {changeLocale, rtlLocale, locale, setRTL} = useContext<
-    AppContextPropsType
-  >(AppContext);
+  const {
+    changeLocale,
+    rtlLocale,
+    locale,
+    setRTL,
+  } = useContext<AppContextPropsType>(AppContext);
   const [
     anchorElLng,
     setAnchorElLng,

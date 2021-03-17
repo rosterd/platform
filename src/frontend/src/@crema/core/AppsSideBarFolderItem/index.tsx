@@ -8,7 +8,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Fonts} from '../../../shared/constants/AppEnums';
 import Icon from '@material-ui/core/Icon';
 
-const useStyle = makeStyles(theme => ({
+const useStyle = makeStyles((theme) => ({
   listItem: {
     paddingLeft: '10px',
     paddingRight: '0',
@@ -65,7 +65,7 @@ interface WrappedIconProps {
   props?: any;
 }
 
-const WrappedIcon: React.FC<WrappedIconProps> = props => <Icon {...props} />;
+const WrappedIcon: React.FC<WrappedIconProps> = (props) => <Icon {...props} />;
 
 interface AppsSideBarFolderItemProps {
   item: {

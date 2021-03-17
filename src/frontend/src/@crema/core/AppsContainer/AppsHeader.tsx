@@ -3,7 +3,7 @@ import {Box} from '@material-ui/core';
 import {grey} from '@material-ui/core/colors';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appHeader: {
     height: 60,
     display: 'flex',

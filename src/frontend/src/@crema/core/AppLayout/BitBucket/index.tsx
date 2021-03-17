@@ -12,7 +12,7 @@ interface BitBucketProps {
   children: ReactNode;
 }
 
-const BitBucket: React.FC<BitBucketProps> = props => {
+const BitBucket: React.FC<BitBucketProps> = (props) => {
   const [isCollapsed, setCollapsed] = useState(false);
   const {layoutType, footer} = useContext(AppContext);
   const classes = useStyles({footer});

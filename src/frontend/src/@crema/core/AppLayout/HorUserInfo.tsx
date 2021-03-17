@@ -1,18 +1,18 @@
-import React, { FC, useContext } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import { useAuthUser } from "../../utility/AppHooks";
-import { makeStyles } from "@material-ui/core";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import Box from "@material-ui/core/Box";
-import { orange } from "@material-ui/core/colors";
-import { Fonts } from "../../../shared/constants/AppEnums";
-import Hidden from "@material-ui/core/Hidden";
-import { setAuthToken } from "../../services/ApiConfig";
-import AppContextPropsType from "../../../types/AppContextPropsType";
-import AppContext from "../../utility/AppContext";
+import React, {FC, useContext} from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import {useAuthUser} from '../../utility/AppHooks';
+import {makeStyles} from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import Box from '@material-ui/core/Box';
+import {orange} from '@material-ui/core/colors';
+import {Fonts} from '../../../shared/constants/AppEnums';
+import Hidden from '@material-ui/core/Hidden';
+import {setAuthToken} from '../../services/ApiConfig';
+import AppContextPropsType from '../../../types/AppContextPropsType';
+import AppContext from '../../utility/AppContext';
 
-const useStyles = makeStyles(theme => {
+const useStyles = makeStyles((theme) => {
   return {
     userRoot: {
       display: 'flex',
@@ -48,7 +48,7 @@ interface HorUserInfoProps {
 }
 
 const HorUserInfo: FC<HorUserInfoProps> = ({bgType = 'colored'}) => {
-  const{ updateAuthUser} = useContext<AppContextPropsType>(AppContext);
+  const {updateAuthUser} = useContext<AppContextPropsType>(AppContext);
   const user = useAuthUser();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -100,9 +100,7 @@ const HorUserInfo: FC<HorUserInfoProps> = ({bgType = 'colored'}) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}>
           <MenuItem>My account</MenuItem>
-          <MenuItem onClick={onUserSignout}>
-            Logout
-          </MenuItem>
+          <MenuItem onClick={onUserSignout}>Logout</MenuItem>
         </Menu>
       </Box>
     </Box>

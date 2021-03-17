@@ -1,18 +1,22 @@
-import React, { useContext } from "react";
-import Drawer from "@material-ui/core/Drawer";
-import Hidden from "@material-ui/core/Hidden";
-import UserInfo from "../../../../shared/components/UserInfo";
-import Navigation from "../../Navigation/VerticleNav";
-import clsx from "clsx";
-import Box from "@material-ui/core/Box";
-import BucketMinibar from "./BucketMinibar";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import useStyles from "./AppSidebar.style";
-import Scrollbar from "../../Scrollbar";
-import AppContext from "../../../utility/AppContext";
-import { toggleNavCollapsed, useLayoutActionsContext, useLayoutContext } from "../LayoutContextProvider";
-import AppContextPropsType from "../../../../types/AppContextPropsType";
+import React, {useContext} from 'react';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
+import UserInfo from '../../../../shared/components/UserInfo';
+import Navigation from '../../Navigation/VerticleNav';
+import clsx from 'clsx';
+import Box from '@material-ui/core/Box';
+import BucketMinibar from './BucketMinibar';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import useStyles from './AppSidebar.style';
+import Scrollbar from '../../Scrollbar';
+import AppContext from '../../../utility/AppContext';
+import {
+  toggleNavCollapsed,
+  useLayoutActionsContext,
+  useLayoutContext,
+} from '../LayoutContextProvider';
+import AppContextPropsType from '../../../../types/AppContextPropsType';
 
 interface AppSidebarProps {
   isCollapsed: boolean;
@@ -21,7 +25,7 @@ interface AppSidebarProps {
   setCollapsed: (isCollapsed: boolean) => void;
 }
 
-const AppSidebar: React.FC<AppSidebarProps> = props => {
+const AppSidebar: React.FC<AppSidebarProps> = (props) => {
   const {isCollapsed, setCollapsed} = props;
   const {themeMode} = useContext<AppContextPropsType>(AppContext);
   const {navCollapsed} = useLayoutContext();
