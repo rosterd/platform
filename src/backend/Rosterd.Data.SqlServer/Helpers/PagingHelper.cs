@@ -26,6 +26,7 @@ namespace Rosterd.Data.SqlServer.Helpers
         public bool HasPrevious => CurrentPage > 1;
         public bool HasNext => CurrentPage < TotalPages;
 
+
         public static async Task<PagingHelper<T>> ToPagingHelper(IQueryable<T> source, int pageNumber, int pageSize)
         {
             //TODO: If performance becomes a concern then we can get rid of this count here 

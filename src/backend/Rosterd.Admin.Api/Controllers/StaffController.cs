@@ -6,7 +6,6 @@ using Rosterd.Admin.Api.Infrastructure.Filters.Swagger;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.StaffModels;
-using Rosterd.Services.Staff;
 using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.Admin.Api.Controllers
@@ -47,6 +46,18 @@ namespace Rosterd.Admin.Api.Controllers
                 pagedList = await _staffService.GetStaffForFacility(pagingParameters, facilityId.Value);
 
             return pagedList;
+        }
+
+        /// <summary>
+        /// Get Staff by Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [OperationOrderAttribute(2)]
+        public async Task<ActionResult<StaffModel>> GetStaffById([Required] long? id)
+        {
+            var staffModel = await _staffService.GetStaff(id.Value);
+            return staffModel;
         }
 
         /// <summary>

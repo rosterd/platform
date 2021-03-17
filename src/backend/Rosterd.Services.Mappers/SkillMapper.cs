@@ -1,19 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using Rosterd.Data.SqlServer.Helpers;
-using Rosterd.Data.SqlServer.Models;
-using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.SkillsModels;
-using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Infrastructure.Extensions;
 
 namespace Rosterd.Services.Mappers
 {
-    public static class SkillsMapper
+    public static class SkillMapper
     {
         public static SkillModel ToDomainModel(this Data.SqlServer.Models.Skill dataModel)
         {
-            var skillModel = new SkillModel {SkillName = dataModel.SkillName, SkillDescription = dataModel.Description, SkillId = dataModel.SkillId};
+            var skillModel = new SkillModel
+            {
+                SkillId = dataModel.SkillId,
+                SkillName = dataModel.SkillName,
+                Description = dataModel.Description
+
+            };
+
             return skillModel;
         }
 
@@ -23,20 +27,26 @@ namespace Rosterd.Services.Mappers
             if (pagedList.IsNullOrEmpty())
                 return new List<SkillModel>();
 
-            var skillModels = pagedList.Select(staff => staff.ToDomainModel()).AlwaysList();
+            var skillModels = pagedList.Select(skill => skill.ToDomainModel()).AlwaysList();
             return skillModels;
         }
 
         public static Data.SqlServer.Models.Skill ToDataModel(this SkillModel domainModel)
         {
-            var skillToUpdate = domainModel.ToNew();
+            var skillToUpdate = domainModel.ToNewSkill();
             return skillToUpdate;
         }
 
-        public static Data.SqlServer.Models.Skill ToNew(this SkillModel domainModel)
+        public static Data.SqlServer.Models.Skill ToNewSkill(this SkillModel domainModel)
         {
-            var skill = new Skill {Description = domainModel.SkillDescription, SkillName = domainModel.SkillName};
-            return skill;
+            var skillToSave = new Data.SqlServer.Models.Skill
+            {
+                SkillId = domainModel.SkillId,
+                SkillName = domainModel.SkillName,
+                Description = domainModel.Description
+            };
+
+            return skillToSave;
         }
     }
 }
