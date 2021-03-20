@@ -1,7 +1,6 @@
-using System;
 using Microsoft.AspNetCore.Http;
 
-namespace Rosterd.Admin.Api.Infrastructure.Extensions
+namespace Rosterd.Web.Infra.Extensions
 {
     public static class RequestAndPathExtensions
     {

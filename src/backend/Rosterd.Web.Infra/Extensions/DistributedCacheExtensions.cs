@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 
-namespace Rosterd.Admin.Api.Infrastructure.Extensions
+namespace Rosterd.Web.Infra.Extensions
 {
     /// <summary>
     ///     <see cref="IDistributedCache" /> extension methods.

@@ -3,13 +3,22 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Rosterd.Admin.Api.Infrastructure.Extensions;
-using Rosterd.Domain;
+using Rosterd.Web.Infra.Extensions;
 
-namespace Rosterd.Admin.Api.Infrastructure.Middleware
+namespace Rosterd.Web.Infra.Middleware
 {
     public class SwaggerAuthenticationMiddleware : IMiddleware
     {
+        /// <summary>
+        ///     The user name that needs to be presented to see the swagger ui
+        /// </summary>
+        public const string SwaggerAccessUserName = "testuser";
+
+        /// <summary>
+        ///     The password that needs to be presented to see the swagger ui
+        /// </summary>
+        public const string SwaggerAccessPassword = "e562322c-d9fe-486d-8537-5975c3d84ebb";
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             //If we hit the swagger locally (in development) then don't worry about doing auth
@@ -48,7 +57,7 @@ namespace Rosterd.Admin.Api.Infrastructure.Middleware
             }
         }
 
-        private bool IsAuthorized(string username, string password) => Constants.ApplicationKeys.SwaggerAccessUserName == username && Constants.ApplicationKeys.SwaggerAccessPassword == password;
+        private bool IsAuthorized(string username, string password) => SwaggerAccessUserName == username && SwaggerAccessPassword == password;
 
         private bool IsLocalRequest(HttpContext context)
         {

@@ -14,16 +14,6 @@ namespace Rosterd.Domain
         public static class ApplicationKeys
         {
             /// <summary>
-            ///     The user name that needs to be presented to see the swagger ui
-            /// </summary>
-            public const string SwaggerAccessUserName = "testuser";
-
-            /// <summary>
-            ///     The password that needs to be presented to see the swagger ui
-            /// </summary>
-            public const string SwaggerAccessPassword = "e562322c-d9fe-486d-8537-5975c3d84ebb";
-
-            /// <summary>
             /// Api that needs to be presented for every anonymous call (ie: all API's that don't require authentication)
             /// </summary>
             public const string AnonymousApiKey = "3c752809-4776-4b8a-b7b3-ff8e704793ac";

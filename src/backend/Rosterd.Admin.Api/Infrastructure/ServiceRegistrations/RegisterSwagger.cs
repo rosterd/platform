@@ -3,8 +3,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Rosterd.Admin.Api.Infrastructure.Filters;
-using Rosterd.Admin.Api.Infrastructure.Filters.Swagger;
+using Rosterd.Web.Infra.Filters.Swagger;
 
 namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 {

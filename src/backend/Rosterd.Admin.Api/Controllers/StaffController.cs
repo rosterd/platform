@@ -2,11 +2,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Rosterd.Admin.Api.Infrastructure.Filters.Swagger;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Services.Staff.Interfaces;
+using Rosterd.Web.Infra.Filters.Swagger;
 
 namespace Rosterd.Admin.Api.Controllers
 {
@@ -34,7 +34,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         [HttpGet]
-        [OperationOrderAttribute(1)]
+        [OperationOrder(1)]
         public async Task<ActionResult<PagedList<StaffModel>>> GetAllStaff([FromQuery] long? facilityId, [FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();

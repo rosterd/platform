@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Rosterd.Admin.Api.Infrastructure.Filters.Swagger
+namespace Rosterd.Web.Infra.Filters.Swagger
 {
     public class OperationsOrderingFilter : IDocumentFilter
     {

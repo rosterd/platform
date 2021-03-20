@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
-using Rosterd.Admin.Api.Infrastructure.Middleware;
+using Rosterd.Web.Infra.Middleware;
 
-namespace Rosterd.Admin.Api.Infrastructure.Extensions
+namespace Rosterd.Web.Infra.Extensions
 {
     public static class ApplicationBuilderExtensions
     {

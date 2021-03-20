@@ -10,8 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Rosterd.Admin.Api.Infrastructure.Extensions;
-using Rosterd.Admin.Api.Infrastructure.Middleware;
 using Rosterd.Domain;
+using Rosterd.Web.Infra.Extensions;
+using Rosterd.Web.Infra.Middleware;
 
 namespace Rosterd.Admin.Api
 {

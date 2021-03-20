@@ -2,7 +2,7 @@ using System.Linq;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Rosterd.Admin.Api.Infrastructure.Filters.Swagger
+namespace Rosterd.Web.Infra.Filters.Swagger
 {
     public class SwaggerCustomControllerOrderingFilter : IDocumentFilter
     {

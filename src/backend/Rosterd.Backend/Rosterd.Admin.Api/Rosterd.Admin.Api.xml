@@ -11,10 +11,112 @@
             <param name="apiKey"></param>
             <returns></returns>
         </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.GetAllFacilities(Rosterd.Domain.Models.PagingQueryStringParameters)">
+            <summary>
+                Gets all the resources
+            </summary>
+            <param name="pagingParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.GetFacilityById(System.Nullable{System.Int64})">
+            <summary>
+                Get Facility by Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.AddNewFacility(Rosterd.Admin.Api.Requests.Facility.AddUpdateFacilityRequest)">
+            <summary>
+                Adds a new Facility
+            </summary>
+            <param name="request">The Facility to add</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.UpdateFacility(Rosterd.Admin.Api.Requests.Facility.AddUpdateFacilityRequest)">
+            <summary>
+                Update a Facility
+            </summary>
+            <param name="request">The Facility to update</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.RemoveFacility(System.Nullable{System.Int64})">
+            <summary>
+                Deletes Facility
+            </summary>
+            <param name="facilityId">The Facility to be deleted</param>
+            <returns></returns>
+        </member>
         <member name="T:Rosterd.Admin.Api.Controllers.JobsController">
             <summary>
             All actions related to resources
             </summary>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.GetAllJobs(Rosterd.Domain.Models.PagingQueryStringParameters)">
+            <summary>
+            Gets all the resources 
+            </summary>
+            <param name="pagingParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.GetJobById(System.Nullable{System.Int64})">
+            <summary>
+            Get Job by Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.AddNewJob(Rosterd.Admin.Api.Requests.Job.AddUpdateJobRequest)">
+            <summary>
+            Adds a new Job
+            </summary>
+            <param name="request">The Job to add</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.UpdateJob(Rosterd.Admin.Api.Requests.Job.AddUpdateJobRequest)">
+            <summary>
+            Update a Job
+            </summary>
+            <param name="request">The Job to update</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.RemoveJob(System.Nullable{System.Int64})">
+            <summary>
+            Deletes Job
+            </summary>
+            <param name="jobId">The Job to be deleted</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.GetAllSkills(Rosterd.Domain.Models.PagingQueryStringParameters)">
+            <summary>
+            Gets all the resources 
+            </summary>
+            <param name="pagingParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.GetSkillById(System.Nullable{System.Int64})">
+            <summary>
+            Get Skill by Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.AddNewSkill(Rosterd.Admin.Api.Requests.Skills.AddUpdateSkillRequest)">
+            <summary>
+            Adds a new Skill
+            </summary>
+            <param name="request">The Skill to add</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.UpdateSkill(Rosterd.Admin.Api.Requests.Skills.AddUpdateSkillRequest)">
+            <summary>
+            Update a Skill
+            </summary>
+            <param name="request">The Skill to update</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.RemoveSkill(System.Nullable{System.Int64})">
+            <summary>
+            Deletes Skill
+            </summary>
+            <param name="skillId">The Skill to be deleted</param>
+            <returns></returns>
         </member>
         <member name="T:Rosterd.Admin.Api.Controllers.StaffController">
             <summary>
@@ -27,6 +129,12 @@
             </summary>
             <param name="facilityId">The facility id to filter all the list of Staff by</param>
             <param name="pagingParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.GetStaffById(System.Nullable{System.Int64})">
+            <summary>
+            Get Staff by Id
+            </summary>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.StaffController.AddNewStaffMember(Rosterd.Admin.Api.Requests.Staff.AddUpdateStaffRequest)">
@@ -73,96 +181,6 @@
             <param name="staffId">The staff id</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.ApplicationBuilderExtensions.UseSwaggerAuthenticationCheck(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
-            <summary>
-            Add the swagger authentication middleware responsible for making sure Swagger UI is not open to public
-            </summary>
-            <param name="builder">The application builder.</param>
-            <returns></returns>
-        </member>
-        <member name="T:Rosterd.Admin.Api.Infrastructure.Extensions.DistributedCacheExtensions">
-            <summary>
-                <see cref="T:Microsoft.Extensions.Caching.Distributed.IDistributedCache" /> extension methods.
-            </summary>
-        </member>
-        <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.DistributedCacheExtensions.GetCacheExpiry(Microsoft.Extensions.Caching.Distributed.IDistributedCache,System.Int32)">
-            <summary>
-            Helper method that gets the cache expiry for a given absolute expiry in minutes
-            </summary>
-            <param name="cache">The distributed cache.</param>
-            <param name="absoluteExpiryInMinutes">The cache to expire in minutes</param>
-            <returns></returns>
-        </member>
-        <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.DistributedCacheExtensions.GetAsJsonAsync``1(Microsoft.Extensions.Caching.Distributed.IDistributedCache,System.String,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)">
-            <summary>
-            Gets the value of type <typeparamref name="T" /> with the specified key from the cache asynchronously by
-            deserializing it from JSON format or returns <c>default(T)</c> if the key was not found.
-            </summary>
-            <typeparam name="T">The type of the value.</typeparam>
-            <param name="cache">The distributed cache.</param>
-            <param name="key">The cache item key.</param>
-            <param name="jsonSerializerOptions">The JSON serializer options or <c>null</c> to use the default.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-            <returns>The value of type <typeparamref name="T" /> or <c>null</c> if the key was not found.</returns>
-            <exception cref="T:System.ArgumentNullException"><paramref name="cache"/> or <paramref name="key"/> is
-            <c>null</c>.</exception>
-        </member>
-        <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.DistributedCacheExtensions.SetAsJsonAsync``1(Microsoft.Extensions.Caching.Distributed.IDistributedCache,System.String,``0,Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)">
-            <summary>
-                Sets the value of type <typeparamref name="T" /> with the specified key in the cache asynchronously by
-                serializing it to JSON format.
-            </summary>
-            <typeparam name="T">The type of the value.</typeparam>
-            <param name="cache">The distributed cache.</param>
-            <param name="key">The cache item key.</param>
-            <param name="value">The value to cache.</param>
-            <param name="options">The cache options or <c>null</c> to use the default cache options.</param>
-            <param name="jsonSerializerOptions">The JSON serializer options or <c>null</c> to use the default.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-            <returns>The value of type <typeparamref name="T" /> or <c>null</c> if the key was not found.</returns>
-            <exception cref="T:System.ArgumentNullException">
-                <paramref name="cache" /> or <paramref name="key" /> is
-                <c>null</c>.
-            </exception>
-        </member>
-        <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.DistributedCacheExtensions.GetAsJsonAsync``1(Microsoft.Extensions.Caching.Distributed.IDistributedCache,System.String,System.Func{System.Threading.Tasks.Task{``0}},Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions)">
-            <summary>
-            Gets the value of type <typeparamref name="T"/> with the specified key from the cache asynchronously by
-            deserializing it from JSON format or calls the cacheMiss function and set the cache if the key was not found.
-            </summary>
-            <typeparam name="T">
-            The type of the value.
-            </typeparam>
-            <param name="cache">
-            The distributed cache.
-            </param>
-            <param name="key">
-            The cache item key.
-            </param>
-            <param name="cacheMiss">
-            The function executed when cache is missed
-            </param>
-            <param name="options">
-            The cache options or <c>null</c> to use the default cache options.
-            </param>
-            <returns>
-            The value of type <typeparamref name="T"/> or <c>null</c> if the key was not found.
-            </returns>
-            <exception cref="T:System.ArgumentNullException">
-            <paramref name="cache"/> or <paramref name="key"/> is <c>null</c>.
-            </exception>
-        </member>
-        <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddCustomCaching(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            Configures caching for the application. Registers the <see cref="T:Microsoft.Extensions.Caching.Distributed.IDistributedCache"/> and
-            <see cref="T:Microsoft.Extensions.Caching.Memory.IMemoryCache"/> types with the services collection or IoC container. The
-            <see cref="T:Microsoft.Extensions.Caching.Distributed.IDistributedCache"/> is intended to be used in cloud hosted scenarios where there is a shared
-            cache, which is shared between multiple instances of the application. Use the <see cref="T:Microsoft.Extensions.Caching.Memory.IMemoryCache"/>
-            otherwise.
-            </summary>
-            <param name="services">The services.</param>
-            <returns>The services with caching services added.</returns>
-        </member>
         <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddAppAndDatabaseDependencies(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             Registers all database dependencies and all app dependencies
@@ -194,18 +212,6 @@
             <param name="services"></param>
             <param name="config"></param>
             <returns></returns>
-        </member>
-        <member name="T:Rosterd.Admin.Api.Infrastructure.ValidationAttributes.NumberIsRequiredAndShouldBeGreaterThanZeroAttribute">
-            <summary>
-                Validation attribute to indicate that a property field or parameter is required, it should be a number and should be greater than zero
-            </summary>
-        </member>
-        <member name="M:Rosterd.Admin.Api.Infrastructure.ValidationAttributes.NumberIsRequiredAndShouldBeGreaterThanZeroAttribute.IsValid(System.Object)">
-            <summary>
-                Validation attribute to indicate that a property field or parameter is required, it should be a number and should be greater than zero
-            </summary>
-            <param name="value">The integer value of the selection</param>
-            <returns>True if value is greater than zero</returns>
         </member>
         <member name="P:Rosterd.Admin.Api.Startup.HostingEnvironment">
             <summary>
