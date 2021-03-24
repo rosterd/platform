@@ -86,7 +86,7 @@ namespace Rosterd.Services.Staff
             var facility = await _context.Facilities.FindAsync(facilityId);
             if (staff != null && facility != null)
             {
-                //Remove the existing facility connection to staff
+                //Remove the existing facility connection to Staff
                 var toDelete = _context.StaffFacilities.Where(s => s.StaffId == staffId);
                 _context.StaffFacilities.RemoveRange(toDelete);
 

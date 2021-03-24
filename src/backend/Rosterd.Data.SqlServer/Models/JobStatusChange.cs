@@ -20,12 +20,7 @@ namespace Rosterd.Data.SqlServer.Models
         public DateTime JobStatusChangeDateTimeUtc { get; set; }
         [StringLength(1000)]
         public string JobStatusChangeReason { get; set; }
-
-        [ForeignKey(nameof(JobId))]
-        [InverseProperty("JobStatusChanges")]
-        public virtual Job Job { get; set; }
-        [ForeignKey(nameof(JobStatusId))]
-        [InverseProperty("JobStatusChanges")]
-        public virtual JobStatus JobStatus { get; set; }
+        [StringLength(1000)]
+        public string JobStatusName { get; set; }
     }
 }

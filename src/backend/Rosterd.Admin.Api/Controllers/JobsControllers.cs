@@ -11,7 +11,7 @@ using Rosterd.Web.Infra.Filters.Swagger;
 namespace Rosterd.Admin.Api.Controllers
 {
     /// <summary>
-    /// All actions related to resources
+    /// All actions related to Jobs
     /// </summary>
     [ApiVersion("1.0")]
     public class JobsController : BaseApiController

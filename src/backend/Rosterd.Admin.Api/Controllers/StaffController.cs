@@ -101,10 +101,10 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
-        /// Moves a staff member from their existing facility to another facility
+        /// Moves a Staff member from their existing facility to another facility
         /// </summary>
         /// <param name="facilityId">The facility id to move</param>
-        /// <param name="staffId">The staff id</param>
+        /// <param name="staffId">The Staff id</param>
         /// <returns></returns>
         [HttpPut("facilities")]
         [OperationOrderAttribute(5)]
@@ -115,9 +115,9 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
-        /// Adds a collection of skills to the staff member
+        /// Adds a collection of skills to the Staff member
         /// </summary>
-        /// <param name="staffId">The staff id</param>
+        /// <param name="staffId">The Staff id</param>
         /// <param name="request">The skills to add</param>
         /// <returns></returns>
         [HttpPut("skills")]
@@ -129,9 +129,9 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
-        /// Removes all skills from a staff member
+        /// Removes all skills from a Staff member
         /// </summary>
-        /// <param name="staffId">The staff id</param>
+        /// <param name="staffId">The Staff id</param>
         /// <returns></returns>
         [HttpDelete("skills")]
         [OperationOrderAttribute(7)]

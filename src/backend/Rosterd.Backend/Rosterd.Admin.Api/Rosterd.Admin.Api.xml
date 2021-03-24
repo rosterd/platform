@@ -47,7 +47,7 @@
         </member>
         <member name="T:Rosterd.Admin.Api.Controllers.JobsController">
             <summary>
-            All actions related to resources
+            All actions related to Jobs
             </summary>
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.JobsController.GetAllJobs(Rosterd.Domain.Models.PagingQueryStringParameters)">
@@ -160,25 +160,25 @@
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.StaffController.MoveStaffMemberToAnotherFacility(System.Nullable{System.Int64},System.Nullable{System.Int64})">
             <summary>
-            Moves a staff member from their existing facility to another facility
+            Moves a Staff member from their existing facility to another facility
             </summary>
             <param name="facilityId">The facility id to move</param>
-            <param name="staffId">The staff id</param>
+            <param name="staffId">The Staff id</param>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.StaffController.AddSkillToStaff(System.Nullable{System.Int64},Rosterd.Admin.Api.Requests.Staff.AddSkillsToStaffRequest)">
             <summary>
-            Adds a collection of skills to the staff member
+            Adds a collection of skills to the Staff member
             </summary>
-            <param name="staffId">The staff id</param>
+            <param name="staffId">The Staff id</param>
             <param name="request">The skills to add</param>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.StaffController.DeleteAllSkillsForStaff(System.Nullable{System.Int64})">
             <summary>
-            Removes all skills from a staff member
+            Removes all skills from a Staff member
             </summary>
-            <param name="staffId">The staff id</param>
+            <param name="staffId">The Staff id</param>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddAppAndDatabaseDependencies(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">

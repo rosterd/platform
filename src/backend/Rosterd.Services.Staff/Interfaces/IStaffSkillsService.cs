@@ -10,7 +10,7 @@ namespace Rosterd.Services.Staff.Interfaces
     public interface IStaffSkillsService
     {
         /// <summary>
-        /// Updates all the skills for a staff (overwrites all the existing skills for a staff)
+        /// Updates all the skills for a Staff (overwrites all the existing skills for a Staff)
         /// </summary>
         /// <param name="staffId"></param>
         /// <param name="skillModels"></param>
@@ -18,7 +18,7 @@ namespace Rosterd.Services.Staff.Interfaces
         Task UpdateAllSkillsForStaff(long staffId, List<SkillModel> skillModels);
 
         /// <summary>
-        /// Removes all existing skills for a staff
+        /// Removes all existing skills for a Staff
         /// </summary>
         /// <param name="staffId"></param>
         /// <returns></returns>

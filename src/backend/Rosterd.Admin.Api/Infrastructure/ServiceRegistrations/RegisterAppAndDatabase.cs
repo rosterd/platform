@@ -39,6 +39,7 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 
             //User context
 
+
             //Db contexts
             services.AddScoped<IRosterdDbContext, RosterdDbContext>();
         }

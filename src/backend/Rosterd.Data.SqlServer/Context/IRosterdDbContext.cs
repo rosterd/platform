@@ -13,7 +13,6 @@ namespace Rosterd.Data.SqlServer.Context
         DbSet<FacilityCapability> FacilityCapabilities { get; set; }
         DbSet<Job> Jobs { get; set; }
         DbSet<JobSkill> JobSkills { get; set; }
-        DbSet<JobStatus> JobStatuses { get; set; }
         DbSet<JobStatusChange> JobStatusChanges { get; set; }
         DbSet<Organization> Organizations { get; set; }
         DbSet<Skill> Skills { get; set; }

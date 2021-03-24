@@ -30,7 +30,7 @@ namespace Rosterd.Services.Staff
                 var existingSkill = await _context.Skills.FindAsync(skillModel.SkillId);
                 if (existingSkill != null)
                 {
-                    //If the staff member already has this skill associated then don't need to do anything
+                    //If the Staff member already has this skill associated then don't need to do anything
                     var alreadyExists = await _context.StaffSkills.AnyAsync(s => s.StaffId == staffId && s.SkillId == skillModel.SkillId);
                     if(alreadyExists)
                         continue;

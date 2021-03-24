@@ -11,12 +11,12 @@ namespace Rosterd.Data.SqlServer.Models
 {
     [Table("Job")]
     [Index(nameof(JobId), Name = "Unq_Job_JobId", IsUnique = true)]
+    [Index(nameof(JobStatusId), Name = "Unq_Job_JobStatusId", IsUnique = true)]
     public partial class Job
     {
         public Job()
         {
             JobSkills = new HashSet<JobSkill>();
-            JobStatusChanges = new HashSet<JobStatusChange>();
         }
 
         [Key]
@@ -32,14 +32,22 @@ namespace Rosterd.Data.SqlServer.Models
         public DateTime JobStartDateTimeUtc { get; set; }
         [Column("JobEndDateTimeUTC")]
         public DateTime JobEndDateTimeUtc { get; set; }
+        [Column("JobPostedDateTimeUTC")]
+        public DateTime JobPostedDateTimeUtc { get; set; }
         [StringLength(1000)]
         public string Comments { get; set; }
         public long? GracePeriodToCancelMinutes { get; set; }
         public bool? NoGracePeriod { get; set; }
+        public long JobStatusId { get; set; }
+        [Required]
+        [StringLength(1000)]
+        public string JobsStatusName { get; set; }
+        [Column("LastJobStatusChangeDateTimeUTC")]
+        public DateTime LastJobStatusChangeDateTimeUtc { get; set; }
+        public string Responsibilities { get; set; }
+        public string Experience { get; set; }
 
         [InverseProperty(nameof(JobSkill.Job))]
         public virtual ICollection<JobSkill> JobSkills { get; set; }
-        [InverseProperty(nameof(JobStatusChange.Job))]
-        public virtual ICollection<JobStatusChange> JobStatusChanges { get; set; }
     }
 }

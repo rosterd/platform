@@ -7,7 +7,7 @@ namespace Rosterd.Services.Staff.Interfaces
     public interface IStaffService
     {
         /// <summary>
-        /// Gets all the staff for a given facility
+        /// Gets all the Staff for a given facility
         /// </summary>
         /// <param name="pagingParameters"></param>
         /// <param name="facilityId"></param>
@@ -15,7 +15,7 @@ namespace Rosterd.Services.Staff.Interfaces
         Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId);
 
         /// <summary>
-        /// Gets all the staff members
+        /// Gets all the Staff members
         /// </summary>
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
@@ -29,28 +29,28 @@ namespace Rosterd.Services.Staff.Interfaces
         Task<StaffModel> GetStaff(long staffId);
 
         /// <summary>
-        /// Adds a new staff member
+        /// Adds a new Staff member
         /// </summary>
         /// <param name="staffModel"></param>
         /// <returns></returns>
         Task CreateStaffMember(StaffModel staffModel);
 
         /// <summary>
-        /// Updates an existing staff member
+        /// Updates an existing Staff member
         /// </summary>
         /// <param name="staffModel"></param>
         /// <returns></returns>
         Task UpdateStaffMember(StaffModel staffModel);
 
         /// <summary>
-        /// Marks a staff member as inactive
+        /// Marks a Staff member as inactive
         /// </summary>
         /// <param name="staffId"></param>
         /// <returns></returns>
         Task RemoveStaffMember(long staffId);
 
         /// <summary>
-        /// Moves a staff member to another facility
+        /// Moves a Staff member to another facility
         /// </summary>
         /// <param name="staffId"></param>
         /// <param name="facilityId"></param>
