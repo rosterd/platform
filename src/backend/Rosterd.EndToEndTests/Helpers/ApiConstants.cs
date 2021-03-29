@@ -1,5 +1,5 @@
 
-namespace Rosterd.ComponentTests.Helpers
+namespace Rosterd.EndToEndTests.Helpers
 {
     public static class ApiConstants
     {

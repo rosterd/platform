@@ -1,10 +1,6 @@
-using System;
-namespace Rosterd.EndToEndTests.Resources.Environment
 {
- public class dev
- {
-   public dev()
-   {
-   }
- }
+  "BaseUrl": "https://localhost:5001",
+  "AuthUrl": "https://localhost:5001",
+  "UserName": "",
+  "Password":  ""
 }
