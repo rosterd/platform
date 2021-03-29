@@ -1,0 +1,10 @@
+using System;
+namespace Rosterd.EndToEndTests.Resources.Payloads
+{
+ public class skill
+ {
+   public skill()
+   {
+   }
+ }
+}
