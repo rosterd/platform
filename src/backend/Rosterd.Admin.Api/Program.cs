@@ -29,8 +29,7 @@ namespace Rosterd.Admin.Api
             }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args, Action<IWebHostBuilder>? customiseWebHost = null) => Host.CreateDefaultBuilder(args)
                 .ConfigureHostConfiguration(configBuilder =>
                     configBuilder.AddJsonFile("appsettings.json", true, true)
                 )
@@ -38,6 +37,10 @@ namespace Rosterd.Admin.Api
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.ConfigureKestrel(options => options.AddServerHeader = false);
-                });
+                    customiseWebHost?.Invoke(webBuilder);
+                })
+                .UseSerilog((hostingContext, loggerConfig) =>
+                    loggerConfig.ReadFrom.Configuration(hostingContext.Configuration)
+                );
     }
 }
