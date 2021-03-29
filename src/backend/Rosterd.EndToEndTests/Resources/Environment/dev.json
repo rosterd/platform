@@ -1,0 +1,10 @@
+using System;
+namespace Rosterd.EndToEndTests.Resources.Environment
+{
+ public class dev
+ {
+   public dev()
+   {
+   }
+ }
+}
