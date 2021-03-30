@@ -47,6 +47,9 @@ namespace Rosterd.Data.SqlServer.Models
         public string Responsibilities { get; set; }
         public string Experience { get; set; }
 
+        [ForeignKey(nameof(FacilityId))]
+        [InverseProperty("Jobs")]
+        public virtual Facility Facility { get; set; }
         [InverseProperty(nameof(JobSkill.Job))]
         public virtual ICollection<JobSkill> JobSkills { get; set; }
     }

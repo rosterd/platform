@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rosterd.Data.TableStorage\Rosterd.Data.TableStorage.csproj" />
+    <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
+    <ProjectReference Include="..\Rosterd.Services.Mappers\Rosterd.Services.Mappers.csproj" />
+  </ItemGroup>
+
+</Project>

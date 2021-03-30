@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
+using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Services.Jobs.Interfaces;
@@ -16,7 +18,7 @@ namespace Rosterd.Services.Jobs
 
         public async Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters)
         {
-            var query = _context.Jobs;
+            var query = _context.Jobs.Include(s => s.Facility);
             var pagedList = await PagingHelper<Data.SqlServer.Models.Job>.ToPagingHelper(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
@@ -25,7 +27,7 @@ namespace Rosterd.Services.Jobs
 
         public async Task<JobModel> GetJob(long jobId)
         {
-            var job = await _context.Jobs.FindAsync(jobId);
+            var job = await _context.Jobs.Include(s => s.Facility).FirstOrDefaultAsync(s => s.JobId == jobId);
             return job?.ToDomainModel();
         }
 

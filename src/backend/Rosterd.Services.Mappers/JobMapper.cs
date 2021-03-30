@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
+using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Infrastructure.Extensions;
 
@@ -9,19 +10,19 @@ namespace Rosterd.Services.Mappers
 {
     public static class JobMapper
     {
-        public static JobModel ToDomainModel(this Data.SqlServer.Models.Job dataModel)
+        public static JobModel ToDomainModel(this Job dataModel)
         {
             var jobModel = new JobModel
             {
                 JobId = dataModel.JobId,
                 JobTitle = dataModel.JobTitle,
                 Description = dataModel.Description,
-                FacilityId = dataModel.FacilityId,
                 JobStartDateTimeUtc = dataModel.JobStartDateTimeUtc,
                 JobEndDateTimeUtc = dataModel.JobEndDateTimeUtc,
                 Comments = dataModel.Comments,
                 GracePeriodToCancelMinutes = dataModel.GracePeriodToCancelMinutes,
                 NoGracePeriod = dataModel.NoGracePeriod,
+                Facility = dataModel.Facility?.ToDomainModel()
             };
 
             return jobModel;
@@ -47,10 +48,9 @@ namespace Rosterd.Services.Mappers
         {
             var jobToSave = new Data.SqlServer.Models.Job
             {
-                JobId = domainModel.JobId,
                 JobTitle = domainModel.JobTitle,
                 Description = domainModel.Description,
-                FacilityId = domainModel.FacilityId,
+                FacilityId = domainModel.Facility.FacilityId,
                 JobStartDateTimeUtc = domainModel.JobStartDateTimeUtc,
                 JobEndDateTimeUtc = domainModel.JobEndDateTimeUtc,
                 Comments = domainModel.Comments,

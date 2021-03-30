@@ -25,21 +25,51 @@ namespace Rosterd.Client.Api.Controllers
         }
 
         /// <summary>
-        /// Gets all the jobs for the user
+        /// Gets all the jobs that are specific for the user
         /// </summary>
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("relevant")]
         [OperationOrder(1)]
-        public async Task<ActionResult<PagedList<JobModel>>> GetAllJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
+        public async Task<ActionResult<PagedList<JobModel>>> GetAllRelevantJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
+            //TODO: get only relevant jobs for the user
             pagingParameters ??= new PagingQueryStringParameters();
-            PagedList<JobModel> pagedList;
-
-            pagedList = await _jobService.GetAllJobs(pagingParameters);
+            var pagedList = await _jobService.GetAllJobs(pagingParameters);
 
             return pagedList;
         }
 
+        /// <summary>
+        /// Gets all the jobs that are specific for the user
+        /// </summary>
+        /// <param name="pagingParameters"></param>
+        /// <returns></returns>
+        [HttpGet("my/current")]
+        [OperationOrder(1)]
+        public async Task<ActionResult<PagedList<JobModel>>> GetAllCurrentJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
+        {
+            //TODO: get only currently accepted and ongoing jobs for this user
+            pagingParameters ??= new PagingQueryStringParameters();
+            var pagedList = await _jobService.GetAllJobs(pagingParameters);
+
+            return pagedList;
+        }
+
+        /// <summary>
+        /// Gets all the jobs that are specific for the user
+        /// </summary>
+        /// <param name="pagingParameters"></param>
+        /// <returns></returns>
+        [HttpGet("my/history")]
+        [OperationOrder(1)]
+        public async Task<ActionResult<PagedList<JobModel>>> GetAllHistoricalJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
+        {
+            //TODO: get only historical jobs for this user
+            pagingParameters ??= new PagingQueryStringParameters();
+            var pagedList = await _jobService.GetAllJobs(pagingParameters);
+
+            return pagedList;
+        }
     }
 }

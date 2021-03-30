@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Rosterd.Client.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Rosterd.Client.Api.Controllers.BaseApiController.IsProvidedApiKeyValid(System.String)">
+            <summary>
+            Checks if the api key given is valid (ie: its compared against our constant)
+            </summary>
+            <param name="apiKey"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Rosterd.Client.Api.Controllers.JobsController">
+            <summary>
+            All actions related to Jobs for the user
+            </summary>
+        </member>
+        <member name="M:Rosterd.Client.Api.Controllers.JobsController.GetAllRelevantJobsForUser(Rosterd.Domain.Models.PagingQueryStringParameters)">
+            <summary>
+            Gets all the jobs that are specific for the user
+            </summary>
+            <param name="pagingParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Client.Api.Controllers.JobsController.GetAllCurrentJobsForUser(Rosterd.Domain.Models.PagingQueryStringParameters)">
+            <summary>
+            Gets all the jobs that are specific for the user
+            </summary>
+            <param name="pagingParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Client.Api.Controllers.JobsController.GetAllHistoricalJobsForUser(Rosterd.Domain.Models.PagingQueryStringParameters)">
+            <summary>
+            Gets all the jobs that are specific for the user
+            </summary>
+            <param name="pagingParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Rosterd.Client.Api.Controllers.UsersController">
+            <summary>
+            All actions related to the user
+            </summary>
+        </member>
+        <member name="M:Rosterd.Client.Api.Controllers.UsersController.GetUserPreferences(System.String)">
+            <summary>
+            Gets all user profile information for the current user
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Client.Api.Controllers.UsersController.UpdateUserPreferences(Rosterd.Domain.Models.Users.UserPreferencesModel)">
+            <summary>
+            Updates all user profile information for the current user
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Client.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddAppAndDatabaseDependencies(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Registers all database dependencies and all app dependencies
+            </summary>
+            <param name="services"></param>
+            <param name="config"></param>
+            <param name="hostingEnvironment"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Client.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddCustomHealthChecks(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Adds all the required health checks
+            </summary>
+            <param name="services"></param>
+            <param name="config"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Client.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddCustomSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds all the swagger UI and open api spec
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Client.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddCustomAuthenticationWithJwtBearer(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Adds all the custom authenticate required for Auth0 and jwt/bearer tokens
+            </summary>
+            <param name="services"></param>
+            <param name="config"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Rosterd.Client.Api.Startup.HostingEnvironment">
+            <summary>
+                Gets the hosting environment.
+            </summary>
+            <value>The hosting environment.</value>
+        </member>
+        <member name="P:Rosterd.Client.Api.Startup.Configuration">
+            <summary>
+                Gets the configuration.
+            </summary>
+            <value>The configuration.</value>
+        </member>
+    </members>
+</doc>
