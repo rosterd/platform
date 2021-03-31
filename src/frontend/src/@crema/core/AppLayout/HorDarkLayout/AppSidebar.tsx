@@ -18,8 +18,7 @@ interface AppSidebarProps {
   position?: 'left' | 'bottom' | 'right' | 'top';
 }
 
-const AppSidebar: React.FC<AppSidebarProps> = (props) => {
-  // eslint-disable-next-line react/prop-types
+const AppSidebar: React.FC<AppSidebarProps> = (props: AppSidebarProps) => {
   const {position = 'left'} = props;
   const {navCollapsed} = useLayoutContext();
   const dispatch = useLayoutActionsContext()!;
