@@ -6,6 +6,8 @@ trigger:
     include:
       - rosterd/scripts/rosterd-admin-ui-pipeline.yml
       - rosterd/src/frontend
+      - scripts/rosterd-admin-ui-pipeline.yml
+      - src/frontend
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -29,7 +31,7 @@ stages:
         npm install
         npm run build
       displayName: 'npm install and build'
-      #workingDirectory: 'rosterd/src/frontend'
+      workingDirectory: 'src/frontend'
 
     - task: CopyFiles@2
       displayName: 'Copy Files'
