@@ -63,7 +63,7 @@ stages:
               
           - task: AzureFileCopy@4
             inputs:
-              sourcePath: $(Pipeline.Workspace)/build
+              sourcePath: $(build.artifactstagingdirectory)\build
               azureSubscription: 'Visual Studio Premium with MSDN (6d23c094-f45f-421c-9f59-fe097a0bcdc5)'
               Destination: 'AzureBlob'
               storage: 'strosterdstoragedev'
