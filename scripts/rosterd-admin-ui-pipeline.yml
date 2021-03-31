@@ -40,7 +40,7 @@ stages:
         TargetFolder: '$(build.artifactstagingdirectory)'
         CleanTargetFolder: true
 
-    - task: PublishBuildArtifacts@1      
+    - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
         ArtifactName: 'build'
@@ -60,10 +60,17 @@ stages:
           steps:
           - download: current
             artifact: build
-              
+          
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'build'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
           - task: AzureFileCopy@4
             inputs:
-              sourcePath: $(build.artifactstagingdirectory)\build
+              sourcePath: $(System.ArtifactsDirectory)\build
               azureSubscription: 'Visual Studio Premium with MSDN (6d23c094-f45f-421c-9f59-fe097a0bcdc5)'
               Destination: 'AzureBlob'
               storage: 'strosterdstoragedev'
