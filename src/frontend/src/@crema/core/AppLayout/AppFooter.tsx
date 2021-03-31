@@ -1,8 +1,8 @@
 import React, {useContext} from 'react';
-import AppContext from '../../utility/AppContext';
 import Box from '@material-ui/core/Box';
 import {Button, makeStyles} from '@material-ui/core';
 import clsx from 'clsx';
+import AppContext from '../../utility/AppContext';
 import AppContextPropsType, {
   CremaTheme,
 } from '../../../types/AppContextPropsType';

@@ -24,14 +24,14 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
   appsContainer: (props: StyleProps) => ({
     height: `calc(100vh - ${
       55 + // AppContainerHeader Height
-      20 + //Container Padding
+      20 + // Container Padding
       getHeaderHeight(props.navStyle, 0) +
       (props.footer ? 70 : 10) // 50 Header Height + 20 Margin Top
     }px) !important`,
     [theme.breakpoints.up('sm')]: {
       height: `calc(100vh - ${
         55 + // AppContainerHeader Height
-        20 + //Container Padding
+        20 + // Container Padding
         getHeaderHeight(props.navStyle, 600) +
         (props.footer ? 70 : 10)
       }px) !important`,
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
     [theme.breakpoints.up('md')]: {
       height: `calc(100vh - ${
         55 + // AppContainerHeader Height
-        30 + //Container Padding
+        30 + // Container Padding
         getHeaderHeight(props.navStyle, 960) +
         (props.footer ? 80 : 10) // 50 Header Height + 30 Margin Top
       }px) !important`,
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
     [theme.breakpoints.up('lg')]: {
       height: `calc(100vh - ${
         43 + // AppContainerHeader Height
-        30 + //Container Padding
+        30 + // Container Padding
         getHeaderHeight(props.navStyle, 1280) +
         (props.footer ? 80 : 10)
       }px) !important`,
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
     [theme.breakpoints.up('xl')]: {
       height: `calc(100vh - ${
         64 + // AppContainerHeader Height
-        30 + //Container Padding
+        30 + // Container Padding
         getHeaderHeight(props.navStyle, 1920) +
         (props.footer ? 86 : 10) // 56 Header Height + 30 Margin Top
       }px) !important`,

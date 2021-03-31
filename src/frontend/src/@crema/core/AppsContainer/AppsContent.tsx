@@ -1,7 +1,7 @@
 import React, {CSSProperties, ReactNode} from 'react';
-import Scrollbar from '../Scrollbar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {fade} from '@material-ui/core';
+import Scrollbar from '../Scrollbar';
 import {CremaTheme} from '../../../types/AppContextPropsType';
 
 export const useAppsContentStyles = makeStyles((theme: CremaTheme) => ({

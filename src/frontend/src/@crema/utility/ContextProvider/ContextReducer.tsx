@@ -59,7 +59,7 @@ export function contextReducer(state: any, action: any) {
       };
     }
     case ThemeSetting.UPDATE_THEME_MODE: {
-      let theme = state.theme;
+      const {theme} = state;
       if (action.payload === ThemeMode.DARK) {
         theme.palette.type = ThemeMode.DARK;
         theme.palette.background = {
@@ -98,7 +98,7 @@ export function contextReducer(state: any, action: any) {
       };
     }
     case ThemeSetting.UPDATE_THEME_STYLE: {
-      const theme = state.theme;
+      const {theme} = state;
 
       if (action.payload === ThemeStyle.MODERN) {
         if (isBreakPointDown('md')) {
@@ -133,7 +133,7 @@ export function contextReducer(state: any, action: any) {
       };
     }
     case ThemeSetting.SET_RTL: {
-      const theme = state.theme;
+      const {theme} = state;
       if (action.payload) {
         theme.direction = 'rtl';
       } else {

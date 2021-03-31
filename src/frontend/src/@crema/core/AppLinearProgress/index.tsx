@@ -89,8 +89,7 @@ const AppLinearProgress: React.FC<AppLinearProgressProps> = ({
   activeColor = '#1a90ff',
   variant = 'determinate',
   ...rest
-}) => {
-  return (
+}) => (
     <CustomLinearProgress
       pathColor={pathColor}
       thickness={thickness}
@@ -100,5 +99,4 @@ const AppLinearProgress: React.FC<AppLinearProgressProps> = ({
       {...rest}
     />
   );
-};
 export default AppLinearProgress;

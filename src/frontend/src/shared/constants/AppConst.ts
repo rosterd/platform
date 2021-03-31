@@ -12,7 +12,7 @@ export const defaultUser: AuthUser = {
   email: 'demo@example.com',
   token: 'access-token',
   role: authRole.user,
-  authType: AuthType.AUTH0,
+  authType: AuthType.AWS_COGNITO,
   photoURL: '/assets/images/avatar/A11.jpg',
 };
 export const initialUrl = '/dashboard'; // this url will open after login

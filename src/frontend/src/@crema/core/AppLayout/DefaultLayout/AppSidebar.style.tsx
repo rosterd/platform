@@ -2,8 +2,7 @@ import {makeStyles} from '@material-ui/core';
 import {ThemeMode, ThemeStyle} from '../../../../shared/constants/AppEnums';
 import {CremaTheme} from '../../../../types/AppContextPropsType';
 
-const useStyles = makeStyles((theme: CremaTheme) => {
-  return {
+const useStyles = makeStyles((theme: CremaTheme) => ({
     container: {
       maxHeight: '100vh',
       paddingLeft: (props: {themeStyle: ThemeStyle; themeMode: ThemeMode}) =>
@@ -74,6 +73,5 @@ const useStyles = makeStyles((theme: CremaTheme) => {
       color: 'white',
       overflow: 'hidden',
     },
-  };
-});
+  }));
 export default useStyles;

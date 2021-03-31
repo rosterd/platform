@@ -1,10 +1,10 @@
 import React, {useContext, useState} from 'react';
-import AppContext from '../../utility/AppContext';
 import {SketchPicker} from 'react-color';
 import {makeStyles} from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import {CremaTheme} from '../../../types/AppContextPropsType';
 import {grey} from '@material-ui/core/colors';
+import {CremaTheme} from '../../../types/AppContextPropsType';
+import AppContext from '../../utility/AppContext';
 
 interface SecondaryColorPickerProps {}
 

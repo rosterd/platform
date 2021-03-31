@@ -2,8 +2,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Fonts, ThemeMode} from '../../../../shared/constants/AppEnums';
 import {CremaTheme} from '../../../../types/AppContextPropsType';
 
-const useStyles = makeStyles((theme: CremaTheme) => {
-  return {
+const useStyles = makeStyles((theme: CremaTheme) => ({
     navItem: {
       height: 40,
       marginTop: 2,
@@ -30,11 +29,11 @@ const useStyles = makeStyles((theme: CremaTheme) => {
         pointerEvents: 'none',
         transition: 'border-radius .15s cubic-bezier(0.4,0.0,0.2,1)',
         '& .nav-item-text': {
-          color: theme.palette.common.white + '!important',
+          color: `${theme.palette.common.white  }!important`,
           fontWeight: Fonts.MEDIUM,
         },
         '& .nav-item-icon': {
-          color: theme.palette.common.white + '!important',
+          color: `${theme.palette.common.white  }!important`,
         },
       },
 
@@ -80,6 +79,5 @@ const useStyles = makeStyles((theme: CremaTheme) => {
       whiteSpace: 'nowrap',
       fontWeight: Fonts.REGULAR,
     },
-  };
-});
+  }));
 export default useStyles;

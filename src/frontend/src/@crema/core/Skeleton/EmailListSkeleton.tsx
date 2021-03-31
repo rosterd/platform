@@ -10,9 +10,8 @@ export const MailItem = () => (
     <rect x='410' y='10' rx='0' ry='0' width='20' height='10' />
   </ContentLoader>
 );
-const EmailListSkeleton = () => {
-  return (
-    <React.Fragment>
+const EmailListSkeleton = () => (
+    <>
       <MailItem />
       <MailItem />
       <MailItem />
@@ -23,8 +22,7 @@ const EmailListSkeleton = () => {
       <MailItem />
       <MailItem />
       <MailItem />
-    </React.Fragment>
+    </>
   );
-};
 
 export default EmailListSkeleton;

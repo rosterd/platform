@@ -17,8 +17,9 @@ import AddIcon from '@material-ui/icons/Add';
 import PublishJobModal from './components/PublishJobModal';
 
 interface TabPanelProps {
+  // eslint-disable-next-line react/require-default-props
   children?: React.ReactNode;
-  index: any;
+  index: number;
   value: any;
 }
 
@@ -41,6 +42,7 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
+      // eslint-disable-next-line react/jsx-props-no-spreading
       {...other}>
       {value === index && (
         <Box p={3}>
@@ -51,7 +53,7 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-const Jobs = () => {
+const Jobs = (): JSX.Element => {
   const classes = useStyles();
   const [tabIndex, setTabIndex] = useState(0);
   const [showJobModal, setShowJobModal] = useState(false);

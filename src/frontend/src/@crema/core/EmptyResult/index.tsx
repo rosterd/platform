@@ -1,8 +1,8 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import IntlMessages from '../../utility/IntlMessages';
 import {makeStyles} from '@material-ui/core/styles';
+import IntlMessages from '../../utility/IntlMessages';
 import {Fonts} from '../../../shared/constants/AppEnums';
 
 const useStyle = makeStyles({

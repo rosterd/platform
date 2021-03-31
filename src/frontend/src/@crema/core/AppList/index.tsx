@@ -21,8 +21,7 @@ const AppList: React.FC<AppListProps> = ({
   data,
   border = false,
   ...props
-}) => {
-  return (
+}) => (
     <ListView
       renderRow={renderRow}
       onEndReached={onEndReached}
@@ -38,6 +37,5 @@ const AppList: React.FC<AppListProps> = ({
       }
     />
   );
-};
 
 export default AppList;

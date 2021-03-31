@@ -11,17 +11,15 @@ const PostItem = () => (
     <rect x='10' y='225' rx='1' ry='1' width='400' height='8' />
   </ContentLoader>
 );
-const FeedPlaceholder = () => {
-  return (
-    <React.Fragment>
+const FeedPlaceholder = () => (
+    <>
       <PostItem />
       <PostItem />
       <PostItem />
       <PostItem />
       <PostItem />
       <PostItem />
-    </React.Fragment>
+    </>
   );
-};
 
 export default FeedPlaceholder;

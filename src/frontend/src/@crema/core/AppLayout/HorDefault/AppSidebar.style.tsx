@@ -2,8 +2,7 @@ import {makeStyles} from '@material-ui/core';
 import {CremaTheme} from '../../../../types/AppContextPropsType';
 import {ThemeMode} from '../../../../shared/constants/AppEnums';
 
-const useStyles = makeStyles((theme: CremaTheme) => {
-  return {
+const useStyles = makeStyles((theme: CremaTheme) => ({
     drawerContainer: {
       paddingLeft: 0,
       paddingTop: 0,
@@ -28,6 +27,5 @@ const useStyles = makeStyles((theme: CremaTheme) => {
       paddingBottom: 32,
       height: 'calc(100vh - 58px) !important',
     },
-  };
-});
+  }));
 export default useStyles;

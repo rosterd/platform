@@ -1,44 +1,44 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import {Form, Formik, useField} from 'formik';
 import * as yup from 'yup';
 import InfoView from '@crema/core/InfoView';
-import IntlMessages from '../../../@crema/utility/IntlMessages';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import {grey} from '@material-ui/core/colors';
 import {makeStyles} from '@material-ui/core';
+import {useIntl} from 'react-intl';
 import {Fonts} from '../../../shared/constants/AppEnums';
 import AppAnimate from '../../../@crema/core/AppAnimate';
-import {useIntl} from 'react-intl';
+import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {
   showMessage,
   useInfoViewActionsContext,
 } from '../../../@crema/core/InfoView/InfoViewContext';
 
-const useStyles = makeStyles(() => {
-  return {
-    form: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      marginBottom: 12,
-    },
-    textField: {
-      width: '100%',
-      marginBottom: 20,
-    },
-    button: {
-      fontWeight: Fonts.BOLD,
-      fontSize: 16,
-      textTransform: 'capitalize',
-    },
-  };
-});
+const useStyles = makeStyles(() => ({
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  textField: {
+    width: '100%',
+    marginBottom: 20,
+  },
+  button: {
+    fontWeight: Fonts.BOLD,
+    fontSize: 16,
+    textTransform: 'capitalize',
+  },
+}));
 const MyTextField = (props: any) => {
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
+  // eslint-disable-next-line react/jsx-props-no-spreading
   return (
     <TextField
       {...props}
@@ -56,7 +56,7 @@ const validationSchema = yup.object({
     .required('Please enter Email Address!'),
 });
 
-const ComingSoon = () => {
+const ComingSoon = (): JSX.Element => {
   const dispatch = useInfoViewActionsContext()!;
 
   const classes = useStyles();
@@ -94,7 +94,7 @@ const ComingSoon = () => {
           </Box>
           <Box mx='auto' mb={5} maxWidth={384}>
             <Formik
-              validateOnChange={true}
+              validateOnChange
               initialValues={{
                 email: '',
               }}
@@ -130,7 +130,7 @@ const ComingSoon = () => {
           </Box>
           <Box mb={5} maxWidth={{xs: 300, sm: 400, xl: 672}} width='100%'>
             <img
-              src={'/assets/images/errorPageImages/comingsoon.png'}
+              src='/assets/images/errorPageImages/comingsoon.png'
               alt='404'
             />
           </Box>

@@ -108,9 +108,7 @@ const AppAnimateGroup = ({
     }, 300);
   };
 
-  const getEnterDelayTime = (index: number) => {
-    return initialAnimationDuration * ((index + 1) / (children.length || 1));
-  };
+  const getEnterDelayTime = (index: number) => initialAnimationDuration * ((index + 1) / (children.length || 1));
   return (
     <>
       {children.length === 0 && removed[0] ? (
@@ -139,7 +137,7 @@ const AppAnimateGroup = ({
             <AnimatedItem
               animation={animation}
               animationProps={animationProps}
-              shown={true}
+              shown
               key={Child.key || i}
               onExited={() => handleExit(Child.key)}
               timeout={{

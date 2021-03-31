@@ -1,11 +1,11 @@
 import React, {CSSProperties, ReactNode} from 'react';
 import Card from '@material-ui/core/Card';
 import {Box, CardHeader, makeStyles} from '@material-ui/core';
-import {Fonts} from '../../../shared/constants/AppEnums';
 import {MessageFormatElement} from 'intl-messageformat-parser';
 import Link from '@material-ui/core/Link';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import {Fonts} from '../../../shared/constants/AppEnums';
 
 const useStyles = makeStyles(() => ({
   link: {

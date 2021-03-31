@@ -15,7 +15,7 @@ const cardRadius = ThemeStyleRadius.STANDARD;
 const defaultConfig: any = {
   theme: {
     spacing: 4,
-    direction: 'ltr', //ltr, rtl
+    direction: 'ltr', // ltr, rtl
     palette: {
       type: ThemeMode.LIGHT,
       background: {

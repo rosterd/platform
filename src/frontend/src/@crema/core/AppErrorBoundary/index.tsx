@@ -27,7 +27,7 @@ class AppErrorBoundary extends React.Component<{}, {hasError: boolean}> {
           flexDirection='column'
           justifyContent='center'
           flex={1}>
-          <img src={'/assets/images/error.png'} alt='Error Info' />
+          <img src="/assets/images/error.png" alt='Error Info' />
           <Box component='h2' fontSize={30} mt={4}>
             Ah! Something went wrong.
           </Box>
@@ -39,9 +39,9 @@ class AppErrorBoundary extends React.Component<{}, {hasError: boolean}> {
           </Box>
         </Box>
       );
-    } else {
+    } 
       return this.props.children;
-    }
+    
   }
 }
 

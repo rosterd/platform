@@ -10,7 +10,7 @@ import ContextProvider from '@crema/utility/ContextProvider';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import InfoViewContextProvider from '@crema/core/InfoView/InfoViewContext';
 
-const App = () => (
+const App = (): JSX.Element => (
   <ContextProvider>
     <InfoViewContextProvider>
       <CremaThemeProvider>

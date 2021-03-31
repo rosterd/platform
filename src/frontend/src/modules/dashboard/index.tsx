@@ -1,24 +1,24 @@
 import React from 'react';
 import AppAnimate from '@crema/core/AppAnimate';
 import {GridContainer} from '@crema';
-import {Grid, Box} from '@material-ui/core';
+import {Grid, Box, Theme} from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import WorkIcon from '@material-ui/icons/Work';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import StatsCard from './components/StatsCard';
 import {isBreakPointDown} from '@crema/utility/Utils';
 import IntlMessages from '@crema/utility/IntlMessages';
 import {red, blue, indigo} from '@material-ui/core/colors';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import {Fonts} from 'shared/constants/AppEnums';
+import StatsCard from './components/StatsCard';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme>(() => ({
   textUppercase: {
     textTransform: 'uppercase',
   },
 }));
 
-const Dashboard = () => {
+const Dashboard = (): JSX.Element => {
   const classes = useStyles();
 
   return (
