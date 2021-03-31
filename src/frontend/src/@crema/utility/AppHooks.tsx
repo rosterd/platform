@@ -1,15 +1,11 @@
 import {useContext, useEffect, useState} from 'react';
 import {AuthType} from '../../shared/constants/AppEnums';
 import {defaultUser} from '../../shared/constants/AppConst';
-import jwtAxios from '../services/ApiConfig';
-import {AuthUser} from '../../types/models/AuthUser';
-import {
-  fetchStart,
-  fetchSuccess,
-  useInfoViewActionsContext,
-} from '../core/InfoView/InfoViewContext';
+import {auth as firebaseAuth} from '../services/auth/firebase/firebase';
+import {useInfoViewActionsContext} from '../core/InfoView/InfoViewContext';
 import AppContext from './AppContext';
 import AppContextPropsType from '../../types/AppContextPropsType';
+import {AuthUser} from '../../types/models/AuthUser';
 
 export const useAuthToken = (): [boolean, AuthUser | null] => {
   const [loading, setLoading] = useState(true);
@@ -17,36 +13,27 @@ export const useAuthToken = (): [boolean, AuthUser | null] => {
   const dispatch = useInfoViewActionsContext()!;
 
   useEffect(() => {
-    const validateAuth = async () => {
-      dispatch(fetchStart());
-      const token = localStorage.getItem('token');
-      if (!token) {
-        dispatch(fetchSuccess());
-        return;
-      }
-      jwtAxios.defaults.headers.common['x-auth-token'] = token;
-      try {
-        const res = await jwtAxios.get('/auth');
-
-        dispatch(fetchSuccess());
-        updateAuthUser({
-          authType: AuthType.JWT_AUTH,
-          displayName: res.data.name,
-          email: res.data.email,
-          role: defaultUser.role,
-          token: res.data._id,
-          uid: res.data._id,
-          photoURL: res.data.avatar,
+    const firebaseCheck = () =>
+      new Promise((resolve) => {
+        firebaseAuth.onAuthStateChanged((authUser: any) => {
+          if (authUser) {
+            updateAuthUser({
+              authType: AuthType.FIREBASE,
+              uid: authUser.uid,
+              displayName: authUser.displayName,
+              email: authUser.email,
+              role: defaultUser.role,
+              photoURL: authUser.photoURL,
+              token: authUser.refreshToken,
+            });
+          }
+          resolve(true);
         });
-        return;
-      } catch (err) {
-        dispatch(fetchSuccess());
-        return;
-      }
-    };
+        return Promise.resolve();
+      });
 
     const checkAuth = () => {
-      Promise.all([validateAuth()]).then(() => {
+      Promise.all([firebaseCheck()]).then(() => {
         setLoading(false);
       });
     };

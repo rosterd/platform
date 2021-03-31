@@ -2,12 +2,12 @@ import React, {useContext} from 'react';
 import {renderRoutes} from 'react-router-config';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import {useLocation} from 'react-router-dom';
+import Box from '@material-ui/core/Box';
 import {AppSuspense} from '../../index';
 import routes from '../../../modules';
 import Scrollbar from '../Scrollbar';
 import AppContext from '../../utility/AppContext';
 import AppFooter from '../AppLayout/AppFooter';
-import Box from '@material-ui/core/Box';
 import {RouteTransition} from '../../../shared/constants/AppEnums';
 import AppErrorBoundary from '../AppErrorBoundary';
 import AppContextPropsType from '../../../types/AppContextPropsType';
@@ -34,8 +34,7 @@ const TransitionWrapper: React.FC<TransitionWrapperProps> = ({children}) => {
   );
 };
 
-const ContentView = () => {
-  return (
+const ContentView = () => (
     <Scrollbar>
       <Box
         display='flex'
@@ -51,6 +50,5 @@ const ContentView = () => {
       <AppFooter />
     </Scrollbar>
   );
-};
 
 export default ContentView;

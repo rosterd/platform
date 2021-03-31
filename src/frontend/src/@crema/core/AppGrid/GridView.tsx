@@ -99,11 +99,11 @@ const GridView: React.FC<GridViewProps> = ({
       if (responsive) {
         if (width === 'xs') {
           return responsive.xs || column;
-        } else if (width === 'sm') {
+        } if (width === 'sm') {
           return responsive.sm || responsive.xs || column;
-        } else if (width === 'md') {
+        } if (width === 'md') {
           return responsive.md || responsive.sm || responsive.xs || column;
-        } else if (width === 'lg') {
+        } if (width === 'lg') {
           return (
             responsive.lg ||
             responsive.md ||
@@ -111,7 +111,7 @@ const GridView: React.FC<GridViewProps> = ({
             responsive.xs ||
             column
           );
-        } else if (width === 'xl') {
+        } if (width === 'xl') {
           return (
             responsive.xl ||
             responsive.lg ||
@@ -141,7 +141,7 @@ const GridView: React.FC<GridViewProps> = ({
         <AppAnimateGroup>
           {data.length > 0
             ? data.map((item: any, index: number) => (
-                <Box key={'grid-' + index} className={classes.columnCount}>
+                <Box key={`grid-${  index}`} className={classes.columnCount}>
                   {renderRow(item, index)}
                 </Box>
               ))

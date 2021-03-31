@@ -3,8 +3,8 @@ import Box from '@material-ui/core/Box';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import {ListItem, makeStyles} from '@material-ui/core';
-import {Fonts} from '../../../shared/constants/AppEnums';
 import clsx from 'clsx';
+import {Fonts} from '../../../shared/constants/AppEnums';
 import {NotificationData} from '../../services/db/notifications/notification';
 
 const useStyles = makeStyles(() => ({

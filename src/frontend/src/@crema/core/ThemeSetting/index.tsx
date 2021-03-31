@@ -1,24 +1,24 @@
 import React, {useContext, useState} from 'react';
-import AppContext from '../../utility/AppContext';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import PrimaryColorPicker from './PrimaryColorPicker';
-import SecondaryColorPicker from './SecondaryColorPicker';
 import IconButton from '@material-ui/core/IconButton';
 import Drawer from '@material-ui/core/Drawer';
-import SidebarColorPicker from './SidebarColorPicker';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
-import {layoutTypes, navStyles} from '../../services/db/navigationStyle';
 import clsx from 'clsx';
-import {Scrollbar} from '../../index';
 import Box from '@material-ui/core/Box';
+import CheckIcon from '@material-ui/icons/Check';
+import {layoutTypes, navStyles} from '../../services/db/navigationStyle';
+import {Scrollbar} from '../../index';
 import IntlMessages from '../../utility/IntlMessages';
 import useStyles from './index.style';
-import CheckIcon from '@material-ui/icons/Check';
+import SidebarColorPicker from './SidebarColorPicker';
+import SecondaryColorPicker from './SecondaryColorPicker';
+import PrimaryColorPicker from './PrimaryColorPicker';
+import AppContext from '../../utility/AppContext';
 import themeColorSets from '../../../shared/constants/ColorSets';
 import CustomColorCell from './CustomColorCell';
 import {
@@ -131,7 +131,7 @@ const ThemeSetting: React.FC<ThemeSettingProps> = () => {
               </Box>
               <ToggleButtonGroup
                 value={themeStyle}
-                exclusive={true}
+                exclusive
                 onChange={onStyleChange}
                 aria-label='text alignment'>
                 <ToggleButton
@@ -263,8 +263,7 @@ const ThemeSetting: React.FC<ThemeSettingProps> = () => {
                 <IntlMessages id='customizer.navigationStyles' />
               </Box>
               <Box className={classes.navOption}>
-                {navStyles.map((navLayout) => {
-                  return (
+                {navStyles.map((navLayout) => (
                     <Box className={classes.navOptionItem} key={navLayout.id}>
                       <Box
                         className={classes.navOptionContent}
@@ -279,8 +278,7 @@ const ThemeSetting: React.FC<ThemeSettingProps> = () => {
                         ) : null}
                       </Box>
                     </Box>
-                  );
-                })}
+                  ))}
               </Box>
             </Box>
 
@@ -289,8 +287,7 @@ const ThemeSetting: React.FC<ThemeSettingProps> = () => {
                 <IntlMessages id='customizer.layoutTypes' />
               </Box>
               <Box className={classes.navOption}>
-                {layoutTypes.map((layout) => {
-                  return (
+                {layoutTypes.map((layout) => (
                     <Box className={classes.navOptionItem} key={layout.id}>
                       <Box
                         className={classes.navOptionContent}
@@ -305,8 +302,7 @@ const ThemeSetting: React.FC<ThemeSettingProps> = () => {
                         ) : null}
                       </Box>
                     </Box>
-                  );
-                })}
+                  ))}
               </Box>
             </Box>
 

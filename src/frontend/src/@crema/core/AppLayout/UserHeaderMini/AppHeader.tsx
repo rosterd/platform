@@ -6,16 +6,16 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import LanguageSwitcher from '../../LanguageSwitcher';
 import Hidden from '@material-ui/core/Hidden';
 import Box from '@material-ui/core/Box';
+import clsx from 'clsx';
+import LanguageSwitcher from '../../LanguageSwitcher';
 import SearchBar from '../../SearchBar';
 import useStyles from './AppHeader.style';
 import HeaderMessages from '../../HeaderMessages';
 import Notifications from '../../Notifications';
 import AppLogo from '../../../../shared/components/AppLogo';
 import HeaderUser from '../../../../shared/components/HeaderUser';
-import clsx from 'clsx';
 import {
   toggleNavCollapsed,
   useLayoutActionsContext,

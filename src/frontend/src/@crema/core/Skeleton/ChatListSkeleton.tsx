@@ -8,9 +8,8 @@ export const ChatItemItem = () => (
     <rect x='45' y='22' rx='1' ry='1' width='100' height='7' />
   </ContentLoader>
 );
-const ChatListSkeleton = () => {
-  return (
-    <React.Fragment>
+const ChatListSkeleton = () => (
+    <>
       <ChatItemItem />
       <ChatItemItem />
       <ChatItemItem />
@@ -21,8 +20,7 @@ const ChatListSkeleton = () => {
       <ChatItemItem />
       <ChatItemItem />
       <ChatItemItem />
-    </React.Fragment>
+    </>
   );
-};
 
 export default ChatListSkeleton;

@@ -2,8 +2,7 @@ import {makeStyles} from '@material-ui/core';
 import {ThemeMode} from '../../../../shared/constants/AppEnums';
 import {CremaTheme} from '../../../../types/AppContextPropsType';
 
-const useStyles = makeStyles((theme: CremaTheme) => {
-  return {
+const useStyles = makeStyles((theme: CremaTheme) => ({
     bitBucketSidebar: {
       width: '19rem',
       display: 'flex',
@@ -73,6 +72,5 @@ const useStyles = makeStyles((theme: CremaTheme) => {
       color: 'white',
       overflow: 'hidden',
     },
-  };
-});
+  }));
 export default useStyles;

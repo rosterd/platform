@@ -5,8 +5,7 @@ import NoSsr from '@material-ui/core/NoSsr';
 
 interface LoaderProps {}
 
-const Loader: React.FC<LoaderProps> = () => {
-  return (
+const Loader: React.FC<LoaderProps> = () => (
     <NoSsr>
       <Box
         height='100%'
@@ -23,6 +22,5 @@ const Loader: React.FC<LoaderProps> = () => {
       </Box>
     </NoSsr>
   );
-};
 
 export default Loader;

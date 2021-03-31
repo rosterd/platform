@@ -1,5 +1,6 @@
 import React, {useContext, useReducer} from 'react';
 import {contextReducer, InFoViewActions} from './InfoViewReducer';
+
 export interface InfoViewTypes {
   error: string;
   loading: boolean;

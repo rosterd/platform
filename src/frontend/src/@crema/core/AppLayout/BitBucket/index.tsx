@@ -1,10 +1,10 @@
 import React, {ReactNode, useContext, useState} from 'react';
-import AppSidebar from './AppSidebar';
-import {AppContext, ContentView, ThemeSetting} from '../../../index';
 import Hidden from '@material-ui/core/Hidden';
 import Box from '@material-ui/core/Box';
-import AppHeader from './AppHeader';
 import clsx from 'clsx';
+import AppSidebar from './AppSidebar';
+import {AppContext, ContentView, ThemeSetting} from '../../../index';
+import AppHeader from './AppHeader';
 import useStyles from './index.style';
 import {LayoutType} from '../../../../shared/constants/AppEnums';
 

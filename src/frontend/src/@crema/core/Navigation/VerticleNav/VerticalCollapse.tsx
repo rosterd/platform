@@ -8,9 +8,9 @@ import {
 } from '@material-ui/core';
 import {useLocation} from 'react-router-dom';
 import clsx from 'clsx';
+import Box from '@material-ui/core/Box';
 import VerticalItem from './VerticalItem';
 import AppContext from '../../../utility/AppContext';
-import Box from '@material-ui/core/Box';
 import IntlMessages from '../../../utility/IntlMessages';
 import useStyles from './VerticalCollapase.style';
 import {checkPermission} from '../../../utility/Utils';

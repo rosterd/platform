@@ -1,8 +1,7 @@
 import {makeStyles} from '@material-ui/core';
 import {CremaTheme} from '../../../../types/AppContextPropsType';
 
-const useStyles = makeStyles((theme: CremaTheme) => {
-  return {
+const useStyles = makeStyles((theme: CremaTheme) => ({
     appMain: {
       height: '100vh',
       display: 'flex',
@@ -94,6 +93,5 @@ const useStyles = makeStyles((theme: CremaTheme) => {
         },
       },
     },
-  };
-});
+  }));
 export default useStyles;

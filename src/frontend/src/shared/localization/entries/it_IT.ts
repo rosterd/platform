@@ -1,5 +1,5 @@
-import saMessages from '../locales/it_IT.json';
 import {itIT} from '@material-ui/core/locale';
+import saMessages from '../locales/it_IT.json';
 
 const saLang = {
   messages: {

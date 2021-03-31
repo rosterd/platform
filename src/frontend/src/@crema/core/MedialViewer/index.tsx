@@ -3,10 +3,10 @@ import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import Box from '@material-ui/core/Box';
 import Slider from 'react-slick';
-import useStyles from './index.style';
 import Zoom from '@material-ui/core/Zoom';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import {TransitionProps} from '@material-ui/core/transitions';
+import useStyles from './index.style';
 
 const settings: {
   dots: boolean;
@@ -35,7 +35,7 @@ const renderRow = (data: any, index: number) => {
         alt={data.name ? data.name : 'detail view'}
       />
     );
-  } else {
+  } 
     return (
       <Box className='embed-responsive'>
         <iframe
@@ -45,14 +45,12 @@ const renderRow = (data: any, index: number) => {
         />
       </Box>
     );
-  }
+  
 };
-const Transition = React.forwardRef(function Transition(
+const Transition = React.forwardRef((
   props: TransitionProps & {children?: React.ReactElement<any, any>},
   ref: React.Ref<unknown>,
-) {
-  return <Zoom ref={ref} {...props} />;
-});
+) => <Zoom ref={ref} {...props} />);
 
 interface MediaViewerProps {
   index: number;

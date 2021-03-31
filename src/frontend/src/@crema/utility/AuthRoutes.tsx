@@ -29,7 +29,10 @@ const AuthRoutes: React.FC<AuthRoutesProps> = ({children}) => {
 
   const [loading, user] = useAuthToken();
   const currentRoute = matchRoutes(routes, pathname)[0].route;
-  let isPermitted = checkPermission(currentRoute.auth, user ? user.role : null);
+  const isPermitted = checkPermission(
+    currentRoute.auth,
+    user ? user.role : null,
+  );
 
   useEffect(() => {
     function setInitPath() {
@@ -68,7 +71,7 @@ const AuthRoutes: React.FC<AuthRoutesProps> = ({children}) => {
         setRTL(true);
       }
       if (query.style) {
-        updateThemeStyle!(query.style as ThemeStyle);
+        updateThemeStyle?.(query.style as ThemeStyle);
       }
     }
 
@@ -91,7 +94,7 @@ const AuthRoutes: React.FC<AuthRoutesProps> = ({children}) => {
         ) {
           history.push(initialUrl);
         } else {
-          // @ts-ignore
+          // eslint-disable-next-line no-lonely-if
           if (
             initialPath &&
             initialUrl !== initialPath &&

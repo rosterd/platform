@@ -11,9 +11,8 @@ export const TodoItem = () => (
     <circle cx='390' cy='15' r='5' />
   </ContentLoader>
 );
-const TodoListSkeleton = () => {
-  return (
-    <React.Fragment>
+const TodoListSkeleton = () => (
+    <>
       <TodoItem />
       <TodoItem />
       <TodoItem />
@@ -24,8 +23,7 @@ const TodoListSkeleton = () => {
       <TodoItem />
       <TodoItem />
       <TodoItem />
-    </React.Fragment>
+    </>
   );
-};
 
 export default TodoListSkeleton;
