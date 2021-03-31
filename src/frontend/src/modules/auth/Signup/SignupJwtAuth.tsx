@@ -8,17 +8,17 @@ import * as yup from 'yup';
 import InfoView from '@crema/core/InfoView';
 import {Link} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
-import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
-import {AuthType, Fonts} from '../../../shared/constants/AppEnums';
 import Grid from '@material-ui/core/Grid';
-import {GridContainer} from '../../../@crema';
 import grey from '@material-ui/core/colors/grey';
+import {useIntl} from 'react-intl';
+import {AuthType, Fonts} from '../../../shared/constants/AppEnums';
+import {GridContainer} from '../../../@crema';
 import AppContextPropsType, {
   CremaTheme,
 } from '../../../types/AppContextPropsType';
-import {useIntl} from 'react-intl';
+import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {
   fetchError,
   fetchStart,
@@ -141,7 +141,7 @@ const SignupFirebase: React.FC<{}> = () => {
         display='flex'
         flexDirection='column'>
         <Formik
-          validateOnChange={true}
+          validateOnChange
           initialValues={{
             name: '',
             email: '',

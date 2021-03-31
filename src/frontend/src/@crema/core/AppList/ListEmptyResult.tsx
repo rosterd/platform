@@ -46,10 +46,8 @@ const ListEmptyResult: React.FC<ListEmptyResultProps> = ({
   const classes = useStyles();
   if (loading || loader) {
     return (
-      <React.Fragment>
-        {placeholder ? (
-          placeholder
-        ) : (
+      <>
+        {placeholder || (
           <Box className={clsx(classes.emptyListContainer, classes.flexRow)}>
             <CircularProgress size={16} />
             <Box component='span' ml={2}>
@@ -57,9 +55,9 @@ const ListEmptyResult: React.FC<ListEmptyResultProps> = ({
             </Box>
           </Box>
         )}
-      </React.Fragment>
+      </>
     );
-  } else {
+  } 
     return (
       <Box className={classes.emptyListContainer}>
         {title ? (
@@ -82,7 +80,7 @@ const ListEmptyResult: React.FC<ListEmptyResultProps> = ({
         ) : null}
       </Box>
     );
-  }
+  
 };
 
 export default ListEmptyResult;

@@ -49,7 +49,7 @@ const AppSelect: React.FC<AppSelectProps> = ({
       defaultValue={defaultValue}
       value={selectionType}
       onChange={handleSelectionType}
-      disableUnderline={true}
+      disableUnderline
       className={clsx(classes.selectBox, 'select-box')}>
       {menus.map((menu: any, index: number) => (
         <MenuItem

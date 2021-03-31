@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
 import {Box} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
+import Hidden from '@material-ui/core/Hidden';
 import AppContext from '../../../@crema/utility/AppContext';
 import {ThemeMode} from '../../constants/AppEnums';
-import Hidden from '@material-ui/core/Hidden';
 import AppContextPropsType from '../../../types/AppContextPropsType';
 
 const AppLogo = () => {

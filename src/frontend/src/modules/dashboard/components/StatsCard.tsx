@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {makeStyles} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
@@ -24,20 +24,18 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
 }));
 
 interface StatsCardProps {
-  icon: ReactNode;
+  icon: JSX.Element;
   bgColor: string;
-  heading: any;
+  heading: JSX.Element;
   data: {
     count: string;
   };
 }
 
-const StatsCard: React.FC<StatsCardProps> = ({
-  icon,
-  bgColor = '',
-  data,
-  heading,
-}) => {
+const StatsCard: React.FC<StatsCardProps> = (
+  props: StatsCardProps,
+): JSX.Element => {
+  const {icon, bgColor = '', data, heading} = props;
   const classes = useStyles({bgColor});
 
   return (

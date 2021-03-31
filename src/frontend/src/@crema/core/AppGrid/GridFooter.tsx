@@ -37,13 +37,13 @@ const GridFooter: React.FC<GridFooterProps> = ({
         </Box>
       </Box>
     );
-  } else {
+  } 
     return (
       <Box className={clsx(classes.listFooterRoot, 'list-footer')}>
         <Box component='p'>{footerText}</Box>
       </Box>
     );
-  }
+  
 };
 
 export default GridFooter;

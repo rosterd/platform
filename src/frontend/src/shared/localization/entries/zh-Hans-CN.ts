@@ -1,5 +1,5 @@
-import zhMessages from '../locales/zh-Hans.json';
 import {zhCN} from '@material-ui/core/locale';
+import zhMessages from '../locales/zh-Hans.json';
 
 const ZhLan = {
   messages: {

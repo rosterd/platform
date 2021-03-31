@@ -1,8 +1,8 @@
 import React, {useContext} from 'react';
 import Box from '@material-ui/core/Box';
+import CheckIcon from '@material-ui/icons/Check';
 import useStyles from './CustomColorCell.style';
 import {AppContext} from '../../index';
-import CheckIcon from '@material-ui/icons/Check';
 import IntlMessages from '../../utility/IntlMessages';
 import {ThemeMode} from '../../../shared/constants/AppEnums';
 import AppContextPropsType from '../../../types/AppContextPropsType';

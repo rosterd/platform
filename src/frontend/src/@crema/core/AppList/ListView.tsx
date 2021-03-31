@@ -75,7 +75,7 @@ const ListView: React.FC<ListViewProps> = ({
     <Box style={{...style}} {...rest} flex={1}>
       <AppAnimateGroup>
         {data.map((item: any, index: number) => (
-          <Box key={'list-item-' + index}>{renderRow(item, index)}</Box>
+          <Box key={`list-item-${  index}`}>{renderRow(item, index)}</Box>
         ))}
       </AppAnimateGroup>
       {data.length === 0 ? getEmptyContainer(ListEmptyComponent) : null}

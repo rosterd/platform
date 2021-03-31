@@ -18,8 +18,7 @@ const AppsPagination: React.FC<AppsPaginationProps> = ({
   onPageChange,
   rowsPerPage = 15,
   className = '',
-}) => {
-  return (
+}) => (
     <TablePagination
       component='div'
       count={count}
@@ -32,6 +31,5 @@ const AppsPagination: React.FC<AppsPaginationProps> = ({
       rowsPerPageOptions={[]}
     />
   );
-};
 
 export default AppsPagination;

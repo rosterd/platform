@@ -5,8 +5,8 @@ import AppAnimate from '@crema/core/AppAnimate';
 import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
-import AddResourceModal from './components/AddResourceModal';
 import AddIcon from '@material-ui/icons/Add';
+import AddResourceModal from './components/AddResourceModal';
 
 const useStyles = makeStyles(() => ({
   materialTable: {

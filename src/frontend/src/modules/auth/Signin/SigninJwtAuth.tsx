@@ -4,14 +4,14 @@ import Button from '@material-ui/core/Button';
 import {Checkbox} from '@material-ui/core';
 import {Form, Formik, useField} from 'formik';
 import * as yup from 'yup';
-import InfoView from '../../../@crema/core/InfoView';
 import Box from '@material-ui/core/Box';
-import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {useIntl} from 'react-intl';
 import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import {Link, useHistory} from 'react-router-dom';
 import {AuthType, Fonts} from 'shared/constants/AppEnums';
+import IntlMessages from '../../../@crema/utility/IntlMessages';
+import InfoView from '../../../@crema/core/InfoView';
 import AppContextPropsType, {
   CremaTheme,
 } from '../../../types/AppContextPropsType';
@@ -139,7 +139,7 @@ const SigninJwtAuth: React.FC<UserSigninProps> = (props) => {
         display='flex'
         flexDirection='column'>
         <Formik
-          validateOnChange={true}
+          validateOnChange
           initialValues={{
             email: 'crema.demo@gmail.com',
             password: 'Pass@1!@all',

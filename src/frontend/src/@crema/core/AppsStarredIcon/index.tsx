@@ -8,8 +8,7 @@ interface AppsStarredIconProps {
   onChange: (checked: boolean, item: any) => void;
 }
 
-const AppsStarredIcon: React.FC<AppsStarredIconProps> = ({item, onChange}) => {
-  return (
+const AppsStarredIcon: React.FC<AppsStarredIconProps> = ({item, onChange}) => (
     <Checkbox
       icon={<StarBorderIcon />}
       checkedIcon={<StarIcon />}
@@ -17,6 +16,5 @@ const AppsStarredIcon: React.FC<AppsStarredIconProps> = ({item, onChange}) => {
       onChange={(event) => onChange(event.target.checked, item)}
     />
   );
-};
 
 export default AppsStarredIcon;

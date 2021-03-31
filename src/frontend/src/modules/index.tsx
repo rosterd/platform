@@ -2,7 +2,7 @@ import React, {LazyExoticComponent} from 'react';
 import {Redirect} from 'react-router-dom';
 
 import {createRoutes} from '../@crema/utility/Utils';
-import {errorPagesConfigs} from './errorPages';
+import errorPagesConfigs from './errorPages';
 import {authRouteConfig} from './auth';
 import {initialUrl} from '../shared/constants/AppConst';
 
@@ -11,15 +11,14 @@ interface PageRouteConfig {
   component: LazyExoticComponent<any>;
 }
 
-const buildRouteConfigs = (routes: PageRouteConfig[]) => {
-  return routes.map((route) => {
+const buildRouteConfigs = (routes: PageRouteConfig[]) =>
+  routes.map((route) => {
     const {path, component} = route;
     return {
       auth: ['user'],
       routes: [{path, component}],
     };
   });
-};
 
 const pageRouteConfigs: PageRouteConfig[] = [
   {
@@ -57,10 +56,10 @@ const routes = [
   {
     path: '/',
     exact: true,
-    component: () => <Redirect to={initialUrl} />,
+    component: (): JSX.Element => <Redirect to={initialUrl} />,
   },
   {
-    component: () => <Redirect to='/error-pages/error-404' />,
+    component: (): JSX.Element => <Redirect to='/error-pages/error-404' />,
   },
 ];
 

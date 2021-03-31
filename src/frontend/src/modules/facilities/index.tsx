@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import MaterialTable from 'material-table';
 import Box from '@material-ui/core/Box';
 import AppAnimate from '@crema/core/AppAnimate';
 import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
-import AddFacilityModal from './components/AddFacilityModal';
 import AddIcon from '@material-ui/icons/Add';
+import {Facility, getFacilities} from 'shared/services/facilities.api';
+import AddFacilityModal from './components/AddFacilityModal';
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -19,9 +20,20 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Facilities = () => {
+const initialState: Facility[] = [];
+
+const Facilities: React.FC = (): JSX.Element => {
   const classes = useStyles();
+  const [facilities, setFacilities] = useState(initialState);
   const [showAddFacility, setShowAddFacility] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const {data} = await getFacilities();
+      setFacilities(data);
+    })();
+  }, []);
+
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <Box>
@@ -59,18 +71,7 @@ const Facilities = () => {
               {title: 'Suburb', field: 'suburb'},
               {title: 'City', field: 'city'},
             ]}
-            data={[
-              {
-                name: 'Mehmet',
-                suburb: 'New Lynn',
-                city: 'Auckland',
-              },
-              {
-                name: 'FacilityY',
-                suburb: 'Mt Eden',
-                city: 'Auckland',
-              },
-            ]}
+            data={facilities}
           />
         </Box>
         <AddFacilityModal

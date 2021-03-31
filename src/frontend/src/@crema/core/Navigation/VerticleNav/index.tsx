@@ -8,22 +8,18 @@ import VerticalNavGroup from './VerticalNavGroup';
 
 interface NavigationProps {}
 
-const Navigation: React.FC<NavigationProps> = () => {
-  return (
-    <List>
-      {routesConfig.map((item: NavItemProps) => (
-        <React.Fragment key={item.id}>
-          {item.type === 'group' && <VerticalNavGroup item={item} level={0} />}
+const Navigation: React.FC<NavigationProps> = () => (
+  <List>
+    {routesConfig.map((item: NavItemProps) => (
+      <React.Fragment key={item.id}>
+        {item.type === 'group' && <VerticalNavGroup item={item} level={0} />}
 
-          {item.type === 'collapse' && (
-            <VerticalCollapse item={item} level={0} />
-          )}
+        {item.type === 'collapse' && <VerticalCollapse item={item} level={0} />}
 
-          {item.type === 'item' && <VerticalItem item={item} level={0} />}
-        </React.Fragment>
-      ))}
-    </List>
-  );
-};
+        {item.type === 'item' && <VerticalItem item={item} level={0} />}
+      </React.Fragment>
+    ))}
+  </List>
+);
 
 export default Navigation;

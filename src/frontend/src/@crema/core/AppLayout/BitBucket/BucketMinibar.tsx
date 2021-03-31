@@ -4,10 +4,10 @@ import SearchIcon from '@material-ui/icons/Search';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SmsIcon from '@material-ui/icons/Sms';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
-import LanguageSwitcher from '../../LanguageSwitcher';
 import Box from '@material-ui/core/Box';
 import {makeStyles} from '@material-ui/core';
 import clsx from 'clsx';
+import LanguageSwitcher from '../../LanguageSwitcher';
 import {CremaTheme} from '../../../../types/AppContextPropsType';
 
 const useStyles = makeStyles((theme: CremaTheme) => ({
@@ -57,7 +57,7 @@ export default function PrimarySearchAppBar() {
           aria-label='show 17 new notifications'>
           <img
             className={classes.logoRoot}
-            src={'/assets/images/logo-icon-large.png'}
+            src="/assets/images/logo-icon-large.png"
             alt='crema-logo'
           />
         </IconButton>
@@ -67,7 +67,7 @@ export default function PrimarySearchAppBar() {
           aria-label='show 17 new notifications'>
           <SearchIcon className={classes.icon} />
         </IconButton>
-        <LanguageSwitcher iconOnly={true} />
+        <LanguageSwitcher iconOnly />
         <IconButton
           className={classes.bucketMiniBtn}
           aria-label='show 4 new mails'>

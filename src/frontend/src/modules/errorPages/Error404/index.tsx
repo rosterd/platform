@@ -1,28 +1,26 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import {useHistory} from 'react-router-dom';
-import IntlMessages from '../../../@crema/utility/IntlMessages';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import {grey} from '@material-ui/core/colors';
 import {makeStyles} from '@material-ui/core';
+import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../shared/constants/AppEnums';
 import {initialUrl} from '../../../shared/constants/AppConst';
 import AppAnimate from '../../../@crema/core/AppAnimate';
 
-const useStyles = makeStyles(() => {
-  return {
-    button: {
-      fontWeight: Fonts.BOLD,
-      fontSize: 16,
-      textTransform: 'capitalize',
-    },
-    image: {
-      width: '100%',
-    },
-  };
-});
-const Error404 = () => {
+const useStyles = makeStyles(() => ({
+  button: {
+    fontWeight: Fonts.BOLD,
+    fontSize: 16,
+    textTransform: 'capitalize',
+  },
+  image: {
+    width: '100%',
+  },
+}));
+const Error404 = (): JSX.Element => {
   const history = useHistory();
 
   const onGoBackToHome = () => {
@@ -47,7 +45,7 @@ const Error404 = () => {
           maxWidth={{xs: 200, sm: 300, xl: 706}}>
           <img
             className={classes.image}
-            src={'/assets/images/errorPageImages/404.png'}
+            src='/assets/images/errorPageImages/404.png'
             alt='404'
           />
         </Box>

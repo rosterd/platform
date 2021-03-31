@@ -5,7 +5,5 @@ import {jssPreset, StylesProvider} from '@material-ui/core/styles';
 // Configure JSS
 const jss = create({plugins: [...jssPreset().plugins, rtl()]});
 
-const CremaStyleProvider: React.FC<React.ReactNode> = (props) => {
-  return <StylesProvider jss={jss}>{props.children}</StylesProvider>;
-};
+const CremaStyleProvider: React.FC<React.ReactNode> = (props) => <StylesProvider jss={jss}>{props.children}</StylesProvider>;
 export default CremaStyleProvider;

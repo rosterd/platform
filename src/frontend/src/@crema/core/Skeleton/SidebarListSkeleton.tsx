@@ -7,17 +7,15 @@ const SidebarItem = () => (
     <rect x='35' y='12' rx='2' ry='2' width='100' height='15' />
   </ContentLoader>
 );
-const SidebarListSkeleton = () => {
-  return (
-    <React.Fragment>
+const SidebarListSkeleton = () => (
+    <>
       <SidebarItem />
       <SidebarItem />
       <SidebarItem />
       <SidebarItem />
       <SidebarItem />
       <SidebarItem />
-    </React.Fragment>
+    </>
   );
-};
 
 export default SidebarListSkeleton;

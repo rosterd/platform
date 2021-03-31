@@ -31,7 +31,7 @@ const VerticalNavGroup: React.FC<VerticalNavGroupProps> = ({item, level}) => {
       <ListItem
         component='li'
         className={clsx(classes.navItem, 'nav-item nav-item-header')}>
-        {<IntlMessages id={item.messageId} />}
+        <IntlMessages id={item.messageId} />
       </ListItem>
 
       {item.children && Array.isArray(item.children) && (

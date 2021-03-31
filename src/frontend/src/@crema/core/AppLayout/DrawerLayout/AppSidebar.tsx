@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import clsx from 'clsx';
+import Box from '@material-ui/core/Box';
 import UserInfo from '../../../../shared/components/UserInfo';
 import Navigation from '../../Navigation/VerticleNav';
-import Box from '@material-ui/core/Box';
 import useStyles from './AppSidebar.style';
 import Scrollbar from '../../Scrollbar';
 import AppContext from '../../../utility/AppContext';
