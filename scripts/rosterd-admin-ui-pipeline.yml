@@ -1,1 +1,73 @@
-//TODO:
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - rosterd/scripts/rosterd-admin-ui-pipeline.yml
+      - rosterd/src/frontend
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+- stage: Build
+  jobs:
+  - job: build
+    pool:
+      vmImage: 'windows-latest'
+
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14.x'
+      displayName: 'Install Node.js'
+
+    - task: Npm@1
+      displayName: 'npm install'
+      inputs:
+        workingDir: 'rosterd\src\frontend'
+        command: install
+
+    - task: Npm@1
+      displayName: 'npm build'
+      inputs:
+        workingDir: 'rosterd\src\frontend'
+        command: custom
+        customCommand: run-script build
+        
+
+    - task: CopyFiles@2
+      displayName: 'Copy Files'
+      inputs:
+        SourceFolder: 'rosterd\src\frontend\build'
+        TargetFolder: '$(build.artifactstagingdirectory)'
+        CleanTargetFolder: true
+
+    - task: PublishBuildArtifacts@1      
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+        ArtifactName: 'build'
+
+- stage: Deploy To Dev
+  jobs:
+  - deployment: deploy
+    pool:
+      vmImage: 'windows-latest'
+    variables:
+      storageaccountname: strosterdstoragedev 
+    environment: 'Deploy to Storage'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: build
+            
+          - task: AzureFileCopy@3
+            inputs:
+              sourcePath: $(Pipeline.Workspace)/build
+              azureSubscription: 'AzureRM'
+              destination: azureBlob
+              storage: $(storageaccountname)
+              containerName: "$web"

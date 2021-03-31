@@ -39,7 +39,7 @@ namespace Rosterd.Client.Api.ServiceRegistrations
 
             //Db contexts
             services.AddScoped<IRosterdDbContext, RosterdDbContext>();
-            services.AddScoped<IAzureTableStorage>(s => new AzureTableStorage(config.GetSection("ConnectionStrings:TableStorageConnectionString").Value));
+            services.AddScoped<IAzureTableStorage>(s => new AzureTableStorage(config.GetConnectionString("TableStorageConnectionString")));
         }
 
         public static void RegisterDatabaseDependencies(this IServiceCollection services, IConfiguration config, IWebHostEnvironment hostingEnvironment)
