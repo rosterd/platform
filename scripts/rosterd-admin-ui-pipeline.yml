@@ -50,7 +50,7 @@ stages:
   jobs:
   - deployment: deploy
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: 'windows-latest'
     variables:
       storageaccountname: strosterdstoragedev 
     environment: 'Deploy to Storage'
