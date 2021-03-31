@@ -29,7 +29,7 @@ stages:
         npm install
         npm run build
       displayName: 'npm install and build'
-      workingDirectory: 'rosterd/src/frontend'
+      #workingDirectory: 'rosterd/src/frontend'
 
     - task: CopyFiles@2
       displayName: 'Copy Files'
