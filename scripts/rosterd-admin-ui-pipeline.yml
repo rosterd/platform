@@ -8,14 +8,14 @@ trigger:
       - rosterd/src/frontend
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 stages:
 - stage: Build
   jobs:
   - job: build
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
 
     steps:
     - task: NodeTool@0
@@ -23,24 +23,16 @@ stages:
         versionSpec: '14.x'
       displayName: 'Install Node.js'
 
-    - task: Npm@1
-      displayName: 'npm install'
-      inputs:
-        workingDir: 'rosterd\src\frontend'
-        command: install
-
-    - task: Npm@1
-      displayName: 'npm build'
-      inputs:
-        workingDir: 'rosterd\src\frontend'
-        command: custom
-        customCommand: run-script build
-        
+    - script: |
+        npm install
+        npm run build
+      displayName: 'npm install and build'
+      workingDirectory: 'rosterd/src/frontend'
 
     - task: CopyFiles@2
       displayName: 'Copy Files'
       inputs:
-        SourceFolder: 'rosterd\src\frontend\build'
+        SourceFolder: 'rosterd/src/frontend/build'
         TargetFolder: '$(build.artifactstagingdirectory)'
         CleanTargetFolder: true
 
@@ -53,7 +45,7 @@ stages:
   jobs:
   - deployment: deploy
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
     variables:
       storageaccountname: strosterdstoragedev 
     environment: 'Deploy to Storage'
@@ -63,11 +55,11 @@ stages:
           steps:
           - download: current
             artifact: build
-            
-          - task: AzureFileCopy@3
+              
+          - task: AzureFileCopy@4
             inputs:
               sourcePath: $(Pipeline.Workspace)/build
-              azureSubscription: 'AzureRM'
-              destination: azureBlob
-              storage: $(storageaccountname)
-              containerName: "$web"
+              azureSubscription: 'Visual Studio Premium with MSDN (6d23c094-f45f-421c-9f59-fe097a0bcdc5)'
+              Destination: 'AzureBlob'
+              storage: 'strosterdstoragedev'
+              ContainerName: '$web'
