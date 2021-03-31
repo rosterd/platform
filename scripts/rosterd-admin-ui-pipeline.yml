@@ -36,7 +36,7 @@ stages:
     - task: CopyFiles@2
       displayName: 'Copy Files'
       inputs:
-        SourceFolder: 'rosterd/src/frontend/build'
+        SourceFolder: 'src/frontend/build'
         TargetFolder: '$(build.artifactstagingdirectory)'
         CleanTargetFolder: true
 
