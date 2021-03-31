@@ -41,7 +41,8 @@ stages:
         PathtoPublish: '$(build.artifactstagingdirectory)'
         ArtifactName: 'build'
 
-- stage: Deploy To Dev
+- stage: DeployToDev
+  displayName: Deploy To Dev    
   jobs:
   - deployment: deploy
     pool:
