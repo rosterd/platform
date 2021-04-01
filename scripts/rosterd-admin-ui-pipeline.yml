@@ -4,8 +4,6 @@ trigger:
       - main
   paths:
     include:
-      - rosterd/scripts/rosterd-admin-ui-pipeline.yml
-      - rosterd/src/frontend
       - scripts/rosterd-admin-ui-pipeline.yml
       - src/frontend
 
@@ -26,8 +24,6 @@ stages:
       displayName: 'Install Node.js'
 
     - script: |
-        pwd
-        ls -lA
         npm install
         npm run build
       displayName: 'npm install and build'
