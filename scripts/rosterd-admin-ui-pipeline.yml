@@ -68,10 +68,10 @@ stages:
               artifactName: 'build'
               downloadPath: '$(System.ArtifactsDirectory)'
 
-          - task: AzureFileCopy@4
+          - task: AzureFileCopy@4         
             inputs:
-              sourcePath: $(System.ArtifactsDirectory)\build
-              azureSubscription: 'Visual Studio Premium with MSDN (6d23c094-f45f-421c-9f59-fe097a0bcdc5)'
+              SourcePath: '$(System.ArtifactsDirectory)\build'
+              azureSubscription: 'rosterd-service-connection'
               Destination: 'AzureBlob'
               storage: 'strosterdstoragedev'
               ContainerName: 'assets'
