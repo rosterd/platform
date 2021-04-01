@@ -68,7 +68,7 @@ stages:
             inputs:
               buildType: 'current'
               downloadType: 'single'
-              artifactName: 'build'
+              artifactName: build$(Build.BuildId).zip
               downloadPath: '$(System.ArtifactsDirectory)'
 
           - task: AzureRmWebAppDeployment@4
