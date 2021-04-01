@@ -75,3 +75,65 @@ stages:
               Destination: 'AzureBlob'
               storage: 'strosterdstoragedev'
               ContainerName: 'assets'
+
+- stage: DeployToTest
+  displayName: Deploy To Test
+  jobs:
+  - deployment: deploy
+    pool:
+      vmImage: 'windows-latest'
+    variables:
+      storageaccountname: strosterdstoragetest
+    environment: 'Deploy to Test Storage'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: build
+
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'build'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: AzureFileCopy@4
+            inputs:
+              SourcePath: '$(System.ArtifactsDirectory)'
+              azureSubscription: 'rosterd-service-connection'
+              Destination: 'AzureBlob'
+              storage: $(storageaccountname)
+              ContainerName: '$web'
+
+- stage: DeployToUAT
+  displayName: Deploy To UAT
+  jobs:
+  - deployment: deploy
+    pool:
+      vmImage: 'windows-latest'
+    variables:
+      storageaccountname: strosterdstorageuat
+    environment: 'Deploy to Prod Storage'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: build
+
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'build'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: AzureFileCopy@4
+            inputs:
+              SourcePath: '$(System.ArtifactsDirectory)'
+              azureSubscription: 'rosterd-service-connection'
+              Destination: 'AzureBlob'
+              storage: $(storageaccountname)
+              ContainerName: '$web'
