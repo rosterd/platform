@@ -99,6 +99,10 @@ stages:
               artifactName: 'build'
               downloadPath: '$(System.ArtifactsDirectory)'
 
+          - task: ManualIntervention@8
+            inputs:
+              instructions: 'Approve Deployment'
+
           - task: AzureFileCopy@4
             inputs:
               SourcePath: '$(System.ArtifactsDirectory)'
@@ -123,6 +127,10 @@ stages:
           - download: current
             artifact: build
 
+          - task: ManualIntervention@8
+            inputs:
+              instructions: 'Approve Deployment'
+              
           - task: DownloadBuildArtifacts@0
             inputs:
               buildType: 'current'
