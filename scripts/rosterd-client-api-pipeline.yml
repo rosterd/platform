@@ -43,7 +43,7 @@ stages:
       inputs:
         rootFolderOrFile: "$(System.DefaultWorkingDirectory)/publish_output"
         includeRootFolder: false
-        archiveFile: "$(System.DefaultWorkingDirectory)/build$(Build.BuildId).zip"
+        archiveFile: "$(System.DefaultWorkingDirectory)/build.zip"
 
     - task: PublishBuildArtifacts@1
       displayName: "Publish Artifacts"
