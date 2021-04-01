@@ -48,7 +48,7 @@ stages:
     - task: PublishBuildArtifacts@1
       displayName: "Publish Artifacts"
       inputs:
-        PathtoPublish: '$(System.DefaultWorkingDirectory)/build$(Build.BuildId).zip'
+        PathtoPublish: '$(System.DefaultWorkingDirectory)/build.zip'
         artifactName: 'drop'
 
 - stage: DeployToDev
@@ -68,7 +68,7 @@ stages:
             inputs:
               buildType: 'current'
               downloadType: 'single'
-              artifactName: build$(Build.BuildId).zip
+              artifactName: build.zip
               downloadPath: '$(System.ArtifactsDirectory)'
 
           - task: AzureRmWebAppDeployment@4
