@@ -26,8 +26,10 @@ stages:
     - script: |
         dotnet build --configuration Release
       workingDirectory: 'src/backend/Rosterd.Client.Api'
+      displayName: "Build"
 
     - task: DotNetCoreCLI@2
+      displayName: "Publish"
       inputs:
         command: publish
         arguments: '--configuration Release --output publish_output'
@@ -39,11 +41,12 @@ stages:
     - task: ArchiveFiles@2
       displayName: "Archive files"
       inputs:
-        rootFolderOrFile: "$(System.DefaultWorkingDirectory)/src/backend/Rosterd.Client.Api/publish_output"
+        rootFolderOrFile: "$(System.DefaultWorkingDirectory)/publish_output"
         includeRootFolder: false
         archiveFile: "$(System.DefaultWorkingDirectory)/build$(Build.BuildId).zip"
 
     - task: PublishBuildArtifacts@1
+      displayName: "Publish Artifacts"
       inputs:
         PathtoPublish: '$(System.DefaultWorkingDirectory)/build$(Build.BuildId).zip'
         artifactName: 'drop'
