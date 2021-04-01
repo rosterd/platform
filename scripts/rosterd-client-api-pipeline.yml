@@ -77,4 +77,4 @@ stages:
               azureSubscription: 'rosterd-service-connection'
               appType: 'webApp'
               WebAppName: 'app-rosterd-client-api-dev'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+              packageForLinux: '$(System.ArtifactsDirectory)/**/*.zip'
