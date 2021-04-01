@@ -53,7 +53,7 @@ stages:
       vmImage: 'windows-latest'
     variables:
       storageaccountname: strosterdstoragedev 
-    environment: 'Deploy to Storage'
+    environment: 'admin-ui-dev'
     strategy:
       runOnce:
         deploy:
@@ -81,7 +81,7 @@ stages:
       vmImage: 'windows-latest'
     variables:
       storageaccountname: strosterdstoragetest
-    environment: 'Deploy to Test Storage'
+    environment: 'admin-ui-test'
     strategy:
       runOnce:
         deploy:
@@ -92,10 +92,6 @@ stages:
               downloadType: 'single'
               artifactName: 'build'
               downloadPath: '$(System.ArtifactsDirectory)'
-
-          - task: ManualIntervention@8
-            inputs:
-              instructions: 'Approve Deployment'
 
           - task: AzureFileCopy@4
             inputs:
@@ -113,15 +109,11 @@ stages:
       vmImage: 'windows-latest'
     variables:
       storageaccountname: strosterdstorageuat
-    environment: 'Deploy to Prod Storage'
+    environment: 'admin-ui-uat'
     strategy:
       runOnce:
         deploy:
           steps:
-          - task: ManualIntervention@8
-            inputs:
-              instructions: 'Approve Deployment'
-
           - task: DownloadBuildArtifacts@0
             inputs:
               buildType: 'current'
