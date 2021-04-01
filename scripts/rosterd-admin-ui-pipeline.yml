@@ -46,7 +46,7 @@ stages:
         ArtifactName: 'build'
 
 - stage: DeployToDev
-  displayName: Deploy To Dev    
+  displayName: Deploy To Dev
   jobs:
   - deployment: deploy
     pool:
@@ -58,9 +58,6 @@ stages:
       runOnce:
         deploy:
           steps:
-          - download: current
-            artifact: build
-          
           - task: DownloadBuildArtifacts@0
             inputs:
               buildType: 'current'
@@ -89,9 +86,6 @@ stages:
       runOnce:
         deploy:
           steps:
-          - download: current
-            artifact: build
-
           - task: DownloadBuildArtifacts@0
             inputs:
               buildType: 'current'
@@ -124,13 +118,10 @@ stages:
       runOnce:
         deploy:
           steps:
-          - download: current
-            artifact: build
-
           - task: ManualIntervention@8
             inputs:
               instructions: 'Approve Deployment'
-              
+
           - task: DownloadBuildArtifacts@0
             inputs:
               buildType: 'current'
