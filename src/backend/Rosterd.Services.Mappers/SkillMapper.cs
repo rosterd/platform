@@ -34,6 +34,7 @@ namespace Rosterd.Services.Mappers
         public static Data.SqlServer.Models.Skill ToDataModel(this SkillModel domainModel)
         {
             var skillToUpdate = domainModel.ToNewSkill();
+            skillToUpdate.SkillId = domainModel.SkillId;
             return skillToUpdate;
         }
 
@@ -41,7 +42,6 @@ namespace Rosterd.Services.Mappers
         {
             var skillToSave = new Data.SqlServer.Models.Skill
             {
-                SkillId = domainModel.SkillId,
                 SkillName = domainModel.SkillName,
                 Description = domainModel.Description
             };

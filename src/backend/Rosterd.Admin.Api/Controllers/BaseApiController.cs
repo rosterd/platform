@@ -22,10 +22,10 @@ namespace Rosterd.Admin.Api.Controllers
 
         //protected BaseApiController(IUserContext userContext) => UserContext = userContext;
 
-        /// <summary>
-        /// Gets the currently logged in tenant id
-        /// </summary>
-        /// <returns></returns>
+        ///// <summary>
+        ///// Gets the currently logged in tenant id
+        ///// </summary>
+        ///// <returns></returns>
         //protected async Task<long> CurrentTenantId() => await UserContext.GetTenantIdForUser();
 
         /// <summary>

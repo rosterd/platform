@@ -12,7 +12,7 @@ namespace Rosterd.Admin.Api
     {
         public static void Main(string[] args)
         {
-            ILogger<Program>? logger = null;
+            ILogger<Program> logger = null;
 
             try
             {

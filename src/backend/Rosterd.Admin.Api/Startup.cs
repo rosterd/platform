@@ -46,9 +46,12 @@ namespace Rosterd.Admin.Api
 
             services
                 .AddAppAndDatabaseDependencies(Configuration, HostingEnvironment)
-                //.AddCustomHealthChecks(Configuration)
                 .AddCustomSwagger()
-                .AddApiVersioning(o => o.ApiVersionReader = new UrlSegmentApiVersionReader())
+                .AddApiVersioning(o =>
+                {
+                    o.ApiVersionReader = new UrlSegmentApiVersionReader();
+                    o.AssumeDefaultVersionWhenUnspecified = true;
+                })
                 .AddCustomCaching()
                 .AddCorsWithAllowAll()
                 .AddControllers()
@@ -87,10 +90,6 @@ namespace Rosterd.Admin.Api
 
             app.UseHttpsRedirection();
 
-            //Enable HealthChecks and UI
-            //app.UseHealthChecks("/health", new HealthCheckOptions { Predicate = _ => true, ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
-            //app.UseHealthChecksUI();
-
             app.UseRouting();
             app.UseCors("AllowAll");
 
@@ -106,8 +105,8 @@ namespace Rosterd.Admin.Api
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapHealthChecks("/health");//.RequireAuthorization();
-                endpoints.MapControllers();//.RequireAuthorization();
+                endpoints.MapControllers();
+                //.RequireAuthorization();
             });
         }
     }

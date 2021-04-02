@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
@@ -41,6 +42,12 @@ namespace Rosterd.Services.Mappers
         public static Data.SqlServer.Models.Job ToDataModel(this JobModel domainModel)
         {
             var jobToUpdate = domainModel.ToNewJob();
+            jobToUpdate.JobId = domainModel.JobId;
+
+            foreach (var jobSkill in jobToUpdate.JobSkills)
+            {
+                jobSkill.JobId = jobToUpdate.JobId;
+            }
             return jobToUpdate;
         }
 
@@ -59,19 +66,18 @@ namespace Rosterd.Services.Mappers
             };
 
             var jobSkillModels = domainModel.JobSkills.AlwaysList();
-            if (jobSkillModels.IsNotNullOrEmpty())
+            if (!jobSkillModels.IsNotNullOrEmpty())
+                return jobToSave;
+
+            foreach (var jobSkillModel in jobSkillModels)
             {
-                foreach (var jobSkillModel in jobSkillModels)
+                var skill = new JobSkill
                 {
-                    var skill = new JobSkill
-                    {
-                        JobSkillId = jobSkillModel.JobSkillId,
-                        SkillId = jobSkillModel.SkillId,
-                        SkillName = jobSkillModel.SkillName,
-                        JobId = jobSkillModel.JobId
-                    };
-                    jobToSave.JobSkills.Add(skill);
-                }
+                    JobSkillId = jobSkillModel.JobSkillId,
+                    SkillId = jobSkillModel.SkillId,
+                    SkillName = jobSkillModel.SkillName
+                };
+                jobToSave.JobSkills.Add(skill);
             }
 
             return jobToSave;

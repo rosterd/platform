@@ -59,6 +59,7 @@ namespace Rosterd.Services.Mappers
         public static Data.SqlServer.Models.Staff ToDataModel(this StaffModel domainModel)
         {
             var staffToUpdate = domainModel.ToNewStaff();
+            staffToUpdate.StaffId = domainModel.StaffId;
             return staffToUpdate;
         }
 
