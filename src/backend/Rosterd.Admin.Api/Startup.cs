@@ -1,5 +1,4 @@
 using FluentValidation.AspNetCore;
-using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -47,7 +46,7 @@ namespace Rosterd.Admin.Api
 
             services
                 .AddAppAndDatabaseDependencies(Configuration, HostingEnvironment)
-                .AddCustomHealthChecks(Configuration)
+                //.AddCustomHealthChecks(Configuration)
                 .AddCustomSwagger()
                 .AddApiVersioning(o => o.ApiVersionReader = new UrlSegmentApiVersionReader())
                 .AddCustomCaching()
@@ -89,8 +88,8 @@ namespace Rosterd.Admin.Api
             app.UseHttpsRedirection();
 
             //Enable HealthChecks and UI
-            app.UseHealthChecks("/health", new HealthCheckOptions { Predicate = _ => true, ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
-            app.UseHealthChecksUI();
+            //app.UseHealthChecks("/health", new HealthCheckOptions { Predicate = _ => true, ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
+            //app.UseHealthChecksUI();
 
             app.UseRouting();
             app.UseCors("AllowAll");

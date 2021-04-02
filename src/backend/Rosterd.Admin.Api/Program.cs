@@ -12,16 +12,20 @@ namespace Rosterd.Admin.Api
     {
         public static void Main(string[] args)
         {
-            var builder = CreateHostBuilder(args).Build();
-            var logger = builder.Services.GetService<ILogger<Program>>();
+            ILogger<Program>? logger = null;
+
             try
             {
+                var builder = CreateHostBuilder(args).Build();
+                logger = builder.Services.GetService<ILogger<Program>>();
+
                 logger.LogInformation("Starting web host");
                 builder.Run();
             }
             catch (Exception ex)
             {
-                logger.LogCritical(ex, "Host unexpectedly terminated");
+                logger?.LogCritical(ex, "Host unexpectedly terminated");
+                throw;
             }
         }
 
@@ -34,9 +38,6 @@ namespace Rosterd.Admin.Api
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.ConfigureKestrel(options => options.AddServerHeader = false);
-                })
-                .UseSerilog((hostingContext, loggerConfig) =>
-                    loggerConfig.ReadFrom.Configuration(hostingContext.Configuration)
-                );
+                });
     }
 }

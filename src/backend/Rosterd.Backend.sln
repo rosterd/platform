@@ -42,9 +42,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApis", "WebApis", "{3E47
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Web.Infra", "Rosterd.Web.Infra\Rosterd.Web.Infra.csproj", "{5410CFE0-B3AE-4215-A6D1-74DA5022D02D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Data.TableStorage", "Rosterd.Data.TableStorage\Rosterd.Data.TableStorage.csproj", "{38309DAA-D5A4-42C1-AFE1-E94D0FD9F930}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Data.TableStorage", "Rosterd.Data.TableStorage\Rosterd.Data.TableStorage.csproj", "{38309DAA-D5A4-42C1-AFE1-E94D0FD9F930}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Services.Users", "Rosterd.Services.Users\Rosterd.Services.Users.csproj", "{484688C5-B23F-4E54-BB51-FD2D05E46CEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Users", "Rosterd.Services.Users\Rosterd.Services.Users.csproj", "{484688C5-B23F-4E54-BB51-FD2D05E46CEB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{65F40D9E-CA8A-4DCB-8E6D-5E70CB30A3EB}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Rosterd.Database", "Rosterd.Database\Rosterd.Database.sqlproj", "{8C170552-FEC9-4AB3-B345-A3CED491C6A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,6 +112,12 @@ Global
 		{484688C5-B23F-4E54-BB51-FD2D05E46CEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{484688C5-B23F-4E54-BB51-FD2D05E46CEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{484688C5-B23F-4E54-BB51-FD2D05E46CEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C170552-FEC9-4AB3-B345-A3CED491C6A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C170552-FEC9-4AB3-B345-A3CED491C6A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C170552-FEC9-4AB3-B345-A3CED491C6A1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8C170552-FEC9-4AB3-B345-A3CED491C6A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C170552-FEC9-4AB3-B345-A3CED491C6A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C170552-FEC9-4AB3-B345-A3CED491C6A1}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +136,7 @@ Global
 		{5410CFE0-B3AE-4215-A6D1-74DA5022D02D} = {3E4725BD-A9F5-4CD4-9035-36A1364E316B}
 		{38309DAA-D5A4-42C1-AFE1-E94D0FD9F930} = {4A70353B-1B5B-4B38-9200-2D91E301472B}
 		{484688C5-B23F-4E54-BB51-FD2D05E46CEB} = {C16B881C-491C-4B94-92DA-ACE6A9D489BF}
+		{8C170552-FEC9-4AB3-B345-A3CED491C6A1} = {65F40D9E-CA8A-4DCB-8E6D-5E70CB30A3EB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2DA4ED17-3CA8-499E-A97F-35DAF7C0E6C3}
