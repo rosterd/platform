@@ -23,18 +23,6 @@ namespace Rosterd.Client.Api.Infrastructure.Extensions
         }
 
         /// <summary>
-        /// Adds all the required health checks
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="config"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddCustomHealthChecks(this IServiceCollection services, IConfiguration config)
-        {
-            services.RegisterHealthCheckDependencies(config);
-            return services;
-        }
-
-        /// <summary>
         /// Adds all the swagger UI and open api spec
         /// </summary>
         /// <param name="services"></param>

@@ -10,6 +10,7 @@ using Rosterd.ComponentTests.Helpers;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
+using Rosterd.Domain.Models.OrganizationModels;
 using Rosterd.Services.Facilities.Interfaces;
 using Xunit;
 using Xunit.Abstractions;
@@ -103,7 +104,7 @@ namespace Rosterd.ComponentTests.Tests.Facilities
                 {
                     FacilityId = facilityId,
                     FacilityName = "ComponentTestFacility",
-                    OrganzationId = 0,
+                    Organization = new OrganizationModel {OrganizationId = 0},
                     City = "Auckland",
                     Suburb = "Mt Eden",
                     Address = "308 Shacks Road, Mt Eden",

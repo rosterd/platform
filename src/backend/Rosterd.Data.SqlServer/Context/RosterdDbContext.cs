@@ -32,18 +32,9 @@ namespace Rosterd.Data.SqlServer.Context
         public virtual DbSet<Tenant> Tenants { get; set; }
         public virtual DbSet<Staff> Staff { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=sqls-rosterd-prod.database.windows.net;Initial Catalog=rosterd;Persist Security Info=True;User ID=rosterd-admin-user;Password=K66pth1sS@f5");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+            modelBuilder.HasAnnotation("Scaffolding:ConnectionString", "Data Source=(local);Initial Catalog=Rosterd.Database;Integrated Security=true");
 
             modelBuilder.Entity<Facility>(entity =>
             {
@@ -82,8 +73,6 @@ namespace Rosterd.Data.SqlServer.Context
 
             modelBuilder.Entity<JobSkill>(entity =>
             {
-                entity.Property(e => e.JobSkillId).ValueGeneratedNever();
-
                 entity.HasOne(d => d.Job)
                     .WithMany(p => p.JobSkills)
                     .HasForeignKey(d => d.JobId)
@@ -95,7 +84,7 @@ namespace Rosterd.Data.SqlServer.Context
             {
                 entity.Property(e => e.JobStatusChangeDateTimeUtc)
                     .HasPrecision(1)
-                    .HasDefaultValueSql("(switchoffset(sysdatetimeoffset(),'+00:00'))");
+                    .HasDefaultValueSql("switchoffset(sysdatetimeoffset(),'+00:00')");
             });
 
             modelBuilder.Entity<Organization>(entity =>
@@ -105,11 +94,6 @@ namespace Rosterd.Data.SqlServer.Context
                     .HasForeignKey(d => d.TenantId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Fk_Organization_Tenant");
-            });
-
-            modelBuilder.Entity<Skill>(entity =>
-            {
-                entity.Property(e => e.SkillId).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<StaffFacility>(entity =>
@@ -132,7 +116,7 @@ namespace Rosterd.Data.SqlServer.Context
 
             modelBuilder.Entity<Staff>(entity =>
             {
-                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+                entity.Property(e => e.IsActive).HasDefaultValueSql("1");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -39,18 +39,6 @@ namespace Rosterd.Services.Mappers
             return jobModels;
         }
 
-        public static Data.SqlServer.Models.Job ToDataModel(this JobModel domainModel)
-        {
-            var jobToUpdate = domainModel.ToNewJob();
-            jobToUpdate.JobId = domainModel.JobId;
-
-            foreach (var jobSkill in jobToUpdate.JobSkills)
-            {
-                jobSkill.JobId = jobToUpdate.JobId;
-            }
-            return jobToUpdate;
-        }
-
         public static Data.SqlServer.Models.Job ToNewJob(this JobModel domainModel)
         {
             var jobToSave = new Data.SqlServer.Models.Job
@@ -62,7 +50,11 @@ namespace Rosterd.Services.Mappers
                 JobEndDateTimeUtc = domainModel.JobEndDateTimeUtc,
                 Comments = domainModel.Comments,
                 GracePeriodToCancelMinutes = domainModel.GracePeriodToCancelMinutes,
-                NoGracePeriod = domainModel.NoGracePeriod
+                NoGracePeriod = domainModel.NoGracePeriod,
+                Experience = domainModel.Experience,
+                PreviouslyCancelledJobId = domainModel.PreviouslyCancelledJobId,
+                IsDayShift = domainModel.IsDayShift,
+                IsNightShift = domainModel.IsNightShift,
             };
 
             var jobSkillModels = domainModel.JobSkills.AlwaysList();

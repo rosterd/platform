@@ -58,7 +58,7 @@
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.JobsController.GetAllJobs(Rosterd.Domain.Models.PagingQueryStringParameters)">
             <summary>
-            Gets all the resources 
+            Gets all the jobs 
             </summary>
             <param name="pagingParameters"></param>
             <returns></returns>
@@ -69,25 +69,18 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.AddNewJob(Rosterd.Admin.Api.Requests.Job.AddUpdateJobRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.AddNewJob(Rosterd.Admin.Api.Requests.Job.AddJobRequest)">
             <summary>
             Adds a new Job
             </summary>
             <param name="request">The Job to add</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.UpdateJob(Rosterd.Admin.Api.Requests.Job.AddUpdateJobRequest)">
-            <summary>
-            Update a Job
-            </summary>
-            <param name="request">The Job to update</param>
-            <returns></returns>
-        </member>
         <member name="M:Rosterd.Admin.Api.Controllers.JobsController.RemoveJob(System.Nullable{System.Int64})">
             <summary>
-            Deletes Job
+            Sets the job status to 'Cancelled' 
             </summary>
-            <param name="jobId">The Job to be deleted</param>
+            <param name="jobId">The Job to be removed</param>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.GetAllSkills(Rosterd.Domain.Models.PagingQueryStringParameters)">
@@ -196,14 +189,6 @@
             <param name="hostingEnvironment"></param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddCustomHealthChecks(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
-            <summary>
-            Adds all the required health checks
-            </summary>
-            <param name="services"></param>
-            <param name="config"></param>
-            <returns></returns>
-        </member>
         <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddCustomSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             Adds all the swagger UI and open api spec
@@ -218,6 +203,11 @@
             <param name="services"></param>
             <param name="config"></param>
             <returns></returns>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Requests.Job.AddJobRequest.PreviouslyCancelledJobId">
+            <summary>
+            Only required if an existing job was cancelled and new one created based of the old one
+            </summary>
         </member>
         <member name="M:Rosterd.Admin.Api.Services.IUserContext.DoesTenantAndUserExist">
             <summary>

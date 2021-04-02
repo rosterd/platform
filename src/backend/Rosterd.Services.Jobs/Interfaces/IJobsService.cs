@@ -28,13 +28,6 @@ namespace Rosterd.Services.Jobs.Interfaces
         Task CreateJob(JobModel jobModel);
 
         /// <summary>
-        /// Updates an existing job
-        /// </summary>
-        /// <param name="jobModel"></param>
-        /// <returns></returns>
-        Task UpdateJob(JobModel jobModel);
-
-        /// <summary>
         /// Deletes job
         /// </summary>
         /// <param name="jobId"></param>

@@ -22,6 +22,12 @@ namespace Rosterd.Data.SqlServer.Models
         [Required]
         [StringLength(1000)]
         public string TenantName { get; set; }
+        [StringLength(1000)]
+        public string BusinessName { get; set; }
+        [StringLength(1000)]
+        public string Description { get; set; }
+        [StringLength(1000)]
+        public string WebsiteLink { get; set; }
 
         [InverseProperty(nameof(Organization.Tenant))]
         public virtual ICollection<Organization> Organizations { get; set; }

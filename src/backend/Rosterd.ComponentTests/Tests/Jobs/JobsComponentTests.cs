@@ -95,16 +95,15 @@ namespace Rosterd.ComponentTests.Tests.Jobs
         private async Task<int> createJobAsync()
         {
             var jobId = new Random().Next(1000);
-            var addUpdateJobRequest = new AddUpdateJobRequest
+            var addUpdateJobRequest = new AddJobRequest
             {
-                JobToAddOrUpdate = new JobModel
-                {
-                    JobId = jobId,
+                
+                    
                     JobTitle = "",
                     Description = "",
                     FacilityId = 0,
                     Comments = ""
-                }
+                
             };
             var stringContent = new StringContent(JsonConvert.SerializeObject(addUpdateJobRequest), Encoding.UTF8, "application/json");
             var response = await _appFixture.HttpClient.PostAsync(ApiConstants.JOBS_ENDPOINT, stringContent);

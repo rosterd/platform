@@ -1,8 +1,10 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Services.Jobs.Interfaces;
@@ -31,9 +33,14 @@ namespace Rosterd.Services.Jobs
             return job?.ToDomainModel();
         }
 
-        public async Task CreateJob(JobModel joblModel)
+        public async Task CreateJob(JobModel jobModel)
         {
-            var jobToCreate = joblModel.ToNewJob();
+            var jobToCreate = jobModel.ToNewJob();
+
+            //New job specific properties
+            jobToCreate.JobStatusId = (int) JobStatus.Published;
+            jobToCreate.JobsStatusName = JobStatus.Published.ToString();
+            jobToCreate.JobPostedDateTimeUtc = jobToCreate.LastJobStatusChangeDateTimeUtc = DateTime.UtcNow;
 
             await _context.Jobs.AddAsync(jobToCreate);
             await _context.SaveChangesAsync();
@@ -44,16 +51,12 @@ namespace Rosterd.Services.Jobs
             var job = await _context.Jobs.FindAsync(jobId);
             if (job != null)
             {
-                _context.Jobs.Remove(job);
+                job.JobStatusId = (int) JobStatus.Cancelled;
+                job.JobsStatusName = JobStatus.Cancelled.ToString();
+                job.LastJobStatusChangeDateTimeUtc = DateTime.UtcNow;
+
                 await _context.SaveChangesAsync();
             }
-        }
-        public async Task UpdateJob(JobModel jobModel)
-        {
-            var jobModelToUpdate = jobModel.ToDataModel();
-
-            _context.Jobs.Update(jobModelToUpdate);
-            await _context.SaveChangesAsync();
         }
     }
 }

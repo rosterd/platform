@@ -26,7 +26,7 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
-        /// Gets all the resources 
+        /// Gets all the jobs 
         /// </summary>
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
@@ -35,9 +35,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<PagedList<JobModel>>> GetAllJobs([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-            PagedList<JobModel> pagedList;
-
-            pagedList = await _jobService.GetAllJobs(pagingParameters);
+            var pagedList = await _jobService.GetAllJobs(pagingParameters);
 
             return pagedList;
         }
@@ -61,33 +59,20 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [OperationOrderAttribute(3)]
-        public async Task<ActionResult> AddNewJob([FromBody] AddUpdateJobRequest request)
+        public async Task<ActionResult> AddNewJob([FromBody] AddJobRequest request)
         {
-            await _jobService.CreateJob(request.JobToAddOrUpdate);
+            var domainModelToSave = request.ToDomainModel();
+            await _jobService.CreateJob(domainModelToSave);
             return Ok();
         }
 
         /// <summary>
-        /// Update a Job
+        /// Sets the job status to 'Cancelled' 
         /// </summary>
-        /// <param name="request">The Job to update</param>
-        /// <returns></returns>
-        [HttpPut]
-        [OperationOrderAttribute(4)]
-        public async Task<ActionResult> UpdateJob([FromBody] AddUpdateJobRequest request)
-        {
-            await _jobService.UpdateJob(request.JobToAddOrUpdate);
-            return Ok();
-        }
-
-
-        /// <summary>
-        /// Deletes Job
-        /// </summary>
-        /// <param name="jobId">The Job to be deleted</param>
+        /// <param name="jobId">The Job to be removed</param>
         /// <returns></returns>
         [HttpDelete]
-        [OperationOrderAttribute(5)]
+        [OperationOrderAttribute(4)]
         public async Task<ActionResult> RemoveJob([FromQuery][Required] long? jobId)
         {
             await _jobService.RemoveJob(jobId.Value);
