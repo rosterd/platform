@@ -35,7 +35,7 @@ namespace Rosterd.Domain.Models.FacilitiesModels
         [StringLength(1000)]
         public string PhoneNumber2 { get; set; }
 
-        public OrganizationModel Organzation { get; set; }
+        public OrganizationModel Organization { get; set; }
 
         public List<FacilityCapabilityModel> FacilityCapabilities { get; set; }
     }

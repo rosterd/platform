@@ -7,6 +7,9 @@ using Rosterd.Web.Infra.Extensions;
 
 namespace Rosterd.Web.Infra.Middleware
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class SwaggerAuthenticationMiddleware : IMiddleware
     {
         /// <summary>

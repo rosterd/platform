@@ -45,6 +45,12 @@
             <param name="facilityId">The Facility to be deleted</param>
             <returns></returns>
         </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.HomeController.Get">
+            <summary>
+            Default route (needed for the react app to return 200 so the react admin works with no issues)
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Rosterd.Admin.Api.Controllers.JobsController">
             <summary>
             All actions related to Jobs
@@ -212,6 +218,44 @@
             <param name="services"></param>
             <param name="config"></param>
             <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Services.IUserContext.DoesTenantAndUserExist">
+            <summary>
+            Checks if a tenant and user exists for the currently logged in user
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Services.IUserContext.GetTenantIdForUser">
+            <summary>
+            Gets the tenant of the current logged in user.
+            NB: This gets the full tenant object and can be a bit expensive if you just need the tenant id
+            then calls the GetTenantIdForUser() method
+            </summary>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Services.IUserContext.GetTenantAndUser">
+            <summary>
+            Gets the tenant of the current logged in user.
+            NB: This gets the full tenant object and StaffToAuth0Id object from cache
+            can be a bit expensive due to the weight of the object (serializing/deserializing from cache)
+            if you just need the tenant id
+            then call the GetTenantIdForUser() method which is a very light weight and fast
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Services.IUserContext.Roles">
+            <summary>
+            Gets all the roles for the user
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Services.IUserContext.IdmUserId">
+            <summary>
+            Gets the unique id from Azure B2C for the user
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Services.IUserContext.AccessToken">
+            <summary>
+            Gets the raw access token received from Auth0,
+            This can be useful if we need to call profile in b2c or anything external call we need to make for the user
+            </summary>
         </member>
         <member name="P:Rosterd.Admin.Api.Startup.HostingEnvironment">
             <summary>

@@ -11,6 +11,11 @@ namespace Rosterd.Web.Infra.Filters.Swagger
             var keys = new List<string>(swaggerDoc.Paths.Keys);
             foreach (var key in keys)
             {
+                if (swaggerDoc.Paths.ContainsKey(key.ToLower()))
+                {
+                    return;
+                }
+
                 swaggerDoc.Paths.Add(key.ToLower(), swaggerDoc.Paths[key]);
                 swaggerDoc.Paths.Remove(key);
             }

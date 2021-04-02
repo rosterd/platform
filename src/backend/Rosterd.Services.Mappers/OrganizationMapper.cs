@@ -19,7 +19,6 @@ namespace Rosterd.Services.Mappers
                 
             };
 
-
             return organizationModel;
         }
 
@@ -36,6 +35,8 @@ namespace Rosterd.Services.Mappers
         public static Data.SqlServer.Models.Organization ToDataModel(this OrganizationModel domainModel)
         {
             var organizationToUpdate = domainModel.ToNewOrganization();
+            organizationToUpdate.OrganizationId = domainModel.OrganizationId;
+
             return organizationToUpdate;
         }
 
@@ -43,7 +44,6 @@ namespace Rosterd.Services.Mappers
         {
             var organizationToSave = new Data.SqlServer.Models.Organization
             {
-                OrganizationId = domainModel.OrganizationId,
                 OrganizationName = domainModel.OrganizationName,
                 Address = domainModel.Address
             };

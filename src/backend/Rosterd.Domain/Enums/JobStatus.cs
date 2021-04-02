@@ -9,16 +9,28 @@ namespace Rosterd.Domain.Enums
 {
     public enum JobStatus
     {
-        [Display(Name = "No Notifications")]
-        NoNotifications = 1,
+        [Display(Name = "Published", Description = "")]
+        Published = 1,
 
-        [Display(Name = "Email")]
-        Email,
+        [Display(Name = "Accepted", Description = "")]
+        Accepted = 2,
 
-        [Display(Name = "SMS")]
-        Sms,
+        [Display(Name = "No Show", Description = "")]
+        NoShow = 3,
 
-        [Display(Name = "Email & SMS")]
-        EmailAndSms
+        [Display(Name = "In Progress", Description = "")]
+        InProgress = 4,
+
+        [Display(Name = "Feedback Pending", Description = "")]
+        FeedbackPending = 5,
+
+        [Display(Name = "Finished", Description = "")]
+        Finished = 6,
+
+        [Display(Name = "Expired", Description = "")]
+        Expired = 7,
+
+        [Display(Name = "Cancelled", Description = "")]
+        Cancelled = 8,
     }
 }

@@ -4,9 +4,7 @@ namespace Rosterd.Admin.Api.Requests.Job
 {
     public class AddUpdateJobRequest
     {
-        
-       public JobModel JobToAddOrUpdate { get; set; }
-        
+        public JobModel JobToAddOrUpdate { get; set; }
     }
 }
 

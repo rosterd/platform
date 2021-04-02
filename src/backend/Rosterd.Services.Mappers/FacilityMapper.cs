@@ -33,6 +33,7 @@ namespace Rosterd.Services.Mappers
         public static Data.SqlServer.Models.Facility ToDataModel(this FacilityModel domainModel)
         {
             var facilityToUpdate = domainModel.ToNewFacility();
+            facilityToUpdate.FacilityId = domainModel.FacilityId;
             return facilityToUpdate;
         }
 
@@ -40,8 +41,13 @@ namespace Rosterd.Services.Mappers
         {
             var facilityToSave = new Data.SqlServer.Models.Facility
             {
-                FacilityId = domainModel.FacilityId,
-                FacilityName = domainModel.FacilityName   
+                FacilityName = domainModel.FacilityName,
+                Address = domainModel.Address,
+                City = domainModel.City,
+                Country = domainModel.Country,
+                PhoneNumber1 = domainModel.PhoneNumber1,
+                PhoneNumber2 = domainModel.PhoneNumber2,
+                Suburb = domainModel.Suburb
             };
 
             return facilityToSave;
