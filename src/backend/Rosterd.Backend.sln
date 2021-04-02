@@ -50,6 +50,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{65
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Rosterd.Database", "Rosterd.Database\Rosterd.Database.sqlproj", "{8C170552-FEC9-4AB3-B345-A3CED491C6A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.ComponentTests", "Rosterd.ComponentTests\Rosterd.ComponentTests.csproj", "{86897C30-DAE7-40FA-AB87-6E724997633A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.EndToEndTests", "Rosterd.EndToEndTests\Rosterd.EndToEndTests.csproj", "{E266C1EA-7A32-440A-909C-2B78DCAB31ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
