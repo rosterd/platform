@@ -106,7 +106,7 @@ namespace Rosterd.Admin.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecks("/health");//.RequireAuthorization();
+                //endpoints.MapHealthChecks("/health");//.RequireAuthorization();
                 endpoints.MapControllers();//.RequireAuthorization();
             });
         }
