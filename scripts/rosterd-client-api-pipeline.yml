@@ -1,1 +1,80 @@
-//TODO:
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - scripts/rosterd-client-api-pipeline.yml
+      - src/backend/Rosterd.Client.Api
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+- stage: Build
+  jobs:
+  - job: build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore Packages
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+
+    - script: |
+        dotnet build --configuration Release
+      workingDirectory: 'src/backend/Rosterd.Client.Api'
+      displayName: "Build"
+
+    - task: DotNetCoreCLI@2
+      displayName: "Publish"
+      inputs:
+        command: publish
+        arguments: '--configuration Release --output publish_output'
+        projects: 'src/backend/Rosterd.Client.Api'
+        publishWebProjects: false
+        modifyOutputPath: false
+        zipAfterPublish: false
+
+    - task: ArchiveFiles@2
+      displayName: "Archive files"
+      inputs:
+        rootFolderOrFile: "$(System.DefaultWorkingDirectory)/publish_output"
+        includeRootFolder: false
+        archiveFile: "$(System.DefaultWorkingDirectory)/build.zip"
+
+    - task: PublishBuildArtifacts@1
+      displayName: "Publish Artifacts"
+      inputs:
+        PathtoPublish: '$(System.DefaultWorkingDirectory)/build.zip'
+        artifactName: 'drop'
+
+- stage: DeployToDev
+  displayName: Deploy To Dev
+  jobs:
+  - deployment: deploy
+    pool:
+      vmImage: 'windows-latest'
+    variables:
+      storageaccountname: strosterdstoragedev 
+    environment: 'client-api-dev'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: drop
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'rosterd-service-connection'
+              appType: 'webApp'
+              WebAppName: 'app-rosterd-client-api-dev'
+              packageForLinux: '$(System.ArtifactsDirectory)/**/*.zip'

@@ -1,85 +1,80 @@
 trigger:
   branches:
     include:
-      - master
+      - main
   paths:
-    include:      
-      - src/
+    include:
+      - scripts/rosterd-admin-api-pipeline.yml
       - src/backend/Rosterd.Admin.Api
 
 pool:
-  name: Azure Pipelines
-  demands:
-  - msbuild
-  - visualstudio
-  - vstest
+  vmImage: 'windows-latest'
 
-variables:
-  buildConfiguration: 'Release'
+stages:
+- stage: Build
+  jobs:
+  - job: build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore Packages
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
 
-#Your build pipeline references an undefined variable named ‘Parameters.solution’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
-#Your build pipeline references an undefined variable named ‘Parameters.solution’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
-#Your build pipeline references the ‘BuildPlatform’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references the ‘BuildPlatform’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-#Your build pipeline references an undefined variable named ‘Parameters.connectedServiceName’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
-#Your build pipeline references an undefined variable named ‘Parameters.WebAppName’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+    - script: |
+        dotnet build --configuration Release
+      workingDirectory: 'src/backend/Rosterd.Admin.Api'
+      displayName: "Build"
 
-steps:
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.4.1'
-  inputs:
-    versionSpec: 4.4.1
+    - task: DotNetCoreCLI@2
+      displayName: "Publish"
+      inputs:
+        command: publish
+        arguments: '--configuration Release --output publish_output'
+        projects: 'src/backend/Rosterd.Admin.Api'
+        publishWebProjects: false
+        modifyOutputPath: false
+        zipAfterPublish: false
 
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  inputs:
-    restoreSolution: '$(Parameters.solution)'
+    - task: ArchiveFiles@2
+      displayName: "Archive files"
+      inputs:
+        rootFolderOrFile: "$(System.DefaultWorkingDirectory)/publish_output"
+        includeRootFolder: false
+        archiveFile: "$(System.DefaultWorkingDirectory)/build.zip"
 
-- task: VSBuild@1
-  displayName: 'Build solution **\*.sln'
-  inputs:
-    solution: '$(Parameters.solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl="$(Agent.TempDirectory)\WebAppContent\\"'
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
+    - task: PublishBuildArtifacts@1
+      displayName: "Publish Artifacts"
+      inputs:
+        PathtoPublish: '$(System.DefaultWorkingDirectory)/build.zip'
+        artifactName: 'drop'
 
-- task: ArchiveFiles@2
-  displayName: 'Archive Files'
-  inputs:
-    rootFolderOrFile: '$(Agent.TempDirectory)\WebAppContent'
-    includeRootFolder: false
+- stage: DeployToDev
+  displayName: Deploy To Dev
+  jobs:
+  - deployment: deploy
+    pool:
+      vmImage: 'windows-latest'
+    variables:
+      storageaccountname: strosterdstoragedev 
+    environment: 'admin-api-dev'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: drop
+              downloadPath: '$(System.ArtifactsDirectory)'
 
-- task: VSTest@2
-  displayName: 'VsTest - testAssemblies'
-  inputs:
-    testAssemblyVer2: |
-     **\$(BuildConfiguration)\*test*.dll
-     !**\obj\**
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
-
-- task: AzureWebApp@1
-  displayName: 'Azure Web App Deploy: app-rosterd-admin-api-dev'
-  inputs:
-    azureSubscription: '$(Parameters.connectedServiceName)'
-    appType: webAppLinux
-    appName: '$(Parameters.WebAppName)'
-    package: '$(build.artifactstagingdirectory)/**/*.zip'
-    runtimeStack: 'DOTNETCORE|5.0'
-
-- task: PublishSymbols@2
-  displayName: 'Publish symbols path'
-  inputs:
-    SearchPattern: '**\bin\**\*.pdb'
-    PublishSymbols: false
-  continueOnError: true
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-  condition: succeededOrFailed()
-
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'rosterd-service-connection'
+              appType: 'webApp'
+              WebAppName: 'app-rosterd-admin-api-dev'
+              packageForLinux: '$(System.ArtifactsDirectory)/**/*.zip'

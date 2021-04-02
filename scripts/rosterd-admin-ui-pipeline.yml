@@ -4,18 +4,18 @@ trigger:
       - main
   paths:
     include:
-      - rosterd/scripts/rosterd-admin-ui-pipeline.yml
-      - rosterd/src/frontend
+      - scripts/rosterd-admin-ui-pipeline.yml
+      - src/frontend
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 stages:
 - stage: Build
   jobs:
   - job: build
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
 
     steps:
     - task: NodeTool@0
@@ -23,51 +23,104 @@ stages:
         versionSpec: '14.x'
       displayName: 'Install Node.js'
 
-    - task: Npm@1
-      displayName: 'npm install'
-      inputs:
-        workingDir: 'rosterd\src\frontend'
-        command: install
-
-    - task: Npm@1
-      displayName: 'npm build'
-      inputs:
-        workingDir: 'rosterd\src\frontend'
-        command: custom
-        customCommand: run-script build
-        
+    - script: |
+        npm install
+        npm run build
+      displayName: 'npm install and build'
+      workingDirectory: 'src/frontend'
 
     - task: CopyFiles@2
       displayName: 'Copy Files'
       inputs:
-        SourceFolder: 'rosterd\src\frontend\build'
+        SourceFolder: 'src/frontend/build'
         TargetFolder: '$(build.artifactstagingdirectory)'
         CleanTargetFolder: true
 
-    - task: PublishBuildArtifacts@1      
+    - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
         ArtifactName: 'build'
 
-- stage: Deploy To Dev
+- stage: DeployToDev
+  displayName: Deploy To Dev
   jobs:
   - deployment: deploy
     pool:
       vmImage: 'windows-latest'
     variables:
       storageaccountname: strosterdstoragedev 
-    environment: 'Deploy to Storage'
+    environment: 'admin-ui-dev'
     strategy:
       runOnce:
         deploy:
           steps:
-          - download: current
-            artifact: build
-            
-          - task: AzureFileCopy@3
+          - task: DownloadBuildArtifacts@0
             inputs:
-              sourcePath: $(Pipeline.Workspace)/build
-              azureSubscription: 'AzureRM'
-              destination: azureBlob
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'build'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: AzureFileCopy@4         
+            inputs:
+              SourcePath: '$(System.ArtifactsDirectory)\build'
+              azureSubscription: 'rosterd-service-connection'
+              Destination: 'AzureBlob'
+              storage: 'strosterdstoragedev'
+              ContainerName: 'assets'
+
+- stage: DeployToTest
+  displayName: Deploy To Test
+  jobs:
+  - deployment: deploy
+    pool:
+      vmImage: 'windows-latest'
+    variables:
+      storageaccountname: strosterdstoragetest
+    environment: 'admin-ui-test'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'build'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: AzureFileCopy@4
+            inputs:
+              SourcePath: '$(System.ArtifactsDirectory)'
+              azureSubscription: 'rosterd-service-connection'
+              Destination: 'AzureBlob'
               storage: $(storageaccountname)
-              containerName: "$web"
+              ContainerName: '$web'
+
+- stage: DeployToUAT
+  displayName: Deploy To UAT
+  jobs:
+  - deployment: deploy
+    pool:
+      vmImage: 'windows-latest'
+    variables:
+      storageaccountname: strosterdstorageuat
+    environment: 'admin-ui-uat'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'build'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: AzureFileCopy@4
+            inputs:
+              SourcePath: '$(System.ArtifactsDirectory)'
+              azureSubscription: 'rosterd-service-connection'
+              Destination: 'AzureBlob'
+              storage: $(storageaccountname)
+              ContainerName: '$web'
