@@ -46,7 +46,7 @@ namespace Rosterd.Services.Mappers
             return staffModel;
         }
 
-        public static List<StaffModel> ToDomainModels(this PagingHelper<Data.SqlServer.Models.Staff> pagedDataModels)
+        public static List<StaffModel> ToDomainModels(this PagingList<Data.SqlServer.Models.Staff> pagedDataModels)
         {
             var pagedList = pagedDataModels.AlwaysList();
             if (pagedList.IsNullOrEmpty())

@@ -13,7 +13,7 @@
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.GetAllFacilities(Rosterd.Domain.Models.PagingQueryStringParameters)">
             <summary>
-                Gets all the resources
+                Gets all the facilities
             </summary>
             <param name="pagingParameters"></param>
             <returns></returns>

@@ -27,20 +27,20 @@ namespace Rosterd.Services.Staff
                 .Include(s => s.StaffFacilities)
                 .Include(s => s.StaffSkills);
 
-            var pagedList = await PagingHelper<Data.SqlServer.Models.Staff>.ToPagingHelper(query, pagingParameters.PageNumber, pagingParameters.PageSize);
+            var pagedList = await PagingList<Data.SqlServer.Models.Staff>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
-            return new PagedList<StaffModel>(domainModels, domainModels.Count, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
+            return new PagedList<StaffModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
 
         ///<inheritdoc/>
         public async Task<PagedList<StaffModel>> GetAllStaff(PagingQueryStringParameters pagingParameters)
         {
             var query = _context.Staff;
-            var pagedList = await PagingHelper<Data.SqlServer.Models.Staff>.ToPagingHelper(query, pagingParameters.PageNumber, pagingParameters.PageSize);
+            var pagedList = await PagingList<Data.SqlServer.Models.Staff>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
-            return new PagedList<StaffModel>(domainModels, domainModels.Count, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
+            return new PagedList<StaffModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
 
         ///<inheritdoc/>

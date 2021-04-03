@@ -22,7 +22,7 @@ namespace Rosterd.Services.Mappers
             return organizationModel;
         }
 
-        public static List<OrganizationModel> ToDomainModels(this PagingHelper<Data.SqlServer.Models.Organization> pagedDataModels)
+        public static List<OrganizationModel> ToDomainModels(this PagingList<Data.SqlServer.Models.Organization> pagedDataModels)
         {
             var pagedList = pagedDataModels.AlwaysList();
             if (pagedList.IsNullOrEmpty())

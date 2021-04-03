@@ -29,7 +29,7 @@ namespace Rosterd.Services.Mappers
             return jobModel;
         }
 
-        public static List<JobModel> ToDomainModels(this PagingHelper<Data.SqlServer.Models.Job> pagedDataModels)
+        public static List<JobModel> ToDomainModels(this PagingList<Data.SqlServer.Models.Job> pagedDataModels)
         {
             var pagedList = pagedDataModels.AlwaysList();
             if (pagedList.IsNullOrEmpty())

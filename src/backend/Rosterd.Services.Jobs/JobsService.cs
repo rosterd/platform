@@ -21,10 +21,10 @@ namespace Rosterd.Services.Jobs
         public async Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters)
         {
             var query = _context.Jobs.Include(s => s.Facility);
-            var pagedList = await PagingHelper<Data.SqlServer.Models.Job>.ToPagingHelper(query, pagingParameters.PageNumber, pagingParameters.PageSize);
+            var pagedList = await PagingList<Data.SqlServer.Models.Job>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
-            return new PagedList<JobModel>(domainModels, domainModels.Count, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
+            return new PagedList<JobModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
 
         public async Task<JobModel> GetJob(long jobId)

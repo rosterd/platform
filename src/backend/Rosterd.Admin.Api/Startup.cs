@@ -44,6 +44,7 @@ namespace Rosterd.Admin.Api
             services.AddCustomAuthenticationWithJwtBearer(Configuration);
 
             services
+                .AddApplicationInsightsTelemetry()
                 .AddAppAndDatabaseDependencies(Configuration, HostingEnvironment)
                 .AddCustomSwagger()
                 .AddApiVersioning(o =>

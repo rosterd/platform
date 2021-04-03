@@ -6,20 +6,20 @@ namespace Rosterd.Domain.Models
     {
         public PagedList(List<T> items, int totalCount, int currentPage, int pageSize, int totalPages)
         {
-            TotalTotalCount = totalCount;
+            TotalCount = totalCount;
             PageSize = pageSize;
-            CurrentCurrentPage = currentPage;
+            CurrentPage = currentPage;
             TotalPages = totalPages;
             Items = items;
         }
 
-        public int CurrentCurrentPage { get; }
+        public int CurrentPage { get; }
         public int TotalPages { get; }
         public int PageSize { get; }
-        public int TotalTotalCount { get; }
+        public int TotalCount { get; }
 
-        public bool HasPrevious => CurrentCurrentPage > 1;
-        public bool HasNext => CurrentCurrentPage < TotalPages;
+        public bool HasPrevious => CurrentPage > 1;
+        public bool HasNext => CurrentPage < TotalPages;
 
         public List<T> Items { get; }
     }

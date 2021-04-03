@@ -17,10 +17,10 @@ namespace Rosterd.Services.Skills
         public async Task<PagedList<SkillModel>> GetAllSkills(PagingQueryStringParameters pagingParameters)
         {
             var query = _context.Skills;
-            var pagedList = await PagingHelper<Data.SqlServer.Models.Skill>.ToPagingHelper(query, pagingParameters.PageNumber, pagingParameters.PageSize);
+            var pagedList = await PagingList<Data.SqlServer.Models.Skill>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
-            return new PagedList<SkillModel>(domainModels, domainModels.Count, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
+            return new PagedList<SkillModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
 
         public async Task<SkillModel> GetSkill(long skillId)

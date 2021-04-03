@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rosterd.Data.SqlServer.Helpers
 {
-    public class PagingHelper<T> : List<T>
+    public class PagingList<T> : List<T>
     {
-        public PagingHelper(List<T> items, int count, int pageNumber, int pageSize)
+        public PagingList(List<T> items, int count, int pageNumber, int pageSize)
         {
             TotalCount = count;
             PageSize = pageSize;
@@ -27,13 +27,13 @@ namespace Rosterd.Data.SqlServer.Helpers
         public bool HasNext => CurrentPage < TotalPages;
 
 
-        public static async Task<PagingHelper<T>> ToPagingHelper(IQueryable<T> source, int pageNumber, int pageSize)
+        public static async Task<PagingList<T>> ToPagingList(IQueryable<T> source, int pageNumber, int pageSize)
         {
             //TODO: If performance becomes a concern then we can get rid of this count here 
             var count = await source.CountAsync();
             var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
-            return new PagingHelper<T>(items, count, pageNumber, pageSize);
+            return new PagingList<T>(items, count, pageNumber, pageSize);
         }
     }
 }

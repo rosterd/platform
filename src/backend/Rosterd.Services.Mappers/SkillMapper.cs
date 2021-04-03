@@ -21,7 +21,7 @@ namespace Rosterd.Services.Mappers
             return skillModel;
         }
 
-        public static List<SkillModel> ToDomainModels(this PagingHelper<Data.SqlServer.Models.Skill> pagedDataModels)
+        public static List<SkillModel> ToDomainModels(this PagingList<Data.SqlServer.Models.Skill> pagedDataModels)
         {
             var pagedList = pagedDataModels.AlwaysList();
             if (pagedList.IsNullOrEmpty())

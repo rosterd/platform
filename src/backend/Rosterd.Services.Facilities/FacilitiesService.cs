@@ -19,10 +19,10 @@ namespace Rosterd.Services.Facilities
         public async Task<PagedList<FacilityModel>> GetAllFacilities(PagingQueryStringParameters pagingParameters)
         {
             var query = _context.Facilities;
-            var pagedList = await PagingHelper<Data.SqlServer.Models.Facility>.ToPagingHelper(query, pagingParameters.PageNumber, pagingParameters.PageSize);
+            var pagedList = await PagingList<Data.SqlServer.Models.Facility>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
-            return new PagedList<FacilityModel>(domainModels, domainModels.Count, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
+            return new PagedList<FacilityModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
 
 

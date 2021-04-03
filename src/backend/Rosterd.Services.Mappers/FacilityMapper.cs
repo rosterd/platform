@@ -20,7 +20,7 @@ namespace Rosterd.Services.Mappers
             return facilityModel;
         }
 
-        public static List<FacilityModel> ToDomainModels(this PagingHelper<Data.SqlServer.Models.Facility> pagedDataModels)
+        public static List<FacilityModel> ToDomainModels(this PagingList<Data.SqlServer.Models.Facility> pagedDataModels)
         {
             var pagedList = pagedDataModels.AlwaysList();
             if (pagedList.IsNullOrEmpty())

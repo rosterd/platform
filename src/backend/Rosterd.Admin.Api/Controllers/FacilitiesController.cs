@@ -23,7 +23,7 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
-        ///     Gets all the resources
+        ///     Gets all the facilities
         /// </summary>
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
