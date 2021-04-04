@@ -75,4 +75,8 @@
     <Build Include="dbo\Tables\Skill.sql" />
     <Build Include="dbo\Tables\Staff.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="LocalDbToProjectCompare.scmp" />
+    <None Include="LocalProjectToAzureDevSqlCompare.scmp" />
+  </ItemGroup>
 </Project>

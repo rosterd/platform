@@ -22,7 +22,15 @@ namespace Rosterd.Client.Api.ServiceRegistrations
         public static void RegisterSwaggerDependencies(this IServiceCollection services) => services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new OpenApiInfo {Title = "Rosterd Client Api", Version = "v1"});
-            //options.IncludeXmlComments(XmlCommentsFilePath);
+
+            try
+            {
+                options.IncludeXmlComments(XmlCommentsFilePath);
+            }
+            catch
+            {
+                //do nothing if the swagger documentation isn't there carry on
+            }
 
             //Operation Filters
             options.OperationFilter<SwaggerAuthorizeCheckOperationFilter>();

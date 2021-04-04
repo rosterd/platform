@@ -47,7 +47,11 @@ namespace Rosterd.Client.Api
                 .AddApplicationInsightsTelemetry()
                 .AddAppAndDatabaseDependencies(Configuration, HostingEnvironment)
                 .AddCustomSwagger()
-                .AddApiVersioning(o => o.ApiVersionReader = new UrlSegmentApiVersionReader())
+                .AddApiVersioning(o =>
+                {
+                    o.ApiVersionReader = new UrlSegmentApiVersionReader();
+                    o.AssumeDefaultVersionWhenUnspecified = true;
+                })
                 .AddCustomCaching()
                 .AddCorsWithAllowAll()
                 .AddControllers()
