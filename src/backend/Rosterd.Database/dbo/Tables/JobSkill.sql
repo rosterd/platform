@@ -9,3 +9,10 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Fk_Jobskill_Job]
+    ON [dbo].[JobSkill]([JobId] ASC);
+

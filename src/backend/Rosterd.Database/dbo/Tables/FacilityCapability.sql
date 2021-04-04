@@ -7,3 +7,15 @@
     CONSTRAINT [Fk_FacilityCapability_Facility] FOREIGN KEY ([FacilityId]) REFERENCES [dbo].[Facility] ([FacilityId])
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Fk_FacilityCapability_Facility]
+    ON [dbo].[FacilityCapability]([FacilityId] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Fk_FacilityCapability_Capability]
+    ON [dbo].[FacilityCapability]([CapabilityId] ASC);
+

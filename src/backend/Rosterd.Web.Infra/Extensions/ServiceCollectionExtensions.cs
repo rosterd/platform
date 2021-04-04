@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Rosterd.Web.Infra.ServiceRegistrations;
 
 namespace Rosterd.Web.Infra.Extensions
 {
@@ -31,5 +32,16 @@ namespace Rosterd.Web.Infra.Extensions
                 //For now memory cache will serve us ok, when the use case comes we can change to Redis with
                 //AddDistributedRedisCache
                 .AddDistributedMemoryCache();
+
+        /// <summary>
+        /// Adds all the swagger UI and open api spec
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddCustomSwagger(this IServiceCollection services, string apiTitle, string version)
+        {
+            services.RegisterSwaggerDependencies(apiTitle, version);
+            return services;
+        }
     }
 }

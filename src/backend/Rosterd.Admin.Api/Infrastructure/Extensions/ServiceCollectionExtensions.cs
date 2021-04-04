@@ -23,17 +23,6 @@ namespace Rosterd.Admin.Api.Infrastructure.Extensions
         }
 
         /// <summary>
-        /// Adds all the swagger UI and open api spec
-        /// </summary>
-        /// <param name="services"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
-        {
-            services.RegisterSwaggerDependencies();
-            return services;
-        }
-
-        /// <summary>
         /// Adds all the custom authenticate required for Auth0 and jwt/bearer tokens
         /// </summary>
         /// <param name="services"></param>

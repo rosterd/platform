@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Rosterd.Web.Infra.Filters.Swagger;
 
-namespace Rosterd.Client.Api.ServiceRegistrations
+namespace Rosterd.Web.Infra.ServiceRegistrations
 {
     public static class RegisterSwagger
     {
@@ -19,9 +19,9 @@ namespace Rosterd.Client.Api.ServiceRegistrations
             }
         }
 
-        public static void RegisterSwaggerDependencies(this IServiceCollection services) => services.AddSwaggerGen(options =>
+        public static void RegisterSwaggerDependencies(this IServiceCollection services, string apiTitle, string version) => services.AddSwaggerGen(options =>
         {
-            options.SwaggerDoc("v1", new OpenApiInfo {Title = "Rosterd Client Api", Version = "v1"});
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = apiTitle, Version = version });
 
             try
             {

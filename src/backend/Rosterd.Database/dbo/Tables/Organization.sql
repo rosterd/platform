@@ -7,3 +7,10 @@
     CONSTRAINT [Fk_Organization_Tenant] FOREIGN KEY ([TenantId]) REFERENCES [dbo].[Tenant] ([TenantId])
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Fk_Organization_Tenant]
+    ON [dbo].[Organization]([TenantId] ASC);
+

@@ -10,7 +10,7 @@ namespace Rosterd.Data.SqlServer.Context
 {
     public partial class RosterdDbContext : DbContext, IRosterdDbContext
     {
-        public RosterdDbContext()
+        public RosterdDbContext(object options)
         {
         }
 

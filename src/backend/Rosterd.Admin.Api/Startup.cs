@@ -46,7 +46,7 @@ namespace Rosterd.Admin.Api
             services
                 .AddApplicationInsightsTelemetry()
                 .AddAppAndDatabaseDependencies(Configuration, HostingEnvironment)
-                .AddCustomSwagger()
+                .AddCustomSwagger("Rosterd Admin Api", "v1")
                 .AddApiVersioning(o =>
                 {
                     o.ApiVersionReader = new UrlSegmentApiVersionReader();

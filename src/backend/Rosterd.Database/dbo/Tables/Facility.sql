@@ -12,3 +12,10 @@
     CONSTRAINT [Fk_Facility_Organization] FOREIGN KEY ([OrganzationId]) REFERENCES [dbo].[Organization] ([OrganizationId])
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Fk_Facility_Organization]
+    ON [dbo].[Facility]([OrganzationId] ASC);
+
