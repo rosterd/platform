@@ -73,6 +73,7 @@ namespace Rosterd.Admin.Api
 
             //Register all custom middleware
             services.AddTransient<SwaggerAuthenticationMiddleware>();
+            services.AddTransient<ExceptionHandlerMiddleware>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,6 +93,8 @@ namespace Rosterd.Admin.Api
 
             app.UseRouting();
             app.UseCors("AllowAll");
+
+            app.UseCustomExceptionMiddleware();
 
             //Adds authentication middleware to the pipeline so authentication will be performed automatically on each request to host
             //Adds authorization middleware to the pipeline to make sure the Api endpoint cannot be accessed by anonymous clients

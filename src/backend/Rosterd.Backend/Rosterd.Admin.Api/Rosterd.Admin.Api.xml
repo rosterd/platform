@@ -189,13 +189,6 @@
             <param name="hostingEnvironment"></param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddCustomSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            Adds all the swagger UI and open api spec
-            </summary>
-            <param name="services"></param>
-            <returns></returns>
-        </member>
         <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddCustomAuthenticationWithJwtBearer(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Adds all the custom authenticate required for Auth0 and jwt/bearer tokens

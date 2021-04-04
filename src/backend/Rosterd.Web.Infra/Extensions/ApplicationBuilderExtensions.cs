@@ -11,5 +11,11 @@ namespace Rosterd.Web.Infra.Extensions
         /// <param name="builder">The application builder.</param>
         /// <returns></returns>
         public static IApplicationBuilder UseSwaggerAuthenticationCheck(this IApplicationBuilder builder) => builder.UseMiddleware<SwaggerAuthenticationMiddleware>();
+
+        /// <summary>
+        /// Adds the custom middleware that handles all unhandled exceptions and throws back a 500 to the client
+        /// </summary>
+        /// <param name="app"></param>
+        public static void UseCustomExceptionMiddleware(this IApplicationBuilder app) => app.UseMiddleware<ExceptionHandlerMiddleware>();
     }
 }
