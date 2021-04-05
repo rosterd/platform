@@ -28,7 +28,7 @@ namespace Rosterd.Admin.Api
             }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args, Action<IWebHostBuilder>? customiseWebHost = null) => Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args, Action<IWebHostBuilder> customiseWebHost = null) => Host.CreateDefaultBuilder(args)
             .ConfigureHostConfiguration(configBuilder =>
                 configBuilder.AddJsonFile("appsettings.json", true, true)
             )

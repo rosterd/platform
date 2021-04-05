@@ -74,7 +74,7 @@ namespace Rosterd.Web.Infra.Extensions
             this IDistributedCache cache,
             string key,
             T value,
-            DistributedCacheEntryOptions? options = null,
+            DistributedCacheEntryOptions options = null,
             JsonSerializerOptions jsonSerializerOptions = null,
             CancellationToken cancellationToken = default)
             where T : class
@@ -109,7 +109,7 @@ namespace Rosterd.Web.Infra.Extensions
         /// <paramref name="cache"/> or <paramref name="key"/> is <c>null</c>.
         /// </exception>
         public static async Task<T> GetAsJsonAsync<T>(this IDistributedCache cache, string key,
-            Func<Task<T>> cacheMiss, DistributedCacheEntryOptions? options = null)
+            Func<Task<T>> cacheMiss, DistributedCacheEntryOptions options = null)
             where T : class
         {
             var item = await cache.GetAsJsonAsync<T>(key);
