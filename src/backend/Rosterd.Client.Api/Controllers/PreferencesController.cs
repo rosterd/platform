@@ -16,12 +16,12 @@ namespace Rosterd.Client.Api.Controllers
     /// All actions related to the user
     /// </summary>
     [ApiVersion("1.0")]
-    public class UsersController : BaseApiController
+    public class PreferencesController : BaseApiController
     {
         private readonly ILogger<JobsController> _logger;
         private readonly IUserService _userService;
 
-        public UsersController(ILogger<JobsController> logger, IUserService userService) : base()
+        public PreferencesController(ILogger<JobsController> logger, IUserService userService) : base()
         {
             _logger = logger;
             _userService = userService;
@@ -33,7 +33,7 @@ namespace Rosterd.Client.Api.Controllers
         /// <returns></returns>
         [HttpGet("my")]
         [OperationOrder(1)]
-        public async Task<ActionResult<UserPreferencesModel>> GetUserPreferences([FromQuery] string userEmail) => await _userService.GetUserPreferences(String.Empty);
+        public async Task<ActionResult<UserPreferencesModel>> GetUserPreferences([FromQuery] string userEmail) => await _userService.GetUserPreferences(userEmail);
 
         /// <summary>
         /// Updates all user profile information for the current user
@@ -41,6 +41,10 @@ namespace Rosterd.Client.Api.Controllers
         /// <returns></returns>
         [HttpPut("my")]
         [OperationOrder(2)]
-        public async Task<ActionResult<UserPreferencesModel>> UpdateUserPreferences([FromBody] UserPreferencesModel userPreferencesModel) => await _userService.GetUserPreferences(String.Empty);
+        public async Task<ActionResult<UserPreferencesModel>> UpdateUserPreferences([FromBody] UserPreferencesModel userPreferencesModel)
+        {
+            await _userService.UpdateUserPreferences(userPreferencesModel);
+            return Ok();
+        }
     }
 }

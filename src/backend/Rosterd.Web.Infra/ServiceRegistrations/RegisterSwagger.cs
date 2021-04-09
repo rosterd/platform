@@ -22,7 +22,8 @@ namespace Rosterd.Web.Infra.ServiceRegistrations
         public static void RegisterSwaggerDependencies(this IServiceCollection services, string apiTitle, string version) => services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new OpenApiInfo { Title = apiTitle, Version = version });
-
+            options.DescribeAllParametersInCamelCase();
+            
             try
             {
                 options.IncludeXmlComments(XmlCommentsFilePath);

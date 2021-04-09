@@ -71,5 +71,47 @@ namespace Rosterd.Client.Api.Controllers
 
             return pagedList;
         }
+
+        /// <summary>
+        /// Marks the current user as accepting the job
+        /// </summary>
+        /// <param name="jobId">The job id</param>
+        /// <returns></returns>
+        [HttpGet("{jobId}/confirmation")]
+        [OperationOrder(1)]
+        public async Task<ActionResult> AcceptAndConfirmJob(long jobId)
+        {
+            //Validate start time
+
+            //Record history of this
+
+            //Assign user
+
+            //Change status to assigned
+
+            //TODO:
+            return Ok();
+        }
+
+        /// <summary>
+        /// Removes the current user from the job, if the grace period has run out then a HTTP 422 is thrown back
+        /// </summary>
+        /// <param name="jobId">The job id</param>
+        /// <returns></returns>
+        [HttpGet("{jobId}/cancellations")]
+        [OperationOrder(1)]
+        public async Task<ActionResult> CancelJob(long jobId)
+        {
+            //TODO:
+            //1. Validate grace period
+
+            //2. Record history of this
+
+            //3. Remove assignment of user
+
+            //4. Change status of job back to published
+
+            return Ok();
+        }
     }
 }

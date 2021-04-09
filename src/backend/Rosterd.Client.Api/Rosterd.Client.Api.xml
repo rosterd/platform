@@ -43,18 +43,32 @@
             <param name="pagingParameters"></param>
             <returns></returns>
         </member>
-        <member name="T:Rosterd.Client.Api.Controllers.UsersController">
+        <member name="M:Rosterd.Client.Api.Controllers.JobsController.AcceptAndConfirmJob(System.Int64)">
+            <summary>
+            Marks the current user as accepting the job
+            </summary>
+            <param name="jobId">The job id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Client.Api.Controllers.JobsController.CancelJob(System.Int64)">
+            <summary>
+            Removes the current user from the job, if the grace period has run out then a HTTP 422 is thrown back
+            </summary>
+            <param name="jobId">The job id</param>
+            <returns></returns>
+        </member>
+        <member name="T:Rosterd.Client.Api.Controllers.PreferencesController">
             <summary>
             All actions related to the user
             </summary>
         </member>
-        <member name="M:Rosterd.Client.Api.Controllers.UsersController.GetUserPreferences(System.String)">
+        <member name="M:Rosterd.Client.Api.Controllers.PreferencesController.GetUserPreferences(System.String)">
             <summary>
             Gets all user profile information for the current user
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Client.Api.Controllers.UsersController.UpdateUserPreferences(Rosterd.Domain.Models.Users.UserPreferencesModel)">
+        <member name="M:Rosterd.Client.Api.Controllers.PreferencesController.UpdateUserPreferences(Rosterd.Domain.Models.Users.UserPreferencesModel)">
             <summary>
             Updates all user profile information for the current user
             </summary>

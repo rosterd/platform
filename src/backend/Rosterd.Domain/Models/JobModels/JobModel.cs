@@ -29,7 +29,6 @@ namespace Rosterd.Domain.Models.JobModels
         [Required]
         public DateTime JobPostedDateTimeUtc { get; set; }
 
-        
         [StringLength(1000)]
         public string Comments { get; set; }
 
@@ -37,6 +36,10 @@ namespace Rosterd.Domain.Models.JobModels
         public long? GracePeriodToCancelMinutes { get; set; }
 
         public bool? NoGracePeriod { get; set; }
+
+        public DateTime? JobGracePeriodEndDateTimeUtc => GracePeriodToCancelMinutes == null
+            ? (DateTime?)null
+            : JobStartDateTimeUtc.Date.AddMinutes(-GracePeriodToCancelMinutes.Value);
 
         [Required]
         public JobStatus? JobStatus { get; set; }

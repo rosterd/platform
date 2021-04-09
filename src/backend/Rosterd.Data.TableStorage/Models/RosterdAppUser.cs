@@ -21,6 +21,8 @@ namespace Rosterd.Data.TableStorage.Models
 
         public string GetTableName() => TableName;
 
+        public string DeviceId { get; set; }
+
         public string Email { get; set; }
 
         public string IdmUserName { get; set; }

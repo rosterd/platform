@@ -19,6 +19,8 @@ namespace Rosterd.Domain.Models.Users
 
         public string LastName { get; set; }
 
+        public string DeviceId { get; set; }
+
         public AvailableDays AvailableDays { get; set; }
 
         public Shift Shift { get; set; }

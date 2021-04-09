@@ -14,6 +14,7 @@ namespace Rosterd.Services.Mappers
             new UserPreferencesModel
             {
                 Email = dataModel.Email,
+                DeviceId = dataModel.DeviceId,
                 FirstName = dataModel.FirstName,
                 MiddleName = dataModel.MiddleName,
                 IdmUserName = dataModel.IdmUserName,
@@ -35,6 +36,7 @@ namespace Rosterd.Services.Mappers
             new RosterdAppUser(domainModel.Email)
             {
                 Email = domainModel.Email,
+                DeviceId = domainModel.DeviceId,
                 FirstName = domainModel.FirstName,
                 MiddleName = domainModel.MiddleName,
                 IdmUserName = domainModel.IdmUserName,
