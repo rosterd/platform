@@ -14,6 +14,7 @@ namespace Rosterd.Admin.Api.Controllers
     /// All actions related to resources
     /// </summary>
     [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "Staff")]
     public class StaffController : BaseApiController
     {
         private readonly ILogger<StaffController> _logger;

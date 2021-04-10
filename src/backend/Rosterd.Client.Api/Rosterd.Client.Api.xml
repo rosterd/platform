@@ -22,27 +22,6 @@
             All actions related to Jobs for the user
             </summary>
         </member>
-        <member name="M:Rosterd.Client.Api.Controllers.JobsController.GetAllRelevantJobsForUser(Rosterd.Domain.Models.PagingQueryStringParameters)">
-            <summary>
-            Gets all the jobs that are specific for the user
-            </summary>
-            <param name="pagingParameters"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Rosterd.Client.Api.Controllers.JobsController.GetAllCurrentJobsForUser(Rosterd.Domain.Models.PagingQueryStringParameters)">
-            <summary>
-            Gets all the jobs that are specific for the user
-            </summary>
-            <param name="pagingParameters"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Rosterd.Client.Api.Controllers.JobsController.GetAllHistoricalJobsForUser(Rosterd.Domain.Models.PagingQueryStringParameters)">
-            <summary>
-            Gets all the jobs that are specific for the user
-            </summary>
-            <param name="pagingParameters"></param>
-            <returns></returns>
-        </member>
         <member name="M:Rosterd.Client.Api.Controllers.JobsController.AcceptAndConfirmJob(System.Int64)">
             <summary>
             Marks the current user as accepting the job
@@ -55,6 +34,39 @@
             Removes the current user from the job, if the grace period has run out then a HTTP 422 is thrown back
             </summary>
             <param name="jobId">The job id</param>
+            <returns></returns>
+        </member>
+        <member name="T:Rosterd.Client.Api.Controllers.MyJobsController">
+            <summary>
+            All actions related to Jobs for the user
+            </summary>
+        </member>
+        <member name="M:Rosterd.Client.Api.Controllers.MyJobsController.GetAllRelevantJobsForUser(Rosterd.Domain.Models.PagingQueryStringParameters)">
+            <summary>
+            Gets all the jobs that are relevant for the user
+            </summary>
+            <param name="pagingParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Client.Api.Controllers.MyJobsController.GetAllCurrentJobsForUser(Rosterd.Domain.Models.PagingQueryStringParameters)">
+            <summary>
+            Gets all the jobs that are currently in progress or upcoming for the user
+            </summary>
+            <param name="pagingParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Client.Api.Controllers.MyJobsController.GetAllHistoricalCompletedJobsForUser(Rosterd.Domain.Models.PagingQueryStringParameters)">
+            <summary>
+            Gets all the historically completed jobs (only jobs that have been completed)
+            </summary>
+            <param name="pagingParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Client.Api.Controllers.MyJobsController.GetAllHistoricalCancelledJobsForUser(Rosterd.Domain.Models.PagingQueryStringParameters)">
+            <summary>
+            Gets all the historically cancelled jobs (only jobs that have been cancelled by the admin or the user opted out before the grace period)
+            </summary>
+            <param name="pagingParameters"></param>
             <returns></returns>
         </member>
         <member name="T:Rosterd.Client.Api.Controllers.PreferencesController">

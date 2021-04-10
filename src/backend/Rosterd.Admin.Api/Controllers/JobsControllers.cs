@@ -14,6 +14,7 @@ namespace Rosterd.Admin.Api.Controllers
     /// All actions related to Jobs
     /// </summary>
     [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "Jobs")]
     public class JobsController : BaseApiController
     {
         private readonly ILogger<JobsController> _logger;

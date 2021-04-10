@@ -16,6 +16,7 @@ namespace Rosterd.Client.Api.Controllers
     /// All actions related to the user
     /// </summary>
     [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "Preferences")]
     public class PreferencesController : BaseApiController
     {
         private readonly ILogger<JobsController> _logger;

@@ -23,6 +23,8 @@ namespace Rosterd.Web.Infra.ServiceRegistrations
         {
             options.SwaggerDoc("v1", new OpenApiInfo { Title = apiTitle, Version = version });
             options.DescribeAllParametersInCamelCase();
+            options.DocInclusionPredicate((name, api) => true);
+            options.TagActionsBy(api => new[] {api.GroupName});
             
             try
             {

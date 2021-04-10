@@ -5,6 +5,7 @@ namespace Rosterd.Client.Api.Controllers
 {
     [ApiController]
     [Route("")]
+    [ApiExplorerSettings(GroupName = "Home")]
     public class HomeController : ControllerBase
     {
         /// <summary>

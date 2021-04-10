@@ -11,6 +11,7 @@ using Rosterd.Web.Infra.Filters.Swagger;
 namespace Rosterd.Admin.Api.Controllers
 {
     [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "Facilities")]
     public class FacilitiesController : BaseApiController
     {
         private readonly IFacilitiesService _facilitiesService;

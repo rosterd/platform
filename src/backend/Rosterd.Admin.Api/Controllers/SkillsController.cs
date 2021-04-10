@@ -12,6 +12,7 @@ using Rosterd.Web.Infra.Filters.Swagger;
 namespace Rosterd.Admin.Api.Controllers
 {
     [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "Skills")]
     public class SkillsController : BaseApiController
     {
         private readonly ILogger<SkillsController> _logger;

@@ -13,6 +13,7 @@ namespace Rosterd.Client.Api.Controllers
     /// All actions related to Jobs for the user
     /// </summary>
     [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "Jobs")]
     public class JobsController : BaseApiController
     {
         private readonly ILogger<JobsController> _logger;
@@ -25,59 +26,11 @@ namespace Rosterd.Client.Api.Controllers
         }
 
         /// <summary>
-        /// Gets all the jobs that are specific for the user
-        /// </summary>
-        /// <param name="pagingParameters"></param>
-        /// <returns></returns>
-        [HttpGet("relevant")]
-        [OperationOrder(1)]
-        public async Task<ActionResult<PagedList<JobModel>>> GetAllRelevantJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
-        {
-            //TODO: get only relevant jobs for the user
-            pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetAllJobs(pagingParameters);
-
-            return pagedList;
-        }
-
-        /// <summary>
-        /// Gets all the jobs that are specific for the user
-        /// </summary>
-        /// <param name="pagingParameters"></param>
-        /// <returns></returns>
-        [HttpGet("my/current")]
-        [OperationOrder(1)]
-        public async Task<ActionResult<PagedList<JobModel>>> GetAllCurrentJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
-        {
-            //TODO: get only currently accepted and ongoing jobs for this user
-            pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetAllJobs(pagingParameters);
-
-            return pagedList;
-        }
-
-        /// <summary>
-        /// Gets all the jobs that are specific for the user
-        /// </summary>
-        /// <param name="pagingParameters"></param>
-        /// <returns></returns>
-        [HttpGet("my/history")]
-        [OperationOrder(1)]
-        public async Task<ActionResult<PagedList<JobModel>>> GetAllHistoricalJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
-        {
-            //TODO: get only historical jobs for this user
-            pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetAllJobs(pagingParameters);
-
-            return pagedList;
-        }
-
-        /// <summary>
         /// Marks the current user as accepting the job
         /// </summary>
         /// <param name="jobId">The job id</param>
         /// <returns></returns>
-        [HttpGet("{jobId}/confirmation")]
+        [HttpPut("{jobId}/confirmation")]
         [OperationOrder(1)]
         public async Task<ActionResult> AcceptAndConfirmJob(long jobId)
         {
@@ -98,8 +51,8 @@ namespace Rosterd.Client.Api.Controllers
         /// </summary>
         /// <param name="jobId">The job id</param>
         /// <returns></returns>
-        [HttpGet("{jobId}/cancellations")]
-        [OperationOrder(1)]
+        [HttpDelete("{jobId}/cancellations")]
+        [OperationOrder(2)]
         public async Task<ActionResult> CancelJob(long jobId)
         {
             //TODO:
