@@ -12,6 +12,8 @@ namespace Rosterd.Data.TableStorage.Models
         public const string UsersPartitionKey = "userEmail";
         public const string TableName = "RosterdAppUserTable";
 
+        public RosterdAppUser(){}
+
         public RosterdAppUser(string userEmail)
         {
             PartitionKey = UsersPartitionKey;
