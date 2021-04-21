@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Jobs", "Ro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Mappers", "Rosterd.Services.Mappers\Rosterd.Services.Mappers.csproj", "{4A6C09C9-58AA-413E-8D8F-86C65DD2608C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApis", "WebApis", "{3E4725BD-A9F5-4CD4-9035-36A1364E316B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apis", "Apis", "{3E4725BD-A9F5-4CD4-9035-36A1364E316B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Web.Infra", "Rosterd.Web.Infra\Rosterd.Web.Infra.csproj", "{5410CFE0-B3AE-4215-A6D1-74DA5022D02D}"
 EndProject
@@ -61,6 +61,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.EndToEndTests", "Tests\Rosterd.EndToEndTests\Rosterd.EndToEndTests.csproj", "{8308F751-A7DE-4369-A077-46627D85FC0F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.ComponentTests", "Tests\Rosterd.ComponentTests\Rosterd.ComponentTests.csproj", "{6264D138-E753-4530-B560-C6F25A7996A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure Functions", "Azure Functions", "{9D54CBC3-F894-415E-A94C-885229B7EE36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.AzureFunctions", "Rosterd.AzureFunctions\Rosterd.AzureFunctions.csproj", "{0A156225-BED5-4CC9-8ECE-18B2D035B878}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -142,6 +146,10 @@ Global
 		{6264D138-E753-4530-B560-C6F25A7996A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6264D138-E753-4530-B560-C6F25A7996A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6264D138-E753-4530-B560-C6F25A7996A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A156225-BED5-4CC9-8ECE-18B2D035B878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A156225-BED5-4CC9-8ECE-18B2D035B878}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A156225-BED5-4CC9-8ECE-18B2D035B878}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A156225-BED5-4CC9-8ECE-18B2D035B878}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -167,6 +175,7 @@ Global
 		{8BDF13B1-AD91-452C-B08B-722D564C2753} = {E2CF2B03-6E67-4789-83C2-C14074B6257B}
 		{8308F751-A7DE-4369-A077-46627D85FC0F} = {8BDF13B1-AD91-452C-B08B-722D564C2753}
 		{6264D138-E753-4530-B560-C6F25A7996A9} = {8BDF13B1-AD91-452C-B08B-722D564C2753}
+		{0A156225-BED5-4CC9-8ECE-18B2D035B878} = {9D54CBC3-F894-415E-A94C-885229B7EE36}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2DA4ED17-3CA8-499E-A97F-35DAF7C0E6C3}

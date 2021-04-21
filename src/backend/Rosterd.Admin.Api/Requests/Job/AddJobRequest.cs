@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using FluentValidation;
-using Rosterd.Admin.Api.Requests.Job;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Web.Infra.ValidationAttributes;
@@ -72,29 +71,29 @@ namespace Rosterd.Admin.Api.Requests.Job
             return jobModel;
         }
     }
-}
 
-public class AddJobRequestValidator : AbstractValidator<AddJobRequest>
-{
-    public AddJobRequestValidator()
+    public class AddJobRequestValidator : AbstractValidator<AddJobRequest>
     {
-        //Grace period validation
-        RuleFor(x => x.NoGracePeriod).Custom((noGracePeriod, context) => {
-            var gracePeriodToCancelMinutes = ((AddJobRequest)context.InstanceToValidate).GracePeriodToCancelMinutes;
+        public AddJobRequestValidator()
+        {
+            //Grace period validation
+            RuleFor(x => x.NoGracePeriod).Custom((noGracePeriod, context) => {
+                var gracePeriodToCancelMinutes = ((AddJobRequest)context.InstanceToValidate).GracePeriodToCancelMinutes;
 
-            if(noGracePeriod == null && gracePeriodToCancelMinutes == null)
-                context.AddFailure("Either 'no grace period' or 'grace period to cancel minutes' must be specified");
-        });
+                if(noGracePeriod == null && gracePeriodToCancelMinutes == null)
+                    context.AddFailure("Either 'no grace period' or 'grace period to cancel minutes' must be specified");
+            });
 
-        //Day or night shift validation
-        RuleFor(x => x.IsDayShift).Custom((isDayShift, context) => {
-            var isNightShift = ((AddJobRequest)context.InstanceToValidate).IsNightShift;
+            //Day or night shift validation
+            RuleFor(x => x.IsDayShift).Custom((isDayShift, context) => {
+                var isNightShift = ((AddJobRequest)context.InstanceToValidate).IsNightShift;
 
-            if(isDayShift && isNightShift)
-                context.AddFailure("Job cant both night and day shift");
+                if(isDayShift && isNightShift)
+                    context.AddFailure("Job cant both night and day shift");
 
-            if(!isDayShift && !isNightShift)
-                context.AddFailure("Job has to be either a day or night shift");
-        });
+                if(!isDayShift && !isNightShift)
+                    context.AddFailure("Job has to be either a day or night shift");
+            });
+        }
     }
 }
