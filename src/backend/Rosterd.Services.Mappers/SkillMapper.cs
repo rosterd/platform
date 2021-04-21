@@ -42,7 +42,7 @@ namespace Rosterd.Services.Mappers
         {
             var skillToSave = new Data.SqlServer.Models.Skill
             {
-                SkillName = domainModel.SkillName,
+                SkillName = domainModel.SkillName.ToLower(),
                 Description = domainModel.Description
             };
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Rosterd.Domain.Exceptions;
+using BadHttpRequestException = Microsoft.AspNetCore.Server.IIS.BadHttpRequestException;
 
 namespace Rosterd.Web.Infra.Middleware
 {
@@ -26,19 +29,22 @@ namespace Rosterd.Web.Infra.Middleware
             catch (Exception ex)
             {
                 _logger.LogError($"Exception occurred: {ex}");
-                await HandleExceptionAsync(context);
+                await HandleExceptionAsync(context, ex);
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context)
+        private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            return context.Response.WriteAsync(new ErrorDetails()
+            switch (exception)
             {
-                StatusCode = context?.Response?.StatusCode ?? 500,
-                Message = "An unexpected error has occurred, please contact support."
-            }.ToString());
+                case EntityAlreadyExistsException entityAlreadyExistsException:
+                    return context.Response.WriteAsync(ErrorDetails.GenerateEntityAlreadyExistsError().ToString());
+                case EntityNotFoundException entityNotFoundException:
+                    return context.Response.WriteAsync(ErrorDetails.Generate404Error().ToString());
+                default:
+                    return context.Response.WriteAsync(ErrorDetails.Generate500Error().ToString());
+            }
         }
     }
 
@@ -47,5 +53,23 @@ namespace Rosterd.Web.Infra.Middleware
         public int StatusCode { get; set; }
         public string Message { get; set; }
         public override string ToString() => JsonSerializer.Serialize(this);
+
+        public static ErrorDetails Generate500Error() => new ErrorDetails()
+        {
+            StatusCode = (int)HttpStatusCode.InternalServerError,
+            Message = "An unexpected error has occurred, please contact support."
+        };
+
+        public static ErrorDetails Generate404Error() => new ErrorDetails()
+        {
+            StatusCode = (int)HttpStatusCode.NotFound,
+            Message = "Sorry that resource is not found, please contact support."
+        };
+
+        public static ErrorDetails GenerateEntityAlreadyExistsError() => new ErrorDetails()
+        {
+            StatusCode = (int)HttpStatusCode.UnprocessableEntity,
+            Message = "Sorry that already exists, please try a different one."
+        };
     }
 }

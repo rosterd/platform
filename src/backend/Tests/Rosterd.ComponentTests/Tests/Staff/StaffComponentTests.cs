@@ -78,7 +78,7 @@ namespace Rosterd.ComponentTests.Tests.Staff
         [Fact]
         public async Task GivenStaffWhenDeleteStaffThenStaffIsDeleted()
         {
-            var staffId = createStaffAsync().Result;
+            var staffId = await createStaffAsync();
             // ENDPOINT URL
             var url = ApiConstants.STAFF_ENDPOINT + "/" + staffId;
 

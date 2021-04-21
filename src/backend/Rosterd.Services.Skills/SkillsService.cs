@@ -1,6 +1,9 @@
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
+using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Services.Mappers;
@@ -29,9 +32,11 @@ namespace Rosterd.Services.Skills
             return skill?.ToDomainModel();
         }
 
-        public async Task CreateSkill(SkillModel skilllModel)
+        public async Task CreateSkill(SkillModel skillModel)
         {
-            var skillToCreate = skilllModel.ToNewSkill();
+            await ThrowDuplicateExceptionIfSkillAlreadyExists(skillModel.SkillName);
+
+            var skillToCreate = skillModel.ToNewSkill();
 
             await _context.Skills.AddAsync(skillToCreate);
             await _context.SaveChangesAsync();
@@ -48,10 +53,19 @@ namespace Rosterd.Services.Skills
         }
         public async Task UpdateSkill(SkillModel skillModel)
         {
+            await ThrowDuplicateExceptionIfSkillAlreadyExists(skillModel.SkillName);
+
             var skillModelToUpdate = skillModel.ToDataModel();
 
             _context.Skills.Update(skillModelToUpdate);
             await _context.SaveChangesAsync();
+        }
+
+        private async Task ThrowDuplicateExceptionIfSkillAlreadyExists(string skillName)
+        {
+            var existingSkillsWithSameName = await _context.Skills.AnyAsync(s => s.SkillName == skillName.ToLower());
+            if(existingSkillsWithSameName)
+                throw new EntityAlreadyExistsException();
         }
     }
 }
