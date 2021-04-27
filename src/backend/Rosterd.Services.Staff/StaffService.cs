@@ -6,6 +6,7 @@ using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.StaffModels;
+using Rosterd.Domain.Requests.Staff;
 using Rosterd.Services.Mappers;
 using Rosterd.Services.Staff.Interfaces;
 
@@ -51,16 +52,18 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task CreateStaffMember(StaffModel staffModel)
+        public async Task<long> CreateStaffMember(AddUpdateStaffRequest staffModel)
         {
             var staffToCreate = staffModel.ToNewStaff();
 
-            await _context.Staff.AddAsync(staffToCreate);
+            var newStaff = await _context.Staff.AddAsync(staffToCreate);
             await _context.SaveChangesAsync();
+
+            return newStaff.Entity.StaffId;
         }
 
         ///<inheritdoc/>
-        public async Task UpdateStaffMember(StaffModel staffModel)
+        public async Task UpdateStaffMember(AddUpdateStaffRequest staffModel)
         {
             var staffModelToUpdate = staffModel.ToDataModel();
 

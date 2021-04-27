@@ -12,9 +12,12 @@
 
   <ItemGroup>
     <Folder Include="Models\OrganizationModels\" />
+    <Folder Include="Responses\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="9.5.3" />
+    <PackageReference Include="Microsoft.Azure.EventGrid" Version="3.2.0" />
     <PackageReference Include="Z.ExtensionMethods" Version="2.1.1" />
   </ItemGroup>
 </Project>

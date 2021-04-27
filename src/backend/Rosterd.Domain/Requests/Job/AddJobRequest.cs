@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.JobModels;
-using Rosterd.Web.Infra.ValidationAttributes;
+using Rosterd.Domain.ValidationAttributes;
 
-namespace Rosterd.Admin.Api.Requests.Job
+namespace Rosterd.Domain.Requests.Job
 {
     public class AddJobRequest
     {

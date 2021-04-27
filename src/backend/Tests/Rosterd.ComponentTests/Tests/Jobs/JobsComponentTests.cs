@@ -4,11 +4,11 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
-using Rosterd.Admin.Api.Requests.Job;
 using Rosterd.ComponentTests.Fixture;
 using Rosterd.ComponentTests.Helpers;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
+using Rosterd.Domain.Requests.Job;
 using Xunit;
 using Xunit.Abstractions;
 

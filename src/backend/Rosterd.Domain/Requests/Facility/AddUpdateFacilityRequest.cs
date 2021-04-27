@@ -1,7 +1,6 @@
-using System;
 using Rosterd.Domain.Models.FacilitiesModels;
 
-namespace Rosterd.Admin.Api.Requests.Facility
+namespace Rosterd.Domain.Requests.Facility
 {
     public class AddUpdateFacilityRequest
     {

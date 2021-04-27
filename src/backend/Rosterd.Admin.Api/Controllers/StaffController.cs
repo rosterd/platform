@@ -1,12 +1,16 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
-using Rosterd.Admin.Api.Requests.Staff;
-using Rosterd.Domain.Models;
+using Rosterd.Domain;
 using Rosterd.Domain.Models.StaffModels;
+using Rosterd.Domain.Requests.Staff;
+using Rosterd.Domain.ValidationAttributes;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
 namespace Rosterd.Admin.Api.Controllers
 {
@@ -20,12 +24,20 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly ILogger<StaffController> _logger;
         private readonly IStaffService _staffService;
         private readonly IStaffSkillsService _staffSkillsService;
+        private readonly IStaffEventsService _staffEventsService;
+        private readonly IEventGridClient _eventGridClient;
+        private readonly AppSettings _appSettings;
+        private readonly string _eventGridTopicHost;
 
-        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService) : base()
+        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService, IStaffEventsService staffEventsService, IEventGridClient eventGridClient, AppSettings appSettings) : base()
         {
             _logger = logger;
             _staffService = staffService;
             _staffSkillsService = staffSkillsService;
+            _staffEventsService = staffEventsService;
+            _eventGridClient = eventGridClient;
+            _appSettings = appSettings;
+            _eventGridTopicHost = new Uri(_appSettings.EventGridTopicEndpoint).Host;
         }
 
         /// <summary>
@@ -36,10 +48,10 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [OperationOrder(1)]
-        public async Task<ActionResult<PagedList<StaffModel>>> GetAllStaff([FromQuery] long? facilityId, [FromQuery] PagingQueryStringParameters pagingParameters)
+        public async Task<ActionResult<Domain.Models.PagedList<StaffModel>>> GetAllStaff([FromQuery] long? facilityId, [FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-            PagedList<StaffModel> pagedList;
+            Domain.Models.PagedList<StaffModel> pagedList;
 
             if (facilityId == null)
                 pagedList = await _staffService.GetAllStaff(pagingParameters);
@@ -70,7 +82,11 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(2)]
         public async Task<ActionResult> AddNewStaffMember([FromBody] AddUpdateStaffRequest request)
         {
-            await _staffService.CreateStaffMember(request.StaffToAddOrUpdate);
+            //Create the staff
+            var staffId = await _staffService.CreateStaffMember(request);
+
+            //Generate a new staff created event
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, _eventGridTopicHost, _appSettings.Environment, staffId);
             return Ok();
         }
 
@@ -83,7 +99,11 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(3)]
         public async Task<ActionResult> UpdateStaffMember([FromBody] AddUpdateStaffRequest request)
         {
-            await _staffService.UpdateStaffMember(request.StaffToAddOrUpdate);
+            if (request.StaffId == null)
+                return BadRequest("staffId field is required");
+
+            await _staffService.UpdateStaffMember(request);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, _eventGridTopicHost, _appSettings.Environment, request.StaffId.Value);
             return Ok();
         }
 
@@ -95,9 +115,10 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpDelete]
         [OperationOrderAttribute(4)]
-        public async Task<ActionResult> RemoveStaffMember([FromQuery] [Required] long? staffId)
+        public async Task<ActionResult> RemoveStaffMember([FromQuery] [Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
         {
             await _staffService.RemoveStaffMember(staffId.Value);
+            await _staffEventsService.GenerateStaffDeletedEvent(_eventGridClient, _eventGridTopicHost, _appSettings.Environment, staffId.Value);
             return Ok();
         }
 
@@ -109,9 +130,10 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPut("facilities")]
         [OperationOrderAttribute(5)]
-        public async Task<ActionResult> MoveStaffMemberToAnotherFacility([FromQuery] [Required] long? facilityId, [Required] long? staffId)
+        public async Task<ActionResult> MoveStaffMemberToAnotherFacility([FromQuery] [Required] long? facilityId, [Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
         {
             await _staffService.MoveStaffMemberToAnotherFacility(staffId.Value, facilityId.Value);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, _eventGridTopicHost, _appSettings.Environment, staffId.Value);
             return Ok();
         }
 
@@ -123,9 +145,10 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPut("skills")]
         [OperationOrderAttribute(6)]
-        public async Task<ActionResult> AddSkillToStaff([FromQuery][Required] long? staffId, [FromBody] AddSkillsToStaffRequest request)
+        public async Task<ActionResult> AddSkillToStaff([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId, [FromBody] AddSkillsToStaffRequest request)
         {
             await _staffSkillsService.UpdateAllSkillsForStaff(staffId.Value, request.SkillsToAdd);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, _eventGridTopicHost, _appSettings.Environment, staffId.Value);
             return Ok();
         }
 
@@ -136,9 +159,10 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpDelete("skills")]
         [OperationOrderAttribute(7)]
-        public async Task<ActionResult> DeleteAllSkillsForStaff([FromQuery][Required] long? staffId)
+        public async Task<ActionResult> DeleteAllSkillsForStaff([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
         {
             await _staffSkillsService.RemoveAllSkillsForStaff(staffId.Value);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, _eventGridTopicHost, _appSettings.Environment, staffId.Value);
             return Ok();
         }
     }

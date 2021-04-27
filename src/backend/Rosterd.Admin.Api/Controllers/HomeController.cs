@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Rosterd.Admin.Api.Requests.Facility;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Services.Facilities.Interfaces;

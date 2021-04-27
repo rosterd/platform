@@ -24,14 +24,14 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.AddNewFacility(Rosterd.Admin.Api.Requests.Facility.AddUpdateFacilityRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.AddNewFacility(Rosterd.Domain.Requests.Facility.AddUpdateFacilityRequest)">
             <summary>
                 Adds a new Facility
             </summary>
             <param name="request">The Facility to add</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.UpdateFacility(Rosterd.Admin.Api.Requests.Facility.AddUpdateFacilityRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.UpdateFacility(Rosterd.Domain.Requests.Facility.AddUpdateFacilityRequest)">
             <summary>
                 Update a Facility
             </summary>
@@ -69,7 +69,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.AddNewJob(Rosterd.Admin.Api.Requests.Job.AddJobRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.AddNewJob(Rosterd.Domain.Requests.Job.AddJobRequest)">
             <summary>
             Adds a new Job
             </summary>
@@ -96,14 +96,14 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.AddNewSkill(Rosterd.Admin.Api.Requests.Skills.AddUpdateSkillRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.AddNewSkill(Rosterd.Domain.Requests.Skills.AddUpdateSkillRequest)">
             <summary>
             Adds a new Skill
             </summary>
             <param name="request">The Skill to add</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.UpdateSkill(Rosterd.Admin.Api.Requests.Skills.AddUpdateSkillRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.UpdateSkill(Rosterd.Domain.Requests.Skills.AddUpdateSkillRequest)">
             <summary>
             Update a Skill
             </summary>
@@ -136,14 +136,14 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.AddNewStaffMember(Rosterd.Admin.Api.Requests.Staff.AddUpdateStaffRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.AddNewStaffMember(Rosterd.Domain.Requests.Staff.AddUpdateStaffRequest)">
             <summary>
             Adds a new Staff member
             </summary>
             <param name="request">The Staff member to add</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.UpdateStaffMember(Rosterd.Admin.Api.Requests.Staff.AddUpdateStaffRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.UpdateStaffMember(Rosterd.Domain.Requests.Staff.AddUpdateStaffRequest)">
             <summary>
             Update a Staff member details
             </summary>
@@ -165,7 +165,7 @@
             <param name="staffId">The Staff id</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.AddSkillToStaff(System.Nullable{System.Int64},Rosterd.Admin.Api.Requests.Staff.AddSkillsToStaffRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.AddSkillToStaff(System.Nullable{System.Int64},Rosterd.Domain.Requests.Staff.AddSkillsToStaffRequest)">
             <summary>
             Adds a collection of skills to the Staff member
             </summary>
@@ -196,11 +196,6 @@
             <param name="services"></param>
             <param name="config"></param>
             <returns></returns>
-        </member>
-        <member name="P:Rosterd.Admin.Api.Requests.Job.AddJobRequest.PreviouslyCancelledJobId">
-            <summary>
-            Only required if an existing job was cancelled and new one created based of the old one
-            </summary>
         </member>
         <member name="M:Rosterd.Admin.Api.Services.IUserContext.DoesTenantAndUserExist">
             <summary>

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Rosterd.Data.SqlServer.Helpers;
+using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Models.StaffModels;
+using Rosterd.Domain.Requests.Staff;
 using Rosterd.Infrastructure.Extensions;
 
 namespace Rosterd.Services.Mappers
@@ -29,7 +31,11 @@ namespace Rosterd.Services.Mappers
             var staffFacility = dataModel.StaffFacilities.FirstOrDefault();
             if (staffFacility != null)
             {
-                var facility = new FacilityModel {FacilityId = staffFacility.FacilityId, FacilityName = staffFacility.FacilityName};
+                var facility = new FacilityModel
+                {
+                    FacilityId = staffFacility.FacilityId, FacilityName = staffFacility.FacilityName
+
+                };
                 staffModel.StaffFacility = facility;
             }
 
@@ -56,14 +62,14 @@ namespace Rosterd.Services.Mappers
             return staffModels;
         }
 
-        public static Data.SqlServer.Models.Staff ToDataModel(this StaffModel domainModel)
+        public static Data.SqlServer.Models.Staff ToDataModel(this AddUpdateStaffRequest domainModel)
         {
             var staffToUpdate = domainModel.ToNewStaff();
-            staffToUpdate.StaffId = domainModel.StaffId;
+            staffToUpdate.StaffId = domainModel.StaffId ?? 0;
             return staffToUpdate;
         }
 
-        public static Data.SqlServer.Models.Staff ToNewStaff(this StaffModel domainModel)
+        public static Data.SqlServer.Models.Staff ToNewStaff(this AddUpdateStaffRequest domainModel)
         {
             var staffToSave = new Data.SqlServer.Models.Staff
             {
@@ -75,8 +81,16 @@ namespace Rosterd.Services.Mappers
                 HomePhoneNumber = domainModel.HomePhoneNumber,
                 MobilePhoneNumber = domainModel.MobilePhoneNumber,
                 OtherPhoneNumber = domainModel.OtherPhoneNumber,
-                JobTitle = domainModel.JobTitle
+                JobTitle = domainModel.JobTitle,
+
+                StaffFacilities = new List<StaffFacility> {new StaffFacility {FacilityId = domainModel.FacilityId.Value}}
             };
+
+            staffToSave.StaffSkills = new List<StaffSkill>();
+            foreach (var domainModelSkill in domainModel.Skills.AlwaysList())
+            {
+                staffToSave.StaffSkills.Add(new StaffSkill{SkillId = domainModelSkill.SkillId,SkillName = domainModelSkill.SkillName});
+            }
 
             return staffToSave;
         }

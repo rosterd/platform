@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Rosterd.Admin.Api.Requests.Job;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
+using Rosterd.Domain.Requests.Job;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 

@@ -1,6 +1,6 @@
 using Rosterd.Domain.Models.SkillsModels;
 
-namespace Rosterd.Admin.Api.Requests.Skills
+namespace Rosterd.Domain.Requests.Skills
 {
     public class AddUpdateSkillRequest
     {
