@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Requests.Job;
+using Rosterd.Domain.ValidationAttributes;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 
@@ -47,7 +48,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<JobModel>> GetJobById([Required] long? id)
+        public async Task<ActionResult<JobModel>> GetJobById([Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? id)
         {
             var jobModel = await _jobService.GetJob(id.Value);
             return jobModel;
@@ -74,7 +75,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpDelete]
         [OperationOrderAttribute(4)]
-        public async Task<ActionResult> RemoveJob([FromQuery][Required] long? jobId)
+        public async Task<ActionResult> RemoveJob([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? jobId)
         {
             await _jobService.RemoveJob(jobId.Value);
             return Ok();
