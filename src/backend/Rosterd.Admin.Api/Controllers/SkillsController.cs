@@ -3,11 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Rosterd.Domain.Models;
+using Rosterd.Domain;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Requests.Skills;
 using Rosterd.Services.Skills.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
 namespace Rosterd.Admin.Api.Controllers
 {
@@ -18,7 +19,7 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly ILogger<SkillsController> _logger;
         private readonly ISkillsService _skillService;
 
-        public SkillsController(ILogger<SkillsController> logger, ISkillsService skillService) : base()
+        public SkillsController(ILogger<SkillsController> logger, ISkillsService skillService, AppSettings appSettings) : base(appSettings)
         {
             _logger = logger;
             _skillService = skillService;
@@ -31,10 +32,10 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [OperationOrder(1)]
-        public async Task<ActionResult<PagedList<SkillModel>>> GetAllSkills([FromQuery] PagingQueryStringParameters pagingParameters)
+        public async Task<ActionResult<Domain.Models.PagedList<SkillModel>>> GetAllSkills([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-            PagedList<SkillModel> pagedList;
+            Domain.Models.PagedList<SkillModel> pagedList;
 
             pagedList = await _skillService.GetAllSkills(pagingParameters);
 

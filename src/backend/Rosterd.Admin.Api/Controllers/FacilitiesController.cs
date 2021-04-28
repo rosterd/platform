@@ -2,11 +2,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Rosterd.Domain.Models;
+using Rosterd.Domain;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Requests.Facility;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
 namespace Rosterd.Admin.Api.Controllers
 {
@@ -17,7 +18,7 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IFacilitiesService _facilitiesService;
         private readonly ILogger<FacilitiesController> _logger;
 
-        public FacilitiesController(ILogger<FacilitiesController> logger, IFacilitiesService facilitiesService)
+        public FacilitiesController(ILogger<FacilitiesController> logger, IFacilitiesService facilitiesService, AppSettings appSettings) : base(appSettings)
         {
             _logger = logger;
             _facilitiesService = facilitiesService;
@@ -30,7 +31,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [OperationOrder(1)]
-        public async Task<ActionResult<PagedList<FacilityModel>>> GetAllFacilities([FromQuery] PagingQueryStringParameters pagingParameters)
+        public async Task<ActionResult<Domain.Models.PagedList<FacilityModel>>> GetAllFacilities([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
 
