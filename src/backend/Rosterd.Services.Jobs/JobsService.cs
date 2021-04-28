@@ -33,7 +33,7 @@ namespace Rosterd.Services.Jobs
             return job?.ToDomainModel();
         }
 
-        public async Task CreateJob(JobModel jobModel)
+        public async Task<long> CreateJob(JobModel jobModel)
         {
             var jobToCreate = jobModel.ToNewJob();
 
@@ -42,8 +42,10 @@ namespace Rosterd.Services.Jobs
             jobToCreate.JobsStatusName = JobStatus.Published.ToString();
             jobToCreate.JobPostedDateTimeUtc = jobToCreate.LastJobStatusChangeDateTimeUtc = DateTime.UtcNow;
 
-            await _context.Jobs.AddAsync(jobToCreate);
+            var jobCreated = await _context.Jobs.AddAsync(jobToCreate);
             await _context.SaveChangesAsync();
+
+            return jobCreated.Entity.JobId;
         }
 
         public async Task RemoveJob(long jobId)

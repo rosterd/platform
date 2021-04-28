@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.Intrinsics.Arm;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Infrastructure.Extensions;
@@ -23,8 +24,24 @@ namespace Rosterd.Services.Mappers
                 Comments = dataModel.Comments,
                 GracePeriodToCancelMinutes = dataModel.GracePeriodToCancelMinutes,
                 NoGracePeriod = dataModel.NoGracePeriod,
-                Facility = dataModel.Facility?.ToDomainModel()
+                Facility = dataModel.Facility?.ToDomainModel(),
+                Responsibilities = dataModel.Responsibilities,
+                Experience = dataModel.Experience,
+                IsDayShift = dataModel.IsDayShift ?? false,
+                IsNightShift = dataModel.IsNightShift ?? false,
+                JobPostedDateTimeUtc = dataModel.JobPostedDateTimeUtc,
+                JobStatus = (JobStatus?)dataModel.JobStatusId,
+                JobStatusName = ((JobStatus?)dataModel.JobStatusId).ToString(),
+                JobSkills = new List<JobSkillModel>(),
             };
+
+            if (dataModel.JobSkills.IsNotNullOrEmpty())
+            {
+                foreach (var jobModelJobSkill in jobModel.JobSkills)
+                {
+                    jobModel.JobSkills.Add(new JobSkillModel {JobId = dataModel.JobId, JobSkillId = jobModelJobSkill.JobSkillId, SkillId = jobModelJobSkill.SkillId, SkillName = jobModelJobSkill.SkillName});
+                }
+            }
 
             return jobModel;
         }
@@ -55,6 +72,7 @@ namespace Rosterd.Services.Mappers
                 PreviouslyCancelledJobId = domainModel.PreviouslyCancelledJobId,
                 IsDayShift = domainModel.IsDayShift,
                 IsNightShift = domainModel.IsNightShift,
+                Responsibilities = domainModel.Responsibilities
             };
 
             var jobSkillModels = domainModel.JobSkills.AlwaysList();

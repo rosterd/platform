@@ -1,13 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
-using Rosterd.Domain.Models;
+using Rosterd.Domain;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Requests.Job;
 using Rosterd.Domain.ValidationAttributes;
 using Rosterd.Services.Jobs.Interfaces;
+using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
 namespace Rosterd.Admin.Api.Controllers
 {
@@ -20,11 +23,15 @@ namespace Rosterd.Admin.Api.Controllers
     {
         private readonly ILogger<JobsController> _logger;
         private readonly IJobsService _jobService;
+        private readonly IJobEventsService _jobEventsService;
+        private readonly IEventGridClient _eventGridClient;
 
-        public JobsController(ILogger<JobsController> logger, IJobsService jobsService) : base()
+        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobEventsService jobEventsService, IEventGridClient eventGridClient, AppSettings appSettings) : base(appSettings)
         {
             _logger = logger;
             _jobService = jobsService;
+            _jobEventsService = jobEventsService;
+            _eventGridClient = eventGridClient;
         }
 
         /// <summary>
@@ -34,7 +41,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [OperationOrder(1)]
-        public async Task<ActionResult<PagedList<JobModel>>> GetAllJobs([FromQuery] PagingQueryStringParameters pagingParameters)
+        public async Task<ActionResult<Domain.Models.PagedList<JobModel>>> GetAllJobs([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
             var pagedList = await _jobService.GetAllJobs(pagingParameters);
@@ -63,8 +70,12 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(3)]
         public async Task<ActionResult> AddNewJob([FromBody] AddJobRequest request)
         {
+            //Create Job
             var domainModelToSave = request.ToDomainModel();
-            await _jobService.CreateJob(domainModelToSave);
+            var newJobId = await _jobService.CreateJob(domainModelToSave);
+
+            //Generate a new job created event
+            await _jobEventsService.GenerateNewJobCreatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, newJobId);
             return Ok();
         }
 
@@ -78,6 +89,9 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult> RemoveJob([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? jobId)
         {
             await _jobService.RemoveJob(jobId.Value);
+
+            //Generate a new job deleted event
+            await _jobEventsService.GenerateNewJobCreatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobId.Value);
             return Ok();
         }
 

@@ -45,10 +45,10 @@ namespace Rosterd.Domain
             public static string Version1 => "v1";
 
             public static string StaffCreatedOrUpdatedEvent => "{0}.Rosterd.Staff.CreatedOrUpdated";
-
             public static string StaffDeletedEvent => "{0}.Rosterd.Staff.Deleted";
 
             public static string NewJobCreatedEvent => "{0}.Rosterd.Job.NewJobCreated";
+            public static string JobDeletedEvent => "{0}.Rosterd.Job.Deleted";
 
             public static string NewPushNotificationCreatedEvent => "{0}.Rosterd.NewPushNotification";
         }

@@ -26,18 +26,14 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IStaffSkillsService _staffSkillsService;
         private readonly IStaffEventsService _staffEventsService;
         private readonly IEventGridClient _eventGridClient;
-        private readonly AppSettings _appSettings;
-        private readonly string _eventGridTopicHost;
 
-        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService, IStaffEventsService staffEventsService, IEventGridClient eventGridClient, AppSettings appSettings) : base()
+        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService, IStaffEventsService staffEventsService, IEventGridClient eventGridClient, AppSettings appSettings) : base(appSettings)
         {
             _logger = logger;
             _staffService = staffService;
             _staffSkillsService = staffSkillsService;
             _staffEventsService = staffEventsService;
             _eventGridClient = eventGridClient;
-            _appSettings = appSettings;
-            _eventGridTopicHost = new Uri(_appSettings.EventGridTopicEndpoint).Host;
         }
 
         /// <summary>
@@ -86,7 +82,7 @@ namespace Rosterd.Admin.Api.Controllers
             var staffId = await _staffService.CreateStaffMember(request);
 
             //Generate a new staff created event
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, _eventGridTopicHost, _appSettings.Environment, staffId);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId);
             return Ok();
         }
 
@@ -103,7 +99,7 @@ namespace Rosterd.Admin.Api.Controllers
                 return BadRequest("staffId field is required");
 
             await _staffService.UpdateStaffMember(request);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, _eventGridTopicHost, _appSettings.Environment, request.StaffId.Value);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
             return Ok();
         }
 
@@ -118,7 +114,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult> RemoveStaffMember([FromQuery] [Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
         {
             await _staffService.RemoveStaffMember(staffId.Value);
-            await _staffEventsService.GenerateStaffDeletedEvent(_eventGridClient, _eventGridTopicHost, _appSettings.Environment, staffId.Value);
+            await _staffEventsService.GenerateStaffDeletedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
             return Ok();
         }
 
@@ -133,7 +129,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult> MoveStaffMemberToAnotherFacility([FromQuery] [Required] long? facilityId, [Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
         {
             await _staffService.MoveStaffMemberToAnotherFacility(staffId.Value, facilityId.Value);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, _eventGridTopicHost, _appSettings.Environment, staffId.Value);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
             return Ok();
         }
 
@@ -148,7 +144,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult> AddSkillToStaff([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId, [FromBody] AddSkillsToStaffRequest request)
         {
             await _staffSkillsService.UpdateAllSkillsForStaff(staffId.Value, request.SkillsToAdd);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, _eventGridTopicHost, _appSettings.Environment, staffId.Value);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
             return Ok();
         }
 
@@ -162,7 +158,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult> DeleteAllSkillsForStaff([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
         {
             await _staffSkillsService.RemoveAllSkillsForStaff(staffId.Value);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, _eventGridTopicHost, _appSettings.Environment, staffId.Value);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
             return Ok();
         }
     }

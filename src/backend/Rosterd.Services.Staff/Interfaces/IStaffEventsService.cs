@@ -8,7 +8,7 @@ namespace Rosterd.Services.Staff.Interfaces
     public interface IStaffEventsService
     {
         /// <summary>
-        /// Generates a new staff created event and sends the event to event grid
+        /// Generates a new staff created or updated event and sends the event to event grid
         /// </summary>
         /// <param name="eventGridClient"></param>
         /// <param name="topicHostName"></param>

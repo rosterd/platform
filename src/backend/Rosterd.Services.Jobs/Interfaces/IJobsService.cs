@@ -25,7 +25,7 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// </summary>
         /// <param name="jobModel"></param>
         /// <returns></returns>
-        Task CreateJob(JobModel jobModel);
+        Task<long> CreateJob(JobModel jobModel);
 
         /// <summary>
         /// Deletes job

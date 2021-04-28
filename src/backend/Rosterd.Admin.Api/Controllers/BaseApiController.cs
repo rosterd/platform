@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,16 @@ namespace Rosterd.Admin.Api.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public abstract class BaseApiController : ControllerBase
     {
+        protected BaseApiController(AppSettings appSettings)
+        {
+            RosterdEventGridTopicHost = new Uri(appSettings.EventGridTopicEndpoint).Host;
+            CurrentEnvironment = appSettings.Environment;
+        }
+
+        protected string RosterdEventGridTopicHost { get; }
+
+        protected string CurrentEnvironment { get; set; }
+
         //protected readonly IUserContext UserContext;
 
         //protected BaseApiController(IUserContext userContext) => UserContext = userContext;
