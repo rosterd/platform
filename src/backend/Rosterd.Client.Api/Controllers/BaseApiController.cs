@@ -31,7 +31,7 @@ namespace Rosterd.Client.Api.Controllers
             if (apiKey.IsNullOrWhiteSpace())
                 return false;
 
-            return Constants.ApplicationKeys.AnonymousApiKey == apiKey;
+            return RosterdConstants.ApplicationKeys.AnonymousApiKey == apiKey;
         }
     }
 }

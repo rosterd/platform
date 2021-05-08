@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Requests.Facility;
@@ -18,7 +19,7 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IFacilitiesService _facilitiesService;
         private readonly ILogger<FacilitiesController> _logger;
 
-        public FacilitiesController(ILogger<FacilitiesController> logger, IFacilitiesService facilitiesService, AppSettings appSettings) : base(appSettings)
+        public FacilitiesController(ILogger<FacilitiesController> logger, IFacilitiesService facilitiesService, IOptions<AppSettings> appSettings) : base(appSettings)
         {
             _logger = logger;
             _facilitiesService = facilitiesService;

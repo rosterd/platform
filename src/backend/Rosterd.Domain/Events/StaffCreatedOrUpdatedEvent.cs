@@ -14,8 +14,8 @@ namespace Rosterd.Domain.Events
         {
             Id = new Guid().ToString();
             EventTime = DateTime.UtcNow;
-            EventType = Constants.Events.StaffCreatedOrUpdatedEvent.Format(environmentThisEventIsBeingGenerateFrom);
-            DataVersion = Constants.Events.Version1;
+            EventType = RosterdConstants.Events.StaffCreatedOrUpdatedEvent.Format(environmentThisEventIsBeingGenerateFrom);
+            DataVersion = RosterdConstants.Events.Version1;
             Subject = staffModel.StaffId.ToString();
             Data = staffModel;
         }

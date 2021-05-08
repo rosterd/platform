@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Domain.Requests.Staff;
@@ -27,7 +28,7 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IStaffEventsService _staffEventsService;
         private readonly IEventGridClient _eventGridClient;
 
-        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService, IStaffEventsService staffEventsService, IEventGridClient eventGridClient, AppSettings appSettings) : base(appSettings)
+        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService, IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings) : base(appSettings)
         {
             _logger = logger;
             _staffService = staffService;

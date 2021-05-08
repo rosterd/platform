@@ -14,8 +14,8 @@ namespace Rosterd.Domain.Events
         {
             Id = new Guid().ToString();
             EventTime = DateTime.UtcNow;
-            EventType = Constants.Events.NewJobCreatedEvent.Format(environmentThisEventIsBeingGenerateFrom);
-            DataVersion = Constants.Events.Version1;
+            EventType = RosterdConstants.Events.NewJobCreatedEvent.Format(environmentThisEventIsBeingGenerateFrom);
+            DataVersion = RosterdConstants.Events.Version1;
             Subject = jobModel.JobId.ToString();
             Data = jobModel;
         }

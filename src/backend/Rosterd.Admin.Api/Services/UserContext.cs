@@ -146,14 +146,14 @@
 //            }   
 //        }
 
-//        public string UserName => _httpContextAccessor.HttpContext.User.Claims.First(s => s.Type == Strieq.Infrastructure.Security.Constants.UserName).Value;
+//        public string UserName => _httpContextAccessor.HttpContext.User.Claims.First(s => s.Type == Strieq.Infrastructure.Security.RosterdConstants.UserName).Value;
 
-//        public string UserNickname => _httpContextAccessor.HttpContext.User.Claims.First(s => s.Type == Strieq.Infrastructure.Security.Constants.UserNickname).Value;
+//        public string UserNickname => _httpContextAccessor.HttpContext.User.Claims.First(s => s.Type == Strieq.Infrastructure.Security.RosterdConstants.UserNickname).Value;
 
-//        public string? UserPictureHref => _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(s => s.Type == Strieq.Infrastructure.Security.Constants.UserPicture)?.Value;
+//        public string? UserPictureHref => _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(s => s.Type == Strieq.Infrastructure.Security.RosterdConstants.UserPicture)?.Value;
 
-//        public string UserEmail => _httpContextAccessor.HttpContext.User.Claims.First(s => s.Type == Strieq.Infrastructure.Security.Constants.UserEmailAddress).Value;
+//        public string UserEmail => _httpContextAccessor.HttpContext.User.Claims.First(s => s.Type == Strieq.Infrastructure.Security.RosterdConstants.UserEmailAddress).Value;
 
-//        public bool IsUserEmailVerified => _httpContextAccessor.HttpContext.User.Claims.First(s => s.Type == Strieq.Infrastructure.Security.Constants.UserEmailVerified).Value.ToBooleanOrDefault();
+//        public bool IsUserEmailVerified => _httpContextAccessor.HttpContext.User.Claims.First(s => s.Type == Strieq.Infrastructure.Security.RosterdConstants.UserEmailVerified).Value.ToBooleanOrDefault();
 //    }
 //}

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Requests.Job;
@@ -26,7 +27,7 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IJobEventsService _jobEventsService;
         private readonly IEventGridClient _eventGridClient;
 
-        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobEventsService jobEventsService, IEventGridClient eventGridClient, AppSettings appSettings) : base(appSettings)
+        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobEventsService jobEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings) : base(appSettings)
         {
             _logger = logger;
             _jobService = jobsService;

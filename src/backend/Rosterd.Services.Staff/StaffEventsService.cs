@@ -47,5 +47,19 @@ namespace Rosterd.Services.Staff
             //Sent the event to event grid
             await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> {staffDeletedEvent});
         }
+
+        ///<inheritdoc/>
+        public async Task HandleStaffCreatedOrUpdatedEvent(EventGridEvent staffCreatedOrUpdatedEvent)
+        {
+            //TODO:
+            return;
+        }
+
+        ///<inheritdoc/>
+        public async Task HandleStaffDeletedEvent(EventGridEvent staffDeletedEvent)
+        {
+            //TODO:
+            return;
+        }
     }
 }

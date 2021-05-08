@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Rosterd.Domain;
 
 namespace Rosterd.Admin.Api.Controllers
@@ -19,10 +20,10 @@ namespace Rosterd.Admin.Api.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public abstract class BaseApiController : ControllerBase
     {
-        protected BaseApiController(AppSettings appSettings)
+        protected BaseApiController(IOptions<AppSettings> appSettings)
         {
-            RosterdEventGridTopicHost = new Uri(appSettings.EventGridTopicEndpoint).Host;
-            CurrentEnvironment = appSettings.Environment;
+            RosterdEventGridTopicHost = new Uri(appSettings.Value.EventGridTopicEndpoint).Host;
+            CurrentEnvironment = appSettings.Value.Environment;
         }
 
         protected string RosterdEventGridTopicHost { get; }
@@ -49,7 +50,7 @@ namespace Rosterd.Admin.Api.Controllers
             if (apiKey.IsNullOrWhiteSpace())
                 return false;
 
-            return Constants.ApplicationKeys.AnonymousApiKey == apiKey;
+            return RosterdConstants.ApplicationKeys.AnonymousApiKey == apiKey;
         }
     }
 }

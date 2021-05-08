@@ -14,6 +14,7 @@
     <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
     <ProjectReference Include="..\Rosterd.Infrastructure.Extensions\Rosterd.Infrastructure.Extensions.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Mappers\Rosterd.Services.Mappers.csproj" />
+    <PackageReference Include="Azure.Search.Documents" Version="11.2.0" />
   </ItemGroup>
 
 </Project>

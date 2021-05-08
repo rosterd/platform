@@ -6,6 +6,10 @@
 
     "FunctionSettings:EventGridConnectionString": "TODO",
     "FunctionSettings:RosterdDbConnectionString": "TODO",
-    "FunctionSettings:StorageAccountConnectionString": "TODO"
+    "FunctionSettings:StorageAccountConnectionString": "TODO",
+    "FunctionSettings:Environment": "TODO",
+
+    "FunctionSettings:SearchServiceEndpoint": "https://rosterd-dev-search.search.windows.net",
+    "FunctionSettings:SearchServiceApiKey": "DE7B3AC40CDD847B2AB8B8427BF42E19"
   }
 }

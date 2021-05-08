@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Requests.Skills;
@@ -19,7 +20,7 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly ILogger<SkillsController> _logger;
         private readonly ISkillsService _skillService;
 
-        public SkillsController(ILogger<SkillsController> logger, ISkillsService skillService, AppSettings appSettings) : base(appSettings)
+        public SkillsController(ILogger<SkillsController> logger, ISkillsService skillService, IOptions<AppSettings> appSettings) : base(appSettings)
         {
             _logger = logger;
             _skillService = skillService;

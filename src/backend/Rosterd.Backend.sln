@@ -64,7 +64,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.ComponentTests", "T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure Functions", "Azure Functions", "{9D54CBC3-F894-415E-A94C-885229B7EE36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.AzureFunctions", "Rosterd.AzureFunctions\Rosterd.AzureFunctions.csproj", "{0A156225-BED5-4CC9-8ECE-18B2D035B878}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.AzureFunctions", "Rosterd.AzureFunctions\Rosterd.AzureFunctions.csproj", "{0A156225-BED5-4CC9-8ECE-18B2D035B878}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
