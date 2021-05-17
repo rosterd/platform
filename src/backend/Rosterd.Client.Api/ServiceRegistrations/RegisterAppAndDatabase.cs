@@ -9,6 +9,8 @@ using Rosterd.Client.Api.Infrastructure.Configs;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.TableStorage;
 using Rosterd.Data.TableStorage.Context;
+using Rosterd.Infrastructure.Search;
+using Rosterd.Infrastructure.Search.Interfaces;
 using Rosterd.Services.Facilities;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Services.Jobs;
@@ -36,6 +38,10 @@ namespace Rosterd.Client.Api.ServiceRegistrations
             services.AddScoped<IJobsService, JobsService>();
 
             //User context
+
+            //Search
+            services.AddScoped<ISearchIndexProvider>(s => new SearchIndexProvider(config.GetValue<string>("AppSettings:SearchServiceEndpoint"),
+                config.GetValue<string>("AppSettings:SearchServiceApiKey")));
 
             //Db contexts
             services.AddScoped<IRosterdDbContext, RosterdDbContext>();

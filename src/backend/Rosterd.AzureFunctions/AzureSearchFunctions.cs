@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Azure;
+using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Indexes.Models;
 using Microsoft.Azure.WebJobs;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Options;
 using Rosterd.AzureFunctions.Config;
 using Rosterd.Domain;
 using Rosterd.Domain.Search;
-using Rosterd.Services.Staff.Interfaces;
+using Rosterd.Infrastructure.Search.Interfaces;
 
 namespace Rosterd.AzureFunctions
 {
@@ -18,20 +19,25 @@ namespace Rosterd.AzureFunctions
     {
         private readonly ILogger<AzureSearchFunctions> _logger;
         private readonly IOptions<FunctionSettings> _settings;
+        private readonly ISearchIndexProvider _searchIndexProvider;
 
-        public AzureSearchFunctions(ILogger<AzureSearchFunctions> logger, IOptions<FunctionSettings> settings)
+        public AzureSearchFunctions(ILogger<AzureSearchFunctions> logger, IOptions<FunctionSettings> settings, ISearchIndexProvider searchIndexProvider)
         {
             _logger = logger;
             _settings = settings;
+            _searchIndexProvider = searchIndexProvider;
         }
 
         /// <summary>
-        /// Timer function that runs once a day, the primary purpose is to make sure the search indexes are there and created
+        /// Timer function that runs once a day, the primary purpose is to make sure the search indexes are there and if not create them.
+        /// This also runs on startup so every time this is deployed or restarted then it will do a check for the indexes and create if not there
+        ///
+        /// SCHEDULE IS TO RUN EVERY 24 HOURS
         /// </summary>
         /// <param name="myTimer"></param>
         /// <param name="log"></param>
         [FunctionName(nameof(CreateSearchIndexes))]
-        public async Task CreateSearchIndexes([TimerTrigger("0 0 0 * * *", RunOnStartup = true)]TimerInfo myTimer, ILogger log)
+        public async Task CreateSearchIndexes([TimerTrigger("0 0 0 * * *", RunOnStartup = true)] TimerInfo myTimer, ILogger log)
         {
             _logger.LogInformation($"{nameof(CreateSearchIndexes)} - triggered on UTC Time {DateTime.UtcNow}");
 
@@ -41,12 +47,13 @@ namespace Rosterd.AzureFunctions
             var searchIndexClient = new SearchIndexClient(serviceEndpoint, credential);
 
             //Create all the required indexes
-            var staffSearchDefinitions = new SearchIndex(RosterdConstants.Search.StaffIndex, new FieldBuilder().Build(typeof(StaffSearchModel)));
-            //var jobSearchDefinitions = new SearchIndex(RosterdConstants.Search.StaffIndex, new FieldBuilder().Build(typeof(StaffSearchModel));
 
+            //Staff Index
+            var (staffIndexExists, _) = await _searchIndexProvider.GetIndexStatus(RosterdConstants.Search.StaffIndex);
+            if (!staffIndexExists)
+                await _searchIndexProvider.CreateOrUpdateIndex<StaffSearchModel>(RosterdConstants.Search.StaffIndex, null);
 
-            await searchIndexClient.CreateOrUpdateIndexAsync(staffSearchDefinitions);
-            //await searchIndexClient.CreateOrUpdateIndexAsync(jobSearchDefinitions);
+            //Jobs Index
         }
     }
 }

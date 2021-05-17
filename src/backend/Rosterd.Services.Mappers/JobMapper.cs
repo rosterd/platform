@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Intrinsics.Arm;
+//using System.Runtime.Intrinsics.Arm;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Enums;

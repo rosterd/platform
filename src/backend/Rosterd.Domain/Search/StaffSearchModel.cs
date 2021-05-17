@@ -7,7 +7,7 @@ namespace Rosterd.Domain.Search
     public class StaffSearchModel
     {
         [SimpleField(IsKey = true, IsFilterable = true)]
-        public long StaffId { get; set; }
+        public string StaffId { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string FirstName { get; set; }
@@ -31,16 +31,16 @@ namespace Rosterd.Domain.Search
         public string OtherPhoneNumber { get; set; }
 
         [SearchableField]
-        public bool IsActive { get; set; }
+        public string IsActive { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene, IsFilterable = true, IsSortable = true)]
         public string JobTitle { get; set; }
 
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene, IsFilterable = true, IsSortable = true, IsFacetable = true)]
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene, IsFilterable = true, IsFacetable = true)]
         public string[] Skills { get; set; }
 
-        [SimpleField(IsKey = true, IsFilterable = true)]
-        public long FacilityId { get; set; }
+        [SearchableField]
+        public string FacilityId { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string FacilityName { get; set; }
@@ -62,5 +62,7 @@ namespace Rosterd.Domain.Search
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string FacilityPhoneNumber2 { get; set; }
+
+        public static string Key() => nameof(StaffId);
     }
 }

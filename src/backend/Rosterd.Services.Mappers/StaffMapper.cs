@@ -6,6 +6,7 @@ using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Domain.Requests.Staff;
+using Rosterd.Domain.Search;
 using Rosterd.Infrastructure.Extensions;
 
 namespace Rosterd.Services.Mappers
@@ -50,6 +51,36 @@ namespace Rosterd.Services.Mappers
             }
 
             return staffModel;
+        }
+
+        public static StaffSearchModel ToSearchModel(this Data.SqlServer.Models.Staff dataModel)
+        {
+            var staffSearchModel = new StaffSearchModel()
+            {
+                StaffId = dataModel.StaffId.ToString(),
+                Email = dataModel.Email,
+                FirstName = dataModel.FirstName,
+                IsActive = dataModel.IsActive.ToString() ?? true.ToString(),
+                JobTitle = dataModel.JobTitle,
+                LastName = dataModel.LastName,
+                MiddleName = dataModel.MiddleName,
+                HomePhoneNumber = dataModel.HomePhoneNumber,
+                MobilePhoneNumber = dataModel.MobilePhoneNumber,
+                OtherPhoneNumber = dataModel.OtherPhoneNumber
+            };
+
+            var staffFacility = dataModel.StaffFacilities.FirstOrDefault();
+            if (staffFacility != null)
+            {
+                staffSearchModel.FacilityId = staffFacility.FacilityId.ToString();
+                staffSearchModel.FacilityName = staffFacility.FacilityName;
+            }
+
+            var staffSkills = dataModel.StaffSkills.AlwaysList();
+            if (staffSkills.IsNotNullOrEmpty())
+                staffSearchModel.Skills = staffSkills.Select(s => s.SkillName).ToArray();
+
+            return staffSearchModel;
         }
 
         public static List<StaffModel> ToDomainModels(this PagingList<Data.SqlServer.Models.Staff> pagedDataModels)

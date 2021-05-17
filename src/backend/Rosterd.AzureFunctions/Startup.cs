@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rosterd.AzureFunctions;
 using Rosterd.AzureFunctions.Config;
+using Rosterd.Infrastructure.Search;
+using Rosterd.Infrastructure.Search.Interfaces;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace Rosterd.AzureFunctions
@@ -12,19 +14,16 @@ namespace Rosterd.AzureFunctions
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            var storageAccountConnectionString = GetConfig<string>("FileProcessOptions:WdlBasketSalesStorageConnectionString");
+            var searchServiceEndpoint = builder.GetContext().Configuration.GetValue<string>("FunctionSettings:SearchServiceEndpoint");
+            var searchServiceApiKey = builder.GetContext().Configuration.GetValue<string>("FunctionSettings:SearchServiceApiKey");
 
             builder.Services
                 .AddLogging()
 
+                .AddScoped<ISearchIndexProvider>(s => new SearchIndexProvider(searchServiceEndpoint, searchServiceApiKey))
+
                 .AddOptions<FunctionSettings>()
                 .Configure<IConfiguration>((settings, configuration) => configuration.GetSection("FunctionSettings").Bind(settings));
-        }
-
-        private static T GetConfig<T>(string key)
-        {
-            var value = Environment.GetEnvironmentVariable(key);
-            return value != null ? (T)Convert.ChangeType(value, typeof(T)) : default;
         }
     }
 }

@@ -83,7 +83,7 @@ namespace Rosterd.Data.SqlServer.Context
             modelBuilder.Entity<JobStatusChange>(entity =>
             {
                 entity.Property(e => e.JobStatusChangeDateTimeUtc)
-                    .HasPrecision(1)
+                    //.HasPrecision(1)
                     .HasDefaultValueSql("switchoffset(sysdatetimeoffset(),'+00:00')");
             });
 

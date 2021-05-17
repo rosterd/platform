@@ -40,14 +40,14 @@ namespace Rosterd.AzureFunctions
             switch (eventGridEvent)
             {
                 //New staff created or updated
-                case {EventType: var eventType} when eventType.Contains(RosterdConstants.Events.StaffCreatedOrUpdatedEvent):
+                case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.StaffCreatedOrUpdatedEvent):
                 {
                     await _staffEventsService.HandleStaffCreatedOrUpdatedEvent(eventGridEvent);
                     break;
                 }
 
                 //Staff deleted
-                case {EventType: var eventType} when eventType.Contains(RosterdConstants.Events.StaffDeletedEvent):
+                case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.StaffDeletedEvent):
                 {
                     await _staffEventsService.HandleStaffDeletedEvent(eventGridEvent);
                     break;

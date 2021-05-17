@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Domain;
+using Rosterd.Infrastructure.Search;
+using Rosterd.Infrastructure.Search.Interfaces;
 using Rosterd.Services.Facilities;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Services.Jobs;
@@ -38,6 +40,10 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             services.AddScoped<IFacilitiesService, FacilitiesService>();
             services.AddScoped<ISkillsService, SkillsService>();
             services.AddScoped<IJobsService, JobsService>();
+
+            //Search
+            services.AddScoped<ISearchIndexProvider>(s => new SearchIndexProvider(config.GetValue<string>("AppSettings:SearchServiceEndpoint"),
+                config.GetValue<string>("AppSettings:SearchServiceApiKey")));
 
             //Eventing
             services.AddScoped<IStaffEventsService, StaffEventsService>();

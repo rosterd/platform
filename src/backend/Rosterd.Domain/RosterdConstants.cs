@@ -55,8 +55,8 @@ namespace Rosterd.Domain
 
         public static class Search
         {
-            public static string StaffIndex => "Staff";
-            public static string JobsIndex => "Jobs";
+            public static string StaffIndex => "staff-index";
+            public static string JobsIndex => "jobs-index";
         }
     }
 }
