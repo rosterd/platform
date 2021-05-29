@@ -1,42 +1,59 @@
+using System;
 using System.Collections.Generic;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Indexes.Models;
 
 namespace Rosterd.Domain.Search
 {
-    public class StaffSearchModel
+    public class JobSearchModel
     {
-        public static string Key() => nameof(StaffId);
+        public static string Key() => nameof(JobId);
 
         [SimpleField(IsKey = true, IsFilterable = true)]
-        public string StaffId { get; set; }
-
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string FirstName { get; set; }
-
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string MiddleName { get; set; }
-
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string LastName { get; set; }
-
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string Email { get; set; }
-
-        [SearchableField]
-        public string HomePhoneNumber { get; set; }
-
-        [SearchableField]
-        public string MobilePhoneNumber { get; set; }
-
-        [SearchableField]
-        public string OtherPhoneNumber { get; set; }
-
-        [SearchableField]
-        public string IsActive { get; set; }
+        public string JobId { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string JobTitle { get; set; }
+
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+        public string Description { get; set; }
+
+        [SearchableField]
+        public DateTime JobStartDateTimeUtc { get; set; }
+
+        [SearchableField]
+        public DateTime JobEndDateTimeUtc { get; set; }
+
+        [SearchableField]
+        public DateTime JobPostedDateTimeUtc { get; set; }
+
+        [SearchableField]
+        public string Comments { get; set; }
+
+        [SearchableField]
+        public long? GracePeriodToCancelMinutes { get; set; }
+
+        [SearchableField]
+        public bool? NoGracePeriod { get; set; }
+
+        [SearchableField]
+        public DateTime? JobGracePeriodEndDateTimeUtc { get; set; }
+
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+
+        public string JobStatusName { get; set; }
+
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+        public string Responsibilities { get; set; }
+
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+        public string Experience { get; set; }
+
+        [SearchableField]
+        public bool IsDayShift { get; set; }
+
+        [SearchableField]
+        public bool IsNightShift { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string[] Skills { get; set; }

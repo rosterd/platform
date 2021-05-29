@@ -15,13 +15,13 @@ using Rosterd.Infrastructure.Search.Interfaces;
 
 namespace Rosterd.AzureFunctions
 {
-    public class AzureSearchFunctions
+    public class AzureSearchIndexFunctions
     {
-        private readonly ILogger<AzureSearchFunctions> _logger;
+        private readonly ILogger<AzureSearchIndexFunctions> _logger;
         private readonly IOptions<FunctionSettings> _settings;
         private readonly ISearchIndexProvider _searchIndexProvider;
 
-        public AzureSearchFunctions(ILogger<AzureSearchFunctions> logger, IOptions<FunctionSettings> settings, ISearchIndexProvider searchIndexProvider)
+        public AzureSearchIndexFunctions(ILogger<AzureSearchIndexFunctions> logger, IOptions<FunctionSettings> settings, ISearchIndexProvider searchIndexProvider)
         {
             _logger = logger;
             _settings = settings;
@@ -47,13 +47,16 @@ namespace Rosterd.AzureFunctions
             var searchIndexClient = new SearchIndexClient(serviceEndpoint, credential);
 
             //Create all the required indexes
-
+            
             //Staff Index
             var (staffIndexExists, _) = await _searchIndexProvider.GetIndexStatus(RosterdConstants.Search.StaffIndex);
             if (!staffIndexExists)
                 await _searchIndexProvider.CreateOrUpdateIndex<StaffSearchModel>(RosterdConstants.Search.StaffIndex, null);
 
             //Jobs Index
+            var (jobIndexExists, _) = await _searchIndexProvider.GetIndexStatus(RosterdConstants.Search.JobsIndex);
+            if (!jobIndexExists)
+                await _searchIndexProvider.CreateOrUpdateIndex<JobSearchModel>(RosterdConstants.Search.JobsIndex, null);
         }
     }
 }

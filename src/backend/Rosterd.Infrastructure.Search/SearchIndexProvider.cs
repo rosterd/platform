@@ -59,7 +59,7 @@ namespace Rosterd.Infrastructure.Search
                 var documentsInIndex = await searchClient.GetDocumentCountAsync();
                 return (true, documentsInIndex);
             }
-            catch
+            catch(Exception ex)
             {
                 return (false, 0);
             }

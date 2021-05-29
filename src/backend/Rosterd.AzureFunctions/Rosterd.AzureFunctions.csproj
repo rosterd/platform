@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
     <ProjectReference Include="..\Rosterd.Infrastructure.Search\Rosterd.Infrastructure.Search.csproj" />
+    <ProjectReference Include="..\Rosterd.Services.Jobs\Rosterd.Services.Jobs.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Staff\Rosterd.Services.Staff.csproj" />
   </ItemGroup>
   <ItemGroup>

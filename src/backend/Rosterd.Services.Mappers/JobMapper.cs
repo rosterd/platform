@@ -6,6 +6,7 @@ using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.JobModels;
+using Rosterd.Domain.Search;
 using Rosterd.Infrastructure.Extensions;
 
 namespace Rosterd.Services.Mappers
@@ -44,6 +45,44 @@ namespace Rosterd.Services.Mappers
             }
 
             return jobModel;
+        }
+
+        public static JobSearchModel ToSearchModel(this Job dataModel)
+        {
+            var jobSearchModel = new JobSearchModel
+            {
+                JobId = dataModel.JobId.ToString(),
+                JobTitle = dataModel.JobTitle,
+                Description = dataModel.Description,
+                JobStartDateTimeUtc = dataModel.JobStartDateTimeUtc,
+                JobEndDateTimeUtc = dataModel.JobEndDateTimeUtc,
+                Comments = dataModel.Comments,
+                GracePeriodToCancelMinutes = dataModel.GracePeriodToCancelMinutes,
+                NoGracePeriod = dataModel.NoGracePeriod,
+                Responsibilities = dataModel.Responsibilities,
+                Experience = dataModel.Experience,
+                IsDayShift = dataModel.IsDayShift ?? false,
+                IsNightShift = dataModel.IsNightShift ?? false,
+                JobPostedDateTimeUtc = dataModel.JobPostedDateTimeUtc,
+                JobStatusName = ((JobStatus?)dataModel.JobStatusId).ToString()
+            };
+
+            if (dataModel.JobSkills.IsNotNullOrEmpty())
+                jobSearchModel.Skills = dataModel.JobSkills.Select(s => s.SkillName).ToArray();
+
+            if (dataModel.Facility != null)
+            {
+                jobSearchModel.FacilityId = dataModel.Facility.FacilityId.ToString();
+                jobSearchModel.FacilityName = dataModel.Facility.FacilityName;
+                jobSearchModel.FacilityAddress = dataModel.Facility.Address;
+                jobSearchModel.FacilityCity = dataModel.Facility.City;
+                jobSearchModel.FacilityCountry = dataModel.Facility.Country;
+                jobSearchModel.FacilityPhoneNumber1 = dataModel.Facility.PhoneNumber1;
+                jobSearchModel.FacilityPhoneNumber2 = dataModel.Facility.PhoneNumber2;
+                jobSearchModel.FacilitySuburb = dataModel.Facility.Suburb;
+            }
+
+            return jobSearchModel;
         }
 
         public static List<JobModel> ToDomainModels(this PagingList<Data.SqlServer.Models.Job> pagedDataModels)

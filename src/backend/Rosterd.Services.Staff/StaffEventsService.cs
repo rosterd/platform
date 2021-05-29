@@ -59,8 +59,8 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task HandleStaffCreatedOrUpdatedEvent(EventGridEvent staffCreatedOrUpdatedEvent)
         {
-            var staffModel = staffCreatedOrUpdatedEvent.Data as StaffModel;
-            await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.StaffIndex, new List<StaffModel> {staffModel});
+            var staffModel = staffCreatedOrUpdatedEvent.Data as StaffSearchModel;
+            await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.StaffIndex, new List<StaffSearchModel> {staffModel});
         }
 
         ///<inheritdoc/>

@@ -48,7 +48,7 @@ namespace Rosterd.Domain
             public const string StaffDeletedEvent = "{0}.Rosterd.Staff.Deleted";
 
             public const string NewJobCreatedEvent = "{0}.Rosterd.Job.Created";
-            public const string JobDeletedEvent = "{0}.Rosterd.Job.Deleted";
+            public const string JobCancelledEvent = "{0}.Rosterd.Job.Deleted";
 
             public const string NewPushNotificationCreatedEvent = "{0}.Rosterd.NewPushNotification";
         }

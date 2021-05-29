@@ -92,7 +92,7 @@ namespace Rosterd.Admin.Api.Controllers
             await _jobService.RemoveJob(jobId.Value);
 
             //Generate a new job deleted event
-            await _jobEventsService.GenerateNewJobCreatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobId.Value);
+            await _jobEventsService.GenerateJobCancelledEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobId.Value);
             return Ok();
         }
 

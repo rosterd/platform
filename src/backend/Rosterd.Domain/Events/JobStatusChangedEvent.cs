@@ -8,16 +8,16 @@ using Rosterd.Domain.Models.StaffModels;
 
 namespace Rosterd.Domain.Events
 {
-    public class JobCancelledEvent : Microsoft.Azure.EventGrid.Models.EventGridEvent
+    public class JobStatusChangedEvent : Microsoft.Azure.EventGrid.Models.EventGridEvent
     {
-        public JobCancelledEvent(string environmentThisEventIsBeingGenerateFrom, long jobId)
+        public JobStatusChangedEvent(string environmentThisEventIsBeingGenerateFrom, long jobId, string newStatus)
         {
             Id = new Guid().ToString();
             EventTime = DateTime.UtcNow;
             EventType = RosterdConstants.Events.JobCancelledEvent.Format(environmentThisEventIsBeingGenerateFrom);
             DataVersion = RosterdConstants.Events.Version1;
             Subject = jobId.ToString();
-            Data = jobId.ToString();
+            Data = newStatus;
         }
 
     }

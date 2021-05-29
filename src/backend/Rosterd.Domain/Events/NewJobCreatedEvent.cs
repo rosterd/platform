@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Models.StaffModels;
+using Rosterd.Domain.Search;
 
 namespace Rosterd.Domain.Events
 {
     public class NewJobCreatedEvent : Microsoft.Azure.EventGrid.Models.EventGridEvent
     {
-        public NewJobCreatedEvent(string environmentThisEventIsBeingGenerateFrom, JobModel jobModel)
+        public NewJobCreatedEvent(string environmentThisEventIsBeingGenerateFrom, JobSearchModel jobModel)
         {
             Id = new Guid().ToString();
             EventTime = DateTime.UtcNow;

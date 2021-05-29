@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Rosterd.AzureFunctions.Config;
 using Rosterd.Domain;
 using Rosterd.Domain.Search;
+using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.AzureFunctions
@@ -24,6 +25,7 @@ namespace Rosterd.AzureFunctions
         private readonly ILogger<EventConsumerFunctions> _logger;
         private readonly IOptions<FunctionSettings> _settings;
         private readonly IStaffEventsService _staffEventsService;
+        private readonly IJobEventsService _jobEventsService;
 
         public EventConsumerFunctions(ILogger<EventConsumerFunctions> logger, IOptions<FunctionSettings> settings, IStaffEventsService staffEventsService)
         {
@@ -52,6 +54,21 @@ namespace Rosterd.AzureFunctions
                     await _staffEventsService.HandleStaffDeletedEvent(eventGridEvent);
                     break;
                 }
+
+                //Job created
+                case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.NewJobCreatedEvent):
+                {
+                    await _jobEventsService.HandleNewJobCreatedEvent(eventGridEvent);
+                    break;
+                }
+
+                //Job cancelled
+                case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.JobCancelledEvent):
+                {
+                    await _jobEventsService.HandleJobCancelledEvent(eventGridEvent);
+                    break;
+                }
+
                 default:
                     throw new NotSupportedException($"EventType : {eventGridEvent.EventType} not supported");
             }
