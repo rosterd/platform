@@ -27,11 +27,12 @@ namespace Rosterd.AzureFunctions
         private readonly IStaffEventsService _staffEventsService;
         private readonly IJobEventsService _jobEventsService;
 
-        public EventConsumerFunctions(ILogger<EventConsumerFunctions> logger, IOptions<FunctionSettings> settings, IStaffEventsService staffEventsService)
+        public EventConsumerFunctions(ILogger<EventConsumerFunctions> logger, IOptions<FunctionSettings> settings, IStaffEventsService staffEventsService, IJobEventsService jobEventsService)
         {
             _logger = logger;
             _settings = settings;
             _staffEventsService = staffEventsService;
+            _jobEventsService = jobEventsService;
         }
 
         [FunctionName(nameof(ProcessEvent))]
