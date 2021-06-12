@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Azure.Search.Documents.Models;
 //using System.Runtime.Intrinsics.Arm;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
@@ -95,6 +96,48 @@ namespace Rosterd.Services.Mappers
             return jobModels;
         }
 
+        public static List<JobModel> ToDomainModels(this SearchResults<JobSearchModel> searchResults)
+        {
+            if (searchResults == null)
+                return new List<JobModel>();
+
+            var jobModels = searchResults.GetResults().Select(job =>
+                new JobModel
+                {
+                    JobId = job.Document.JobId.ToInt64(),
+                    Comments = job.Document.Comments,
+                    Description = job.Document.Description,
+                    Experience = job.Document.Experience,
+                    Facility = new FacilityModel
+                    {
+                        Address = job.Document.FacilityAddress,
+                        City = job.Document.FacilityCity,
+                        Country = job.Document.FacilityCountry,
+                        FacilityId = job.Document.FacilityId.ToInt64(),
+                        FacilityName = job.Document.FacilityName,
+                        PhoneNumber1 = job.Document.FacilityPhoneNumber1,
+                        PhoneNumber2 = job.Document.FacilityPhoneNumber2,
+                        Suburb = job.Document.FacilitySuburb
+                    },
+                    GracePeriodToCancelMinutes = job.Document.GracePeriodToCancelMinutes,
+                    IsDayShift = job.Document.IsDayShift,
+                    IsNightShift = job.Document.IsNightShift,
+                    JobEndDateTimeUtc = job.Document.JobEndDateTimeUtc,
+                    JobPostedDateTimeUtc = job.Document.JobPostedDateTimeUtc,
+                    JobStartDateTimeUtc = job.Document.JobStartDateTimeUtc,
+                    JobStatus = job.Document.JobStatusName.ToEnum<JobStatus>(),
+                    JobTitle = job.Document.JobTitle,
+                    NoGracePeriod = job.Document.NoGracePeriod,
+                    JobStatusName = job.Document.JobStatusName,
+                    Responsibilities = job.Document.Responsibilities,
+                    JobSkills = job.Document.Skills.AlwaysList().Select(s => new JobSkillModel
+                    {
+                        SkillName = s
+                    }).ToList()
+                }).AlwaysList();
+            return jobModels;
+        }
+
         public static Data.SqlServer.Models.Job ToNewJob(this JobModel domainModel)
         {
             var jobToSave = new Data.SqlServer.Models.Job
@@ -108,7 +151,6 @@ namespace Rosterd.Services.Mappers
                 GracePeriodToCancelMinutes = domainModel.GracePeriodToCancelMinutes,
                 NoGracePeriod = domainModel.NoGracePeriod,
                 Experience = domainModel.Experience,
-                PreviouslyCancelledJobId = domainModel.PreviouslyCancelledJobId,
                 IsDayShift = domainModel.IsDayShift,
                 IsNightShift = domainModel.IsNightShift,
                 Responsibilities = domainModel.Responsibilities

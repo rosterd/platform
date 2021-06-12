@@ -49,6 +49,7 @@ namespace Rosterd.Domain
 
             public const string NewJobCreatedEvent = "{0}.Rosterd.Job.Created";
             public const string JobCancelledEvent = "{0}.Rosterd.Job.Deleted";
+            public const string JobStatusChangedEvent = "{0}.Rosterd.Job.StatusChanged";
 
             public const string NewPushNotificationCreatedEvent = "{0}.Rosterd.NewPushNotification";
         }

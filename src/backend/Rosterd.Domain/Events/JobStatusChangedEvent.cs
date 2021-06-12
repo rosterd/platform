@@ -19,6 +19,5 @@ namespace Rosterd.Domain.Events
             Subject = jobId.ToString();
             Data = newStatus;
         }
-
     }
 }

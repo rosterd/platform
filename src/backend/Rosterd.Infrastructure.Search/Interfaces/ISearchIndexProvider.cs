@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes.Models;
 
 namespace Rosterd.Infrastructure.Search.Interfaces
@@ -56,5 +57,7 @@ namespace Rosterd.Infrastructure.Search.Interfaces
         /// <param name="keysToDelete"></param>
         /// <returns></returns>
         Task DeleteDocumentsFromIndex(string indexToDeleteFrom, string keyName, List<string> keysToDelete);
+
+        SearchClient GetSearchClient(string searchIndex);
     }
 }

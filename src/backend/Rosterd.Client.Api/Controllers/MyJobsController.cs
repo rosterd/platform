@@ -35,9 +35,9 @@ namespace Rosterd.Client.Api.Controllers
         [OperationOrder(1)]
         public async Task<ActionResult<PagedList<JobModel>>> GetAllRelevantJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
-            //TODO: get only relevant jobs for the user
+            //TODO: Once auth is done, get the right staff id to check
             pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetAllJobs(pagingParameters);
+            var pagedList = await _jobService.GetRelevantJobsForStaff(1, pagingParameters);
 
             return pagedList;
         }

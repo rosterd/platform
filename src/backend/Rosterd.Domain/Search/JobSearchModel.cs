@@ -40,7 +40,6 @@ namespace Rosterd.Domain.Search
         public DateTime? JobGracePeriodEndDateTimeUtc { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-
         public string JobStatusName { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
@@ -57,6 +56,9 @@ namespace Rosterd.Domain.Search
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string[] Skills { get; set; }
+
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+        public string SkillsSpaceSeperatedString => Skills.IsNullOrEmpty() ? string.Empty : string.Join(' ', Skills);
 
         [SearchableField]
         public string FacilityId { get; set; }

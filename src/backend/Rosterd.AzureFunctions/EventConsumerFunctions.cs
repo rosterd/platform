@@ -70,6 +70,13 @@ namespace Rosterd.AzureFunctions
                     break;
                 }
 
+                //Job status changed
+                case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.JobStatusChangedEvent):
+                {
+                    await _jobEventsService.HandleJobStatusChangedEvent(eventGridEvent);
+                    break;
+                }
+
                 default:
                     throw new NotSupportedException($"EventType : {eventGridEvent.EventType} not supported");
             }

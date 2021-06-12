@@ -33,5 +33,13 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// <param name="jobId"></param>
         /// <returns></returns>
         Task RemoveJob(long jobId);
+
+        /// <summary>
+        /// Gets all the jobs that are relevant for a given staff
+        /// </summary>
+        /// <param name="staffId"></param>
+        /// <param name="pagingParameters"></param>
+        /// <returns></returns>
+        Task<PagedList<JobModel>> GetRelevantJobsForStaff(long staffId, PagingQueryStringParameters pagingParameters);
     }
 }

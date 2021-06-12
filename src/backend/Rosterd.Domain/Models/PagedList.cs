@@ -22,5 +22,7 @@ namespace Rosterd.Domain.Models
         public bool HasNext => CurrentPage < TotalPages;
 
         public List<T> Items { get; }
+
+        public static PagedList<T> EmptyPagedList() => new PagedList<T>(new List<T>(), 0, 0, 0, 0);
     }
 }

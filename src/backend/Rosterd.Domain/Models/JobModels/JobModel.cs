@@ -56,8 +56,6 @@ namespace Rosterd.Domain.Models.JobModels
 
         public bool IsNightShift { get; set; }
 
-        public long? PreviouslyCancelledJobId { get; set; }
-
         public virtual List<JobSkillModel> JobSkills { get; set; }
     }
 }

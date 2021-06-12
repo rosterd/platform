@@ -65,5 +65,12 @@ namespace Rosterd.Services.Jobs
             var jobId = jobCancelledEvent.Data as string;
             await _searchIndexProvider.DeleteDocumentsFromIndex(RosterdConstants.Search.JobsIndex, JobSearchModel.Key(), new List<string>() {jobId});
         }
+
+        ///<inheritdoc/>
+        public async Task HandleJobStatusChangedEvent(EventGridEvent jobStatusChangedEvent)
+        {
+            var jobId = jobStatusChangedEvent.Data as JobStatusChangedEvent;
+            //await _searchIndexProvider.DeleteDocumentsFromIndex(RosterdConstants.Search.JobsIndex, JobSearchModel.Key(), new List<string>() {jobId});
+        }
     }
 }

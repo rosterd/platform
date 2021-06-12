@@ -40,5 +40,7 @@ namespace Rosterd.Services.Jobs.Interfaces
         Task HandleNewJobCreatedEvent(EventGridEvent jobCreatedEvent);
 
         Task HandleJobCancelledEvent(EventGridEvent jobCancelledEvent);
+
+        Task HandleJobStatusChangedEvent(EventGridEvent jobStatusChangedEvent);
     }
 }

@@ -64,8 +64,7 @@ namespace Rosterd.Domain.Requests.Job
                 Responsibilities = Responsibilities,
                 Experience = Experience,
                 IsDayShift = IsDayShift,
-                IsNightShift = IsNightShift,
-                PreviouslyCancelledJobId = PreviouslyCancelledJobId
+                IsNightShift = IsNightShift
             };
 
             return jobModel;

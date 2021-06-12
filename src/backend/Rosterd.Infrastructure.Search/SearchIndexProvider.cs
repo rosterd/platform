@@ -80,5 +80,11 @@ namespace Rosterd.Infrastructure.Search
             var searchClient = new SearchClient(_azureSearchEndpoint, indexToDeleteFrom, _azureKeyCredential);
             await searchClient.DeleteDocumentsAsync(keyName, keysToDelete);
         }
+
+        public SearchClient GetSearchClient(string searchIndex)
+        {
+            var searchClient = new SearchClient(_azureSearchEndpoint, searchIndex, _azureKeyCredential);
+            return searchClient;
+        }
     }
 }
