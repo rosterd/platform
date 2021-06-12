@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Rosterd.Data.SqlServer.Models
 {
     [Table("StaffSkill")]
+    [Index(nameof(StaffId), Name = "IX_Fk_StaffSkill_Staff")]
     public partial class StaffSkill
     {
         [Key]
@@ -20,7 +21,7 @@ namespace Rosterd.Data.SqlServer.Models
         public string SkillName { get; set; }
 
         [ForeignKey(nameof(StaffId))]
-        [InverseProperty(nameof(Models.Staff.StaffSkills))]
+        [InverseProperty("StaffSkills")]
         public virtual Staff Staff { get; set; }
     }
 }

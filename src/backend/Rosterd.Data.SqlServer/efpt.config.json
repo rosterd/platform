@@ -34,6 +34,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[JobStaff]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[JobStatusChange]",
          "ObjectType": 0
       },
@@ -62,7 +66,7 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "DESKTOP-N7S6GM1.Rosterd",
+   "UiHint": "sqls-rosterd-prod.rosterd",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
@@ -75,5 +79,6 @@
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,
+   "UseSchemaFolders": false,
    "UseSpatial": false
 }

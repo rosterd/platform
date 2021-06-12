@@ -10,13 +10,14 @@ using Microsoft.EntityFrameworkCore;
 namespace Rosterd.Data.SqlServer.Models
 {
     [Table("Job")]
+    [Index(nameof(FacilityId), Name = "IX_Fk_Job_Facility")]
     [Index(nameof(JobId), Name = "Unq_Job_JobId", IsUnique = true)]
-    [Index(nameof(JobStatusId), Name = "Unq_Job_JobStatusId", IsUnique = true)]
     public partial class Job
     {
         public Job()
         {
             JobSkills = new HashSet<JobSkill>();
+            JobStaffs = new HashSet<JobStaff>();
         }
 
         [Key]
@@ -46,7 +47,6 @@ namespace Rosterd.Data.SqlServer.Models
         public DateTime LastJobStatusChangeDateTimeUtc { get; set; }
         public string Responsibilities { get; set; }
         public string Experience { get; set; }
-        public long? PreviouslyCancelledJobId { get; set; }
         public bool? IsDayShift { get; set; }
         public bool? IsNightShift { get; set; }
 
@@ -55,5 +55,7 @@ namespace Rosterd.Data.SqlServer.Models
         public virtual Facility Facility { get; set; }
         [InverseProperty(nameof(JobSkill.Job))]
         public virtual ICollection<JobSkill> JobSkills { get; set; }
+        [InverseProperty(nameof(JobStaff.Job))]
+        public virtual ICollection<JobStaff> JobStaffs { get; set; }
     }
 }

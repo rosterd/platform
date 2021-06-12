@@ -9,19 +9,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rosterd.Data.SqlServer.Models
 {
-    [Table("JobSkill")]
-    [Index(nameof(JobId), Name = "IX_Fk_Jobskill_Job")]
-    public partial class JobSkill
+    [Table("JobStaff")]
+    public partial class JobStaff
     {
         [Key]
-        public long JobSkillId { get; set; }
+        public long JobStaffId { get; set; }
         public long JobId { get; set; }
-        public long SkillId { get; set; }
-        [StringLength(1000)]
-        public string SkillName { get; set; }
+        public long StaffId { get; set; }
+        public DateTime UpdateDateTimeUtc { get; set; }
 
         [ForeignKey(nameof(JobId))]
-        [InverseProperty("JobSkills")]
+        [InverseProperty("JobStaffs")]
         public virtual Job Job { get; set; }
+        [ForeignKey(nameof(StaffId))]
+        [InverseProperty("JobStaffs")]
+        public virtual Staff Staff { get; set; }
     }
 }
