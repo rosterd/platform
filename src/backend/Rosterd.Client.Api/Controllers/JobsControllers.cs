@@ -42,6 +42,8 @@ namespace Rosterd.Client.Api.Controllers
 
             //Change status to assigned
 
+            //Raise an event
+
             //TODO:
             return Ok();
         }
@@ -63,6 +65,8 @@ namespace Rosterd.Client.Api.Controllers
             //3. Remove assignment of user
 
             //4. Change status of job back to published
+
+            //5. Raise an event
 
             return Ok();
         }

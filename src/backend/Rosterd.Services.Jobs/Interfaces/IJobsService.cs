@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
 
@@ -41,5 +43,31 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         Task<PagedList<JobModel>> GetRelevantJobsForStaff(long staffId, PagingQueryStringParameters pagingParameters);
+
+        /// <summary>
+        /// Gets all the currently active jobs for a given staff
+        /// </summary>
+        /// <param name="staffId"></param>
+        /// <param name="pagingParameters"></param>
+        /// <returns></returns>
+        Task<PagedList<JobModel>> GetCurrentJobsForStaff(long staffId, PagingQueryStringParameters pagingParameters);
+
+        /// <summary>
+        /// Gets a list of all the jobs that are matching a given set of statuses
+        /// </summary>
+        /// <param name="staffId"></param>
+        /// <param name="jobsStatusesToQueryFor"></param>
+        /// <param name="pagingParameters"></param>
+        /// <returns></returns>
+        Task<PagedList<JobModel>> GetJobsForStaff(long staffId, List<JobStatus> jobsStatusesToQueryFor, PagingQueryStringParameters pagingParameters);
+
+        /// <summary>
+        /// Gets a list of all the jobs that are matching a given status
+        /// </summary>
+        /// <param name="staffId"></param>
+        /// <param name="jobsStatusToQueryFor"></param>
+        /// <param name="pagingParameters"></param>
+        /// <returns></returns>
+        Task<PagedList<JobModel>> GetJobsForStaff(long staffId, JobStatus jobsStatusToQueryFor, PagingQueryStringParameters pagingParameters);
     }
 }

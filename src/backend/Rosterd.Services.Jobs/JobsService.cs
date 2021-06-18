@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Models;
@@ -12,10 +13,10 @@ using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Search;
+using Rosterd.Infrastructure.Extensions;
 using Rosterd.Infrastructure.Search.Interfaces;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Mappers;
-using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
 namespace Rosterd.Services.Jobs
 {
@@ -30,13 +31,13 @@ namespace Rosterd.Services.Jobs
             _searchIndexProvider = searchIndexProvider;
         }
 
-        public async Task<Domain.Models.PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters)
+        public async Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters)
         {
             var query = _context.Jobs.Include(s => s.Facility);
-            var pagedList = await PagingList<Data.SqlServer.Models.Job>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
+            var pagedList = await PagingList<Job>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
-            return new Domain.Models.PagedList<JobModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
+            return new PagedList<JobModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
 
         public async Task<JobModel> GetJob(long jobId)
@@ -50,7 +51,7 @@ namespace Rosterd.Services.Jobs
             var jobToCreate = jobModel.ToNewJob();
 
             //New job specific properties
-            jobToCreate.JobStatusId = (int) JobStatus.Published;
+            jobToCreate.JobStatusId = (int)JobStatus.Published;
             jobToCreate.JobsStatusName = JobStatus.Published.ToString();
             jobToCreate.JobPostedDateTimeUtc = jobToCreate.LastJobStatusChangeDateTimeUtc = DateTime.UtcNow;
 
@@ -65,7 +66,7 @@ namespace Rosterd.Services.Jobs
             var job = await _context.Jobs.FindAsync(jobId);
             if (job != null)
             {
-                job.JobStatusId = (int) JobStatus.Cancelled;
+                job.JobStatusId = (int)JobStatus.Cancelled;
                 job.JobsStatusName = JobStatus.Cancelled.ToString();
                 job.LastJobStatusChangeDateTimeUtc = DateTime.UtcNow;
 
@@ -87,7 +88,7 @@ namespace Rosterd.Services.Jobs
 
             //Go to the jobs index and get all available jobs that match those skills
             var parameters =
-                new SearchOptions()
+                new SearchOptions
                 {
                     SearchMode = SearchMode.Any,
                     IncludeTotalCount = true,
@@ -95,48 +96,49 @@ namespace Rosterd.Services.Jobs
                     //At least one skill that the staff has must match whats in the job
                     Filter = $"search.in(SkillsSpaceSeperatedString, '{staff.Value.SkillsCsvString}', ',')",
                     Size = pagingParameters.PageSize,
-                    Skip = ((pagingParameters.PageNumber - 1)  * pagingParameters.PageSize)
+                    Skip = (pagingParameters.PageNumber - 1) * pagingParameters.PageSize
                 };
 
             //Search for matching jobs, map and return
             var jobSearchResults = await jobsSearchClient.SearchAsync<JobSearchModel>("*", parameters);
             var totalResultsFound = (jobSearchResults.Value.TotalCount ?? 0).ToInt32();
             var totalPages = (int)Math.Ceiling(totalResultsFound / (double)pagingParameters.PageSize);
-            
-            return new PagedList<JobModel>(jobSearchResults.Value.ToDomainModels(), totalResultsFound, pagingParameters.PageNumber, pagingParameters.PageSize, totalPages);
+
+            return new PagedList<JobModel>(jobSearchResults.Value.ToDomainModels(), totalResultsFound, pagingParameters.PageNumber, pagingParameters.PageSize,
+                totalPages);
         }
 
         public async Task<PagedList<JobModel>> GetCurrentJobsForStaff(long staffId, PagingQueryStringParameters pagingParameters)
         {
-            var staffSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.StaffIndex);
-            var jobsSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.JobsIndex);
+            var currentJobsForStaffQuery =
+                _context.JobStaffs
+                        .Include(s => s.Job)
+                        .Where(j => j.StaffId == staffId)
+                        .Select(s => s.Job);
 
-            //First go and fetch the staff and get the list of skills for that staff
-            var staff = await staffSearchClient.GetDocumentAsync<StaffSearchModel>(staffId.ToString());
+            var pagedList = await PagingList<Data.SqlServer.Models.Job>.ToPagingList(currentJobsForStaffQuery, pagingParameters.PageNumber, pagingParameters.PageSize);
 
-            //We cant find the staff, may be the staff member was deleted etc, so return no jobs
-            if (staff == null)
-                return PagedList<JobModel>.EmptyPagedList();
-
-            //Go to the jobs index and get all available jobs that match those skills
-            var parameters =
-                new SearchOptions()
-                {
-                    SearchMode = SearchMode.Any,
-                    IncludeTotalCount = true,
-
-                    //At least one skill that the staff has must match whats in the job
-                    Filter = $"search.in(SkillsSpaceSeperatedString, '{staff.Value.SkillsCsvString}', ',')",
-                    Size = pagingParameters.PageSize,
-                    Skip = ((pagingParameters.PageNumber - 1)  * pagingParameters.PageSize)
-                };
-
-            //Search for matching jobs, map and return
-            var jobSearchResults = await jobsSearchClient.SearchAsync<JobSearchModel>("*", parameters);
-            var totalResultsFound = (jobSearchResults.Value.TotalCount ?? 0).ToInt32();
-            var totalPages = (int)Math.Ceiling(totalResultsFound / (double)pagingParameters.PageSize);
-            
-            return new PagedList<JobModel>(jobSearchResults.Value.ToDomainModels(), totalResultsFound, pagingParameters.PageNumber, pagingParameters.PageSize, totalPages);
+            var domainModels = pagedList.ToDomainModels();
+            return new Domain.Models.PagedList<JobModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
+
+        public async Task<PagedList<JobModel>> GetJobsForStaff(long staffId, List<JobStatus> jobsStatusesToQueryFor, PagingQueryStringParameters pagingParameters)
+        {
+            var statusList = jobsStatusesToQueryFor.AlwaysList().Select(s => (long)s).AlwaysList();
+
+            var completedJobsForStaffQuery =
+                from js in _context.JobStaffs
+                join job in _context.Jobs on js.JobId equals job.JobId
+                where js.StaffId == staffId &&
+                      statusList.Contains(job.JobStatusId)
+                select job;
+
+            var pagedList = await PagingList<Data.SqlServer.Models.Job>.ToPagingList(completedJobsForStaffQuery, pagingParameters.PageNumber, pagingParameters.PageSize);
+
+            var domainModels = pagedList.ToDomainModels();
+            return new Domain.Models.PagedList<JobModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
+        }
+
+        public async Task<PagedList<JobModel>> GetJobsForStaff(long staffId, JobStatus jobsStatusToQueryFor, PagingQueryStringParameters pagingParameters) => await GetJobsForStaff(staffId, new List<JobStatus> {jobsStatusToQueryFor}, pagingParameters);
     }
 }

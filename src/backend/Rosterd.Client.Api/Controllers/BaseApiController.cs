@@ -9,7 +9,6 @@ namespace Rosterd.Client.Api.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)] //All validation failures and model state errors
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)] //Fatal error
-    [ProducesResponseType(StatusCodes.Status429TooManyRequests)] //Sent if too many requests coming in
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)] //Custom business validation error
     [ProducesResponseType(StatusCodes.Status200OK)] //Success
     [ProducesResponseType(StatusCodes.Status401Unauthorized)] //Sent if no JWT or bearer token sent to the API

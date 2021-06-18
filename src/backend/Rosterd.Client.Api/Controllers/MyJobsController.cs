@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Services.Jobs.Interfaces;
@@ -51,9 +53,9 @@ namespace Rosterd.Client.Api.Controllers
         [OperationOrder(2)]
         public async Task<ActionResult<PagedList<JobModel>>> GetAllCurrentJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
-            //TODO: get only currently accepted and ongoing jobs for this user
+            //TODO: Once auth is done, get the right staff id to check
             pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetAllJobs(pagingParameters);
+            var pagedList = await _jobService.GetCurrentJobsForStaff(1, pagingParameters);
 
             return pagedList;
         }
@@ -67,9 +69,9 @@ namespace Rosterd.Client.Api.Controllers
         [OperationOrder(3)]
         public async Task<ActionResult<PagedList<JobModel>>> GetAllHistoricalCompletedJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
-            //TODO: get only historical jobs for this user
+            //TODO: Once auth is done, get the right staff id to check
             pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetAllJobs(pagingParameters);
+            var pagedList = await _jobService.GetJobsForStaff(1, new List<JobStatus> {JobStatus.Finished, JobStatus.FeedbackPending}, pagingParameters);
 
             return pagedList;
         }
@@ -83,9 +85,9 @@ namespace Rosterd.Client.Api.Controllers
         [OperationOrder(4)]
         public async Task<ActionResult<PagedList<JobModel>>> GetAllHistoricalCancelledJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
-            //TODO: get only historical jobs for this user
+            //TODO: Once auth is done, get the right staff id to check
             pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetAllJobs(pagingParameters);
+            var pagedList = await _jobService.GetJobsForStaff(1, JobStatus.Cancelled, pagingParameters);
 
             return pagedList;
         }
