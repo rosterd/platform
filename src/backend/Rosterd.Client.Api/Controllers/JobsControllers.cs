@@ -1,7 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Rosterd.Domain;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Services.Jobs.Interfaces;
@@ -18,11 +22,17 @@ namespace Rosterd.Client.Api.Controllers
     {
         private readonly ILogger<JobsController> _logger;
         private readonly IJobsService _jobService;
+        private readonly IJobsValidationService _jobsValidationService;
+        private readonly IJobEventsService _jobEventsService;
+        private readonly IEventGridClient _eventGridClient;
 
-        public JobsController(ILogger<JobsController> logger, IJobsService jobsService) : base()
+        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobsValidationService jobsValidationService, IJobEventsService jobEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings) : base(appSettings)
         {
             _logger = logger;
             _jobService = jobsService;
+            _jobsValidationService = jobsValidationService;
+            _jobEventsService = jobEventsService;
+            _eventGridClient = eventGridClient;
         }
 
         /// <summary>
@@ -35,16 +45,18 @@ namespace Rosterd.Client.Api.Controllers
         public async Task<ActionResult> AcceptAndConfirmJob(long jobId)
         {
             //Validate start time
+            var (isJobValid, errorMessages) = await _jobsValidationService.IsJobStillValidToAccept(jobId);
+            if (!isJobValid)
+                return UnprocessableEntity(errorMessages);
 
-            //Record history of this
+            //TODO: When auth is ready pass in a proper staff id
+            var isAcceptSuccessful = await _jobService.AcceptJobForStaff(jobId, 1);
+            if (!isAcceptSuccessful)
+                return UnprocessableEntity(RosterdConstants.ErrorMessages.GenericError);
 
-            //Assign user
-
-            //Change status to assigned
-
-            //Raise an event
-
-            //TODO:
+            //Raise a job status change event (job is set to accepted status)
+            await _jobEventsService.GenerateJobStatusChangedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobId, JobStatus.Accepted);
+            
             return Ok();
         }
 
@@ -57,16 +69,18 @@ namespace Rosterd.Client.Api.Controllers
         [OperationOrder(2)]
         public async Task<ActionResult> CancelJob(long jobId)
         {
-            //TODO:
-            //1. Validate grace period
+            //TODO: When auth is ready pass in a proper staff id
+            var (isJobValid, errorMessages) = await _jobsValidationService.IsJobStillValidToCancelForStaff(jobId, 1);
+            if (!isJobValid)
+                return UnprocessableEntity(errorMessages);
 
-            //2. Record history of this
+            //TODO: When auth is ready pass in a proper staff id
+            var isAcceptSuccessful = await _jobService.CancelJobForStaff(jobId, 1);
+            if (!isAcceptSuccessful)
+                return UnprocessableEntity(RosterdConstants.ErrorMessages.GenericError);
 
-            //3. Remove assignment of user
-
-            //4. Change status of job back to published
-
-            //5. Raise an event
+            //Raise a job status change event (job is set back to published status)
+            await _jobEventsService.GenerateJobStatusChangedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobId, JobStatus.Published);
 
             return Ok();
         }

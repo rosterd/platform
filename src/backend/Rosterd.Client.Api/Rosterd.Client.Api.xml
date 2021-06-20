@@ -29,7 +29,7 @@
             <param name="jobId">The job id</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Client.Api.Controllers.JobsController.CancelJob(System.Int64)">
+        <member name="M:Rosterd.Client.Api.Controllers.JobsController.CancelJobForStaff(System.Int64)">
             <summary>
             Removes the current user from the job, if the grace period has run out then a HTTP 422 is thrown back
             </summary>

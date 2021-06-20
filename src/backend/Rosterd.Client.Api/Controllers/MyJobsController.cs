@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Rosterd.Domain;
 using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
@@ -22,7 +24,7 @@ namespace Rosterd.Client.Api.Controllers
         private readonly ILogger<MyJobsController> _logger;
         private readonly IJobsService _jobService;
 
-        public MyJobsController(ILogger<MyJobsController> logger, IJobsService jobsService) : base()
+        public MyJobsController(ILogger<MyJobsController> logger, IJobsService jobsService, IOptions<AppSettings> appSettings) : base(appSettings)
         {
             _logger = logger;
             _jobService = jobsService;

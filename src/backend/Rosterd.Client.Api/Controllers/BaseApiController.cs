@@ -1,5 +1,7 @@
+using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Rosterd.Domain;
 
 namespace Rosterd.Client.Api.Controllers
@@ -16,9 +18,15 @@ namespace Rosterd.Client.Api.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public abstract class BaseApiController : ControllerBase
     {
-        //protected readonly IUserContext UserContext;
+        protected BaseApiController(IOptions<AppSettings> appSettings)
+        {
+            RosterdEventGridTopicHost = new Uri(appSettings.Value.EventGridTopicEndpoint).Host;
+            CurrentEnvironment = appSettings.Value.Environment;
+        }
 
-        //protected BaseApiController(IUserContext userContext) => UserContext = userContext;
+        protected string RosterdEventGridTopicHost { get; }
+
+        protected string CurrentEnvironment { get; set; }
 
         /// <summary>
         /// Checks if the api key given is valid (ie: its compared against our constant)

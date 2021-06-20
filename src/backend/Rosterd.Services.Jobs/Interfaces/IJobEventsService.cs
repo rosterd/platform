@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
+using Rosterd.Domain.Enums;
 
 namespace Rosterd.Services.Jobs.Interfaces
 {
@@ -25,7 +26,8 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// <param name="jobId"></param>
         /// <param name="newJobsStatus"></param>
         /// <returns></returns>
-        Task GenerateJobStatusChangedEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, long jobId, string newJobsStatus);
+        Task GenerateJobStatusChangedEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, long jobId,
+            JobStatus newJobsStatus);
 
         /// <summary>
         /// Generates a new job cancelled event and send the event to the event grid

@@ -69,5 +69,21 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         Task<PagedList<JobModel>> GetJobsForStaff(long staffId, JobStatus jobsStatusToQueryFor, PagingQueryStringParameters pagingParameters);
+
+        /// <summary>
+        /// Marks the jobs as accepted for the given staff
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="staffId"></param>
+        /// <returns></returns>
+        Task<bool> AcceptJobForStaff(long jobId, long staffId);
+
+        /// <summary>
+        /// Removes the staff member from the job
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="staffId"></param>
+        /// <returns></returns>
+        Task<bool> CancelJobForStaff(long jobId, long staffId);
     }
 }

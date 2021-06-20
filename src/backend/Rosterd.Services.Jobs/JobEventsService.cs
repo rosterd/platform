@@ -5,6 +5,7 @@ using Microsoft.Azure.EventGrid.Models;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Domain;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Events;
 using Rosterd.Domain.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
@@ -35,7 +36,7 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task GenerateJobStatusChangedEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, long jobId, string newJobsStatus)
+        public async Task GenerateJobStatusChangedEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, long jobId, JobStatus newJobsStatus)
         {
             var jobStatusChangeEvent = new JobStatusChangedEvent(environmentThisEventIsBeingGenerateFrom, jobId, newJobsStatus);
 

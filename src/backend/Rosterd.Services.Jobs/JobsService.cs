@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Models;
+using Microsoft.Azure.EventGrid;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
@@ -140,5 +141,66 @@ namespace Rosterd.Services.Jobs
         }
 
         public async Task<PagedList<JobModel>> GetJobsForStaff(long staffId, JobStatus jobsStatusToQueryFor, PagingQueryStringParameters pagingParameters) => await GetJobsForStaff(staffId, new List<JobStatus> {jobsStatusToQueryFor}, pagingParameters);
+
+        public async Task<bool> AcceptJobForStaff(long jobId, long staffId)
+        {
+            var job = await _context.Jobs.FindAsync(jobId);
+            var jobStaff = new JobStaff {JobId = jobId, StaffId = staffId};
+            var jobStatusChange =
+                new JobStatusChange
+                {
+                    JobId = jobId,
+                    JobStatusId = JobStatus.Accepted.ToInt32(),
+                    JobStatusName = JobStatus.Accepted.ToString(),
+                    JobStatusChangeDateTimeUtc = DateTime.UtcNow,
+                    JobStatusChangeReason = "Job accepted by staff"
+                };
+
+            //Assign the job to staff
+            await _context.JobStaffs.AddAsync(jobStaff);
+
+            //Record history of this status change
+            await _context.JobStatusChanges.AddAsync(jobStatusChange);
+
+            //Change status in the main job table
+            job.JobStatusId = JobStatus.Accepted.ToInt32();
+            job.JobsStatusName = JobStatus.Accepted.ToString();
+            
+            //Do an update to the db (all in one transaction by default)
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> CancelJobForStaff(long jobId, long staffId)
+        {
+            var job = await _context.Jobs.FindAsync(jobId);
+            var jobStaff = await _context.JobStaffs.FirstOrDefaultAsync(s => s.JobId == jobId && s.StaffId == staffId);
+            var jobStatusChange =
+                new JobStatusChange
+                {
+                    JobId = jobId,
+                    JobStatusId = JobStatus.Published.ToInt32(),
+                    JobStatusName = JobStatus.Published.ToString(),
+                    JobStatusChangeDateTimeUtc = DateTime.UtcNow,
+                    JobStatusChangeReason = "Job rejected by staff"
+                };
+
+            //Remove any job assignment to staff
+            if (jobStaff != null)
+                _context.JobStaffs.Remove(jobStaff);
+
+            //Record history of this status change
+            await _context.JobStatusChanges.AddAsync(jobStatusChange);
+
+            //Change status in the main job table
+            job.JobStatusId = JobStatus.Published.ToInt32();
+            job.JobsStatusName = JobStatus.Published.ToString();
+
+            //Do an update to the db (all in one transaction by default)
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

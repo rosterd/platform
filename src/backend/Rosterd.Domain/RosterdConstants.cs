@@ -48,7 +48,7 @@ namespace Rosterd.Domain
             public const string StaffDeletedEvent = "{0}.Rosterd.Staff.Deleted";
 
             public const string NewJobCreatedEvent = "{0}.Rosterd.Job.Created";
-            public const string JobCancelledEvent = "{0}.Rosterd.Job.Deleted";
+            public const string JobCancelledEvent = "{0}.Rosterd.Job.Cancelled";
             public const string JobStatusChangedEvent = "{0}.Rosterd.Job.StatusChanged";
 
             public const string NewPushNotificationCreatedEvent = "{0}.Rosterd.NewPushNotification";
@@ -58,6 +58,11 @@ namespace Rosterd.Domain
         {
             public static string StaffIndex => "staff-index";
             public static string JobsIndex => "jobs-index";
+        }
+
+        public static class ErrorMessages
+        {
+            public const string GenericError = "An error occured while performing this operation, please try again at a later time.";
         }
     }
 }
