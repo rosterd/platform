@@ -20,5 +20,10 @@ namespace Rosterd.Domain.Events
             Subject = jobId.ToString();
             Data = newStatus.ToString();
         }
+
+        /// <summary>
+        /// Handy name method to get the job id
+        /// </summary>
+        public string JobId => Subject;
     }
 }

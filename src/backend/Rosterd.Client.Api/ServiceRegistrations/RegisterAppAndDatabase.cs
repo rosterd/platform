@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +44,9 @@ namespace Rosterd.Client.Api.ServiceRegistrations
             services.AddScoped<ISearchIndexProvider>(s => new SearchIndexProvider(config.GetValue<string>("AppSettings:SearchServiceEndpoint"),
                 config.GetValue<string>("AppSettings:SearchServiceApiKey")));
 
+            //Eventing
+            services.AddScoped<IJobEventsService, JobEventsService>();
+
             //Db contexts
             services.AddScoped<IRosterdDbContext, RosterdDbContext>();
             services.AddScoped<IAzureTableStorage>(s => new AzureTableStorage(config.GetConnectionString("TableStorageConnectionString")));
@@ -60,7 +64,11 @@ namespace Rosterd.Client.Api.ServiceRegistrations
             }
             else
             {
-                services.AddDbContextPool<RosterdDbContext>((sp, op) => op.UseSqlServer(connectionString));
+                services.AddDbContextPool<RosterdDbContext>((sp, op) => op.UseSqlServer(connectionString,
+                    sqlOptions => sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(5),
+                        errorNumbersToAdd: null)));
             }
         }
     }

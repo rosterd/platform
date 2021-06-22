@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.EventGrid;
@@ -47,6 +48,7 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 
             //Eventing
             services.AddScoped<IStaffEventsService, StaffEventsService>();
+            services.AddScoped<IJobEventsService, JobEventsService>();
 
             //Orchestrators
 
@@ -73,7 +75,11 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             }
             else
             {
-                services.AddDbContextPool<RosterdDbContext>((sp, op) => op.UseSqlServer(connectionString));
+                services.AddDbContextPool<RosterdDbContext>((sp, op) => op.UseSqlServer(connectionString,
+                    sqlOptions => sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(5),
+                        errorNumbersToAdd: null)));
             }
         }
     }

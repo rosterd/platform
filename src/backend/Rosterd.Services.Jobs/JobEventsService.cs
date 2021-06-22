@@ -70,8 +70,14 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task HandleJobStatusChangedEvent(EventGridEvent jobStatusChangedEvent)
         {
-            var jobId = jobStatusChangedEvent.Data as JobStatusChangedEvent;
-            //await _searchIndexProvider.DeleteDocumentsFromIndex(RosterdConstants.Search.JobsIndex, JobSearchModel.Key(), new List<string>() {jobId});
+            var jobId = (jobStatusChangedEvent.Data as JobStatusChangedEvent)?.JobId;
+
+            //Get the existing job from db (source of truth)
+            var currentJob = await _context.Jobs.FindAsync(jobId.ToInt64());
+            var searchModelToUpdate = currentJob.ToSearchModel();
+
+            //Update the existing job document with the new status changes
+            await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, new List<JobSearchModel>{searchModelToUpdate});
         }
     }
 }
