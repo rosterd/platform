@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Rosterd.Domain.Exceptions;
-using BadHttpRequestException = Microsoft.AspNetCore.Server.IIS.BadHttpRequestException;
 
 namespace Rosterd.Web.Infra.Middleware
 {
@@ -33,18 +32,19 @@ namespace Rosterd.Web.Infra.Middleware
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            context.Response.ContentType = "application/json";
-            switch (exception)
+            var errorDetails = exception switch
             {
-                case EntityAlreadyExistsException entityAlreadyExistsException:
-                    return context.Response.WriteAsync(ErrorDetails.GenerateEntityAlreadyExistsError().ToString());
-                case EntityNotFoundException entityNotFoundException:
-                    return context.Response.WriteAsync(ErrorDetails.Generate404Error().ToString());
-                default:
-                    return context.Response.WriteAsync(ErrorDetails.Generate500Error().ToString());
-            }
+                EntityAlreadyExistsException entityAlreadyExistsException => ErrorDetails.GenerateEntityAlreadyExistsError(),
+                EntityNotFoundException entityNotFoundException => ErrorDetails.Generate404Error(),
+                _ => ErrorDetails.Generate500Error()
+            };
+
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = errorDetails.StatusCode;
+
+            await context.Response.WriteAsync(errorDetails.ToString());
         }
     }
 
