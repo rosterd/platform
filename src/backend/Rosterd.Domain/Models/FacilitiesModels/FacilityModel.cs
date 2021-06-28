@@ -6,7 +6,10 @@ namespace Rosterd.Domain.Models.FacilitiesModels
 {
     public class FacilityModel
     {
-        public long FacilityId { get; set; }
+        /// <summary>
+        /// When creating a facility this will be null
+        /// </summary>
+        public long? FacilityId { get; set; }
 
         [Required]
         [StringLength(1000)]

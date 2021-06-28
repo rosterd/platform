@@ -91,14 +91,13 @@ namespace Rosterd.Client.Api
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                app.UseCustomExceptionMiddleware();
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
             app.UseCors("AllowAll");
-
-            app.UseCustomExceptionMiddleware();
 
             //Adds authentication middleware to the pipeline so authentication will be performed automatically on each request to host
             //Adds authorization middleware to the pipeline to make sure the Api endpoint cannot be accessed by anonymous clients

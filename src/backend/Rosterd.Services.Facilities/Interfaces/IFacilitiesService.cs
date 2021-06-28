@@ -20,7 +20,7 @@ namespace Rosterd.Services.Facilities.Interfaces
         /// </summary>
         /// <param name="facilityModel"></param>
         /// <returns></returns>
-        Task CreateFacility(FacilityModel facilityModel);
+        Task<long> CreateFacility(FacilityModel facilityModel);
 
         /// <summary>
         /// Updates an existing facility

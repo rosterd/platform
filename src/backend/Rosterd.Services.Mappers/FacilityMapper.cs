@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Rosterd.Data.SqlServer.Helpers;
+using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Infrastructure.Extensions;
 
@@ -30,11 +31,17 @@ namespace Rosterd.Services.Mappers
             return facilityModels;
         }
 
-        public static Data.SqlServer.Models.Facility ToDataModel(this FacilityModel domainModel)
+        public static Facility ToDataModel(this FacilityModel domainModelToUpdate, Facility existingDataModelFromDb)
         {
-            var facilityToUpdate = domainModel.ToNewFacility();
-            facilityToUpdate.FacilityId = domainModel.FacilityId;
-            return facilityToUpdate;
+            existingDataModelFromDb.FacilityName = domainModelToUpdate.FacilityName;
+            existingDataModelFromDb.Address = domainModelToUpdate.Address;
+            existingDataModelFromDb.City = domainModelToUpdate.City;
+            existingDataModelFromDb.Country = domainModelToUpdate.Country;
+            existingDataModelFromDb.PhoneNumber1 = domainModelToUpdate.PhoneNumber1;
+            existingDataModelFromDb.PhoneNumber2 = domainModelToUpdate.PhoneNumber2;
+            existingDataModelFromDb.Suburb = domainModelToUpdate.Suburb;
+            
+            return existingDataModelFromDb;
         }
 
         public static Data.SqlServer.Models.Facility ToNewFacility(this FacilityModel domainModel)
@@ -47,7 +54,9 @@ namespace Rosterd.Services.Mappers
                 Country = domainModel.Country,
                 PhoneNumber1 = domainModel.PhoneNumber1,
                 PhoneNumber2 = domainModel.PhoneNumber2,
-                Suburb = domainModel.Suburb
+                Suburb = domainModel.Suburb,
+
+                OrganzationId = domainModel.Organization.OrganizationId
             };
 
             return facilityToSave;

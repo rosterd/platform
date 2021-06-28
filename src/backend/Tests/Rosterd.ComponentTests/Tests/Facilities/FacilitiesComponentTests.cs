@@ -98,9 +98,9 @@ namespace Rosterd.ComponentTests.Tests.Facilities
 
         private async Task<int> createFacilityAsync() {
             var facilityId = new Random().Next(1000);
-            var addUpdateFacilityRequest = new AddUpdateFacilityRequest
+            var addUpdateFacilityRequest = new AddFacilityRequest
             {
-                FacilityToAddOrUpdate = new FacilityModel
+                FacilityToAdd = new FacilityModel
                 {
                     FacilityId = facilityId,
                     FacilityName = "ComponentTestFacility",

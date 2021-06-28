@@ -144,7 +144,7 @@ namespace Rosterd.Services.Mappers
             {
                 JobTitle = domainModel.JobTitle,
                 Description = domainModel.Description,
-                FacilityId = domainModel.Facility.FacilityId,
+                FacilityId = domainModel.Facility.FacilityId.Value,
                 JobStartDateTimeUtc = domainModel.JobStartDateTimeUtc,
                 JobEndDateTimeUtc = domainModel.JobEndDateTimeUtc,
                 Comments = domainModel.Comments,

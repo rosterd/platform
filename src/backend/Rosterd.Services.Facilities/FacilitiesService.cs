@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
@@ -32,12 +33,14 @@ namespace Rosterd.Services.Facilities
             return facility?.ToDomainModel();
         }
 
-        public async Task CreateFacility(FacilityModel facilitylModel)
+        public async Task<long> CreateFacility(FacilityModel facilityModel)
         {
-            var facilityToCreate = facilitylModel.ToNewFacility();
+            var facilityToCreate = facilityModel.ToNewFacility();
 
             await _context.Facilities.AddAsync(facilityToCreate);
             await _context.SaveChangesAsync();
+
+            return facilityToCreate.FacilityId;
         }
 
         public async Task RemoveFacility(long facilityId)
@@ -51,7 +54,12 @@ namespace Rosterd.Services.Facilities
         }
         public async Task UpdateFacility(FacilityModel facilityModel)
         {
-            var facilityModelToUpdate = facilityModel.ToDataModel();
+            if (facilityModel.FacilityId == null)
+                throw new ArgumentNullException();
+
+            var existingFacility = await _context.Facilities.FindAsync(facilityModel.FacilityId);
+
+            var facilityModelToUpdate = facilityModel.ToDataModel(existingFacility);
 
             _context.Facilities.Update(facilityModelToUpdate);
             await _context.SaveChangesAsync();

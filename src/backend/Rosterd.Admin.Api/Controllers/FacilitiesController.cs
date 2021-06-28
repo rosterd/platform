@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.FacilitiesModels;
+using Rosterd.Domain.Models.OrganizationModels;
 using Rosterd.Domain.Requests.Facility;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
@@ -60,10 +61,13 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [OperationOrderAttribute(3)]
-        public async Task<ActionResult> AddNewFacility([FromBody] AddUpdateFacilityRequest request)
+        public async Task<ActionResult> AddNewFacility([Required][FromBody] AddFacilityRequest request)
         {
-            await _facilitiesService.CreateFacility(request.FacilityToAddOrUpdate);
-            return Ok();
+            //TODO: remove hard-coding of facility now, this will need to come from JWT once auth is there
+            request.FacilityToAdd.Organization = new OrganizationModel { OrganizationId = 7 };
+
+            var facilityId = await _facilitiesService.CreateFacility(request.FacilityToAdd);
+            return Ok(facilityId);
         }
 
         /// <summary>
@@ -73,9 +77,9 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [OperationOrderAttribute(4)]
-        public async Task<ActionResult> UpdateFacility([FromBody] AddUpdateFacilityRequest request)
+        public async Task<ActionResult> UpdateFacility([Required] UpdateFacilityRequest request)
         {
-            await _facilitiesService.UpdateFacility(request.FacilityToAddOrUpdate);
+            await _facilitiesService.UpdateFacility(request.FacilityToUpdate);
             return Ok();
         }
 
