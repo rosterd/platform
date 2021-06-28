@@ -6,14 +6,15 @@
 
   <ItemGroup>
     <Compile Remove="Models\Organizations\**" />
+    <Compile Remove="Responses\**" />
     <EmbeddedResource Remove="Models\Organizations\**" />
+    <EmbeddedResource Remove="Responses\**" />
     <None Remove="Models\Organizations\**" />
+    <None Remove="Responses\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\OrganizationModels\" />
-    <Folder Include="Responses\" />
-    <Folder Include="Organization\" />
   </ItemGroup>
 
   <ItemGroup>

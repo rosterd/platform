@@ -16,6 +16,8 @@ using Rosterd.Services.Facilities;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Services.Jobs;
 using Rosterd.Services.Jobs.Interfaces;
+using Rosterd.Services.Organizations;
+using Rosterd.Services.Organizations.Interfaces;
 using Rosterd.Services.Skills;
 using Rosterd.Services.Skills.Interfaces;
 using Rosterd.Services.Staff;
@@ -41,6 +43,7 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             services.AddScoped<IFacilitiesService, FacilitiesService>();
             services.AddScoped<ISkillsService, SkillsService>();
             services.AddScoped<IJobsService, JobsService>();
+            services.AddScoped<IOrganizationsService, OrganizationsService>();
 
             //Search
             services.AddScoped<ISearchIndexProvider>(s => new SearchIndexProvider(config.GetValue<string>("AppSettings:SearchServiceEndpoint"),

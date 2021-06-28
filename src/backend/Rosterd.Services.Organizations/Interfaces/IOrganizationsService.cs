@@ -20,14 +20,14 @@ namespace Rosterd.Services.Organizations.Interfaces
         /// </summary>
         /// <param name="organizationModel"></param>
         /// <returns></returns>
-        Task Createorganization(OrganizationModel organizationModel);
+        Task<OrganizationModel> CreateOrganization(OrganizationModel organizationModel);
 
         /// <summary>
         /// Updates an existing organization
         /// </summary>
         /// <param name="organizationModel"></param>
         /// <returns></returns>
-        Task UpdateOrganization(OrganizationModel organizationModel);
+        Task<OrganizationModel> UpdateOrganization(OrganizationModel organizationModel);
 
         /// <summary>
         /// Deletes organization

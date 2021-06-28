@@ -1,7 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
+using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.OrganizationModels;
 using Rosterd.Services.Organizations.Interfaces;
@@ -32,12 +34,14 @@ namespace Rosterd.Services.Organizations
             return organization?.ToDomainModel();
         }
 
-        public async Task Createorganization(OrganizationModel organizationModel)
+        public async Task<OrganizationModel> CreateOrganization(OrganizationModel organizationModel)
         {
             var organizationToCreate = organizationModel.ToNewOrganization();
 
             await _context.Organizations.AddAsync(organizationToCreate);
             await _context.SaveChangesAsync();
+
+            return organizationToCreate.ToDomainModel();
         }
 
         public async Task RemoveOrganization(long organizationId)
@@ -49,12 +53,21 @@ namespace Rosterd.Services.Organizations
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task UpdateOrganization(OrganizationModel organizationModel)
+        public async Task<OrganizationModel> UpdateOrganization(OrganizationModel organizationModel)
         {
-            var organizationModelToUpdate = organizationModel.ToDataModel();
+            if (organizationModel.OrganizationId == null)
+                throw new ArgumentNullException();
+
+            var organizationFromDb = await _context.Organizations.FindAsync(organizationModel.OrganizationId);
+            if (organizationFromDb == null)
+                throw new EntityNotFoundException();
+
+            var organizationModelToUpdate = organizationModel.ToDataModel(organizationFromDb);
 
             _context.Organizations.Update(organizationModelToUpdate);
             await _context.SaveChangesAsync();
+
+            return organizationModelToUpdate.ToDomainModel();
         }
     }
 }

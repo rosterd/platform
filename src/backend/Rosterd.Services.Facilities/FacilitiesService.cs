@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
+using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Services.Facilities.Interfaces;
@@ -25,8 +26,7 @@ namespace Rosterd.Services.Facilities
             var domainModels = pagedList.ToDomainModels();
             return new PagedList<FacilityModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
-
-
+        
         public async Task<FacilityModel> GetFacility(long facilityId)
         {
             var facility = await _context.Facilities.FindAsync(facilityId);
@@ -58,6 +58,8 @@ namespace Rosterd.Services.Facilities
                 throw new ArgumentNullException();
 
             var existingFacility = await _context.Facilities.FindAsync(facilityModel.FacilityId);
+            if (existingFacility == null)
+                throw new EntityNotFoundException();
 
             var facilityModelToUpdate = facilityModel.ToDataModel(existingFacility);
 

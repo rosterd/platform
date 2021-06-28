@@ -56,7 +56,7 @@ namespace Rosterd.Services.Mappers
                 PhoneNumber2 = domainModel.PhoneNumber2,
                 Suburb = domainModel.Suburb,
 
-                OrganzationId = domainModel.Organization.OrganizationId
+                OrganzationId = domainModel.Organization.OrganizationId.Value
             };
 
             return facilityToSave;

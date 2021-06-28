@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Rosterd.Data.SqlServer.Helpers;
+using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.OrganizationModels;
 using Rosterd.Infrastructure.Extensions;
 
@@ -16,7 +18,6 @@ namespace Rosterd.Services.Mappers
                 OrganizationId = dataModel.OrganizationId,
                 OrganizationName = dataModel.OrganizationName,
                 Address = dataModel.Address
-                
             };
 
             return organizationModel;
@@ -32,12 +33,12 @@ namespace Rosterd.Services.Mappers
             return organizationModels;
         }
 
-        public static Data.SqlServer.Models.Organization ToDataModel(this OrganizationModel domainModel)
+        public static Organization ToDataModel(this OrganizationModel domainModelToUpdate, Organization organizationFromDb)
         {
-            var organizationToUpdate = domainModel.ToNewOrganization();
-            organizationToUpdate.OrganizationId = domainModel.OrganizationId;
+            organizationFromDb.Address = domainModelToUpdate.Address;
+            organizationFromDb.OrganizationName = domainModelToUpdate.OrganizationName;
 
-            return organizationToUpdate;
+            return organizationFromDb;
         }
 
         public static Data.SqlServer.Models.Organization ToNewOrganization(this OrganizationModel domainModel)
@@ -45,7 +46,8 @@ namespace Rosterd.Services.Mappers
             var organizationToSave = new Data.SqlServer.Models.Organization
             {
                 OrganizationName = domainModel.OrganizationName,
-                Address = domainModel.Address
+                Address = domainModel.Address,
+                TenantId = domainModel.TenantId.Value
             };
 
             return organizationToSave;
