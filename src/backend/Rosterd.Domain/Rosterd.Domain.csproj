@@ -13,6 +13,7 @@
   <ItemGroup>
     <Folder Include="Models\OrganizationModels\" />
     <Folder Include="Responses\" />
+    <Folder Include="Organization\" />
   </ItemGroup>
 
   <ItemGroup>
