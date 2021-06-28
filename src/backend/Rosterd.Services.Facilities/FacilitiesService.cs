@@ -38,7 +38,7 @@ namespace Rosterd.Services.Facilities
             var facilityToCreate = facilityModel.ToNewFacility();
 
             await _context.Facilities.AddAsync(facilityToCreate);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); 
 
             return facilityToCreate.FacilityId;
         }
