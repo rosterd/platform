@@ -5,7 +5,7 @@ using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.ValidationAttributes;
 
-namespace Rosterd.Domain.Requests.Job
+namespace Rosterd.Admin.Api.Requests.Job
 {
     public class AddJobRequest
     {

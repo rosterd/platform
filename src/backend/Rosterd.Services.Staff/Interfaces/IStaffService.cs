@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.StaffModels;
-using Rosterd.Domain.Requests.Staff;
 
 namespace Rosterd.Services.Staff.Interfaces
 {
@@ -34,14 +33,14 @@ namespace Rosterd.Services.Staff.Interfaces
         /// </summary>
         /// <param name="staffModel"></param>
         /// <returns>The id of the newly created staff</returns>
-        Task<long> CreateStaffMember(AddUpdateStaffRequest staffModel);
+        Task<long> CreateStaffMember(StaffModel staffModel);
 
         /// <summary>
         /// Updates an existing Staff member
         /// </summary>
         /// <param name="staffModel"></param>
         /// <returns></returns>
-        Task UpdateStaffMember(AddUpdateStaffRequest staffModel);
+        Task UpdateStaffMember(StaffModel staffModel);
 
         /// <summary>
         /// Marks a Staff member as inactive

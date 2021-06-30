@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Rosterd.Admin.Api.Requests.Organization;
 using Rosterd.Domain;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.OrganizationModels;
-using Rosterd.Domain.Requests.Organization;
 using Rosterd.Services.Organizations.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 

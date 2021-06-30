@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Rosterd.Admin.Api.Requests.Facility;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.OrganizationModels;
-using Rosterd.Domain.Requests.Facility;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
@@ -61,13 +62,21 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [OperationOrderAttribute(3)]
-        public async Task<ActionResult> AddNewFacility([Required][FromBody] AddFacilityRequest request)
+        public async Task<ActionResult<FacilityModel>> AddNewFacility([Required][FromBody] AddFacilityRequest request)
         {
-            //TODO: remove hard-coding of facility now, this will need to come from JWT once auth is there
+            //TODO: remove hard-coding of organization now, this will need to come from JWT once auth is there
             request.FacilityToAdd.Organization = new OrganizationModel { OrganizationId = 7 };
 
-            var facilityId = await _facilitiesService.CreateFacility(request.FacilityToAdd);
-            return Ok(facilityId);
+            //Validate duplicates
+            var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(request.FacilityToAdd);
+            if (duplicatesExist)
+            {
+                ModelState.TryAddModelError("FacilityToAdd.FacilityName", $"Facility with name {request.FacilityToAdd.FacilityName} already exits");
+                return BadRequest(ModelState);
+            }
+
+            var facilityAdded = await _facilitiesService.CreateFacility(request.FacilityToAdd);
+            return facilityAdded;
         }
 
         /// <summary>
@@ -77,10 +86,22 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [OperationOrderAttribute(4)]
-        public async Task<ActionResult> UpdateFacility([Required] UpdateFacilityRequest request)
+        public async Task<ActionResult<FacilityModel>> UpdateFacility([Required] UpdateFacilityRequest request)
         {
-            await _facilitiesService.UpdateFacility(request.FacilityToUpdate);
-            return Ok();
+            //TODO: remove hard-coding of organization now, this will need to come from JWT once auth is there
+            request.FacilityToUpdate.Organization = new OrganizationModel { OrganizationId = 7 };
+
+            //Validate duplicates
+            var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(request.FacilityToUpdate);
+            if (duplicatesExist)
+            {
+                ModelState.TryAddModelError("FacilityToUpdate.FacilityName", $"Facility with name {request.FacilityToUpdate.FacilityName} already exits");
+                return BadRequest(ModelState);
+            }
+
+            var updatedFacility = await _facilitiesService.UpdateFacility(request.FacilityToUpdate);
+
+            return updatedFacility;
         }
 
 

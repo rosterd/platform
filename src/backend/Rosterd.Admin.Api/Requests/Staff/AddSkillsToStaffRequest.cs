@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Rosterd.Domain.Models.SkillsModels;
 
-namespace Rosterd.Domain.Requests.Staff
+namespace Rosterd.Admin.Api.Requests.Staff
 {
     public class AddSkillsToStaffRequest
     {

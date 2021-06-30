@@ -1,8 +1,9 @@
-using Rosterd.Domain.Models.FacilitiesModels;
+using System.Data;
 using FluentValidation;
+using Rosterd.Domain.Models.FacilitiesModels;
+using Rosterd.Services.Facilities.Interfaces;
 
-
-namespace Rosterd.Domain.Requests.Facility
+namespace Rosterd.Admin.Api.Requests.Facility
 {
     public class AddFacilityRequest
     {
@@ -11,7 +12,8 @@ namespace Rosterd.Domain.Requests.Facility
 
     public class AddFacilityRequestValidator : AbstractValidator<AddFacilityRequest>
     {
-        public AddFacilityRequestValidator()
+
+        public AddFacilityRequestValidator(IFacilitiesService facilitiesService)
         {
             RuleFor(s => s.FacilityToAdd).NotNull();
 

@@ -5,7 +5,6 @@ using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Models.StaffModels;
-using Rosterd.Domain.Requests.Staff;
 using Rosterd.Domain.Search;
 using Rosterd.Infrastructure.Extensions;
 
@@ -93,14 +92,14 @@ namespace Rosterd.Services.Mappers
             return staffModels;
         }
 
-        public static Data.SqlServer.Models.Staff ToDataModel(this AddUpdateStaffRequest domainModel)
+        public static Data.SqlServer.Models.Staff ToDataModel(this StaffModel domainModel)
         {
             var staffToUpdate = domainModel.ToNewStaff();
-            staffToUpdate.StaffId = domainModel.StaffId ?? 0;
+            staffToUpdate.StaffId = domainModel.StaffId.Value;
             return staffToUpdate;
         }
 
-        public static Data.SqlServer.Models.Staff ToNewStaff(this AddUpdateStaffRequest domainModel)
+        public static Data.SqlServer.Models.Staff ToNewStaff(this StaffModel domainModel)
         {
             var staffToSave = new Data.SqlServer.Models.Staff
             {
@@ -114,7 +113,7 @@ namespace Rosterd.Services.Mappers
                 OtherPhoneNumber = domainModel.OtherPhoneNumber,
                 JobTitle = domainModel.JobTitle,
 
-                StaffFacilities = new List<StaffFacility> {new StaffFacility {FacilityId = domainModel.FacilityId.Value}}
+                StaffFacilities = new List<StaffFacility> {new StaffFacility {FacilityId = domainModel.StaffFacility.FacilityId.Value}}
             };
 
             staffToSave.StaffSkills = new List<StaffSkill>();

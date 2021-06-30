@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.StaffModels;
-using Rosterd.Domain.Requests.Staff;
 using Rosterd.Domain.ValidationAttributes;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
@@ -79,12 +79,14 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(2)]
         public async Task<ActionResult> AddNewStaffMember([FromBody] AddUpdateStaffRequest request)
         {
-            //Create the staff
-            var staffId = await _staffService.CreateStaffMember(request);
+            return null;
+            //TODO:
+            ////Create the staff
+            //var staffId = await _staffService.CreateStaffMember(request);
 
-            //Generate a new staff created event
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId);
-            return Ok();
+            ////Generate a new staff created event
+            //await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId);
+            //return Ok();
         }
 
         /// <summary>
@@ -96,12 +98,14 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(3)]
         public async Task<ActionResult> UpdateStaffMember([FromBody] AddUpdateStaffRequest request)
         {
-            if (request.StaffId == null)
-                return BadRequest("staffId field is required");
+            return null;
+            //TODO:
+            //if (request.StaffId == null)
+            //    return BadRequest("staffId field is required");
 
-            await _staffService.UpdateStaffMember(request);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
-            return Ok();
+            //await _staffService.UpdateStaffMember(request);
+            //await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
+            //return Ok();
         }
 
 

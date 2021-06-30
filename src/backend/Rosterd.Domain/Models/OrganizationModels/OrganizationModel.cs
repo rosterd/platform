@@ -7,7 +7,6 @@ namespace Rosterd.Domain.Models.OrganizationModels
     {
         public long? OrganizationId { get; set; }
 
-        [NumberIsRequiredAndShouldBeGreaterThanZero]
         public long? TenantId { get; set; }
 
         [Required]

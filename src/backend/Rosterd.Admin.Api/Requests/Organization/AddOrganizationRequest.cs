@@ -1,7 +1,7 @@
 using FluentValidation;
 using Rosterd.Domain.Models.OrganizationModels;
 
-namespace Rosterd.Domain.Requests.Organization
+namespace Rosterd.Admin.Api.Requests.Organization
 {
     public class AddOrganizationRequest
     {

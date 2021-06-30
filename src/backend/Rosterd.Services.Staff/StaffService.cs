@@ -6,7 +6,6 @@ using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.StaffModels;
-using Rosterd.Domain.Requests.Staff;
 using Rosterd.Services.Mappers;
 using Rosterd.Services.Staff.Interfaces;
 
@@ -52,7 +51,7 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task<long> CreateStaffMember(AddUpdateStaffRequest staffModel)
+        public async Task<long> CreateStaffMember(StaffModel staffModel)
         {
             var staffToCreate = staffModel.ToNewStaff();
 
@@ -63,7 +62,7 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task UpdateStaffMember(AddUpdateStaffRequest staffModel)
+        public async Task UpdateStaffMember(StaffModel staffModel)
         {
             var staffModelToUpdate = staffModel.ToDataModel();
 

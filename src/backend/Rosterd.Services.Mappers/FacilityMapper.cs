@@ -4,6 +4,7 @@ using System.Linq;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
+using Rosterd.Domain.Models.OrganizationModels;
 using Rosterd.Infrastructure.Extensions;
 
 namespace Rosterd.Services.Mappers
@@ -15,7 +16,13 @@ namespace Rosterd.Services.Mappers
             var facilityModel = new FacilityModel
             {
                 FacilityId = dataModel.FacilityId,
-                FacilityName = dataModel.FacilityName
+                FacilityName = dataModel.FacilityName,
+                Address = dataModel.Address,
+                City = dataModel.City,
+                Country = dataModel.Country,
+                PhoneNumber1 = dataModel.PhoneNumber1,
+                PhoneNumber2 = dataModel.PhoneNumber2,
+                Organization = new OrganizationModel { OrganizationId = dataModel.OrganzationId }
             };
 
             return facilityModel;

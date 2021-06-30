@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 
@@ -20,14 +21,14 @@ namespace Rosterd.Services.Facilities.Interfaces
         /// </summary>
         /// <param name="facilityModel"></param>
         /// <returns></returns>
-        Task<long> CreateFacility(FacilityModel facilityModel);
+        Task<FacilityModel> CreateFacility(FacilityModel facilityModel);
 
         /// <summary>
         /// Updates an existing facility
         /// </summary>
         /// <param name="facilityModel"></param>
         /// <returns></returns>
-        Task UpdateFacility(FacilityModel facilityModel);
+        Task<FacilityModel> UpdateFacility(FacilityModel facilityModel);
 
         /// <summary>
         /// Deletes facility
@@ -35,6 +36,8 @@ namespace Rosterd.Services.Facilities.Interfaces
         /// <param name="facilityId"></param>
         /// <returns></returns>
         Task RemoveFacility(long facilityId);
+
+        Task<bool> DoesFacilityWithSameNameExistForOrganization(FacilityModel facilityModel);
     }
 
 }

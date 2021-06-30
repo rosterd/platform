@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -68,6 +69,8 @@ namespace Rosterd.Client.Api
                 .AddFluentValidation(fv =>
                 {
                     fv.RunDefaultMvcValidationAfterFluentValidationExecutes = true;
+                    fv.ValidatorOptions.CascadeMode = CascadeMode.Stop;
+
                     fv.RegisterValidatorsFromAssemblyContaining<Startup>();
                     fv.RegisterValidatorsFromAssemblyContaining<BaseValidator>();
                 });

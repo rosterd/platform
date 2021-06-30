@@ -1,8 +1,8 @@
 using FluentValidation;
 using Rosterd.Domain.Models.FacilitiesModels;
-using Rosterd.Domain.Requests.Job;
+using Rosterd.Services.Facilities.Interfaces;
 
-namespace Rosterd.Domain.Requests.Facility
+namespace Rosterd.Admin.Api.Requests.Facility
 {
     public class UpdateFacilityRequest
     {
@@ -11,7 +11,7 @@ namespace Rosterd.Domain.Requests.Facility
 
     public class UpdateFacilityRequestValidator : AbstractValidator<UpdateFacilityRequest>
     {
-        public UpdateFacilityRequestValidator()
+        public UpdateFacilityRequestValidator(IFacilitiesService facilitiesService)
         {
             RuleFor(s => s.FacilityToUpdate).NotNull();
 

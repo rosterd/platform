@@ -4,11 +4,11 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
+using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.ComponentTests.Fixture;
 using Rosterd.ComponentTests.Helpers;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.StaffModels;
-using Rosterd.Domain.Requests.Staff;
 using Xunit;
 
 
@@ -97,7 +97,7 @@ namespace Rosterd.ComponentTests.Tests.Staff
             var staffId = new Random().Next(1000);
             var addUpdateStaffRequest = new AddUpdateStaffRequest
             {
-                StaffId = staffId
+                Staff = new StaffModel {StaffId = staffId}
             };
             var stringContent = new StringContent(JsonConvert.SerializeObject(addUpdateStaffRequest), Encoding.UTF8, "application/json");
             var response = await _appFixture.HttpClient.PostAsync(ApiConstants.STAFF_ENDPOINT, stringContent);
