@@ -33,14 +33,14 @@ namespace Rosterd.Services.Staff.Interfaces
         /// </summary>
         /// <param name="staffModel"></param>
         /// <returns>The id of the newly created staff</returns>
-        Task<long> CreateStaffMember(StaffModel staffModel);
+        Task<StaffModel> CreateStaffMember(StaffModel staffModel);
 
         /// <summary>
         /// Updates an existing Staff member
         /// </summary>
         /// <param name="staffModel"></param>
         /// <returns></returns>
-        Task UpdateStaffMember(StaffModel staffModel);
+        Task<StaffModel> UpdateStaffMember(StaffModel staffModel);
 
         /// <summary>
         /// Marks a Staff member as inactive

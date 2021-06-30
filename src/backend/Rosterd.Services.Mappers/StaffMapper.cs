@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
@@ -25,29 +26,20 @@ namespace Rosterd.Services.Mappers
                 HomePhoneNumber = dataModel.HomePhoneNumber,
                 MobilePhoneNumber = dataModel.MobilePhoneNumber,
                 OtherPhoneNumber = dataModel.OtherPhoneNumber,
-                Skills = new List<SkillModel>()
             };
 
-            var staffFacility = dataModel.StaffFacilities.FirstOrDefault();
-            if (staffFacility != null)
+            staffModel.StaffFacilities = dataModel.StaffFacilities.AlwaysList().Select(s => new FacilityModel
             {
-                var facility = new FacilityModel
-                {
-                    FacilityId = staffFacility.FacilityId, FacilityName = staffFacility.FacilityName
+                FacilityId = s.FacilityId,
+                FacilityName = s.FacilityName,
+                
+            }).AlwaysList();
 
-                };
-                staffModel.StaffFacility = facility;
-            }
-
-            var staffSkills = dataModel.StaffSkills.AlwaysList();
-            if (staffSkills.IsNotNullOrEmpty())
+            staffModel.Skills = dataModel.StaffSkills.AlwaysList().Select(s => new SkillModel
             {
-                foreach (var staffSkill in staffSkills)
-                {
-                    var skillModel = new SkillModel {SkillId = staffSkill.SkillId, SkillName = staffSkill.SkillName};
-                    staffModel.Skills.Add(skillModel);
-                }
-            }
+                SkillId = s.SkillId,
+                SkillName = s.SkillName
+            }).AlwaysList();
 
             return staffModel;
         }
@@ -92,11 +84,19 @@ namespace Rosterd.Services.Mappers
             return staffModels;
         }
 
-        public static Data.SqlServer.Models.Staff ToDataModel(this StaffModel domainModel)
+        public static Staff ToDataModel(this StaffModel domainModel, Staff staffFromDb)
         {
-            var staffToUpdate = domainModel.ToNewStaff();
-            staffToUpdate.StaffId = domainModel.StaffId.Value;
-            return staffToUpdate;
+            staffFromDb.IsActive = domainModel.IsActive;
+            staffFromDb.FirstName = domainModel.FirstName;
+            staffFromDb.MiddleName = domainModel.MiddleName;
+            staffFromDb.LastName = domainModel.LastName;
+            staffFromDb.Email = domainModel.Email;
+            staffFromDb.HomePhoneNumber = domainModel.HomePhoneNumber;
+            staffFromDb.MobilePhoneNumber = domainModel.MobilePhoneNumber;
+            staffFromDb.OtherPhoneNumber = domainModel.OtherPhoneNumber;
+            staffFromDb.JobTitle = domainModel.JobTitle;
+
+            return staffFromDb;
         }
 
         public static Data.SqlServer.Models.Staff ToNewStaff(this StaffModel domainModel)
@@ -111,16 +111,8 @@ namespace Rosterd.Services.Mappers
                 HomePhoneNumber = domainModel.HomePhoneNumber,
                 MobilePhoneNumber = domainModel.MobilePhoneNumber,
                 OtherPhoneNumber = domainModel.OtherPhoneNumber,
-                JobTitle = domainModel.JobTitle,
-
-                StaffFacilities = new List<StaffFacility> {new StaffFacility {FacilityId = domainModel.StaffFacility.FacilityId.Value}}
+                JobTitle = domainModel.JobTitle
             };
-
-            staffToSave.StaffSkills = new List<StaffSkill>();
-            foreach (var domainModelSkill in domainModel.Skills.AlwaysList())
-            {
-                staffToSave.StaffSkills.Add(new StaffSkill{SkillId = domainModelSkill.SkillId,SkillName = domainModelSkill.SkillName});
-            }
 
             return staffToSave;
         }

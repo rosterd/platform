@@ -42,6 +42,6 @@ namespace Rosterd.Domain.Models.StaffModels
         /// <summary>
         /// The facility this staff member belongs too
         /// </summary>
-        public FacilityModel StaffFacility { get; set; }
+        public List<FacilityModel> StaffFacilities { get; set; }
     }
 }

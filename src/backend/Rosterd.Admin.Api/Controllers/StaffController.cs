@@ -77,16 +77,14 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult> AddNewStaffMember([FromBody] AddUpdateStaffRequest request)
+        public async Task<ActionResult<StaffModel>> AddNewStaffMember([FromBody] AddStaffRequest request)
         {
-            return null;
-            //TODO:
-            ////Create the staff
-            //var staffId = await _staffService.CreateStaffMember(request);
+            //Create the staff
+            var staff = await _staffService.CreateStaffMember(AddStaffRequest.ToStaffModel(request));
 
-            ////Generate a new staff created event
-            //await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId);
-            //return Ok();
+            //Generate a new staff created event
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staff.StaffId.Value);
+            return staff;
         }
 
         /// <summary>
@@ -96,19 +94,13 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [OperationOrderAttribute(3)]
-        public async Task<ActionResult> UpdateStaffMember([FromBody] AddUpdateStaffRequest request)
+        public async Task<ActionResult<StaffModel>> UpdateStaffMember([FromBody] UpdateStaffRequest request)
         {
-            return null;
-            //TODO:
-            //if (request.StaffId == null)
-            //    return BadRequest("staffId field is required");
-
-            //await _staffService.UpdateStaffMember(request);
-            //await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
-            //return Ok();
+            var staff = await _staffService.UpdateStaffMember(UpdateStaffRequest.ToStaffModel(request));
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
+            return staff;
         }
-
-
+        
         /// <summary>
         /// Makes a Staff member as inactive
         /// </summary>
@@ -123,20 +115,20 @@ namespace Rosterd.Admin.Api.Controllers
             return Ok();
         }
 
-        /// <summary>
-        /// Moves a Staff member from their existing facility to another facility
-        /// </summary>
-        /// <param name="facilityId">The facility id to move</param>
-        /// <param name="staffId">The Staff id</param>
-        /// <returns></returns>
-        [HttpPut("facilities")]
-        [OperationOrderAttribute(5)]
-        public async Task<ActionResult> MoveStaffMemberToAnotherFacility([FromQuery] [Required] long? facilityId, [Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
-        {
-            await _staffService.MoveStaffMemberToAnotherFacility(staffId.Value, facilityId.Value);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
-            return Ok();
-        }
+        ///// <summary>
+        ///// Moves a Staff member from their existing facility to another facility
+        ///// </summary>
+        ///// <param name="facilityId">The facility id to move</param>
+        ///// <param name="staffId">The Staff id</param>
+        ///// <returns></returns>
+        //[HttpPut("facilities")]
+        //[OperationOrderAttribute(5)]
+        //public async Task<ActionResult> MoveStaffMemberToAnotherFacility([FromQuery] [Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? facilityId, [Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
+        //{
+        //    await _staffService.MoveStaffMemberToAnotherFacility(staffId.Value, facilityId.Value);
+        //    await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
+        //    return Ok();
+        //}
 
         /// <summary>
         /// Adds a collection of skills to the Staff member
@@ -148,7 +140,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(6)]
         public async Task<ActionResult> AddSkillToStaff([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId, [FromBody] AddSkillsToStaffRequest request)
         {
-            await _staffSkillsService.UpdateAllSkillsForStaff(staffId.Value, request.SkillsToAdd);
+            await _staffSkillsService.UpdateAllSkillsForStaff(staffId.Value, AddSkillsToStaffRequest.ToSkillModels(request));
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
             return Ok();
         }

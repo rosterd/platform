@@ -95,9 +95,9 @@ namespace Rosterd.ComponentTests.Tests.Staff
         private async Task<int> createStaffAsync()
         {
             var staffId = new Random().Next(1000);
-            var addUpdateStaffRequest = new AddUpdateStaffRequest
+            var addUpdateStaffRequest = new AddStaffRequest
             {
-                Staff = new StaffModel {StaffId = staffId}
+                
             };
             var stringContent = new StringContent(JsonConvert.SerializeObject(addUpdateStaffRequest), Encoding.UTF8, "application/json");
             var response = await _appFixture.HttpClient.PostAsync(ApiConstants.STAFF_ENDPOINT, stringContent);

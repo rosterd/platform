@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Rosterd.Domain.ValidationAttributes
@@ -7,7 +9,7 @@ namespace Rosterd.Domain.ValidationAttributes
     ///     Validation attribute to indicate that a property field or parameter is required, it should be a number and should be greater than zero
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
-    public class NumberIsRequiredAndShouldBeGreaterThanZeroAttribute : ValidationAttribute
+    public class CollectionIsRequiredAndShouldNotBeEmptyAttribute : ValidationAttribute
     {
         /// <summary>
         ///     Validation attribute to indicate that a property field or parameter is required, it should be a number and should be greater than zero
@@ -16,6 +18,6 @@ namespace Rosterd.Domain.ValidationAttributes
         /// <returns>True if value is greater than zero</returns>
         public override bool IsValid(object value) =>
             // return true if value is a non-null number > 0, otherwise return false
-            value != null && long.TryParse(value.ToString(), out var i) && i > 0;
+            value != null && (value as ICollection).IsNotNull() && ((ICollection) value).Count > 0;
     }
 }

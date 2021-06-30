@@ -1,12 +1,20 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.SkillsModels;
+using Rosterd.Domain.Models.StaffModels;
+using Rosterd.Domain.ValidationAttributes;
+using Rosterd.Infrastructure.Extensions;
 
 namespace Rosterd.Admin.Api.Requests.Staff
 {
     public class AddSkillsToStaffRequest
     {
-        [Required]
-        public List<SkillModel> SkillsToAdd { get; set; }
+        [CollectionIsRequiredAndShouldNotBeEmpty]
+        public List<long> SkillsToAdd { get; set; }
+
+        public static List<SkillModel> ToSkillModels(AddSkillsToStaffRequest request) =>
+            request.SkillsToAdd.AlwaysList().Select(s => new SkillModel {SkillId = s}).AlwaysList();
     }
 }

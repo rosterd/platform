@@ -1,6 +1,5 @@
 using FluentValidation;
 using Rosterd.Domain.Models.FacilitiesModels;
-using Rosterd.Services.Facilities.Interfaces;
 
 namespace Rosterd.Admin.Api.Requests.Facility
 {
@@ -11,7 +10,7 @@ namespace Rosterd.Admin.Api.Requests.Facility
 
     public class UpdateFacilityRequestValidator : AbstractValidator<UpdateFacilityRequest>
     {
-        public UpdateFacilityRequestValidator(IFacilitiesService facilitiesService)
+        public UpdateFacilityRequestValidator()
         {
             RuleFor(s => s.FacilityToUpdate).NotNull();
 
@@ -19,7 +18,7 @@ namespace Rosterd.Admin.Api.Requests.Facility
             RuleFor(s => s.FacilityToUpdate.FacilityId).NotNull();
             RuleFor(s => s.FacilityToUpdate.FacilityId).GreaterThan(0);
 
-            //This will be populated by us by whats in the JWT, should not be sent by the client
+            //This will be not be populated by us, will be taken from the JWT, should not be sent by the client
             RuleFor(s => s.FacilityToUpdate.Organization).Null();
         }
     }
