@@ -77,7 +77,7 @@ namespace Rosterd.Admin.Api.Controllers
 
             //Generate a new job created event
             await _jobEventsService.GenerateNewJobCreatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, newJobId);
-            return Ok();
+            return Ok(newJobId);
         }
 
         /// <summary>

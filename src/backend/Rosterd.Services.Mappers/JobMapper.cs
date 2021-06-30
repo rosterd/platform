@@ -41,7 +41,7 @@ namespace Rosterd.Services.Mappers
             {
                 foreach (var jobModelJobSkill in jobModel.JobSkills)
                 {
-                    jobModel.JobSkills.Add(new JobSkillModel {JobId = dataModel.JobId, JobSkillId = jobModelJobSkill.JobSkillId, SkillId = jobModelJobSkill.SkillId, SkillName = jobModelJobSkill.SkillName});
+                    jobModel.JobSkills.Add(new JobSkillModel { JobSkillId = jobModelJobSkill.JobSkillId, SkillId = jobModelJobSkill.SkillId, SkillName = jobModelJobSkill.SkillName});
                 }
             }
 
@@ -103,8 +103,7 @@ namespace Rosterd.Services.Mappers
 
             var jobModels = searchResults.GetResults().Select(job =>
                 new JobModel
-                {
-                    JobId = job.Document.JobId.ToInt64(),
+                { 
                     Comments = job.Document.Comments,
                     Description = job.Document.Description,
                     Experience = job.Document.Experience,
