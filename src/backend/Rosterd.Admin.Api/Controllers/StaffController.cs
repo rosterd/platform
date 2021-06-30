@@ -100,6 +100,20 @@ namespace Rosterd.Admin.Api.Controllers
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
             return staff;
         }
+
+        /// <summary>
+        /// Reactivate the staff member, status will be set to active again
+        /// </summary>
+        /// <param name="staffId">The staff id to update</param>
+        /// <returns></returns>
+        [HttpPut("reactivate")]
+        [OperationOrderAttribute(3)]
+        public async Task<ActionResult> ReactivateStaffMember([FromQuery][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
+        {
+            await _staffService.UpdateStaffToActive(staffId.Value);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
+            return Ok();
+        }
         
         /// <summary>
         /// Makes a Staff member as inactive

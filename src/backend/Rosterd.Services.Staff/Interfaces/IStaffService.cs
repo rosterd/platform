@@ -50,6 +50,13 @@ namespace Rosterd.Services.Staff.Interfaces
         Task RemoveStaffMember(long staffId);
 
         /// <summary>
+        /// Updates the status of a given staff member to active
+        /// </summary>
+        /// <param name="staffId"></param>
+        /// <returns></returns>
+        Task UpdateStaffToActive(long staffId);
+
+        /// <summary>
         /// Moves a Staff member to another facility
         /// </summary>
         /// <param name="staffId"></param>

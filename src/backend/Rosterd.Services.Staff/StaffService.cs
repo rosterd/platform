@@ -156,9 +156,22 @@ namespace Rosterd.Services.Staff
         public async Task RemoveStaffMember(long staffId)
         {
             var staff = await _context.Staff.FindAsync(staffId);
+
             if (staff != null)
             {
                 staff.IsActive = false;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        ///<inheritdoc/>
+        public async Task UpdateStaffToActive(long staffId)
+        {
+            var staff = await _context.Staff.FindAsync(staffId);
+
+            if (staff != null)
+            {
+                staff.IsActive = true;
                 await _context.SaveChangesAsync();
             }
         }
