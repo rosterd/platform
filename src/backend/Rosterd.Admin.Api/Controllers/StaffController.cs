@@ -106,7 +106,8 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <param name="staffId">The staff id to update</param>
         /// <returns></returns>
-        [HttpPut("reactivate")]
+        [HttpPatch("reactivate")]
+
         [OperationOrderAttribute(3)]
         public async Task<ActionResult> ReactivateStaffMember([FromQuery][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
         {
@@ -129,20 +130,35 @@ namespace Rosterd.Admin.Api.Controllers
             return Ok();
         }
 
-        ///// <summary>
-        ///// Moves a Staff member from their existing facility to another facility
-        ///// </summary>
-        ///// <param name="facilityId">The facility id to move</param>
-        ///// <param name="staffId">The Staff id</param>
-        ///// <returns></returns>
-        //[HttpPut("facilities")]
-        //[OperationOrderAttribute(5)]
-        //public async Task<ActionResult> MoveStaffMemberToAnotherFacility([FromQuery] [Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? facilityId, [Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
-        //{
-        //    await _staffService.MoveStaffMemberToAnotherFacility(staffId.Value, facilityId.Value);
-        //    await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
-        //    return Ok();
-        //}
+        /// <summary>
+        /// Adds a facility to a staff member
+        /// </summary>
+        /// <param name="staffId">The Staff id</param>
+        /// /// <param name="facilityId">The facility id to add</param>
+        /// <returns></returns>
+        [HttpPost("{staffId}/facilities")]
+        [OperationOrderAttribute(5)]
+        public async Task<ActionResult> AddStaffToFacility([FromQuery][Required] long? staffId, [FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long facilityId)
+        {
+            await _staffService.AddFacilityToStaff(staffId.Value, facilityId);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Remove a staff from facility
+        /// </summary>
+        /// <param name="staffId">The Staff id</param>
+        /// /// <param name="facilityId">The facility id to add</param>
+        /// <returns></returns>
+        [HttpDelete("{staffId}/facilities")]
+        [OperationOrderAttribute(6)]
+        public async Task<ActionResult> RemoveStaffToFacility([FromQuery][Required] long? staffId, [FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long facilityId)
+        {
+            await _staffService.RemoveFacilityFromStaff(staffId.Value, facilityId);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
+            return Ok();
+        }
 
         /// <summary>
         /// Adds a collection of skills to the Staff member
@@ -151,7 +167,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The skills to add</param>
         /// <returns></returns>
         [HttpPut("skills")]
-        [OperationOrderAttribute(6)]
+        [OperationOrderAttribute(7)]
         public async Task<ActionResult> AddSkillToStaff([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId, [FromBody] AddSkillsToStaffRequest request)
         {
             await _staffSkillsService.UpdateAllSkillsForStaff(staffId.Value, AddSkillsToStaffRequest.ToSkillModels(request));
@@ -165,7 +181,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="staffId">The Staff id</param>
         /// <returns></returns>
         [HttpDelete("skills")]
-        [OperationOrderAttribute(7)]
+        [OperationOrderAttribute(8)]
         public async Task<ActionResult> DeleteAllSkillsForStaff([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
         {
             await _staffSkillsService.RemoveAllSkillsForStaff(staffId.Value);

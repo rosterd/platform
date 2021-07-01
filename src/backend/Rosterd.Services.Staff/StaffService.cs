@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
@@ -6,6 +8,7 @@ using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
+using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Services.Mappers;
@@ -177,20 +180,46 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task MoveStaffMemberToAnotherFacility(long staffId, long facilityId)
+        public async Task DeleteAllExistingFacilitiesForStaffAndAddNew(long staffId, List<FacilityModel> facilityModels)
         {
-            var staff = await _context.Staff.FindAsync(staffId);
-            var facility = await _context.Facilities.FindAsync(facilityId);
-            if (staff != null && facility != null)
+            //Remove all existing
+            var existingStaffFacilities = _context.StaffFacilities.Where(s => s.StaffId == staffId);
+            _context.StaffFacilities.RemoveRange(existingStaffFacilities);
+
+            //Add the new ones
+            var newFacilityIds = facilityModels.AlwaysList().Select(s => s.FacilityId.Value);
+            var newFacilities = _context.StaffFacilities.Where(s => newFacilityIds.Contains(s.FacilityId));
+            foreach (var facility in newFacilities.AlwaysList())
             {
-                //Remove the existing facility connection to Staff
-                var toDelete = _context.StaffFacilities.Where(s => s.StaffId == staffId);
-                _context.StaffFacilities.RemoveRange(toDelete);
+                await _context.StaffFacilities.AddAsync(new StaffFacility
+                {
+                    FacilityId = facility.FacilityId, FacilityName = facility.FacilityName, StaffId = staffId
+                });
+            }
 
-                //Add the new facility connection
-                await _context.StaffFacilities.AddAsync(new StaffFacility {FacilityId = facilityId, FacilityName = facility.FacilityName, StaffId = staffId});
+            await _context.SaveChangesAsync();
+        }
 
-                //Finally commit to db
+        public async Task AddFacilityToStaff(long staffId, long facilityId)
+        {
+            var facility = await _context.Facilities.FindAsync(facilityId);
+            if (facility != null)
+            {
+                await _context.StaffFacilities.AddAsync(new StaffFacility
+                {
+                    FacilityId = facility.FacilityId, FacilityName = facility.FacilityName, StaffId = staffId
+                });
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task RemoveFacilityFromStaff(long staffId, long facilityId)
+        {
+            var staffFacilities = _context.StaffFacilities.Where(s => s.FacilityId == facilityId && s.StaffId == staffId).AlwaysList();
+            if (staffFacilities.IsNotNullOrEmpty())
+            {
+                _context.StaffFacilities.RemoveRange(staffFacilities);
                 await _context.SaveChangesAsync();
             }
         }

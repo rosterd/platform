@@ -158,7 +158,7 @@
             <param name="staffId">The Staff member to mark as inactive</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.MoveStaffMemberToAnotherFacility(System.Nullable{System.Int64},System.Nullable{System.Int64})">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.DeleteAllExistingFacilitiesForStaffAndAddNew(System.Nullable{System.Int64},System.Nullable{System.Int64})">
             <summary>
             Moves a Staff member from their existing facility to another facility
             </summary>

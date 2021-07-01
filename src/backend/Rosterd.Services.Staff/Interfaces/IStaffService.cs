@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Rosterd.Domain.Models;
+using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.StaffModels;
 
 namespace Rosterd.Services.Staff.Interfaces
@@ -60,8 +62,24 @@ namespace Rosterd.Services.Staff.Interfaces
         /// Moves a Staff member to another facility
         /// </summary>
         /// <param name="staffId"></param>
+        /// <param name="facilityModels"></param>
+        /// <returns></returns>
+        Task DeleteAllExistingFacilitiesForStaffAndAddNew(long staffId, List<FacilityModel> facilityModels);
+
+        /// <summary>
+        /// Associates the facility to the staff member
+        /// </summary>
+        /// <param name="staffId"></param>
         /// <param name="facilityId"></param>
         /// <returns></returns>
-        Task MoveStaffMemberToAnotherFacility(long staffId, long facilityId);
+        Task AddFacilityToStaff(long staffId, long facilityId);
+
+        /// <summary>
+        /// Removes the facility association with a staff member
+        /// </summary>
+        /// <param name="staffId"></param>
+        /// <param name="facilityId"></param>
+        /// <returns></returns>
+        Task RemoveFacilityFromStaff(long staffId, long facilityId);
     }
 }
