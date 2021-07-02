@@ -138,7 +138,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPost("{staffId}/facilities")]
         [OperationOrderAttribute(5)]
-        public async Task<ActionResult> AddStaffToFacility([FromQuery][Required] long? staffId, [FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long facilityId)
+        public async Task<ActionResult> AddStaffToFacility([Required] long? staffId, [FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long facilityId)
         {
             await _staffService.AddFacilityToStaff(staffId.Value, facilityId);
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
@@ -153,7 +153,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpDelete("{staffId}/facilities")]
         [OperationOrderAttribute(6)]
-        public async Task<ActionResult> RemoveStaffToFacility([FromQuery][Required] long? staffId, [FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long facilityId)
+        public async Task<ActionResult> RemoveStaffToFacility([Required] long? staffId, [FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long facilityId)
         {
             await _staffService.RemoveFacilityFromStaff(staffId.Value, facilityId);
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
@@ -176,15 +176,16 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
-        /// Removes all skills from a Staff member
+        /// Deletes a collection of skills from the Staff member
         /// </summary>
         /// <param name="staffId">The Staff id</param>
+        /// <param name="request">The skills to delete</param>
         /// <returns></returns>
         [HttpDelete("skills")]
         [OperationOrderAttribute(8)]
-        public async Task<ActionResult> DeleteAllSkillsForStaff([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
+        public async Task<ActionResult> DeleteSkillsForStaff([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId, [FromBody] AddSkillsToStaffRequest request)
         {
-            await _staffSkillsService.RemoveAllSkillsForStaff(staffId.Value);
+            await _staffSkillsService.DeleteSkillsForStaff(staffId.Value, AddSkillsToStaffRequest.ToSkillModels(request));
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
             return Ok();
         }

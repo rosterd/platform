@@ -21,7 +21,7 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task UpdateAllSkillsForStaff(long staffId, List<SkillModel> skillModels)
         {
-            if (skillModels.IsNotNullOrEmpty())
+            if (skillModels.IsNullOrEmpty())
                 return;
 
             foreach (var skillModel in skillModels)
@@ -41,6 +41,22 @@ namespace Rosterd.Services.Staff
 
             await _context.SaveChangesAsync();
         }
+
+    public async Task DeleteSkillsForStaff(long staffId, List<SkillModel> skillModels)
+    {
+        if (skillModels.IsNullOrEmpty())
+            return;
+
+        foreach (var skillModel in skillModels)
+        {
+            var skill = await _context.StaffSkills.FirstOrDefaultAsync(s => s.SkillId == skillModel.SkillId && s.StaffId == staffId);
+            if (skill != null) {
+                _context.StaffSkills.Remove(skill);
+            }
+        }
+
+        await _context.SaveChangesAsync();
+    }
 
         ///<inheritdoc/>
         public async Task RemoveAllSkillsForStaff(long staffId)

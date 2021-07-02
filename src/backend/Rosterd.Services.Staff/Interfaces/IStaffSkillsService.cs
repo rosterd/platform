@@ -18,6 +18,14 @@ namespace Rosterd.Services.Staff.Interfaces
         Task UpdateAllSkillsForStaff(long staffId, List<SkillModel> skillModels);
 
         /// <summary>
+        /// Removes list of skills for a Staff
+        /// </summary>
+        /// <param name="staffId"></param>
+        /// <param name="skillModels"></param>
+        /// <returns></returns>
+        Task DeleteSkillsForStaff(long staffId, List<SkillModel> skillModels);
+
+        /// <summary>
         /// Removes all existing skills for a Staff
         /// </summary>
         /// <param name="staffId"></param>
