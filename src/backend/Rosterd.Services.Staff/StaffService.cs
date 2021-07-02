@@ -27,8 +27,7 @@ namespace Rosterd.Services.Staff
         public async Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId)
         {
             var query = _context.Staff
-                .Where(s => s.IsActive == true)
-                .Where(s => s.StaffFacilities.Any(s => s.FacilityId == facilityId))
+                .Where(staff => staff.StaffFacilities.Any(facility => facility.FacilityId == facilityId))
                 .Include(s => s.StaffFacilities)
                 .Include(s => s.StaffSkills);
 
@@ -51,55 +50,63 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task<StaffModel> GetStaff(long staffId)
         {
-            var staff = await _context.Staff.FindAsync(staffId);
-            return staff?.ToDomainModel();
+            var staff = await _context.Staff
+                .Include(s => s.StaffFacilities)
+                .Include(s => s.StaffSkills)
+                .FirstOrDefaultAsync(s => s.StaffId == staffId);
+
+            if(staff == null)
+                throw new EntityNotFoundException();
+
+            return staff.ToDomainModel();
         }
 
         ///<inheritdoc/>
-        public async Task<StaffModel> CreateStaffMember(StaffModel staffModel)
+        public async Task<StaffModel> CreateStaff(StaffModel staffModel)
         {
             //Populate staff details
             var staffToCreate = staffModel.ToNewStaff();
             var newStaff = await _context.Staff.AddAsync(staffToCreate);
 
-            //Populate the staff skills
-            if (staffModel.Skills.IsNotNullOrEmpty())
-            {
-                var skillsToFetch = staffModel.Skills.Select(s => s.SkillId).AlwaysList();
-                var skillsFromDb = _context.Skills.Where(s => skillsToFetch.Contains(s.SkillId)).AlwaysList();
-
-                foreach (var skillFromDb in skillsFromDb)
-                {
-                    await _context.StaffSkills.AddAsync(new StaffSkill
-                    {
-                        SkillId = skillFromDb.SkillId, SkillName = skillFromDb.SkillName, StaffId = newStaff.Entity.StaffId
-                    });
-                }
-            }
-
-            //Populate the staff facilities
+            //Populate the default staff facilities
             if (staffModel.StaffFacilities.IsNotNullOrEmpty())
             {
-                var facilitiesToFetch = staffModel.StaffFacilities.Where(s => s.FacilityId != null).Select(s => s.FacilityId.Value).AlwaysList();
-                var facilitiesFromDb = _context.Facilities.Where(s => facilitiesToFetch.Contains(s.FacilityId)).AlwaysList();
+                var facilityIds = staffModel.StaffFacilities.Select(s => s.FacilityId.Value).AlwaysList();
+                var facilitiesFromDb = _context.StaffFacilities.Where(s => facilityIds.Contains(s.FacilityId));
 
-                foreach (var facilityFromDb in facilitiesFromDb)
+                foreach (var facility in facilitiesFromDb)
                 {
-                    await _context.StaffFacilities.AddAsync(new StaffFacility
+                    newStaff.Entity.StaffFacilities.Add(new StaffFacility
                     {
-                        FacilityId = facilityFromDb.FacilityId, FacilityName = facilityFromDb.FacilityName, StaffId = newStaff.Entity.StaffId
+                        FacilityId = facility.FacilityId,
+                        FacilityName = facility.FacilityName,
+                        StaffId = newStaff.Entity.StaffId
                     });
+
+                    //await _context.StaffFacilities.AddAsync();
                 }
             }
 
-            //Save everything
-            await _context.SaveChangesAsync();
+            //Populate the default staff skills
+            if (staffModel.StaffSkills.IsNotNullOrEmpty())
+            {
+                var skillIds = staffModel.StaffSkills.Select(s => s.SkillId).AlwaysList();
+                var skillsFromDb = _context.Skills.Where(s => skillIds.Contains(s.SkillId));
 
+                
+                foreach (var skill in skillsFromDb)
+                {
+                    newStaff.Entity.StaffSkills.Add(new StaffSkill { SkillId = skill.SkillId, SkillName = skill.SkillName, StaffId = newStaff.Entity.StaffId });
+                    //await _context.StaffSkills.AddAsync();
+                }
+            }
+
+            await _context.SaveChangesAsync();
             return newStaff.Entity.ToDomainModel();
         }
 
         ///<inheritdoc/>
-        public async Task<StaffModel> UpdateStaffMember(StaffModel staffModel)
+        public async Task<StaffModel> UpdateStaff(StaffModel staffModel)
         {
             //Get the existing staff
             var staffFromDb = await _context.Staff
@@ -112,51 +119,14 @@ namespace Rosterd.Services.Staff
 
             //Update the db entry with the latest updates from the domain model
             var staffModelToUpdate = staffModel.ToDataModel(staffFromDb);
-
-            //Update the staff skills (first delete all existing records) {at some point UPSERT will be more efficient)
-            if (staffFromDb.StaffSkills.IsNotNullOrEmpty())
-                _context.StaffSkills.RemoveRange(staffFromDb.StaffSkills);
-
-            if (staffModel.Skills.IsNotNullOrEmpty())
-            {
-                var skillsToFetch = staffModel.Skills.Select(s => s.SkillId).AlwaysList();
-                var skillsFromDb = _context.Skills.Where(s => skillsToFetch.Contains(s.SkillId)).AlwaysList();
-
-                foreach (var skillFromDb in skillsFromDb)
-                {
-                    await _context.StaffSkills.AddAsync(new StaffSkill
-                    {
-                        SkillId = skillFromDb.SkillId,  SkillName = skillFromDb.SkillName,  StaffId = staffFromDb.StaffId
-                    });
-                }
-            }
-
-            //Update the staff facilities  {at some point UPSERT will be more efficient)
-            if (staffFromDb.StaffFacilities.IsNotNullOrEmpty())
-                _context.StaffFacilities.RemoveRange(staffFromDb.StaffFacilities);
-
-            if (staffModel.StaffFacilities.IsNotNullOrEmpty())
-            {
-                var facilitiesToFetch = staffModel.StaffFacilities.Where(s => s.FacilityId != null).Select(s => s.FacilityId.Value).AlwaysList();
-                var facilitiesFromDb = _context.Facilities.Where(s => facilitiesToFetch.Contains(s.FacilityId)).AlwaysList();
-
-                foreach (var facilityFromDb in facilitiesFromDb)
-                {
-                    await _context.StaffFacilities.AddAsync(new StaffFacility
-                    {
-                        FacilityId = facilityFromDb.FacilityId,  FacilityName = facilityFromDb.FacilityName,  StaffId = staffFromDb.StaffId
-                    });
-                }
-            }
-
             _context.Staff.Update(staffModelToUpdate);
-            await _context.SaveChangesAsync();
 
+            await _context.SaveChangesAsync();
             return staffModelToUpdate.ToDomainModel();
         }
 
         ///<inheritdoc/>
-        public async Task RemoveStaffMember(long staffId)
+        public async Task UpdateStaffToInactive(long staffId)
         {
             var staff = await _context.Staff.FindAsync(staffId);
 

@@ -80,7 +80,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<StaffModel>> AddNewStaffMember([FromBody] AddStaffRequest request)
         {
             //Create the staff
-            var staff = await _staffService.CreateStaffMember(AddStaffRequest.ToStaffModel(request));
+            var staff = await _staffService.CreateStaff(AddStaffRequest.ToStaffModel(request));
 
             //Generate a new staff created event
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staff.StaffId.Value);
@@ -96,7 +96,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(3)]
         public async Task<ActionResult<StaffModel>> UpdateStaffMember([FromBody] UpdateStaffRequest request)
         {
-            var staff = await _staffService.UpdateStaffMember(UpdateStaffRequest.ToStaffModel(request));
+            var staff = await _staffService.UpdateStaff(UpdateStaffRequest.ToStaffModel(request));
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
             return staff;
         }
@@ -125,7 +125,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(4)]
         public async Task<ActionResult> RemoveStaffMember([FromQuery] [Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
         {
-            await _staffService.RemoveStaffMember(staffId.Value);
+            await _staffService.UpdateStaffToInactive(staffId.Value);
             await _staffEventsService.GenerateStaffDeletedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
             return Ok();
         }

@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using FluentValidation;
+using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.SkillsModels;
@@ -40,18 +42,32 @@ namespace Rosterd.Admin.Api.Requests.Staff
         [Required]
         public bool? IsActive { get; set; }
 
+        [Required]
+        public bool? IsAvailable { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
+        [StringLength(1000)]
+        public string Address { get; set; }
+
+        [StringLength(1000)]
+        public string Comments { get; set; }
+
+        [StringLength(1000)]
         public string JobTitle { get; set; }
 
         /// <summary>
-        /// Skills this staff has
+        /// The facility this staff belongs too
+        /// Initially when creating a staff, a staff will need to belong to at least one facility, later you can add more or remove
         /// </summary>
-        [CollectionIsRequiredAndShouldNotBeEmptyAttribute]
-        public List<long> Skills { get; set; }
+        [NumberIsRequiredAndShouldBeGreaterThanZero]
+        public long? FacilityId { get; set; }
 
         /// <summary>
-        /// The facilities this staff is associated to
+        /// The list of skills that the staff has, when creating should at least have one
         /// </summary>
-        public List<long> Facilities { get; set; }
+        [CollectionIsRequiredAndShouldNotBeEmpty]
+        public List<long> SkillIds { get; set; }
 
         public static StaffModel ToStaffModel(AddStaffRequest request) =>
             new StaffModel
@@ -65,8 +81,13 @@ namespace Rosterd.Admin.Api.Requests.Staff
                 MiddleName = request.MiddleName,
                 MobilePhoneNumber = request.MobilePhoneNumber,
                 OtherPhoneNumber = request.OtherPhoneNumber,
-                Skills = request.Skills.AlwaysList().Select(s => new SkillModel {SkillId = s}).AlwaysList(),
-                StaffFacilities = request.Facilities.AlwaysList().Select(s => new FacilityModel {FacilityId = s}).AlwaysList()
+                IsAvailable = request.IsAvailable.Value,
+                DateOfBirth = request.DateOfBirth,
+                Address = request.Address,
+                Comments = request.Comments,
+
+                StaffFacilities = new List<FacilityModel> { new FacilityModel { FacilityId = request.FacilityId.Value } },
+                StaffSkills = request.SkillIds.AlwaysList().Select(s => new SkillModel{SkillId = s }).AlwaysList()
             };
     }
 }

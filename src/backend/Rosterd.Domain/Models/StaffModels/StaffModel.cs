@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Rosterd.Domain.Models.FacilitiesModels;
@@ -35,13 +36,21 @@ namespace Rosterd.Domain.Models.StaffModels
 
         public bool IsActive { get; set; }
 
+        public bool IsAvailable { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
+        [StringLength(1000)]
+        public string Address { get; set; }
+
+        [StringLength(1000)]
+        public string Comments { get; set; }
+
+        [StringLength(1000)]
         public string JobTitle { get; set; }
 
-        public List<SkillModel> Skills { get; set; }
+        public List<SkillModel> StaffSkills { get; set; }
 
-        /// <summary>
-        /// The facility this staff member belongs too
-        /// </summary>
         public List<FacilityModel> StaffFacilities { get; set; }
     }
 }

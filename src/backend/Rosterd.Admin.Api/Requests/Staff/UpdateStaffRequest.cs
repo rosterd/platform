@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -41,18 +42,19 @@ namespace Rosterd.Admin.Api.Requests.Staff
         [Required]
         public bool? IsActive { get; set; }
 
+        [Required]
+        public bool? IsAvailable { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
+        [StringLength(1000)]
+        public string Address { get; set; }
+
+        [StringLength(1000)]
+        public string Comments { get; set; }
+
+        [StringLength(1000)]
         public string JobTitle { get; set; }
-
-        /// <summary>
-        /// Skills this staff has
-        /// </summary>
-        [CollectionIsRequiredAndShouldNotBeEmptyAttribute]
-        public List<long> Skills { get; set; }
-
-        /// <summary>
-        /// The facilities this staff is associated to
-        /// </summary>
-        public List<long> Facilities { get; set; }
 
         public static StaffModel ToStaffModel(UpdateStaffRequest request) =>
             new StaffModel
@@ -67,8 +69,10 @@ namespace Rosterd.Admin.Api.Requests.Staff
                 MiddleName = request.MiddleName,
                 MobilePhoneNumber = request.MobilePhoneNumber,
                 OtherPhoneNumber = request.OtherPhoneNumber,
-                Skills = request.Skills.AlwaysList().Select(s => new SkillModel { SkillId = s }).AlwaysList(),
-                StaffFacilities = request.Facilities.AlwaysList().Select(s => new FacilityModel { FacilityId = s }).AlwaysList()
+                IsAvailable = request.IsAvailable.Value,
+                DateOfBirth = request.DateOfBirth,
+                Address = request.Address,
+                Comments = request.Comments
             };
     }
 }

@@ -35,21 +35,21 @@ namespace Rosterd.Services.Staff.Interfaces
         /// </summary>
         /// <param name="staffModel"></param>
         /// <returns>The id of the newly created staff</returns>
-        Task<StaffModel> CreateStaffMember(StaffModel staffModel);
+        Task<StaffModel> CreateStaff(StaffModel staffModel);
 
         /// <summary>
         /// Updates an existing Staff member
         /// </summary>
         /// <param name="staffModel"></param>
         /// <returns></returns>
-        Task<StaffModel> UpdateStaffMember(StaffModel staffModel);
+        Task<StaffModel> UpdateStaff(StaffModel staffModel);
 
         /// <summary>
         /// Marks a Staff member as inactive
         /// </summary>
         /// <param name="staffId"></param>
         /// <returns></returns>
-        Task RemoveStaffMember(long staffId);
+        Task UpdateStaffToInactive(long staffId);
 
         /// <summary>
         /// Updates the status of a given staff member to active

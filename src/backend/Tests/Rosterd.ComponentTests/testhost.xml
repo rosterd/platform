@@ -144,14 +144,14 @@
             <param name="request">The Staff member to add</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.UpdateStaffMember(Rosterd.Admin.Api.Requests.Staff.AddUpdateStaffRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.UpdateStaff(Rosterd.Admin.Api.Requests.Staff.AddUpdateStaffRequest)">
             <summary>
             Update a Staff member details
             </summary>
             <param name="request">The Staff member to update</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.RemoveStaffMember(System.Nullable{System.Int64})">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.UpdateStaffToInactive(System.Nullable{System.Int64})">
             <summary>
             Makes a Staff member as inactive
             </summary>

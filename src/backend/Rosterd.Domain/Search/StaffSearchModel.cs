@@ -38,6 +38,16 @@ namespace Rosterd.Domain.Search
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string JobTitle { get; set; }
 
+        [SearchableField]
+        public string IsAvailable { get; set; }
+
+        [SearchableField]
+        public string DateOfBirth { get; set; }
+
+        [SearchableField]
+        public string Address { get; set; }
+        
+
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string[] Skills { get; set; }
 
