@@ -6,5 +6,4 @@ namespace Rosterd.Admin.Api.Requests.Skills
     {
         public SkillModel SkillToAddOrUpdate { get; set; }
     }
-    
 }

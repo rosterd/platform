@@ -12,6 +12,5 @@ namespace Rosterd.Domain.Models.SkillsModels
 
         [StringLength(1000)]
         public string Description { get; set; }
-
     }
 }

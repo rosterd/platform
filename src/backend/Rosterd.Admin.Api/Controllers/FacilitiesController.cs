@@ -8,6 +8,7 @@ using Rosterd.Admin.Api.Requests.Facility;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.OrganizationModels;
+using Rosterd.Domain.ValidationAttributes;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
@@ -47,11 +48,11 @@ namespace Rosterd.Admin.Api.Controllers
         ///     Get Facility by Id
         /// </summary>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{facilityId}")]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<FacilityModel>> GetFacilityById([Required] long? id)
+        public async Task<ActionResult<FacilityModel>> GetFacilityById([ValidNumberRequired] long? facilityId)
         {
-            var facilityModel = await _facilitiesService.GetFacility(id.Value);
+            var facilityModel = await _facilitiesService.GetFacility(facilityId.Value);
             return facilityModel;
         }
 
@@ -110,9 +111,9 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <param name="facilityId">The Facility to be deleted</param>
         /// <returns></returns>
-        [HttpDelete]
+        [HttpDelete("facilityId")]
         [OperationOrderAttribute(5)]
-        public async Task<ActionResult> RemoveFacility([FromQuery] [Required] long? facilityId)
+        public async Task<ActionResult> RemoveFacility([ValidNumberRequired] long? facilityId)
         {
             await _facilitiesService.RemoveFacility(facilityId.Value);
             return Ok();

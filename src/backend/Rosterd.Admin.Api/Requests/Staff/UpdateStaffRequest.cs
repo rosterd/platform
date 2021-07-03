@@ -12,7 +12,7 @@ namespace Rosterd.Admin.Api.Requests.Staff
 {
     public class UpdateStaffRequest
     {
-        [NumberIsRequiredAndShouldBeGreaterThanZero]
+        [ValidNumberRequired]
         public long? StaffId { get; set; }
 
         [Required(AllowEmptyStrings = false)]

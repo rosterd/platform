@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Rosterd.Data.SqlServer.Helpers;
+using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Infrastructure.Extensions;
 
@@ -31,11 +32,11 @@ namespace Rosterd.Services.Mappers
             return skillModels;
         }
 
-        public static Data.SqlServer.Models.Skill ToDataModel(this SkillModel domainModel)
+        public static Skill ToDataModel(this SkillModel domainModel, Skill skillFromDb)
         {
-            var skillToUpdate = domainModel.ToNewSkill();
-            skillToUpdate.SkillId = domainModel.SkillId;
-            return skillToUpdate;
+            skillFromDb.SkillName = domainModel.SkillName;
+            skillFromDb.Description = domainModel.Description;
+            return skillFromDb;
         }
 
         public static Data.SqlServer.Models.Skill ToNewSkill(this SkillModel domainModel)

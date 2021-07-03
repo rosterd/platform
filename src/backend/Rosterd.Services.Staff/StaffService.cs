@@ -82,8 +82,6 @@ namespace Rosterd.Services.Staff
                         FacilityName = facility.FacilityName,
                         StaffId = newStaff.Entity.StaffId
                     });
-
-                    //await _context.StaffFacilities.AddAsync();
                 }
             }
 
@@ -93,11 +91,9 @@ namespace Rosterd.Services.Staff
                 var skillIds = staffModel.StaffSkills.Select(s => s.SkillId).AlwaysList();
                 var skillsFromDb = _context.Skills.Where(s => skillIds.Contains(s.SkillId));
 
-                
                 foreach (var skill in skillsFromDb)
                 {
                     newStaff.Entity.StaffSkills.Add(new StaffSkill { SkillId = skill.SkillId, SkillName = skill.SkillName, StaffId = newStaff.Entity.StaffId });
-                    //await _context.StaffSkills.AddAsync();
                 }
             }
 
@@ -175,6 +171,10 @@ namespace Rosterd.Services.Staff
             var facility = await _context.Facilities.FindAsync(facilityId);
             if (facility != null)
             {
+                var existingStaffFacility = await _context.StaffFacilities.FirstOrDefaultAsync(s => s.StaffId == staffId && s.FacilityId == facilityId);
+                if (existingStaffFacility != null) //There is already this facility added for the staff no need to do anything
+                    return;
+
                 await _context.StaffFacilities.AddAsync(new StaffFacility
                 {
                     FacilityId = facility.FacilityId, FacilityName = facility.FacilityName, StaffId = staffId
@@ -186,10 +186,10 @@ namespace Rosterd.Services.Staff
 
         public async Task RemoveFacilityFromStaff(long staffId, long facilityId)
         {
-            var staffFacilities = _context.StaffFacilities.Where(s => s.FacilityId == facilityId && s.StaffId == staffId).AlwaysList();
-            if (staffFacilities.IsNotNullOrEmpty())
+            var staffFacility = await _context.StaffFacilities.FirstOrDefaultAsync(s => s.FacilityId == facilityId && s.StaffId == staffId);
+            if (staffFacility != null)
             {
-                _context.StaffFacilities.RemoveRange(staffFacilities);
+                _context.StaffFacilities.Remove(staffFacility);
                 await _context.SaveChangesAsync();
             }
         }

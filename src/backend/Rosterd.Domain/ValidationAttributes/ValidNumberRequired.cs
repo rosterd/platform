@@ -7,7 +7,7 @@ namespace Rosterd.Domain.ValidationAttributes
     ///     Validation attribute to indicate that a property field or parameter is required, it should be a number and should be greater than zero
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
-    public class NumberIsRequiredAndShouldBeGreaterThanZeroAttribute : ValidationAttribute
+    public class ValidNumberRequired : ValidationAttribute
     {
         /// <summary>
         ///     Validation attribute to indicate that a property field or parameter is required, it should be a number and should be greater than zero

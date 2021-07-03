@@ -60,7 +60,7 @@ namespace Rosterd.Admin.Api.Requests.Staff
         /// The facility this staff belongs too
         /// Initially when creating a staff, a staff will need to belong to at least one facility, later you can add more or remove
         /// </summary>
-        [NumberIsRequiredAndShouldBeGreaterThanZero]
+        [ValidNumberRequired]
         public long? FacilityId { get; set; }
 
         /// <summary>

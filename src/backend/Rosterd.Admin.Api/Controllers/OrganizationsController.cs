@@ -7,6 +7,7 @@ using Rosterd.Admin.Api.Requests.Organization;
 using Rosterd.Domain;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.OrganizationModels;
+using Rosterd.Domain.ValidationAttributes;
 using Rosterd.Services.Organizations.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 
@@ -15,12 +16,12 @@ namespace Rosterd.Admin.Api.Controllers
     //TODO: This should only be available to rosterd super admins
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Organizations")]
-    public class OrganizationController : BaseApiController
+    public class OrganizationsController : BaseApiController
     {
-        private readonly ILogger<OrganizationController> _logger;
+        private readonly ILogger<OrganizationsController> _logger;
         private readonly IOrganizationsService _organizationService;
 
-        public OrganizationController(ILogger<OrganizationController> logger, IOrganizationsService organizationService, IOptions<AppSettings> appSettings) :
+        public OrganizationsController(ILogger<OrganizationsController> logger, IOrganizationsService organizationService, IOptions<AppSettings> appSettings) :
             base(appSettings)
         {
             _logger = logger;
@@ -47,11 +48,11 @@ namespace Rosterd.Admin.Api.Controllers
         ///     Get Organization by Id
         /// </summary>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{organizationId}")]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<OrganizationModel>> GetOrganization([Required] long? id)
+        public async Task<ActionResult<OrganizationModel>> GetOrganization([ValidNumberRequired] long? organizationId)
         {
-            var organizationModel = await _organizationService.GetOrganization(id.Value);
+            var organizationModel = await _organizationService.GetOrganization(organizationId.Value);
             return organizationModel;
         }
 
@@ -89,7 +90,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpDelete]
         [OperationOrderAttribute(5)]
-        public async Task<ActionResult> RemoveOrganization([Required] [FromQuery] long? organizationId)
+        public async Task<ActionResult> RemoveOrganization([ValidNumberRequired] long? organizationId)
         {
             await _organizationService.RemoveOrganization(organizationId.Value);
             return Ok();

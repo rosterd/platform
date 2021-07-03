@@ -53,9 +53,11 @@ namespace Rosterd.Services.Skills
         }
         public async Task UpdateSkill(SkillModel skillModel)
         {
-            await ThrowDuplicateExceptionIfSkillAlreadyExists(skillModel.SkillName);
-
-            var skillModelToUpdate = skillModel.ToDataModel();
+            var skillFromDb = await _context.Skills.FirstOrDefaultAsync(s => s.SkillId == skillModel.SkillId);
+            if (skillFromDb == null)
+                throw new EntityNotFoundException();
+            
+            var skillModelToUpdate = skillModel.ToDataModel(skillFromDb);
 
             _context.Skills.Update(skillModelToUpdate);
             await _context.SaveChangesAsync();

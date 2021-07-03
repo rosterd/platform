@@ -56,7 +56,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<JobModel>> GetJobById([Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? id)
+        public async Task<ActionResult<JobModel>> GetJobById([Required][ValidNumberRequired] long? id)
         {
             var jobModel = await _jobService.GetJob(id.Value);
             return jobModel;
@@ -87,7 +87,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpDelete]
         [OperationOrderAttribute(4)]
-        public async Task<ActionResult> RemoveJob([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? jobId)
+        public async Task<ActionResult> RemoveJob([FromQuery][Required][ValidNumberRequired] long? jobId)
         {
             await _jobService.RemoveJob(jobId.Value);
 

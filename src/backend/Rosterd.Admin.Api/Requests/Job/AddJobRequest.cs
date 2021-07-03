@@ -18,7 +18,7 @@ namespace Rosterd.Admin.Api.Requests.Job
         public string Description { get; set; }
 
         [Required]
-        [NumberIsRequiredAndShouldBeGreaterThanZero]
+        [ValidNumberRequired]
         public long? FacilityId { get; set; }
 
         [Required]

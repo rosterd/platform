@@ -64,7 +64,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<StaffModel>> GetStaffById([Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? id)
+        public async Task<ActionResult<StaffModel>> GetStaffById([ValidNumberRequired] long? id)
         {
             var staffModel = await _staffService.GetStaff(id.Value);
             return staffModel;
@@ -106,10 +106,10 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <param name="staffId">The staff id to update</param>
         /// <returns></returns>
-        [HttpPatch("reactivate")]
+        [HttpPatch("{staffId}/reactivate")]
 
         [OperationOrderAttribute(3)]
-        public async Task<ActionResult> ReactivateStaffMember([FromQuery][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
+        public async Task<ActionResult> ReactivateStaffMember([ValidNumberRequired] long? staffId)
         {
             await _staffService.UpdateStaffToActive(staffId.Value);
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
@@ -121,9 +121,9 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <param name="staffId">The Staff member to mark as inactive</param>
         /// <returns></returns>
-        [HttpDelete]
+        [HttpDelete("{staffId}")]
         [OperationOrderAttribute(4)]
-        public async Task<ActionResult> RemoveStaffMember([FromQuery] [Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId)
+        public async Task<ActionResult> RemoveStaffMember([ValidNumberRequired] long? staffId)
         {
             await _staffService.UpdateStaffToInactive(staffId.Value);
             await _staffEventsService.GenerateStaffDeletedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
@@ -136,9 +136,9 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="staffId">The Staff id</param>
         /// /// <param name="facilityId">The facility id to add</param>
         /// <returns></returns>
-        [HttpPost("{staffId}/facilities")]
+        [HttpPost("{staffId}/facilities/{facilityId}")]
         [OperationOrderAttribute(5)]
-        public async Task<ActionResult> AddStaffToFacility([Required] long? staffId, [FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long facilityId)
+        public async Task<ActionResult> AddStaffToFacility([ValidNumberRequired] long? staffId, [ValidNumberRequired] long facilityId)
         {
             await _staffService.AddFacilityToStaff(staffId.Value, facilityId);
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
@@ -151,9 +151,9 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="staffId">The Staff id</param>
         /// /// <param name="facilityId">The facility id to add</param>
         /// <returns></returns>
-        [HttpDelete("{staffId}/facilities")]
+        [HttpDelete("{staffId}/facilities/{facilityId}")]
         [OperationOrderAttribute(6)]
-        public async Task<ActionResult> RemoveStaffToFacility([Required] long? staffId, [FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long facilityId)
+        public async Task<ActionResult> RemoveStaffToFacility([ValidNumberRequired] long? staffId, [ValidNumberRequired] long facilityId)
         {
             await _staffService.RemoveFacilityFromStaff(staffId.Value, facilityId);
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
@@ -166,9 +166,9 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="staffId">The Staff id</param>
         /// <param name="request">The skills to add</param>
         /// <returns></returns>
-        [HttpPut("skills")]
+        [HttpPut("{staffId}/skills")]
         [OperationOrderAttribute(7)]
-        public async Task<ActionResult> AddSkillToStaff([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId, [FromBody] AddSkillsToStaffRequest request)
+        public async Task<ActionResult> AddSkillToStaff([FromQuery][ValidNumberRequired] long? staffId, [FromBody] AddSkillsToStaffRequest request)
         {
             await _staffSkillsService.UpdateAllSkillsForStaff(staffId.Value, AddSkillsToStaffRequest.ToSkillModels(request));
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
@@ -181,9 +181,9 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="staffId">The Staff id</param>
         /// <param name="request">The skills to delete</param>
         /// <returns></returns>
-        [HttpDelete("skills")]
+        [HttpDelete("{staffId}/skills")]
         [OperationOrderAttribute(8)]
-        public async Task<ActionResult> DeleteSkillsForStaff([FromQuery][Required][NumberIsRequiredAndShouldBeGreaterThanZero] long? staffId, [FromBody] AddSkillsToStaffRequest request)
+        public async Task<ActionResult> DeleteSkillsForStaff([ValidNumberRequired] long? staffId, [FromBody] AddSkillsToStaffRequest request)
         {
             await _staffSkillsService.DeleteSkillsForStaff(staffId.Value, AddSkillsToStaffRequest.ToSkillModels(request));
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);

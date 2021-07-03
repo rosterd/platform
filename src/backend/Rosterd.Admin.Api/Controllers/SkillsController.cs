@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Skills;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.SkillsModels;
+using Rosterd.Domain.ValidationAttributes;
 using Rosterd.Services.Skills.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
@@ -47,11 +48,11 @@ namespace Rosterd.Admin.Api.Controllers
         /// Get Skill by Id
         /// </summary>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{skillId}")]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<SkillModel>> GetSkillById([Required] long? id)
+        public async Task<ActionResult<SkillModel>> GetSkillById([ValidNumberRequired] long? skillId)
         {
-            var skillModel = await _skillService.GetSkill(id.Value);
+            var skillModel = await _skillService.GetSkill(skillId.Value);
             return skillModel;
         }
 
@@ -87,9 +88,9 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <param name="skillId">The Skill to be deleted</param>
         /// <returns></returns>
-        [HttpDelete]
+        [HttpDelete("skillId")]
         [OperationOrderAttribute(5)]
-        public async Task<ActionResult> RemoveSkill([FromQuery][Required] long? skillId)
+        public async Task<ActionResult> RemoveSkill([ValidNumberRequired] long? skillId)
         {
             await _skillService.RemoveSkill(skillId.Value);
             return Ok();
