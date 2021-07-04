@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using FluentValidation;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.ValidationAttributes;
+using Rosterd.Infrastructure.Extensions;
 
 namespace Rosterd.Admin.Api.Requests.Job
 {
@@ -17,7 +20,6 @@ namespace Rosterd.Admin.Api.Requests.Job
         [StringLength(8000)]
         public string Description { get; set; }
 
-        [Required]
         [ValidNumberRequired]
         public long? FacilityId { get; set; }
 
@@ -44,6 +46,9 @@ namespace Rosterd.Admin.Api.Requests.Job
 
         public bool IsNightShift { get; set; }
 
+        [CollectionIsRequiredAndShouldNotBeEmpty]
+        public List<long> SkillsRequiredForJob { get; set; }
+
         /// <summary>
         /// Only required if an existing job was cancelled and new one created based of the old one
         /// </summary>
@@ -55,7 +60,7 @@ namespace Rosterd.Admin.Api.Requests.Job
             {
                 JobTitle = JobTitle,
                 Description = Description,
-                Facility = new FacilityModel {FacilityId = FacilityId.Value},
+                Facility = new FacilityModel { FacilityId = FacilityId.Value },
                 JobStartDateTimeUtc = JobStartDateTimeUtc,
                 JobEndDateTimeUtc = JobEndDateTimeUtc,
                 Comments = Comments,
@@ -64,7 +69,11 @@ namespace Rosterd.Admin.Api.Requests.Job
                 Responsibilities = Responsibilities,
                 Experience = Experience,
                 IsDayShift = IsDayShift,
-                IsNightShift = IsNightShift
+                IsNightShift = IsNightShift,
+                JobSkills = SkillsRequiredForJob.AlwaysList().Select(s => new JobSkillModel
+                {
+                    SkillId = s
+                }).AlwaysList()
             };
 
             return jobModel;
@@ -80,7 +89,7 @@ namespace Rosterd.Admin.Api.Requests.Job
                 var gracePeriodToCancelMinutes = ((AddJobRequest)context.InstanceToValidate).GracePeriodToCancelMinutes;
 
                 if(noGracePeriod == null && gracePeriodToCancelMinutes == null)
-                    context.AddFailure("Either 'no grace period' or 'grace period to cancel minutes' must be specified");
+                    context.AddFailure("Either no-grace-period' or 'grace-period-to-cancel-minutes' must be specified");
             });
 
             //Day or night shift validation
@@ -93,6 +102,19 @@ namespace Rosterd.Admin.Api.Requests.Job
                 if(!isDayShift && !isNightShift)
                     context.AddFailure("Job has to be either a day or night shift");
             });
+
+            //To date should be greater than from date
+            RuleFor(x => x.JobEndDateTimeUtc).Custom((jobEndDateTimeUtc, context) => {
+                var jobStartDateTimeUtc = ((AddJobRequest)context.InstanceToValidate).JobStartDateTimeUtc;
+
+                if(jobStartDateTimeUtc >= jobEndDateTimeUtc)
+                    context.AddFailure("Job end date time must be greater than start date time");
+            });
+
+            //Other validations we can doo
+            //1. Check if the facility is valid
+            //2. Check if the user creating can create a job
+            //3. ...
         }
     }
 }

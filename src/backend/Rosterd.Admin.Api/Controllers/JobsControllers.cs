@@ -54,11 +54,11 @@ namespace Rosterd.Admin.Api.Controllers
         /// Get Job by Id
         /// </summary>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{jobId}")]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<JobModel>> GetJobById([Required][ValidNumberRequired] long? id)
+        public async Task<ActionResult<JobModel>> GetJobById([ValidNumberRequired] long? jobId)
         {
-            var jobModel = await _jobService.GetJob(id.Value);
+            var jobModel = await _jobService.GetJob(jobId.Value);
             return jobModel;
         }
 
@@ -73,23 +73,24 @@ namespace Rosterd.Admin.Api.Controllers
         {
             //Create Job
             var domainModelToSave = request.ToDomainModel();
-            var newJobId = await _jobService.CreateJob(domainModelToSave);
+            var newJob = await _jobService.CreateJob(domainModelToSave);
 
             //Generate a new job created event
-            await _jobEventsService.GenerateNewJobCreatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, newJobId);
-            return Ok(newJobId);
+            await _jobEventsService.GenerateNewJobCreatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, newJob.JobId);
+            return Ok(newJob);
         }
 
         /// <summary>
         /// Sets the job status to 'Cancelled' 
         /// </summary>
         /// <param name="jobId">The Job to be removed</param>
+        /// <param name="jobCancellationReason">The reason for the job cancellation</param>
         /// <returns></returns>
-        [HttpDelete]
+        [HttpDelete("{jobId}")]
         [OperationOrderAttribute(4)]
-        public async Task<ActionResult> RemoveJob([FromQuery][Required][ValidNumberRequired] long? jobId)
+        public async Task<ActionResult> RemoveJob([ValidNumberRequired] long? jobId, [Required][FromBody] string jobCancellationReason)
         {
-            await _jobService.RemoveJob(jobId.Value);
+            await _jobService.RemoveJob(jobId.Value, jobCancellationReason);
 
             //Generate a new job deleted event
             await _jobEventsService.GenerateJobCancelledEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobId.Value);

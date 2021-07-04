@@ -47,22 +47,29 @@ namespace Rosterd.Services.Jobs
             return job?.ToDomainModel();
         }
 
-        public async Task<long> CreateJob(JobModel jobModel)
+        public async Task<JobModel> CreateJob(JobModel jobModel)
         {
             var jobToCreate = jobModel.ToNewJob();
+            var utcNow = DateTime.UtcNow;
 
             //New job specific properties
             jobToCreate.JobStatusId = (int)JobStatus.Published;
             jobToCreate.JobsStatusName = JobStatus.Published.ToString();
-            jobToCreate.JobPostedDateTimeUtc = jobToCreate.LastJobStatusChangeDateTimeUtc = DateTime.UtcNow;
+            jobToCreate.JobPostedDateTimeUtc = jobToCreate.LastJobStatusChangeDateTimeUtc = utcNow;
+            jobToCreate.LastJobStatusChangeDateTimeUtc = utcNow;
 
+            //Add the job to be created and insert the job so we get the job id bad
             var jobCreated = await _context.Jobs.AddAsync(jobToCreate);
             await _context.SaveChangesAsync();
 
-            return jobCreated.Entity.JobId;
+            //Create a status change record for this job (with the job id)
+            await CreateJobsStatusChangeRecord(jobCreated.Entity.JobId, JobStatus.Published, "New job created", utcNow);
+            await _context.SaveChangesAsync();
+
+            return jobCreated.Entity.ToDomainModel();
         }
 
-        public async Task RemoveJob(long jobId)
+        public async Task RemoveJob(long jobId, string jobCancellationReason)
         {
             var job = await _context.Jobs.FindAsync(jobId);
             if (job != null)
@@ -70,6 +77,8 @@ namespace Rosterd.Services.Jobs
                 job.JobStatusId = (int)JobStatus.Cancelled;
                 job.JobsStatusName = JobStatus.Cancelled.ToString();
                 job.LastJobStatusChangeDateTimeUtc = DateTime.UtcNow;
+
+                await CreateJobsStatusChangeRecord(jobId, JobStatus.Cancelled, jobCancellationReason);
 
                 await _context.SaveChangesAsync();
             }
@@ -146,21 +155,12 @@ namespace Rosterd.Services.Jobs
         {
             var job = await _context.Jobs.FindAsync(jobId);
             var jobStaff = new JobStaff {JobId = jobId, StaffId = staffId};
-            var jobStatusChange =
-                new JobStatusChange
-                {
-                    JobId = jobId,
-                    JobStatusId = JobStatus.Accepted.ToInt32(),
-                    JobStatusName = JobStatus.Accepted.ToString(),
-                    JobStatusChangeDateTimeUtc = DateTime.UtcNow,
-                    JobStatusChangeReason = "Job accepted by staff"
-                };
-
+            
             //Assign the job to staff
             await _context.JobStaffs.AddAsync(jobStaff);
 
             //Record history of this status change
-            await _context.JobStatusChanges.AddAsync(jobStatusChange);
+            await CreateJobsStatusChangeRecord(jobId, JobStatus.Accepted, $"Job accepted by staff {staffId}");
 
             //Change status in the main job table
             job.JobStatusId = JobStatus.Accepted.ToInt32();
@@ -176,22 +176,13 @@ namespace Rosterd.Services.Jobs
         {
             var job = await _context.Jobs.FindAsync(jobId);
             var jobStaff = await _context.JobStaffs.FirstOrDefaultAsync(s => s.JobId == jobId && s.StaffId == staffId);
-            var jobStatusChange =
-                new JobStatusChange
-                {
-                    JobId = jobId,
-                    JobStatusId = JobStatus.Published.ToInt32(),
-                    JobStatusName = JobStatus.Published.ToString(),
-                    JobStatusChangeDateTimeUtc = DateTime.UtcNow,
-                    JobStatusChangeReason = "Job rejected by staff"
-                };
 
             //Remove any job assignment to staff
             if (jobStaff != null)
                 _context.JobStaffs.Remove(jobStaff);
 
             //Record history of this status change
-            await _context.JobStatusChanges.AddAsync(jobStatusChange);
+            await CreateJobsStatusChangeRecord(jobId, JobStatus.Published, $"Job rejected by staff {staffId}");
 
             //Change status in the main job table
             job.JobStatusId = JobStatus.Published.ToInt32();
@@ -202,5 +193,15 @@ namespace Rosterd.Services.Jobs
 
             return true;
         }
+
+        public async Task CreateJobsStatusChangeRecord(long jobId, JobStatus jobStatusChangedTo, string statusChangeReason, DateTime? eventOccurredDateTime = null) =>
+            await _context.JobStatusChanges.AddAsync(new JobStatusChange
+            {
+                JobId = jobId,
+                JobStatusId = (int)jobStatusChangedTo,
+                JobStatusName = jobStatusChangedTo.ToString(),
+                JobStatusChangeDateTimeUtc = eventOccurredDateTime ?? DateTime.UtcNow,
+                JobStatusChangeReason = statusChangeReason
+            });
     }
 }

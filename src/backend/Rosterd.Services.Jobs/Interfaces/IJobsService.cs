@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Rosterd.Domain.Enums;
@@ -27,14 +28,15 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// </summary>
         /// <param name="jobModel"></param>
         /// <returns></returns>
-        Task<long> CreateJob(JobModel jobModel);
+        Task<JobModel> CreateJob(JobModel jobModel);
 
         /// <summary>
         /// Deletes job
         /// </summary>
         /// <param name="jobId"></param>
+        /// <param name="jobCancellationReason"></param>
         /// <returns></returns>
-        Task RemoveJob(long jobId);
+        Task RemoveJob(long jobId, string jobCancellationReason);
 
         /// <summary>
         /// Gets all the jobs that are relevant for a given staff
@@ -85,5 +87,17 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// <param name="staffId"></param>
         /// <returns></returns>
         Task<bool> CancelJobForStaff(long jobId, long staffId);
+
+        /// <summary>
+        /// Adds a jobs status change record
+        /// NB: Just adds the record to the context does not save changes to DB need to call .SavesChangesAsync() as part of the caller
+        /// method if this needs to be saved to the db
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="jobStatusChangedTo"></param>
+        /// <param name="statusChangeReason"></param>
+        /// <param name="eventOccurredDateTime"></param>
+        /// <returns></returns>
+        Task CreateJobsStatusChangeRecord(long jobId, JobStatus jobStatusChangedTo, string statusChangeReason, DateTime? eventOccurredDateTime = null);
     }
 }
