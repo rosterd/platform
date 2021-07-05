@@ -1,14 +1,14 @@
-import React, {ReactNode, useContext, useEffect} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
-import {matchRoutes} from 'react-router-config';
-import qs from 'qs';
-import AppContext from './AppContext';
-import {useAuthToken} from './AppHooks';
-import {Loader} from '../index';
-import {checkPermission} from './Utils';
-import {initialUrl} from '../../shared/constants/AppConst';
-import AppContextPropsType from '../../types/AppContextPropsType';
-import {NavStyle, ThemeMode, ThemeStyle} from '../../shared/constants/AppEnums';
+import React, { ReactNode, useContext, useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { matchRoutes } from "react-router-config";
+import qs from "qs";
+import AppContext from "./AppContext";
+import { useAuthToken } from "./AppHooks";
+import { Loader } from "../index";
+import { checkPermission } from "./Utils";
+import { initialUrl } from "../../shared/constants/AppConst";
+import AppContextPropsType from "../../types/AppContextPropsType";
+import { NavStyle, ThemeMode, ThemeStyle } from "../../shared/constants/AppEnums";
 
 interface AuthRoutesProps {
   children: ReactNode;
@@ -29,10 +29,7 @@ const AuthRoutes: React.FC<AuthRoutesProps> = ({children}) => {
 
   const [loading, user] = useAuthToken();
   const currentRoute = matchRoutes(routes, pathname)[0].route;
-  const isPermitted = checkPermission(
-    currentRoute.auth,
-    user ? user.role : null,
-  );
+  let isPermitted = checkPermission(currentRoute.auth, user ? user.role : null);
 
   useEffect(() => {
     function setInitPath() {
@@ -56,7 +53,7 @@ const AuthRoutes: React.FC<AuthRoutesProps> = ({children}) => {
     }
 
     setInitPath();
-  }, [isPermitted, setInitialPath, initialPath, pathname]);
+  }, [ isPermitted, setInitialPath, initialPath, pathname]);
 
   useEffect(() => {
     function handleQueryParams() {
@@ -71,7 +68,7 @@ const AuthRoutes: React.FC<AuthRoutesProps> = ({children}) => {
         setRTL(true);
       }
       if (query.style) {
-        updateThemeStyle?.(query.style as ThemeStyle);
+        updateThemeStyle!(query.style as ThemeStyle);
       }
     }
 
@@ -94,7 +91,7 @@ const AuthRoutes: React.FC<AuthRoutesProps> = ({children}) => {
         ) {
           history.push(initialUrl);
         } else {
-          // eslint-disable-next-line no-lonely-if
+          // @ts-ignore
           if (
             initialPath &&
             initialUrl !== initialPath &&

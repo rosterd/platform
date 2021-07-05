@@ -6,14 +6,15 @@ import CodeIcon from '@material-ui/icons/Code';
 import Highlight, {defaultProps} from 'prism-react-renderer';
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
-import clsx from 'clsx';
-import Box from '@material-ui/core/Box';
 import Scrollbar from '../Scrollbar';
+import clsx from 'clsx';
 import {highlightTheme} from './highlightTheme';
+import Box from '@material-ui/core/Box';
 import {Fonts} from '../../../shared/constants/AppEnums';
 import AppAnimate from '../AppAnimate';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => {
+  return {
     root: {
       borderRadius: 8,
       padding: 16,
@@ -37,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: 8,
       padding: 12,
     },
-  }));
+  };
+});
 
 interface ComponentCardProps {
   title?: any;
@@ -128,7 +130,7 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
               </Scrollbar>
             ) : null}
           </Collapse>
-          <Scrollbar className={classes.root} style={{maxHeight}}>
+          <Scrollbar className={classes.root} style={{maxHeight: maxHeight}}>
             <Box
               width='100%'
               display='flex'

@@ -1,19 +1,20 @@
 import React, {useContext} from 'react';
 import Avatar from '@material-ui/core/Avatar';
+import {useAuthUser} from '../../../utility/AppHooks';
+import AppContext from '../../../utility/AppContext';
 import {makeStyles} from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Box from '@material-ui/core/Box';
 import {orange} from '@material-ui/core/colors';
-import AppContext from '../../../utility/AppContext';
-import {useAuthUser} from '../../../utility/AppHooks';
 import {ThemeMode} from '../../../../shared/constants/AppEnums';
 import AppContextPropsType, {
   CremaTheme,
 } from '../../../../types/AppContextPropsType';
 import {setAuthToken} from '../../../services/ApiConfig';
 
-const useStyles = makeStyles((theme: CremaTheme) => ({
+const useStyles = makeStyles((theme: CremaTheme) => {
+  return {
     avatar: {
       height: 40,
       width: 40,
@@ -34,7 +35,8 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
     pointer: {
       cursor: 'pointer',
     },
-  }));
+  };
+});
 
 interface UserInfoProps {}
 
@@ -44,7 +46,7 @@ const UserInfo: React.FC<UserInfoProps> = () => {
   );
   const user = useAuthUser();
   const onUserSignout = () => {
-    // logout API goes Here
+    //logout API goes Here
     updateAuthUser(null);
     setAuthToken(null);
   };
@@ -85,7 +87,7 @@ const UserInfo: React.FC<UserInfoProps> = () => {
           open={Boolean(anchorEl)}
           onClose={handleClose}>
           <MenuItem>My account</MenuItem>
-          <MenuItem onClick={onUserSignout}>Logout</MenuItem>
+          <MenuItem onClick={onUserSignout}>Logoutt</MenuItem>
         </Menu>
       </Box>
     </Box>

@@ -2,12 +2,13 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {CremaTheme} from '../../../../types/AppContextPropsType';
 
-const useStyles = makeStyles((theme: CremaTheme) => ({
+const useStyles = makeStyles((theme: CremaTheme) => {
+  return {
     root: {
-      color: `${theme.palette.secondary.contrastText  }!important`,
+      color: theme.palette.secondary.contrastText + '!important',
       '&.active, &.active:hover, &.active:focus': {
-        backgroundColor: `${theme.palette.primary.main  }!important`,
-        color: `${theme.palette.secondary.contrastText  }!important`,
+        backgroundColor: theme.palette.primary.main + '!important',
+        color: theme.palette.secondary.contrastText + '!important',
       },
       '& .list-item-text': {
         padding: '0 0 0 16px',
@@ -49,5 +50,6 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
     textLg: {
       fontSize: 18,
     },
-  }));
+  };
+});
 export default useStyles;

@@ -4,8 +4,8 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
 import {makeStyles} from '@material-ui/core/styles';
-import clsx from 'clsx';
 import {Fonts} from '../../../shared/constants/AppEnums';
+import clsx from 'clsx';
 import {CremaTheme} from '../../../types/AppContextPropsType';
 import {MessageData} from '../../services/db/messages/messages';
 

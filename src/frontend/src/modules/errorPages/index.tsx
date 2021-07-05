@@ -1,6 +1,6 @@
 import React from 'react';
 
-const errorPagesConfigs = [
+export default [
   {
     auth: ['user'],
     routes: [
@@ -38,5 +38,3 @@ const errorPagesConfigs = [
     ],
   },
 ];
-
-export default errorPagesConfigs;

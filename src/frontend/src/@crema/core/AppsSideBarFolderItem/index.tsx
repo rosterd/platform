@@ -1,14 +1,14 @@
 import React from 'react';
+import {NavLink} from '../../index';
 import Box from '@material-ui/core/Box';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import {makeStyles} from '@material-ui/core/styles';
-import Icon from '@material-ui/core/Icon';
 import {Fonts} from '../../../shared/constants/AppEnums';
-import {NavLink} from '../../index';
+import Icon from '@material-ui/core/Icon';
 
-const useStyle = makeStyles((theme) => ({
+const useStyle = makeStyles(theme => ({
   listItem: {
     paddingLeft: '10px',
     paddingRight: '0',
@@ -65,7 +65,7 @@ interface WrappedIconProps {
   props?: any;
 }
 
-const WrappedIcon: React.FC<WrappedIconProps> = (props) => <Icon {...props} />;
+const WrappedIcon: React.FC<WrappedIconProps> = props => <Icon {...props} />;
 
 interface AppsSideBarFolderItemProps {
   item: {

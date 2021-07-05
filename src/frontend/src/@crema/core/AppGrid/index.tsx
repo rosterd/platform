@@ -28,7 +28,8 @@ const AppGrid: React.FC<AppGridProps> = ({
   data = [],
   onEndReached = () => {},
   ...rest
-}) => (
+}) => {
+  return (
     <GridView
       renderRow={renderRow}
       onEndReached={onEndReached}
@@ -44,5 +45,6 @@ const AppGrid: React.FC<AppGridProps> = ({
       }
     />
   );
+};
 
 export default AppGrid;

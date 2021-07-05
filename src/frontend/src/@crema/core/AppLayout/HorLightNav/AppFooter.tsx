@@ -1,11 +1,11 @@
 import React, {useContext} from 'react';
+import AppContext from '../../../utility/AppContext';
 import Box from '@material-ui/core/Box';
 import {Button, makeStyles} from '@material-ui/core';
 import clsx from 'clsx';
-import AppContext from '../../../utility/AppContext';
 import AppContextPropsType from '../../../../types/AppContextPropsType';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   footer: {
     margin: 'auto -20px 0',
     backgroundColor: theme.palette.background.paper,

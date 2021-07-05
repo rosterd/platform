@@ -9,7 +9,9 @@ declare module 'velocity-react' {
     enterShowStyle?: jquery.velocity.Options;
   }
 
-  export class VelocityComponent extends React.Component<VelocityComponentProps> {
+  export class VelocityComponent extends React.Component<
+    VelocityComponentProps
+  > {
     runAnimation(config: {stop?: boolean; finish?: boolean}): void;
   }
 
@@ -28,7 +30,9 @@ declare module 'velocity-react' {
     enterShowStyle?: jquery.velocity.Options;
   }
 
-  export class VelocityTransitionGroup extends React.Component<VelocityTransitionGroupProps> {}
+  export class VelocityTransitionGroup extends React.Component<
+    VelocityTransitionGroupProps
+  > {}
 
   export function registerEffect(
     animation: jquery.velocity.RegisteredEffectOptions,

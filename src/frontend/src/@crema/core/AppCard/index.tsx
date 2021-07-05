@@ -1,11 +1,10 @@
 import React, {CSSProperties, ReactNode} from 'react';
 import Card from '@material-ui/core/Card';
 import {Box, CardHeader, makeStyles} from '@material-ui/core';
-import {MessageFormatElement} from 'intl-messageformat-parser';
+import {Fonts} from '../../../shared/constants/AppEnums';
 import Link from '@material-ui/core/Link';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import {Fonts} from '../../../shared/constants/AppEnums';
 
 const useStyles = makeStyles(() => ({
   link: {
@@ -28,9 +27,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface AppCardProps {
-  title?: string | MessageFormatElement[] | ReactNode;
+  title?: string | ReactNode;
   titleStyle?: CSSProperties;
-  action?: ReactNode | string | MessageFormatElement[];
+  action?: ReactNode | string;
   actionStyle?: CSSProperties;
   footer?: ReactNode | string;
   footerPosition?: string;

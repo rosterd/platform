@@ -1,12 +1,13 @@
 import React, {useContext, useState} from 'react';
+import AppContext from '../../utility/AppContext';
 import {SketchPicker} from 'react-color';
 import {makeStyles} from '@material-ui/core/index';
 import Box from '@material-ui/core/Box';
-import {grey} from '@material-ui/core/colors';
 import {CremaTheme} from '../../../types/AppContextPropsType';
-import AppContext from '../../utility/AppContext';
+import {grey} from '@material-ui/core/colors';
 
-const useStyles = makeStyles((theme: CremaTheme) => ({
+const useStyles = makeStyles((theme: CremaTheme) => {
+  return {
     cpSwatch: {
       display: 'flex',
       alignItems: 'center',
@@ -32,7 +33,8 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
       top: 0,
       zIndex: 1,
     },
-  }));
+  };
+});
 interface PrimaryColorPickerProps {}
 
 const PrimaryColorPicker: React.FC<PrimaryColorPickerProps> = () => {
@@ -55,7 +57,7 @@ const PrimaryColorPicker: React.FC<PrimaryColorPickerProps> = () => {
           onClick={() => setVisibility(!visible)}>
           <SketchPicker
             color={primary}
-            onChangeComplete={(color) => {
+            onChangeComplete={color => {
               theme.palette.primary.main = color.hex;
               updateTheme!(theme);
             }}

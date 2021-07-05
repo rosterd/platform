@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
     minHeight: 48,
     '&.active': {
       backgroundColor: theme.palette.primary.main,
-      color: `${theme.palette.secondary.contrastText  }!important`,
+      color: theme.palette.secondary.contrastText + '!important',
       pointerEvents: 'none',
       '& .list-item-text-primary': {
         color: 'inherit',

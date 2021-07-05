@@ -16,7 +16,7 @@ interface AppHeaderProps {}
 
 const AppHeader: React.FC<AppHeaderProps> = () => {
   const classes = useStyles();
-  const dispatch = useLayoutActionsContext()!;
+  const dispatch = useLayoutActionsContext();
 
   return (
     <Hidden lgUp>
@@ -30,7 +30,7 @@ const AppHeader: React.FC<AppHeaderProps> = () => {
           className={classes.menuButton}
           color='inherit'
           aria-label='open drawer'
-          onClick={() => dispatch(toggleNavCollapsed())}>
+          onClick={() => dispatch && dispatch(toggleNavCollapsed())}>
           <MenuIcon className={classes.menuIcon} />
         </IconButton>
         <AppLogo />

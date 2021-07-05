@@ -1,34 +1,32 @@
-import React, {useContext} from 'react';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import {Checkbox} from '@material-ui/core';
-import {Form, Formik, useField} from 'formik';
-import * as yup from 'yup';
+import React, { useContext } from "react";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import { Checkbox } from "@material-ui/core";
+import { Form, Formik, useField } from "formik";
+import * as yup from "yup";
 
-import InfoView from '@crema/core/InfoView';
-import {Link} from 'react-router-dom';
-import Box from '@material-ui/core/Box';
-import {makeStyles} from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Grid from '@material-ui/core/Grid';
-import grey from '@material-ui/core/colors/grey';
-import {useIntl} from 'react-intl';
-import {AuthType, Fonts} from '../../../shared/constants/AppEnums';
-import {GridContainer} from '../../../@crema';
-import AppContextPropsType, {
-  CremaTheme,
-} from '../../../types/AppContextPropsType';
-import IntlMessages from '../../../@crema/utility/IntlMessages';
+import InfoView from "@crema/core/InfoView";
+import { Link } from "react-router-dom";
+import Box from "@material-ui/core/Box";
+import IntlMessages from "../../../@crema/utility/IntlMessages";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import { AuthType, Fonts } from "../../../shared/constants/AppEnums";
+import Grid from "@material-ui/core/Grid";
+import { GridContainer } from "../../../@crema";
+import grey from "@material-ui/core/colors/grey";
+import AppContextPropsType, { CremaTheme } from "../../../types/AppContextPropsType";
+import { useIntl } from "react-intl";
 import {
   fetchError,
   fetchStart,
   fetchSuccess,
-  useInfoViewActionsContext,
-} from '../../../@crema/core/InfoView/InfoViewContext';
-import AppContext from '../../../@crema/utility/AppContext';
-import {fetchDataApi, saveDataApi} from '../../../@crema/utility/ApiHook';
-import {setAuthToken} from '../../../@crema/services/ApiConfig';
-import {defaultUser} from '../../../shared/constants/AppConst';
+  useInfoViewActionsContext
+} from "../../../@crema/core/InfoView/InfoViewContext";
+import AppContext from "../../../@crema/utility/AppContext";
+import { fetchDataApi, saveDataApi } from "../../../@crema/utility/ApiHook";
+import { setAuthToken } from "../../../@crema/services/ApiConfig";
+import { defaultUser } from "../../../shared/constants/AppConst";
 
 const useStyles = makeStyles((theme: CremaTheme) => ({
   formRoot: {
@@ -90,7 +88,7 @@ const MyTextField = (props: any) => {
 
 const SignupFirebase: React.FC<{}> = () => {
   const dispatch = useInfoViewActionsContext()!;
-  const {updateAuthUser} = useContext<AppContextPropsType>(AppContext);
+  const { updateAuthUser} = useContext<AppContextPropsType>(AppContext);
   const {messages} = useIntl();
   const validationSchema = yup.object({
     name: yup.string().required(messages['validation.nameRequired'] as string),
@@ -105,17 +103,16 @@ const SignupFirebase: React.FC<{}> = () => {
       .string()
       .required(messages['validation.reTypePassword'] as string),
   });
-  const onSignUpUser = (data: {
-    email: string;
-    password: string;
-    name: string;
-  }) => {
+  const onSignUpUser = (data:{
+    email: string,
+    password: string,
+    name: string}) => {
     dispatch(fetchStart());
     saveDataApi(`users`, data)
-      .then((data: any) => {
+      .then((data:any) => {
         setAuthToken(data.token);
         fetchDataApi('/auth')
-          .then((data: any) => {
+          .then((data:any) => {
             updateAuthUser({
               authType: AuthType.JWT_AUTH,
               displayName: data.name,
@@ -129,7 +126,7 @@ const SignupFirebase: React.FC<{}> = () => {
           })
           .catch((error) => dispatch(fetchError(error.message)));
       })
-      .catch((error) => dispatch(fetchError(error.message)));
+      .catch((error) =>dispatch( fetchError(error.message)));
   };
   const classes = useStyles();
   return (
@@ -141,7 +138,7 @@ const SignupFirebase: React.FC<{}> = () => {
         display='flex'
         flexDirection='column'>
         <Formik
-          validateOnChange
+          validateOnChange={true}
           initialValues={{
             name: '',
             email: '',
@@ -159,11 +156,11 @@ const SignupFirebase: React.FC<{}> = () => {
             } else {
               setSubmitting(true);
 
-              onSignUpUser({
-                email: data.email,
-                password: data.password,
-                name: data.name,
-              });
+                onSignUpUser({
+                  email: data.email,
+                  password: data.password,
+                  name: data.name,
+                })
               setSubmitting(false);
             }
           }}>

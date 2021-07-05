@@ -2,7 +2,8 @@ import {makeStyles} from '@material-ui/core';
 import {ThemeMode} from '../../../../shared/constants/AppEnums';
 import {CremaTheme} from '../../../../types/AppContextPropsType';
 
-const useStyles = makeStyles((theme: CremaTheme) => ({
+const useStyles = makeStyles((theme: CremaTheme) => {
+  return {
     miniSidebar: {
       paddingLeft: 0,
       paddingTop: 0,
@@ -155,5 +156,6 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
       color: 'white',
       overflow: 'hidden',
     },
-  }));
+  };
+});
 export default useStyles;

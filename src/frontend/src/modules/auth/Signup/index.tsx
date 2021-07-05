@@ -1,12 +1,12 @@
 import React from 'react';
+import SignupJwtAuth from './SignupJwtAuth';
 import Card from '@material-ui/core/Card';
 import Box from '@material-ui/core/Box';
-import {makeStyles} from '@material-ui/core/styles';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
-import SignupJwtAuth from './SignupJwtAuth';
+import {makeStyles} from '@material-ui/core/styles';
 import {Fonts} from '../../../shared/constants/AppEnums';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   imgRoot: {
     cursor: 'pointer',
     display: 'inline-block',
@@ -50,7 +50,7 @@ const Signup: React.FC<{}> = () => {
       <Box mb={{xs: 6, md: 8, xl: 18}} textAlign='center'>
         <img
           className={classes.imgRoot}
-          src="/assets/images/logo-white-with-name.png"
+          src={'/assets/images/logo-white-with-name.png'}
           alt='crema-logo'
         />
       </Box>

@@ -1,18 +1,14 @@
-import React, {useContext} from 'react';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import clsx from 'clsx';
-import Box from '@material-ui/core/Box';
-import Navigation from '../../Navigation/VerticleNav';
-import useStyles from './AppSidebar.style';
-import Scrollbar from '../../Scrollbar';
-import AppContextPropsType from '../../../../types/AppContextPropsType';
-import AppContext from '../../../utility/AppContext';
-import {
-  toggleNavCollapsed,
-  useLayoutActionsContext,
-  useLayoutContext,
-} from '../LayoutContextProvider';
+import React, { useContext } from "react";
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import clsx from "clsx";
+import Navigation from "../../Navigation/VerticleNav";
+import Box from "@material-ui/core/Box";
+import useStyles from "./AppSidebar.style";
+import Scrollbar from "../../Scrollbar";
+import AppContextPropsType from "../../../../types/AppContextPropsType";
+import AppContext from "../../../utility/AppContext";
+import { toggleNavCollapsed, useLayoutActionsContext, useLayoutContext } from "../LayoutContextProvider";
 
 interface AppSidebarProps {
   position?: 'left' | 'bottom' | 'right' | 'top';
@@ -33,7 +29,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({
   };
 
   const classes = useStyles({themeMode});
-  const sidebarClasses = classes.sidebarStandard;
+  let sidebarClasses = classes.sidebarStandard;
 
   return (
     <>
@@ -41,7 +37,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({
         <Drawer
           anchor={position}
           open={navCollapsed}
-          onClose={(ev) => handleToggleDrawer()}
+          onClose={ev => handleToggleDrawer()}
           classes={{
             root: clsx(variant),
             paper: clsx(variant),

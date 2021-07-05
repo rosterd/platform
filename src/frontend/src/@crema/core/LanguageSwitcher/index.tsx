@@ -1,12 +1,12 @@
 import React, {useContext} from 'react';
+import languageData, {LanguageProps} from './data';
 import Menu from '@material-ui/core/Menu';
+import AppContext from '../../utility/AppContext';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import clsx from 'clsx';
 import Box from '@material-ui/core/Box';
 import {makeStyles} from '@material-ui/core';
-import AppContext from '../../utility/AppContext';
-import languageData, {LanguageProps} from './data';
 import {Fonts} from '../../../shared/constants/AppEnums';
 import AppContextPropsType, {
   CremaTheme,
@@ -92,12 +92,9 @@ interface LanguageSwitcherProps {
 const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   iconOnly = false,
 }) => {
-  const {
-    changeLocale,
-    rtlLocale,
-    locale,
-    setRTL,
-  } = useContext<AppContextPropsType>(AppContext);
+  const {changeLocale, rtlLocale, locale, setRTL} = useContext<
+    AppContextPropsType
+  >(AppContext);
   const [
     anchorElLng,
     setAnchorElLng,

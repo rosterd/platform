@@ -2,7 +2,8 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Fonts, ThemeMode} from '../../../../shared/constants/AppEnums';
 import {CremaTheme} from '../../../../types/AppContextPropsType';
 
-const useStyles = makeStyles((theme: CremaTheme) => ({
+const useStyles = makeStyles((theme: CremaTheme) => {
+  return {
     navItem: {
       height: 40,
       marginTop: 2,
@@ -12,12 +13,12 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
       paddingLeft:
         theme.direction === 'ltr'
           ? (props: {level: number; themeMode: ThemeMode}) =>
-              24 + 40 * props.level
+          24 + 40 * props.level
           : 24,
       paddingRight:
         theme.direction === 'rtl'
           ? (props: {level: number; themeMode: ThemeMode}) =>
-              24 + 40 * props.level
+          24 + 40 * props.level
           : 24,
 
       '& .nav-item-text': {
@@ -73,5 +74,6 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
         // fontSize: 20,
       },
     },
-  }));
+  };
+});
 export default useStyles;

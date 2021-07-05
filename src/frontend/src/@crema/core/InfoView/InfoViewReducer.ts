@@ -1,4 +1,4 @@
-import {InfoViewState, InfoViewTypes} from './InfoViewContext';
+import { InfoViewState, InfoViewTypes } from "./InfoViewContext";
 
 export const InFoViewActions = {
   FETCH_STARTS: 'FETCH_STARTS',
@@ -7,10 +7,8 @@ export const InFoViewActions = {
   SET_ERROR: 'SET_ERROR',
 };
 
-export function contextReducer(
-  state = InfoViewState,
-  action: any,
-): InfoViewTypes {
+
+export function contextReducer(state=InfoViewState, action:any):InfoViewTypes {
   switch (action.type) {
     case InFoViewActions.FETCH_STARTS: {
       return {

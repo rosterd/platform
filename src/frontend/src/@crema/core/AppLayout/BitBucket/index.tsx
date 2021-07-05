@@ -1,10 +1,10 @@
 import React, {ReactNode, useContext, useState} from 'react';
-import Hidden from '@material-ui/core/Hidden';
-import Box from '@material-ui/core/Box';
-import clsx from 'clsx';
 import AppSidebar from './AppSidebar';
 import {AppContext, ContentView, ThemeSetting} from '../../../index';
+import Hidden from '@material-ui/core/Hidden';
+import Box from '@material-ui/core/Box';
 import AppHeader from './AppHeader';
+import clsx from 'clsx';
 import useStyles from './index.style';
 import {LayoutType} from '../../../../shared/constants/AppEnums';
 
@@ -12,7 +12,7 @@ interface BitBucketProps {
   children: ReactNode;
 }
 
-const BitBucket: React.FC<BitBucketProps> = (props) => {
+const BitBucket: React.FC<BitBucketProps> = props => {
   const [isCollapsed, setCollapsed] = useState(false);
   const {layoutType, footer} = useContext(AppContext);
   const classes = useStyles({footer});

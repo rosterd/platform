@@ -1,18 +1,19 @@
 import React, {FC, useContext} from 'react';
 import Avatar from '@material-ui/core/Avatar';
+import {useAuthUser} from '../../utility/AppHooks';
 import {makeStyles} from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Box from '@material-ui/core/Box';
 import {orange} from '@material-ui/core/colors';
-import Hidden from '@material-ui/core/Hidden';
 import {Fonts} from '../../../shared/constants/AppEnums';
-import {useAuthUser} from '../../utility/AppHooks';
+import Hidden from '@material-ui/core/Hidden';
 import {setAuthToken} from '../../services/ApiConfig';
 import AppContextPropsType from '../../../types/AppContextPropsType';
 import AppContext from '../../utility/AppContext';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => {
+  return {
     userRoot: {
       display: 'flex',
       alignItems: 'center',
@@ -39,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
       color: (props: {bgType: string}) =>
         props.bgType === 'colored' ? 'white' : theme.palette.text.primary,
     },
-  }));
+  };
+});
 
 interface HorUserInfoProps {
   bgType?: string;
@@ -51,7 +53,7 @@ const HorUserInfo: FC<HorUserInfoProps> = ({bgType = 'colored'}) => {
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const onUserSignout = () => {
-    // logout API goes Here
+    //logout API goes Here
     updateAuthUser(null);
     setAuthToken(null);
   };
@@ -98,7 +100,7 @@ const HorUserInfo: FC<HorUserInfoProps> = ({bgType = 'colored'}) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}>
           <MenuItem>My account</MenuItem>
-          <MenuItem onClick={onUserSignout}>Logout</MenuItem>
+          <MenuItem onClick={onUserSignout}>Logoutt</MenuItem>
         </Menu>
       </Box>
     </Box>

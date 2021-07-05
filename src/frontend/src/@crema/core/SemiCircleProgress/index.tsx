@@ -54,9 +54,11 @@ const SemiCircleProgress: React.FC<SemiCircleProgressProps> = ({
     } else {
       rotation = 'rotate(180deg)';
     }
-  } else if (direction === 'right') {
+  } else {
+    if (direction === 'right') {
       rotation = 'rotateY(180deg)';
     }
+  }
 
   return (
     <Box width={actualDiameter} style={{position: 'relative'}}>

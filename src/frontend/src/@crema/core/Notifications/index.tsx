@@ -1,18 +1,18 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
+import notification, {
+  NotificationData,
+} from '../../services/db/notifications/notification';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import {makeStyles, Popover} from '@material-ui/core';
 import List from '@material-ui/core/List';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Hidden from '@material-ui/core/Hidden';
-import clsx from 'clsx';
 import Scrollbar from '../Scrollbar';
 import IntlMessages from '../../utility/IntlMessages';
-import notification, {
-  NotificationData,
-} from '../../services/db/notifications/notification';
+import Hidden from '@material-ui/core/Hidden';
+import clsx from 'clsx';
 import NotificationItem from './NotificationItem';
 import {Fonts} from '../../../shared/constants/AppEnums';
 import {CremaTheme} from '../../../types/AppContextPropsType';
