@@ -5,12 +5,12 @@ import {ThemeProvider} from '@material-ui/styles';
 import {createMuiTheme} from '@material-ui/core/styles';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 
+import AppContext from '../AppContext';
 import AppLocale from 'shared/localization';
 import {responsiveFontSizes} from '@material-ui/core';
+import {useBreakPointDown} from '../Utils';
 import {NavStyle, ThemeMode, ThemeStyle} from 'shared/constants/AppEnums';
 import {useUrlSearchParams} from 'use-url-search-params';
-import {useBreakPointDown} from '../Utils';
-import AppContext from '../AppContext';
 import AppContextPropsType from '../../../types/AppContextPropsType';
 
 const CremaThemeProvider: React.FC<React.ReactNode> = (props) => {

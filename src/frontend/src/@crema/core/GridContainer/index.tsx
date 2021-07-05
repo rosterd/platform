@@ -8,10 +8,12 @@ interface GridContainerProps {
   [x: string]: any;
 }
 
-const GridContainer: React.FC<GridContainerProps> = ({children, ...others}) => (
+const GridContainer: React.FC<GridContainerProps> = ({children, ...others}) => {
+  return (
     <Grid container spacing={isBreakPointDown('md') ? 4 : 8} {...others}>
       {children}
     </Grid>
   );
+};
 
 export default GridContainer;

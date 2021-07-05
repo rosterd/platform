@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import Avatar from '@material-ui/core/Avatar';
+import {useAuth0} from '@auth0/auth0-react';
 import clsx from 'clsx';
 import {makeStyles} from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -68,9 +69,11 @@ const HeaderUser: React.FC<HeaderUserProps> = (props: HeaderUserProps) => {
   const classes = useStyles({themeMode, header});
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const user: AuthUser | null = useAuthUser();
+  const {logout} = useAuth0();
 
   const onUserSignout = () => {
     // logout API goes Here
+    logout({returnTo: window.location.origin});
     updateAuthUser(null);
     setAuthToken(null);
   };
@@ -141,7 +144,7 @@ const HeaderUser: React.FC<HeaderUserProps> = (props: HeaderUserProps) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}>
                 <MenuItem>My account</MenuItem>
-                <MenuItem onClick={onUserSignout}>Logout</MenuItem>
+                <MenuItem onClick={onUserSignout}>Logoutt</MenuItem>
               </Menu>
             </Box>
           </Box>

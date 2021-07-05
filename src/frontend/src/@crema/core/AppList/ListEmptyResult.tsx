@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import IntlMessages from '../../utility/IntlMessages';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   emptyListContainer: {
     flexDirection: 'column',
     minHeight: 450,
@@ -46,8 +46,10 @@ const ListEmptyResult: React.FC<ListEmptyResultProps> = ({
   const classes = useStyles();
   if (loading || loader) {
     return (
-      <>
-        {placeholder || (
+      <React.Fragment>
+        {placeholder ? (
+          placeholder
+        ) : (
           <Box className={clsx(classes.emptyListContainer, classes.flexRow)}>
             <CircularProgress size={16} />
             <Box component='span' ml={2}>
@@ -55,9 +57,9 @@ const ListEmptyResult: React.FC<ListEmptyResultProps> = ({
             </Box>
           </Box>
         )}
-      </>
+      </React.Fragment>
     );
-  } 
+  } else {
     return (
       <Box className={classes.emptyListContainer}>
         {title ? (
@@ -80,7 +82,7 @@ const ListEmptyResult: React.FC<ListEmptyResultProps> = ({
         ) : null}
       </Box>
     );
-  
+  }
 };
 
 export default ListEmptyResult;

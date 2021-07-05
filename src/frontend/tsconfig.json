@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "baseUrl": "src",
     "noImplicitAny": true,
     "noImplicitThis": true,
@@ -31,11 +27,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "react-app-env.d.ts",
-    "src"
-  ]
+  "exclude": ["node_modules"],
+  "include": ["react-app-env.d.ts", "src"]
 }

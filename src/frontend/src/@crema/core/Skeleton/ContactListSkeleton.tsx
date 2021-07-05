@@ -13,8 +13,9 @@ export const ContactItem = () => (
     <circle cx='380' cy='12' r='5' />
   </ContentLoader>
 );
-const ContactListSkeleton = () => (
-    <>
+const ContactListSkeleton = () => {
+  return (
+    <React.Fragment>
       <ContactItem />
       <ContactItem />
       <ContactItem />
@@ -25,7 +26,8 @@ const ContactListSkeleton = () => (
       <ContactItem />
       <ContactItem />
       <ContactItem />
-    </>
+    </React.Fragment>
   );
+};
 
 export default ContactListSkeleton;

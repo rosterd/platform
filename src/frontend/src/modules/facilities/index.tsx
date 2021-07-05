@@ -6,7 +6,7 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import {Facility, getFacilities} from 'shared/services/facilities.api';
+import {Facility, getFacilities} from '@crema/services/facilities.api';
 import AddFacilityModal from './components/AddFacilityModal';
 
 const useStyles = makeStyles(() => ({
@@ -29,8 +29,8 @@ const Facilities: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     (async () => {
-      const {data} = await getFacilities();
-      setFacilities(data);
+      const facilitiesRes = await getFacilities();
+      setFacilities(facilitiesRes);
     })();
   }, []);
 

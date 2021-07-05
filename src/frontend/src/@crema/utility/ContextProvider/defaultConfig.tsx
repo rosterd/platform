@@ -15,7 +15,7 @@ const cardRadius = ThemeStyleRadius.STANDARD;
 const defaultConfig: any = {
   theme: {
     spacing: 4,
-    direction: 'ltr', // ltr, rtl
+    direction: 'ltr', //ltr, rtl
     palette: {
       type: ThemeMode.LIGHT,
       background: {
@@ -23,11 +23,11 @@ const defaultConfig: any = {
         default: '#F4F7FE',
       },
       primary: {
-        main: '#0B1C5E',
+        main: '#0A8FDC',
         contrastText: '#fff',
       },
       secondary: {
-        main: '#2EDBAD',
+        main: '#F04F47',
       },
       sidebar: {
         bgColor: '#313541',
@@ -136,7 +136,7 @@ const defaultConfig: any = {
   navStyle: NavStyle.STANDARD,
   layoutType: LayoutType.FULL_WIDTH,
   footerType: FooterType.FLUID,
-  headerType: HeaderType.LIGHT,
+  headerType: HeaderType.DARK,
   rtAnim: RouteTransition.NONE,
   footer: false,
   locale: {

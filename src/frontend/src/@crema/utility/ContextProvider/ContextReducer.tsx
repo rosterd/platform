@@ -1,9 +1,5 @@
-import {
-  ThemeMode,
-  ThemeStyle,
-  ThemeStyleRadius,
-} from '../../../shared/constants/AppEnums';
-import {isBreakPointDown} from '../Utils';
+import { ThemeMode, ThemeStyle, ThemeStyleRadius } from "../../../shared/constants/AppEnums";
+import { isBreakPointDown } from "../Utils";
 
 export const ThemeSetting = {
   UPDATE_AUTH_USER: 'UPDATE_AUTH_USER',
@@ -59,7 +55,7 @@ export function contextReducer(state: any, action: any) {
       };
     }
     case ThemeSetting.UPDATE_THEME_MODE: {
-      const {theme} = state;
+      let theme = state.theme;
       if (action.payload === ThemeMode.DARK) {
         theme.palette.type = ThemeMode.DARK;
         theme.palette.background = {
@@ -98,7 +94,7 @@ export function contextReducer(state: any, action: any) {
       };
     }
     case ThemeSetting.UPDATE_THEME_STYLE: {
-      const {theme} = state;
+      const theme = state.theme;
 
       if (action.payload === ThemeStyle.MODERN) {
         if (isBreakPointDown('md')) {
@@ -133,7 +129,7 @@ export function contextReducer(state: any, action: any) {
       };
     }
     case ThemeSetting.SET_RTL: {
-      const {theme} = state;
+      const theme = state.theme;
       if (action.payload) {
         theme.direction = 'rtl';
       } else {

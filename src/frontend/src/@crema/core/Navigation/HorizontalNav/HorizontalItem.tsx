@@ -1,12 +1,12 @@
 import React from 'react';
 import {Icon, ListItem, ListItemText} from '@material-ui/core';
+import {Badge, NavLink} from '../../../../@crema';
 import clsx from 'clsx';
-import Box from '@material-ui/core/Box';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {Badge, NavLink} from "../../..";
 import IntlMessages from '../../../utility/IntlMessages';
 import useStyles from './HorizontalItem.style';
+import Box from '@material-ui/core/Box';
 import {NavItemProps} from '../../../../modules/routesConfig';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
 
 interface HorizontalItemProps extends RouteComponentProps<any> {
   item: NavItemProps;

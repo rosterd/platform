@@ -1,8 +1,8 @@
 import React, {useContext, useMemo} from 'react';
 import {Icon, ListItem, ListItemText} from '@material-ui/core';
 import clsx from 'clsx';
-import Box from '@material-ui/core/Box';
 import {Badge, NavLink} from '../../../index';
+import Box from '@material-ui/core/Box';
 import IntlMessages from '../../../utility/IntlMessages';
 import useStyles from './VerticalItem.style';
 import AppContext from '../../../utility/AppContext';
@@ -19,7 +19,7 @@ const VerticalItem: React.FC<VerticalItemProps> = ({item, level}) => {
   const {themeMode} = useContext(AppContext);
   const classes = useStyles({level, themeMode});
   const {user} = useContext<AppContextPropsType>(AppContext);
-  const hasPermission = useMemo(() => checkPermission(item.auth, user!.role), [
+  const hasPermission = useMemo(() => checkPermission(item.auth, user?.role), [
     item.auth,
     user,
   ]);

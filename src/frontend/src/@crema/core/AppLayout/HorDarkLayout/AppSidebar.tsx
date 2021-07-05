@@ -1,27 +1,24 @@
-import React, {useContext} from 'react';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import Box from '@material-ui/core/Box';
-import UserInfo from '../../../../shared/components/UserInfo';
-import Navigation from '../../Navigation/VerticleNav';
-import useStyles from './AppSidebar.style';
-import AppContextPropsType from '../../../../types/AppContextPropsType';
-import AppContext from '../../../utility/AppContext';
-import {
-  toggleNavCollapsed,
-  useLayoutActionsContext,
-  useLayoutContext,
-} from '../LayoutContextProvider';
+import React, { useContext } from "react";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import UserInfo from "../../../../shared/components/UserInfo";
+import Navigation from "../../Navigation/VerticleNav";
+import Box from "@material-ui/core/Box";
+import useStyles from "./AppSidebar.style";
+import AppContextPropsType from "../../../../types/AppContextPropsType";
+import AppContext from "../../../utility/AppContext";
+import { toggleNavCollapsed, useLayoutActionsContext, useLayoutContext } from "../LayoutContextProvider";
 
 interface AppSidebarProps {
   position?: 'left' | 'bottom' | 'right' | 'top';
 }
 
-const AppSidebar: React.FC<AppSidebarProps> = (props: AppSidebarProps) => {
-  const {position = 'left'} = props;
+const AppSidebar: React.FC<AppSidebarProps> = ({position = 'left'}) => {
+
   const {navCollapsed} = useLayoutContext();
   const dispatch = useLayoutActionsContext()!;
+
 
   const {themeMode} = useContext<AppContextPropsType>(AppContext);
 

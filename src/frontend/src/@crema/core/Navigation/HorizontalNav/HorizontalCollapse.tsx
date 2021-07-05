@@ -12,9 +12,9 @@ import clsx from 'clsx';
 
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {Manager, Popper, Reference} from 'react-popper';
-import Box from '@material-ui/core/Box';
 import HorizontalItem from './HorizontalItem';
 import HorizontalGroup from './HorizontalGroup';
+import Box from '@material-ui/core/Box';
 import IntlMessages from '../../../utility/IntlMessages';
 import AppContext from '../../../utility/AppContext';
 import AppContextPropsType, {
@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
     color: theme.palette.text.primary,
     minHeight: 48,
     '&.active, &.active:hover, &.active:focus': {
-      backgroundColor: `${theme.palette.primary.main}!important`,
-      color: `${theme.palette.secondary.contrastText}!important`,
+      backgroundColor: theme.palette.primary.main + '!important',
+      color: theme.palette.secondary.contrastText + '!important',
     },
     '&.open': {
       backgroundColor: 'rgba(0,0,0,.08)',
@@ -81,7 +81,6 @@ const HorizontalCollapse: React.FC<HorizontalCollapseProps> = ({
   const classes = useStyles();
   const [opened, setOpened] = useState(false);
   const {theme} = useContext<AppContextPropsType>(AppContext);
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const active = isUrlInChildren(item, location.pathname);
 
   const handleToggle = (open: boolean) => {

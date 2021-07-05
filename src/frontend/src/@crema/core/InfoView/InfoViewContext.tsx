@@ -1,13 +1,12 @@
-import React, {useContext, useReducer} from 'react';
-import {contextReducer, InFoViewActions} from './InfoViewReducer';
-
+import React, { useContext, useReducer } from "react";
+import { contextReducer, InFoViewActions } from "./InfoViewReducer";
 export interface InfoViewTypes {
   error: string;
   loading: boolean;
   message: string;
 }
 
-export const InfoViewState: InfoViewTypes = {
+export const InfoViewState:InfoViewTypes = {
   loading: false,
   error: '',
   message: '',
@@ -34,34 +33,23 @@ export type InfoViewActionTypes =
   | FetchErrorAction
   | ShowMessageAction
   | FetchStartAction
-  | FetchSuccessAction;
+  | FetchSuccessAction
 
-export const fetchStart = (): InfoViewActionTypes => ({
-  type: InFoViewActions.FETCH_STARTS,
-});
-export const fetchSuccess = (): InfoViewActionTypes => ({
-  type: InFoViewActions.FETCH_SUCCESS,
-});
-export const fetchError = (error: string): InfoViewActionTypes => ({
-  type: InFoViewActions.SET_ERROR,
-  payload: error,
-});
-export const showMessage = (message: string): InfoViewActionTypes => ({
-  type: InFoViewActions.SET_MESSAGE,
-  payload: message,
-});
+export const fetchStart = ():InfoViewActionTypes => ({type: InFoViewActions.FETCH_STARTS})
+export const fetchSuccess = ():InfoViewActionTypes =>     ({type: InFoViewActions.FETCH_SUCCESS});
+export const fetchError = (error:string):InfoViewActionTypes =>   ({type: InFoViewActions.SET_ERROR, payload:error})
+export const showMessage = (message:string):InfoViewActionTypes =>   ({type: InFoViewActions.SET_MESSAGE, payload:message})  ;
 
-const InfoViewContext = React.createContext<InfoViewTypes>(InfoViewState);
-const InfoViewActionsContext = React.createContext<
-  React.Dispatch<InfoViewActionTypes> | undefined
->(undefined);
+const InfoViewContext= React.createContext<InfoViewTypes>(InfoViewState);
+const InfoViewActionsContext= React.createContext<React.Dispatch<InfoViewActionTypes>|undefined> (undefined);
 
 export const useInfoViewContext = () => useContext(InfoViewContext);
 export const useInfoViewActionsContext = () =>
   useContext(InfoViewActionsContext);
 
-const InfoViewContextProvider: React.FC<React.ReactNode> = ({children}) => {
-  const [state, dispatch] = useReducer(
+
+const InfoViewContextProvider : React.FC<React.ReactNode> = ({children}) => {
+  const [state,dispatch] = useReducer(
     contextReducer,
     InfoViewState,
     () => InfoViewState,
@@ -69,7 +57,8 @@ const InfoViewContextProvider: React.FC<React.ReactNode> = ({children}) => {
 
   return (
     <InfoViewContext.Provider value={state}>
-      <InfoViewActionsContext.Provider value={dispatch}>
+      <InfoViewActionsContext.Provider
+        value={dispatch}>
         {children}
       </InfoViewActionsContext.Provider>
     </InfoViewContext.Provider>

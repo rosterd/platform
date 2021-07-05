@@ -8,5 +8,4 @@ export interface AuthUser {
   token?: string;
   authType: AuthType;
   role: string[];
-  refreshToken?: string;
 }

@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
-import Box from '@material-ui/core/Box';
-import clsx from 'clsx';
 import AppHeader from './AppHeader';
 import {ContentView} from '../../../index';
+import Box from '@material-ui/core/Box';
 import useStyles from './index.style';
+import clsx from 'clsx';
 import AppFooter from './AppFooter';
 import AppFixedFooter from './AppFixedFooter';
 import AppContext from '../../../utility/AppContext';
