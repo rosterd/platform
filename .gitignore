@@ -329,3 +329,8 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 /src/logs
+
+.DS_Store*
+src/**/.vscode/solution-explorer
+src/**/C:
+src/**/.eslintcache
