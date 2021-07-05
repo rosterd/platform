@@ -54,20 +54,15 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: DownloadBuildArtifacts@0
-            inputs:
-              buildType: 'current'
-              downloadType: 'single'
-              artifactName: 'build'
-              downloadPath: '$(System.ArtifactsDirectory)'
-
+          - download: current
+            artifact: build
           - task: AzureFileCopy@4         
             inputs:
-              SourcePath: '$(System.ArtifactsDirectory)\build'
+              SourcePath: $(Pipeline.Workspace)/build
               azureSubscription: 'rosterd-service-connection'
               Destination: 'AzureBlob'
-              storage: 'strosterdstoragedev'
-              ContainerName: 'assets'
+              storage: $(storageaccountname)
+              ContainerName: "$web"
 
 - stage: DeployToTest
   displayName: Deploy To Test
