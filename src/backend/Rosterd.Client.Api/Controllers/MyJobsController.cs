@@ -73,7 +73,7 @@ namespace Rosterd.Client.Api.Controllers
         {
             //TODO: Once auth is done, get the right staff id to check
             pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetJobsForStaff(1, new List<JobStatus> {JobStatus.Finished, JobStatus.FeedbackPending}, pagingParameters);
+            var pagedList = await _jobService.GetJobsForStaff(1, new List<JobStatus> {JobStatus.Completed, JobStatus.FeedbackPending}, pagingParameters);
 
             return pagedList;
         }

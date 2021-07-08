@@ -24,8 +24,8 @@ namespace Rosterd.Domain.Enums
         [Display(Name = "Feedback Pending", Description = "")]
         FeedbackPending = 5,
 
-        [Display(Name = "Finished", Description = "")]
-        Finished = 6,
+        [Display(Name = "Completed", Description = "")]
+        Completed = 6,
 
         [Display(Name = "Expired", Description = "")]
         Expired = 7,
