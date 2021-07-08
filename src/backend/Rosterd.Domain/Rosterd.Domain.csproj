@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Models\OrganizationModels\" />
+    <Folder Include="Models\Users\" />
   </ItemGroup>
 
   <ItemGroup>

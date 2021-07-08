@@ -12,7 +12,6 @@ using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.StaffModels;
-using Rosterd.Domain.Models.Users;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Services.Mappers;
 using Rosterd.Services.Staff.Interfaces;
@@ -202,7 +201,7 @@ namespace Rosterd.Services.Staff
             }
         }
 
-        public async Task<UserPreferencesModel> GetStaffPreferences(string userEmail)
+        public async Task<StaffPreferencesModel> GetStaffPreferences(string userEmail)
         {
             var rosterdAppUser = await _azureTableStorage.GetAsync<RosterdAppUser>(RosterdAppUser.TableName, RosterdAppUser.UsersPartitionKey, userEmail);
 
@@ -213,9 +212,9 @@ namespace Rosterd.Services.Staff
             return rosterdAppUser?.ToDomainModel();
         }
 
-        public async Task UpdateStaffPreferences(UserPreferencesModel userPreferencesModel)
+        public async Task UpdateStaffPreferences(StaffPreferencesModel staffPreferencesModel)
         {
-            var rosterdAppUser = userPreferencesModel.ToDataModel();
+            var rosterdAppUser = staffPreferencesModel.ToDataModel();
 
             await _azureTableStorage.AddOrUpdateAsync(RosterdAppUser.TableName, rosterdAppUser);
         }

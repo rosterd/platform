@@ -80,7 +80,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Client.Api.Controllers.PreferencesController.UpdateStaffPreferences(Rosterd.Domain.Models.Users.UserPreferencesModel)">
+        <member name="M:Rosterd.Client.Api.Controllers.PreferencesController.UpdateStaffPreferences(Rosterd.Domain.Models.Users.StaffPreferencesModel)">
             <summary>
             Updates all user profile information for the current user
             </summary>

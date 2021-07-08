@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.StaffModels;
-using Rosterd.Domain.Models.Users;
 
 namespace Rosterd.Services.Staff.Interfaces
 {
@@ -88,13 +87,13 @@ namespace Rosterd.Services.Staff.Interfaces
         /// </summary>
         /// <param name="userEmail"></param>
         /// <returns></returns>
-        public Task<UserPreferencesModel> GetStaffPreferences(string userEmail);
+        public Task<StaffPreferencesModel> GetStaffPreferences(string userEmail);
 
         /// <summary>
         /// Updates the staff preferences
         /// </summary>
-        /// <param name="userPreferencesModel"></param>
+        /// <param name="staffPreferencesModel"></param>
         /// <returns></returns>
-        public Task UpdateStaffPreferences(UserPreferencesModel userPreferencesModel);
+        public Task UpdateStaffPreferences(StaffPreferencesModel staffPreferencesModel);
     }
 }

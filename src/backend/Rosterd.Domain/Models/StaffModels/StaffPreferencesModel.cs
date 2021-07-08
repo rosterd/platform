@@ -1,13 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-
-namespace Rosterd.Domain.Models.Users
+namespace Rosterd.Domain.Models.StaffModels
 {
-    public class UserPreferencesModel
+    public class StaffPreferencesModel
     {
         public string Email { get; set; }
 

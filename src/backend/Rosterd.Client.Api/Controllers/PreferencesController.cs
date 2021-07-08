@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using Rosterd.Domain;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
-using Rosterd.Domain.Models.Users;
+using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Services.Users.Interfaces;
@@ -37,7 +37,7 @@ namespace Rosterd.Client.Api.Controllers
         /// <returns></returns>
         [HttpGet("my")]
         [OperationOrder(1)]
-        public async Task<ActionResult<UserPreferencesModel>> GetUserPreferences([FromQuery] string userEmail) => await _staffService.GetStaffPreferences(userEmail);
+        public async Task<ActionResult<StaffPreferencesModel>> GetUserPreferences([FromQuery] string userEmail) => await _staffService.GetStaffPreferences(userEmail);
 
         /// <summary>
         /// Updates all user profile information for the current user
@@ -45,9 +45,9 @@ namespace Rosterd.Client.Api.Controllers
         /// <returns></returns>
         [HttpPut("my")]
         [OperationOrder(2)]
-        public async Task<ActionResult<UserPreferencesModel>> UpdateUserPreferences([FromBody] UserPreferencesModel userPreferencesModel)
+        public async Task<ActionResult<StaffPreferencesModel>> UpdateUserPreferences([FromBody] StaffPreferencesModel staffPreferencesModel)
         {
-            await _staffService.UpdateStaffPreferences(userPreferencesModel);
+            await _staffService.UpdateStaffPreferences(staffPreferencesModel);
             return Ok();
         }
     }

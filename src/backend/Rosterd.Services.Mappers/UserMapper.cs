@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Rosterd.Data.TableStorage.Models;
-using Rosterd.Domain.Models.Users;
+using Rosterd.Domain.Models.StaffModels;
 
 namespace Rosterd.Services.Mappers
 {
     public static class UserMapper
     {
-        public static UserPreferencesModel ToDomainModel(this RosterdAppUser dataModel) =>
-            new UserPreferencesModel
+        public static StaffPreferencesModel ToDomainModel(this RosterdAppUser dataModel) =>
+            new StaffPreferencesModel
             {
                 Email = dataModel.Email,
                 DeviceId = dataModel.DeviceId,
@@ -32,7 +32,7 @@ namespace Rosterd.Services.Mappers
                 Shift = new Shift {DayShift = dataModel.DayShiftOk, NightShift = dataModel.NightShiftOk}
             };
 
-        public static RosterdAppUser ToDataModel(this UserPreferencesModel domainModel) =>
+        public static RosterdAppUser ToDataModel(this StaffPreferencesModel domainModel) =>
             new RosterdAppUser(domainModel.Email)
             {
                 Email = domainModel.Email,
@@ -52,8 +52,8 @@ namespace Rosterd.Services.Mappers
                 NightShiftOk = domainModel.Shift.NightShift
             };
 
-        public static UserPreferencesModel ToNew() =>
-            new UserPreferencesModel
+        public static StaffPreferencesModel ToNew() =>
+            new StaffPreferencesModel
             {
                 AvailableDays = new AvailableDays
                 {
