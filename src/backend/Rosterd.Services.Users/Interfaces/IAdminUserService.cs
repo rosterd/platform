@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rosterd.Services.Users.Interfaces
 {
-    public interface IUserService
+    public interface IAdminUserService
     {
        
     }
