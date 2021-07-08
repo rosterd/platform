@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using FluentValidation;
 
-namespace Rosterd.Domain
+namespace Rosterd.Web.Infra
 {
     public static class FluentValidatorExtensions
     {

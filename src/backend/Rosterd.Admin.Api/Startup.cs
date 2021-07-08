@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Rosterd.Admin.Api.Infrastructure.Extensions;
 using Rosterd.Domain;
+using Rosterd.Web.Infra;
 using Rosterd.Web.Infra.Extensions;
 using Rosterd.Web.Infra.Middleware;
 

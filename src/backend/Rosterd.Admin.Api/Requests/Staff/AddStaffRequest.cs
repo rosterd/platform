@@ -8,8 +8,8 @@ using Rosterd.Domain;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Models.StaffModels;
-using Rosterd.Domain.ValidationAttributes;
 using Rosterd.Infrastructure.Extensions;
+using Rosterd.Web.Infra.ValidationAttributes;
 
 namespace Rosterd.Admin.Api.Requests.Staff
 {

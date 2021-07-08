@@ -7,9 +7,9 @@ using Rosterd.Admin.Api.Requests.Organization;
 using Rosterd.Domain;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.OrganizationModels;
-using Rosterd.Domain.ValidationAttributes;
 using Rosterd.Services.Organizations.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using Rosterd.Web.Infra.ValidationAttributes;
 
 namespace Rosterd.Admin.Api.Controllers
 {

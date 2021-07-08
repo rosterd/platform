@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rosterd.Data.SqlServer.Context;
+using Rosterd.Data.TableStorage.Context;
 using Rosterd.Domain;
 using Rosterd.Infrastructure.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
@@ -61,6 +62,7 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 
             //Db contexts
             services.AddScoped<IRosterdDbContext, RosterdDbContext>();
+            services.AddScoped<IAzureTableStorage>(s => new AzureTableStorage(config.GetConnectionString("TableStorageConnectionString")));
 
             //Event grids
             services.AddScoped<IEventGridClient>(provider => new EventGridClient(new TopicCredentials(config.GetValue<string>("AppSettings:EventGridTopicKey"))));

@@ -42,6 +42,7 @@
     <ProjectReference Include="..\Rosterd.Services.Facilities\Rosterd.Services.Facilities.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Jobs\Rosterd.Services.Jobs.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Skills\Rosterd.Services.Skills.csproj" />
+    <ProjectReference Include="..\Rosterd.Services.Staff\Rosterd.Services.Staff.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Users\Rosterd.Services.Users.csproj" />
     <ProjectReference Include="..\Rosterd.Web.Infra\Rosterd.Web.Infra.csproj" />
   </ItemGroup>

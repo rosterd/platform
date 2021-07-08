@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Rosterd.Domain.ValidationAttributes;
 
 namespace Rosterd.Domain.Models.OrganizationModels
 {

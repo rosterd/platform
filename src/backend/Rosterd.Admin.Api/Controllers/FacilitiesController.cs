@@ -8,9 +8,9 @@ using Rosterd.Admin.Api.Requests.Facility;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.OrganizationModels;
-using Rosterd.Domain.ValidationAttributes;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using Rosterd.Web.Infra.ValidationAttributes;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
 namespace Rosterd.Admin.Api.Controllers

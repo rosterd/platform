@@ -6,10 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
+using Rosterd.Data.TableStorage.Context;
+using Rosterd.Data.TableStorage.Models;
 using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.StaffModels;
+using Rosterd.Domain.Models.Users;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Services.Mappers;
 using Rosterd.Services.Staff.Interfaces;
@@ -20,8 +23,13 @@ namespace Rosterd.Services.Staff
     public class StaffService : IStaffService
     {
         private readonly IRosterdDbContext _context;
+        private readonly IAzureTableStorage _azureTableStorage;
 
-        public StaffService(IRosterdDbContext context) => _context = context;
+        public StaffService(IRosterdDbContext context, IAzureTableStorage azureTableStorage)
+        {
+            _context = context;
+            _azureTableStorage = azureTableStorage;
+        }
 
         ///<inheritdoc/>
         public async Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId)
@@ -192,6 +200,24 @@ namespace Rosterd.Services.Staff
                 _context.StaffFacilities.Remove(staffFacility);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<UserPreferencesModel> GetStaffPreferences(string userEmail)
+        {
+            var rosterdAppUser = await _azureTableStorage.GetAsync<RosterdAppUser>(RosterdAppUser.TableName, RosterdAppUser.UsersPartitionKey, userEmail);
+
+            //We don't have the user in our db, so default the preferences which is true for every thing
+            if (rosterdAppUser == null)
+                return UserMapper.ToNew();
+
+            return rosterdAppUser?.ToDomainModel();
+        }
+
+        public async Task UpdateStaffPreferences(UserPreferencesModel userPreferencesModel)
+        {
+            var rosterdAppUser = userPreferencesModel.ToDataModel();
+
+            await _azureTableStorage.AddOrUpdateAsync(RosterdAppUser.TableName, rosterdAppUser);
         }
     }
 }

@@ -9,8 +9,6 @@ namespace Rosterd.Services.Users.Interfaces
 {
     public interface IUserService
     {
-        public Task<UserPreferencesModel> GetUserPreferences(string userEmail);
-
-        public Task UpdateUserPreferences(UserPreferencesModel userPreferencesModel);
+       
     }
 }

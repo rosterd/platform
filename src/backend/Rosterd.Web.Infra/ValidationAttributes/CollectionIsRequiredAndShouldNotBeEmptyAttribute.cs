@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Rosterd.Domain.ValidationAttributes
+namespace Rosterd.Web.Infra.ValidationAttributes
 {
     /// <summary>
     ///     Validation attribute to indicate that a property field or parameter is required, it should be a number and should be greater than zero

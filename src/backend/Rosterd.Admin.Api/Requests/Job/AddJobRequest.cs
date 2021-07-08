@@ -5,8 +5,8 @@ using System.Linq;
 using FluentValidation;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.JobModels;
-using Rosterd.Domain.ValidationAttributes;
 using Rosterd.Infrastructure.Extensions;
+using Rosterd.Web.Infra.ValidationAttributes;
 
 namespace Rosterd.Admin.Api.Requests.Job
 {

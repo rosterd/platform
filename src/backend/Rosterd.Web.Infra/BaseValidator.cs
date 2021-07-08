@@ -1,4 +1,4 @@
-namespace Rosterd.Domain
+namespace Rosterd.Web.Infra
 {
     public class BaseValidator
     {

@@ -7,10 +7,10 @@ using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Job;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.JobModels;
-using Rosterd.Domain.ValidationAttributes;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using Rosterd.Web.Infra.ValidationAttributes;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
 namespace Rosterd.Admin.Api.Controllers
