@@ -8,10 +8,10 @@ using Rosterd.Domain.Models.StaffModels;
 
 namespace Rosterd.Services.Mappers
 {
-    public static class UserMapper
+    public static class StaffAppUserMapper
     {
-        public static StaffPreferencesModel ToDomainModel(this RosterdAppUser dataModel) =>
-            new StaffPreferencesModel
+        public static StaffAppUserPreferencesModel ToDomainModel(this RosterdAppUser dataModel) =>
+            new StaffAppUserPreferencesModel
             {
                 Email = dataModel.Email,
                 DeviceId = dataModel.DeviceId,
@@ -32,7 +32,7 @@ namespace Rosterd.Services.Mappers
                 Shift = new Shift {DayShift = dataModel.DayShiftOk, NightShift = dataModel.NightShiftOk}
             };
 
-        public static RosterdAppUser ToDataModel(this StaffPreferencesModel domainModel) =>
+        public static RosterdAppUser ToDataModel(this StaffAppUserPreferencesModel domainModel) =>
             new RosterdAppUser(domainModel.Email)
             {
                 Email = domainModel.Email,
@@ -52,8 +52,8 @@ namespace Rosterd.Services.Mappers
                 NightShiftOk = domainModel.Shift.NightShift
             };
 
-        public static StaffPreferencesModel ToNew() =>
-            new StaffPreferencesModel
+        public static StaffAppUserPreferencesModel ToNew() =>
+            new StaffAppUserPreferencesModel
             {
                 AvailableDays = new AvailableDays
                 {

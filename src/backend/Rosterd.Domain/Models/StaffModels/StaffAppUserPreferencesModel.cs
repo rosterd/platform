@@ -1,6 +1,6 @@
 namespace Rosterd.Domain.Models.StaffModels
 {
-    public class StaffPreferencesModel
+    public class StaffAppUserPreferencesModel
     {
         public string Email { get; set; }
 

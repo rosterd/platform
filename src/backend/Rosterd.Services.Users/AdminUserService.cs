@@ -18,19 +18,30 @@ namespace Rosterd.Services.Users
 
         public AdminUserService(IAzureTableStorage azureTableStorage) => _azureTableStorage = azureTableStorage;
 
+        ///<inheritdoc/>
         public async Task CreateAdminUser(AdminUserModel adminUserModel)
         {
-            
+            var dataModel = adminUserModel.ToDataModel();
+            dataModel.CreatedDateTimeUtc = DateTime.UtcNow;
+            dataModel.LastUpdatedDateTimeUtc = DateTime.UtcNow;
+
+            await _azureTableStorage.AddOrUpdateAsync(RosterdAdminUser.TableName, dataModel);
         }
 
+        ///<inheritdoc/>
         public async Task<AdminUserModel> GetAdminUser(string auth0Id)
         {
-            return null;
+            var rosterdAppUser = await _azureTableStorage.GetAsync<RosterdAdminUser>(RosterdAppUser.TableName, RosterdAppUser.UsersPartitionKey, auth0Id);
+            return rosterdAppUser.ToDomainModel();
         }
 
+        ///<inheritdoc/>
         public async Task UpdateAdminUser(AdminUserModel adminUserModel)
         {
+            var dataModel = adminUserModel.ToDataModel();
+            dataModel.LastUpdatedDateTimeUtc = DateTime.UtcNow;
 
+            await _azureTableStorage.AddOrUpdateAsync(RosterdAdminUser.TableName, dataModel);
         }
     }
 }

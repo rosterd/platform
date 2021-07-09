@@ -74,13 +74,13 @@
             All actions related to the user
             </summary>
         </member>
-        <member name="M:Rosterd.Client.Api.Controllers.PreferencesController.GetStaffPreferences(System.String)">
+        <member name="M:Rosterd.Client.Api.Controllers.PreferencesController.GetStaffAppUserPreferences(System.String)">
             <summary>
             Gets all user profile information for the current user
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Client.Api.Controllers.PreferencesController.UpdateStaffPreferences(Rosterd.Domain.Models.Users.StaffPreferencesModel)">
+        <member name="M:Rosterd.Client.Api.Controllers.PreferencesController.UpdateStaffAppUserPreferences(Rosterd.Domain.Models.Users.StaffAppUserPreferencesModel)">
             <summary>
             Updates all user profile information for the current user
             </summary>

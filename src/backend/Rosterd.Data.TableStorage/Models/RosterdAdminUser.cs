@@ -22,6 +22,14 @@ namespace Rosterd.Data.TableStorage.Models
 
         public string GetTableName() => TableName;
 
-        
+        public string Auth0Id { get; set; }
+
+        public string FacilityIdsCsvString { get; set; }
+
+        public long OrganizationId { get; set; }
+
+        public DateTime CreatedDateTimeUtc { get; set; }
+
+        public DateTime LastUpdatedDateTimeUtc { get; set; }
     }
 }

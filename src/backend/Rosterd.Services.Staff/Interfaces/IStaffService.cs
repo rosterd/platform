@@ -87,13 +87,13 @@ namespace Rosterd.Services.Staff.Interfaces
         /// </summary>
         /// <param name="userEmail"></param>
         /// <returns></returns>
-        public Task<StaffPreferencesModel> GetStaffPreferences(string userEmail);
+        public Task<StaffAppUserPreferencesModel> GetStaffAppUserPreferences(string userEmail);
 
         /// <summary>
         /// Updates the staff preferences
         /// </summary>
-        /// <param name="staffPreferencesModel"></param>
+        /// <param name="staffAppUserPreferencesModel"></param>
         /// <returns></returns>
-        public Task UpdateStaffPreferences(StaffPreferencesModel staffPreferencesModel);
+        public Task UpdateStaffAppUserPreferences(StaffAppUserPreferencesModel staffAppUserPreferencesModel);
     }
 }

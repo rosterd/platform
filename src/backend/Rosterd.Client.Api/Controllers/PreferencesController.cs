@@ -37,7 +37,7 @@ namespace Rosterd.Client.Api.Controllers
         /// <returns></returns>
         [HttpGet("my")]
         [OperationOrder(1)]
-        public async Task<ActionResult<StaffPreferencesModel>> GetUserPreferences([FromQuery] string userEmail) => await _staffService.GetStaffPreferences(userEmail);
+        public async Task<ActionResult<StaffAppUserPreferencesModel>> GetUserPreferences([FromQuery] string userEmail) => await _staffService.GetStaffAppUserPreferences(userEmail);
 
         /// <summary>
         /// Updates all user profile information for the current user
@@ -45,9 +45,9 @@ namespace Rosterd.Client.Api.Controllers
         /// <returns></returns>
         [HttpPut("my")]
         [OperationOrder(2)]
-        public async Task<ActionResult<StaffPreferencesModel>> UpdateUserPreferences([FromBody] StaffPreferencesModel staffPreferencesModel)
+        public async Task<ActionResult<StaffAppUserPreferencesModel>> UpdateUserPreferences([FromBody] StaffAppUserPreferencesModel staffAppUserPreferencesModel)
         {
-            await _staffService.UpdateStaffPreferences(staffPreferencesModel);
+            await _staffService.UpdateStaffAppUserPreferences(staffAppUserPreferencesModel);
             return Ok();
         }
     }
