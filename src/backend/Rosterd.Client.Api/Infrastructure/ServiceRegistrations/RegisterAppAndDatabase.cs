@@ -6,22 +6,16 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Rosterd.Client.Api.Infrastructure.Configs;
 using Rosterd.Data.SqlServer.Context;
-using Rosterd.Data.TableStorage;
 using Rosterd.Data.TableStorage.Context;
 using Rosterd.Infrastructure.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
-using Rosterd.Services.Facilities;
-using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Services.Jobs;
 using Rosterd.Services.Jobs.Interfaces;
-using Rosterd.Services.Skills;
-using Rosterd.Services.Skills.Interfaces;
 using Rosterd.Services.Users;
 using Rosterd.Services.Users.Interfaces;
 
-namespace Rosterd.Client.Api.ServiceRegistrations
+namespace Rosterd.Client.Api.Infrastructure.ServiceRegistrations
 {
     public static class RegisterAppAndDatabase
     {

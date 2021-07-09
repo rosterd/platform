@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Rosterd.Client.Api.ServiceRegistrations;
+using Rosterd.Client.Api.Infrastructure.ServiceRegistrations;
 
 namespace Rosterd.Client.Api.Infrastructure.Extensions
 {

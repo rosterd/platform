@@ -4,9 +4,12 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
 
-    "FunctionSettings:EventGridConnectionString": "TODO",
-    "FunctionSettings:RosterdDbConnectionString": "TODO",
-    "FunctionSettings:StorageAccountConnectionString": "TODO",
+    "FunctionSettings:EventGridTopicEndpoint": "https://evgt-rosterd-nonprod.westus2-1.eventgrid.azure.net/api/events",
+    "FunctionSettings:EventGridTopicKey": "5iSIJsZ6sBWEf4u1TlbTQlylh3/ghgXOlfMkoWMVRUs=",
+
+    "FunctionSettings:RosterdDbConnectionString": "Server=tcp:sqls-rosterd-prod.database.windows.net,1433;Initial Catalog=rosterd;Persist Security Info=False;User ID=rosterd-admin-user;Password=K66pth1sS@f5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+
+    "FunctionSettings:TableStorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=strosterdstoragedev;AccountKey=EoM27f5fmt0siT+uQmspne8jhgSdw9J55woZtn6CcpJzJVgHI9esz7nFOvMUQMMFMbG3L9IpjdLfRYrVXu1fzg==;EndpointSuffix=core.windows.net",
     "FunctionSettings:Environment": "Dev",
 
     "FunctionSettings:SearchServiceEndpoint": "https://rosterd-dev-search.search.windows.net",

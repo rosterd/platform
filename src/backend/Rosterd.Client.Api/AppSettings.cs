@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Rosterd.Domain
+namespace Rosterd.Client.Api
 {
     public class AppSettings
     {
@@ -15,5 +9,9 @@ namespace Rosterd.Domain
         public string EventGridTopicEndpoint { get; set; }
 
         public string EventGridTopicKey { get; set; }
+
+        public string SearchServiceEndpoint { get; set; }
+
+        public string SearchServiceApiKey { get; set; }
     }
 }
