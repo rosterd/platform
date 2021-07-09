@@ -88,7 +88,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <param name="skillId">The Skill to be deleted</param>
         /// <returns></returns>
-        [HttpDelete("skillId")]
+        [HttpDelete("{skillId}")]
         [OperationOrderAttribute(5)]
         public async Task<ActionResult> RemoveSkill([ValidNumberRequired] long? skillId)
         {

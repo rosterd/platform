@@ -88,7 +88,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <param name="organizationId">The Organization to be deleted</param>
         /// <returns></returns>
-        [HttpDelete]
+        [HttpDelete("{organizationId}")]
         [OperationOrderAttribute(5)]
         public async Task<ActionResult> RemoveOrganization([ValidNumberRequired] long? organizationId)
         {

@@ -111,7 +111,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <param name="facilityId">The Facility to be deleted</param>
         /// <returns></returns>
-        [HttpDelete("facilityId")]
+        [HttpDelete("{facilityId}")]
         [OperationOrderAttribute(5)]
         public async Task<ActionResult> RemoveFacility([ValidNumberRequired] long? facilityId)
         {

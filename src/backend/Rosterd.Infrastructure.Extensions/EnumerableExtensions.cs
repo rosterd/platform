@@ -10,7 +10,7 @@ namespace Rosterd.Infrastructure.Extensions
     public static class EnumerableExtensions
     {
         /// <summary>
-        /// When given an enumberable, will always return a properly instantiated List object.
+        /// When given an enumerable, will always return a properly instantiated List object.
         /// </summary>
         /// <typeparam name="T">The generic type of the list.</typeparam>
         /// <param name="enumerable">The enumerable.</param>
