@@ -5,6 +5,12 @@ import AppAnimate from '@crema/core/AppAnimate';
 import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core';
+import {components} from 'types/models';
+import {getSkills} from 'services';
+import useRequest from 'shared/hooks/useRequest';
+
+type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
+type Skill = components['schemas']['SkillModel'];
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -14,41 +20,38 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-interface Skill {
-  name: string;
-}
-
 const initialState: Skill[] = [];
 
 const Resources = () => {
   const classes = useStyles();
   const [skills, setSkills] = useState(initialState);
+  const [loading, setLoading] = useState(false);
+  const {requestMaker} = useRequest();
+
   useEffect(() => {
-    setTimeout(() => {
-      setSkills([
-        {name: 'Nurse'},
-        {name: 'Chef'},
-        {name: 'Health care assistant'},
-      ]);
-    }, 500);
+    (async () => {
+      setLoading(true);
+      const skillsResponse = await requestMaker<GetSkillsResponse>(getSkills());
+      setLoading(false);
+      setSkills(skillsResponse.items || []);
+    })();
   }, []);
-  console.log(skills);
+
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <Box>
-        <Box
-          component='h2'
-          color='text.primary'
-          fontSize={16}
-          mb={{xs: 4, sm: 4, xl: 6}}
-          fontWeight={Fonts.BOLD}>
+        <Box component='h2' color='text.primary' fontSize={16} mb={{xs: 4, sm: 4, xl: 6}} fontWeight={Fonts.BOLD}>
           <IntlMessages id='skills.heading' />
         </Box>
         <Box className={classes.materialTable}>
           <MaterialTable
             title=''
-            columns={[{title: 'Name', field: 'name'}]}
+            columns={[
+              {title: 'Name', field: 'skillName'},
+              {title: 'Description', field: 'description'},
+            ]}
             data={skills}
+            isLoading={loading}
             editable={{
               onRowAdd: (newData) =>
                 new Promise((resolve, reject) => {
