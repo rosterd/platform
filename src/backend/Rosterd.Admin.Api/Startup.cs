@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ using Rosterd.Domain;
 using Rosterd.Web.Infra;
 using Rosterd.Web.Infra.Extensions;
 using Rosterd.Web.Infra.Middleware;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Rosterd.Admin.Api
 {
@@ -45,7 +47,25 @@ namespace Rosterd.Admin.Api
                 IdentityModelEventSource.ShowPII = true;
 
             //Add auth and JWT as the first thing (This always needs to be the first thing to configure)
-            services.AddCustomAuthenticationWithJwtBearer(Configuration);
+            //services.AddCustomAuthenticationWithJwtBearer(Configuration);
+
+            var domain = $"https://{Configuration["Auth0:Domain"]}/";
+
+            services
+            .AddAuthentication(options =>   {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options => {
+                options.Authority = domain;
+                options.Audience = Configuration["Auth0:Audience"];
+            });
+            
+            services.AddAuthorization(options => {
+                options.AddPolicy("read:jobs", policy => policy.Requirements.Add(new HasScopeRequirement("read:jobs", domain)));
+                options.AddPolicy("create:facility", policy => policy.Requirements.Add(new HasScopeRequirement("create:facility", domain)));
+            });
+
 
             services
                 .AddApplicationInsightsTelemetry()
@@ -76,6 +96,9 @@ namespace Rosterd.Admin.Api
                     fv.RegisterValidatorsFromAssemblyContaining<BaseValidator>();
                 });
 
+            // Register the scope authorization handler
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
             //Enable the default 400 Bad Request error handling
             services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInvalidFilter = false);
 
@@ -105,8 +128,8 @@ namespace Rosterd.Admin.Api
 
             //Adds authentication middleware to the pipeline so authentication will be performed automatically on each request to host
             //Adds authorization middleware to the pipeline to make sure the Api endpoint cannot be accessed by anonymous clients
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             //Enable Swagger and SwaggerUI (for swagger we have our own basic auth so its not available to everyone)
             app.UseSwaggerAuthenticationCheck();
@@ -115,8 +138,8 @@ namespace Rosterd.Admin.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-                //.RequireAuthorization();
+                endpoints.MapControllers()
+                .RequireAuthorization();
             });
         }
     }

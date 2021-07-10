@@ -44,6 +44,7 @@ const routesConfig: NavItemProps[] = [
     type: 'item',
     icon: 'business',
     url: '/facilities',
+    auth: ['Admin'],
   },
   {
     id: 'jobs',

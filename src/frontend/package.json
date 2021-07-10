@@ -76,7 +76,8 @@
     "lint": "tslint  \"src/**/*.+(js|jsx)\"",
     "lint:fix": "tslint --fix \"src/**/*.{ts,tsx,js}\"",
     "format": "prettier --write \"src/**/*.+(ts|tsx)\"",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "task:generate:models": "NODE_TLS_REJECT_UNAUTHORIZED=0 npx openapi-typescript https://localhost:5001/swagger/v1/swagger.json --output src/types/models/ApiModels.ts"
   },
   "browserslist": {
     "production": [
@@ -118,6 +119,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^4.2.3",
     "lint-staged": "^10.5.1",
+    "openapi-typescript": "^4.0.2",
     "prettier": "^2.1.2",
     "tslint-plugin-prettier": "^2.3.0"
   },
