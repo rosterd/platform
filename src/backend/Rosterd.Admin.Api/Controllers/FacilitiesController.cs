@@ -12,6 +12,7 @@ using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 using Rosterd.Web.Infra.ValidationAttributes;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Rosterd.Admin.Api.Controllers
 {
@@ -62,6 +63,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Facility to add</param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize("create:facility")]
         [OperationOrderAttribute(3)]
         public async Task<ActionResult<FacilityModel>> AddNewFacility([Required][FromBody] AddFacilityRequest request)
         {
@@ -86,6 +88,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Facility to update</param>
         /// <returns></returns>
         [HttpPut]
+        [Authorize("create:facility")]
         [OperationOrderAttribute(4)]
         public async Task<ActionResult<FacilityModel>> UpdateFacility([Required] UpdateFacilityRequest request)
         {

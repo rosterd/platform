@@ -13,51 +13,57 @@
         }
     ],
     "configurations": [
-        {
-          "name": "Admin Api",
-          "type": "coreclr",
-          "request": "launch",
-          "preLaunchTask": "buildAdmin",
-          "program": "${workspaceFolder}/Rosterd.Admin.Api/bin/Debug/net5.0/Rosterd.Admin.Api.dll",
-          "args": [],
-          "cwd": "${workspaceFolder}/Rosterd.Admin.Api",
-          "stopAtEntry": false,
-          "serverReadyAction": {
-            "action": "openExternally",
-            "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-          },
-          "env": {
-            "ASPNETCORE_ENVIRONMENT": "Development"
-          },
-          "sourceFileMap": {
-            "/Views": "${workspaceFolder}/Views"
-          }
+      {
+        "name": "Admin Api",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "buildAdmin",
+        "program": "${workspaceFolder}/Rosterd.Admin.Api/bin/Debug/net5.0/Rosterd.Admin.Api.dll",
+        "args": [],
+        "cwd": "${workspaceFolder}/Rosterd.Admin.Api",
+        "stopAtEntry": false,
+        "serverReadyAction": {
+          "action": "openExternally",
+          "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
         },
-        {
-          "name": "Client Api",
-          "type": "coreclr",
-          "request": "launch",
-          "preLaunchTask": "buildClient",
-          "program": "${workspaceFolder}/Rosterd.Client.Api/bin/Debug/net5.0/Rosterd.Client.Api.dll",
-          "args": [],
-          "cwd": "${workspaceFolder}/Rosterd.Client.Api",
-          "stopAtEntry": false,
-          "serverReadyAction": {
-            "action": "openExternally",
-            "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-          },
-          "env": {
-            "ASPNETCORE_ENVIRONMENT": "Development"
-          },
-          "sourceFileMap": {
-            "/Views": "${workspaceFolder}/Views"
-          }
+        "env": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
         },
-        {
-          "name": ".NET Core Attach",
-          "type": "coreclr",
-          "request": "attach",
-          "processId": "${command:pickProcess}"
+        "sourceFileMap": {
+          "/Views": "${workspaceFolder}/Views"
         }
-      ]
+      },
+      {
+        "name": "Client Api",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "buildClient",
+        "program": "${workspaceFolder}/Rosterd.Client.Api/bin/Debug/net5.0/Rosterd.Client.Api.dll",
+        "args": [],
+        "cwd": "${workspaceFolder}/Rosterd.Client.Api",
+        "stopAtEntry": false,
+        "serverReadyAction": {
+          "action": "openExternally",
+          "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+        },
+        "env": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        },
+        "sourceFileMap": {
+          "/Views": "${workspaceFolder}/Views"
+        }
+      },
+      {
+        "name": ".NET Core Attach",
+        "type": "coreclr",
+        "request": "attach",
+        "processId": "${command:pickProcess}"
+      },
+      {
+        "name": "Attach to .NET Functions",
+        "type": "coreclr",
+        "request": "attach",
+        "processId": "${command:azureFunctions.pickProcess}"
+      }
+    ]
 }
