@@ -12,7 +12,7 @@ export const useRequest = (): HookResponse => {
   const memoizedFn = useCallback(
     async (requestConfig) => {
       let tokenOptions: GetTokenSilentlyOptions = {
-        audience: 'http://localhost:3000/dummy-api',
+        audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       };
 
       if (requestConfig.scope) {
@@ -21,7 +21,7 @@ export const useRequest = (): HookResponse => {
       const accessToken = isAuthenticated ? await getAccessTokenSilently(tokenOptions) : 'anonymous';
 
       const axiosClient = axios.create({
-        baseURL: 'https://localhost:5001/api/v1/',
+        baseURL: process.env.REACT_APP_API_BASE_URL,
         headers: {
           'Content-Type': 'application/json',
         },
