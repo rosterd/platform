@@ -32,6 +32,7 @@ namespace Rosterd.Services.Jobs
             _searchIndexProvider = searchIndexProvider;
         }
 
+        ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters)
         {
             var query = _context.Jobs.Include(s => s.Facility);
@@ -41,12 +42,14 @@ namespace Rosterd.Services.Jobs
             return new PagedList<JobModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
 
+        ///<inheritdoc/>
         public async Task<JobModel> GetJob(long jobId)
         {
             var job = await _context.Jobs.Include(s => s.Facility).FirstOrDefaultAsync(s => s.JobId == jobId);
             return job?.ToDomainModel();
         }
 
+        ///<inheritdoc/>
         public async Task<JobModel> CreateJob(JobModel jobModel)
         {
             var jobToCreate = jobModel.ToNewJob();
@@ -69,6 +72,7 @@ namespace Rosterd.Services.Jobs
             return jobCreated.Entity.ToDomainModel();
         }
 
+        ///<inheritdoc/>
         public async Task RemoveJob(long jobId, string jobCancellationReason)
         {
             var job = await _context.Jobs.FindAsync(jobId);
@@ -84,6 +88,7 @@ namespace Rosterd.Services.Jobs
             }
         }
 
+        ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetRelevantJobsForStaff(long staffId, PagingQueryStringParameters pagingParameters)
         {
             var staffSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.StaffIndex);
@@ -118,6 +123,7 @@ namespace Rosterd.Services.Jobs
                 totalPages);
         }
 
+        ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetCurrentJobsForStaff(long staffId, PagingQueryStringParameters pagingParameters)
         {
             var currentJobsForStaffQuery =
@@ -132,6 +138,7 @@ namespace Rosterd.Services.Jobs
             return new Domain.Models.PagedList<JobModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
 
+        ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetJobsForStaff(long staffId, List<JobStatus> jobsStatusesToQueryFor, PagingQueryStringParameters pagingParameters)
         {
             var statusList = jobsStatusesToQueryFor.AlwaysList().Select(s => (long)s).AlwaysList();
@@ -149,8 +156,10 @@ namespace Rosterd.Services.Jobs
             return new Domain.Models.PagedList<JobModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
 
+        ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetJobsForStaff(long staffId, JobStatus jobsStatusToQueryFor, PagingQueryStringParameters pagingParameters) => await GetJobsForStaff(staffId, new List<JobStatus> {jobsStatusToQueryFor}, pagingParameters);
 
+        ///<inheritdoc/>
         public async Task<bool> AcceptJobForStaff(long jobId, long staffId)
         {
             var job = await _context.Jobs.FindAsync(jobId);
@@ -172,6 +181,7 @@ namespace Rosterd.Services.Jobs
             return true;
         }
 
+        ///<inheritdoc/>
         public async Task<bool> CancelJobForStaff(long jobId, long staffId)
         {
             var job = await _context.Jobs.FindAsync(jobId);
@@ -194,6 +204,7 @@ namespace Rosterd.Services.Jobs
             return true;
         }
 
+        ///<inheritdoc/>
         public async Task CreateJobsStatusChangeRecord(long jobId, JobStatus jobStatusChangedTo, string statusChangeReason, DateTime? eventOccurredDateTime = null) =>
             await _context.JobStatusChanges.AddAsync(new JobStatusChange
             {
@@ -203,5 +214,33 @@ namespace Rosterd.Services.Jobs
                 JobStatusChangeDateTimeUtc = eventOccurredDateTime ?? DateTime.UtcNow,
                 JobStatusChangeReason = statusChangeReason
             });
+
+        ///<inheritdoc/>
+        public async Task<IEnumerable<long>> GetAllJobsThatAreExpiredButStatusStillNotSetToExpired()
+        {
+            var publishedStatus = (int) JobStatus.Published;
+            var currentDateTime = DateTime.UtcNow;
+
+            var jobsThatNeedToBeExpired =
+                await _context.Jobs.Where(s => s.JobStatusId == publishedStatus && currentDateTime >= s.JobStartDateTimeUtc)
+                    .Select(s => s.JobId)
+                    .ToListAsync();
+
+            return jobsThatNeedToBeExpired;
+        }
+
+        ///<inheritdoc/>
+        public async Task<IEnumerable<long>> GetAllJobsThatAreFinishedButStatusStillNotSetToFeedback()
+        {
+            var inProgressStatus = (int) JobStatus.InProgress;
+            var currentDateTime = DateTime.UtcNow;
+
+            var jobsThatAreFinished =
+                await _context.Jobs.Where(s => s.JobStatusId == inProgressStatus && currentDateTime >= s.JobEndDateTimeUtc)
+                    .Select(s => s.JobId)
+                    .ToListAsync();
+
+            return jobsThatAreFinished;
+        }
     }
 }

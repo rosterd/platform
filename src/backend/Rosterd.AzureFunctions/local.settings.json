@@ -13,6 +13,15 @@
     "FunctionSettings:Environment": "Dev",
 
     "FunctionSettings:SearchServiceEndpoint": "https://rosterd-dev-search.search.windows.net",
-    "FunctionSettings:SearchServiceApiKey": "DE7B3AC40CDD847B2AB8B8427BF42E19"
+    "FunctionSettings:SearchServiceApiKey": "DE7B3AC40CDD847B2AB8B8427BF42E19",
+
+    //Time trigger schedules and settings
+    //----------------------------------------------
+
+    //Move expired jobs to expired state every 30 minutes
+    "FunctionSettings:MovedJobsPastTimeLimitToExpiredStateSchedule": "0 */30 * * * *",
+
+    //Move finished jobs to feeback state every 6 hours
+    "FunctionSettings:MoveFinishedJobsToFeedbackStateSchedule": "0 0 */6 * * *"
   }
 }

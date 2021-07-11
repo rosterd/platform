@@ -99,5 +99,17 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// <param name="eventOccurredDateTime"></param>
         /// <returns></returns>
         Task CreateJobsStatusChangeRecord(long jobId, JobStatus jobStatusChangedTo, string statusChangeReason, DateTime? eventOccurredDateTime = null);
+
+        /// <summary>
+        /// Gets all the jobs that have past their end datetime and needs to be expired
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<long>> GetAllJobsThatAreExpiredButStatusStillNotSetToExpired();
+
+        /// <summary>
+        /// Gets all the jobs that are finished and the status needs to be set to feedback
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<long>> GetAllJobsThatAreFinishedButStatusStillNotSetToFeedback();
     }
 }

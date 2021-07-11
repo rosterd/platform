@@ -76,6 +76,8 @@ namespace Rosterd.Services.Jobs
             var currentJob = await _context.Jobs.FindAsync(jobId.ToInt64());
             var searchModelToUpdate = currentJob.ToSearchModel();
 
+            //TODO:Remove jobs that are 'finished' from the search index.
+
             //Update the existing job document with the new status changes
             await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, new List<JobSearchModel>{searchModelToUpdate});
         }
