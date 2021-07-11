@@ -44,10 +44,10 @@ namespace Rosterd.AzureFunctions
             //Get all the jobs that need to be expired
             var jobsThatNeedsToBeExpired = (await _jobsService.GetAllJobsThatAreExpiredButStatusStillNotSetToExpired()).AlwaysList();
 
-            foreach (var jobToBeExpired in jobsThatNeedsToBeExpired)
-            {
-                _jobEventsService.GenerateJobStatusChangedEvent()
-            }
+            //foreach (var jobToBeExpired in jobsThatNeedsToBeExpired)
+            //{
+            //    _jobEventsService.GenerateJobStatusChangedEvent()
+            //}
         }
 
         [FunctionName(nameof(MoveFinishedJobsToFeedbackState))]
