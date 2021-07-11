@@ -110,6 +110,12 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// Gets all the jobs that are finished and the status needs to be set to feedback
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<long>> GetAllJobsThatAreFinishedButStatusStillNotSetToFeedback();
+        Task<IEnumerable<long>> GetAllJobsThatArePastEndDateButStatusStillNotSetToFeedback();
+
+        /// <summary>
+        /// Gets a list of jobs that are finished (in statuses completed or noshow)
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<long>> GetAllJobsThatAreFinished();
     }
 }

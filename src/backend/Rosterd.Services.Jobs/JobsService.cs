@@ -230,13 +230,27 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task<IEnumerable<long>> GetAllJobsThatAreFinishedButStatusStillNotSetToFeedback()
+        public async Task<IEnumerable<long>> GetAllJobsThatArePastEndDateButStatusStillNotSetToFeedback()
         {
             var inProgressStatus = (int) JobStatus.InProgress;
             var currentDateTime = DateTime.UtcNow;
 
             var jobsThatAreFinished =
                 await _context.Jobs.Where(s => s.JobStatusId == inProgressStatus && currentDateTime >= s.JobEndDateTimeUtc)
+                    .Select(s => s.JobId)
+                    .ToListAsync();
+
+            return jobsThatAreFinished;
+        }
+
+        ///<inheritdoc/>
+        public async Task<IEnumerable<long>> GetAllJobsThatAreFinished()
+        {
+            var completedStatus = (int) JobStatus.Completed;
+            var noShowStatus = (int)JobStatus.NoShow;
+
+            var jobsThatAreFinished =
+                await _context.Jobs.Where(s => s.JobStatusId == completedStatus || s.JobStatusId == noShowStatus)
                     .Select(s => s.JobId)
                     .ToListAsync();
 

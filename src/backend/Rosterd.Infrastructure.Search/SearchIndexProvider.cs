@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Search.Documents;
@@ -15,9 +12,9 @@ namespace Rosterd.Infrastructure.Search
 {
     public class SearchIndexProvider : ISearchIndexProvider
     {
-        private readonly SearchIndexClient _searchIndexClient;
         private readonly AzureKeyCredential _azureKeyCredential;
         private readonly Uri _azureSearchEndpoint;
+        private readonly SearchIndexClient _searchIndexClient;
 
         public SearchIndexProvider(string searchEndpoint, string searchApiKey)
         {
@@ -27,7 +24,7 @@ namespace Rosterd.Infrastructure.Search
             _searchIndexClient = new SearchIndexClient(_azureSearchEndpoint, _azureKeyCredential);
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc />
         public async Task CreateOrUpdateIndex<T>(string index) => await CreateOrUpdateIndex<T>(index, new List<SearchSuggester>());
 
         public async Task CreateOrUpdateIndex<T>(string index, List<SearchSuggester> searchSuggestersToAdd)
@@ -41,10 +38,10 @@ namespace Rosterd.Infrastructure.Search
             await _searchIndexClient.CreateOrUpdateIndexAsync(definition);
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc />
         public async Task DeleteIndex(string indexName) => await _searchIndexClient.DeleteIndexAsync(indexName);
 
-        ///<inheritdoc/>
+        /// <inheritdoc />
         public async Task<(bool Exists, long DocumentCount)> GetIndexStatus(string index)
         {
             try
@@ -59,13 +56,13 @@ namespace Rosterd.Infrastructure.Search
                 var documentsInIndex = await searchClient.GetDocumentCountAsync();
                 return (true, documentsInIndex);
             }
-            catch(Exception ex)
+            catch (Exception)
             {
                 return (false, 0);
             }
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc />
         public async Task AddOrUpdateDocumentsToIndex<T>(string indexToAddTo, List<T> itemsToAdd)
         {
             var batch = IndexDocumentsBatch.Upload(itemsToAdd);
@@ -74,7 +71,7 @@ namespace Rosterd.Infrastructure.Search
             await searchClient.IndexDocumentsAsync(batch);
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc />
         public async Task DeleteDocumentsFromIndex(string indexToDeleteFrom, string keyName, List<string> keysToDelete)
         {
             var searchClient = new SearchClient(_azureSearchEndpoint, indexToDeleteFrom, _azureKeyCredential);

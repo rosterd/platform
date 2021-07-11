@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
@@ -8,6 +9,7 @@ using Rosterd.Domain;
 using Rosterd.Domain.Enums;
 using Rosterd.Domain.Events;
 using Rosterd.Domain.Search;
+using Rosterd.Infrastructure.Extensions;
 using Rosterd.Infrastructure.Search.Interfaces;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Mappers;
@@ -19,7 +21,11 @@ namespace Rosterd.Services.Jobs
         private readonly IRosterdDbContext _context;
         private readonly ISearchIndexProvider _searchIndexProvider;
 
-        public JobEventsService(IRosterdDbContext context) => _context = context;
+        public JobEventsService(IRosterdDbContext context, ISearchIndexProvider searchIndexProvider)
+        {
+            _context = context;
+            _searchIndexProvider = searchIndexProvider;
+        }
 
         ///<inheritdoc/>
         public async Task GenerateNewJobCreatedEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, long jobId)
@@ -42,6 +48,18 @@ namespace Rosterd.Services.Jobs
 
             //Sent the event to event grid
             await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> { jobStatusChangeEvent });
+        }
+
+        ///<inheritdoc/>
+        public async Task GenerateJobStatusChangedEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, List<long> jobIds, JobStatus newJobsStatus)
+        {
+            if (jobIds.IsNullOrEmpty())
+                return;
+
+            foreach (var jobId in jobIds)
+            {
+                await GenerateJobStatusChangedEvent(eventGridClient, topicHostName, environmentThisEventIsBeingGenerateFrom, jobId, newJobsStatus);
+            }
         }
 
         ///<inheritdoc/>
@@ -76,10 +94,18 @@ namespace Rosterd.Services.Jobs
             var currentJob = await _context.Jobs.FindAsync(jobId.ToInt64());
             var searchModelToUpdate = currentJob.ToSearchModel();
 
-            //TODO:Remove jobs that are 'finished' from the search index.
-
             //Update the existing job document with the new status changes
             await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, new List<JobSearchModel>{searchModelToUpdate});
+        }
+
+        ///<inheritdoc/>
+        public async Task RemoveFinishedJobsFromSearch(List<long> jobsIdsToRemoveFromSearch)
+        {
+            if (jobsIdsToRemoveFromSearch.IsNullOrEmpty())
+                return;
+
+            var jobsToRemove = jobsIdsToRemoveFromSearch.Select(s => s.ToString()).AlwaysList();
+            await _searchIndexProvider.DeleteDocumentsFromIndex(RosterdConstants.Search.JobsIndex, JobSearchModel.Key(), jobsToRemove);
         }
     }
 }

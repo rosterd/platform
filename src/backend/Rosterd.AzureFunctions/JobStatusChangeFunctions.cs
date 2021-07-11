@@ -6,6 +6,7 @@ using Azure;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Indexes.Models;
+using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Azure.EventGrid.Models;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Rosterd.AzureFunctions.Config;
 using Rosterd.Domain;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Search;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Services.Jobs.Interfaces;
@@ -27,13 +29,21 @@ namespace Rosterd.AzureFunctions
         private readonly IOptions<FunctionSettings> _settings;
         private readonly IJobsService _jobsService;
         private readonly IJobEventsService _jobEventsService;
+        private readonly IEventGridClient _eventGridClient;
 
-        public JobStatusChangeFunctions(ILogger<EventConsumerFunctions> logger, IOptions<FunctionSettings> settings, IJobsService jobsService, IJobEventsService jobEventsService)
+        private string RosterdEventGridTopicHost { get; }
+        private string CurrentEnvironment { get; set; }
+
+        public JobStatusChangeFunctions(ILogger<EventConsumerFunctions> logger, IOptions<FunctionSettings> settings, IJobsService jobsService, IJobEventsService jobEventsService, IEventGridClient eventGridClient)
         {
             _logger = logger;
             _settings = settings;
             _jobsService = jobsService;
             _jobEventsService = jobEventsService;
+            _eventGridClient = eventGridClient;
+
+            RosterdEventGridTopicHost = new Uri(settings.Value.EventGridTopicEndpoint).Host;
+            CurrentEnvironment = settings.Value.Environment;
         }
 
         [FunctionName(nameof(MovedJobsPastTimeLimitToExpiredState))]
@@ -42,20 +52,32 @@ namespace Rosterd.AzureFunctions
             _logger.LogInformation($"{nameof(MovedJobsPastTimeLimitToExpiredState)} - triggered on UTC Time {DateTime.UtcNow}");
 
             //Get all the jobs that need to be expired
-            var jobsThatNeedsToBeExpired = (await _jobsService.GetAllJobsThatAreExpiredButStatusStillNotSetToExpired()).AlwaysList();
+            var jobIdsThatNeedExpiring = (await _jobsService.GetAllJobsThatAreExpiredButStatusStillNotSetToExpired()).AlwaysList();
 
-            //foreach (var jobToBeExpired in jobsThatNeedsToBeExpired)
-            //{
-            //    _jobEventsService.GenerateJobStatusChangedEvent()
-            //}
+            await _jobEventsService.GenerateJobStatusChangedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobIdsThatNeedExpiring,
+                JobStatus.Expired);
         }
 
-        [FunctionName(nameof(MoveFinishedJobsToFeedbackState))]
-        public async Task MoveFinishedJobsToFeedbackState([TimerTrigger("%FunctionSettings:MoveFinishedJobsToFeedbackStateSchedule%", RunOnStartup = false)] TimerInfo myTimer)
+        [FunctionName(nameof(MoveJobsPastEndDateToFeedbackState))]
+        public async Task MoveJobsPastEndDateToFeedbackState([TimerTrigger("%FunctionSettings:MoveJobsPastEndDateToFeedbackStateSchedule%", RunOnStartup = false)] TimerInfo myTimer)
         {
-            _logger.LogInformation($"{nameof(MoveFinishedJobsToFeedbackState)} - triggered on UTC Time {DateTime.UtcNow}");
+            _logger.LogInformation($"{nameof(MoveJobsPastEndDateToFeedbackState)} - triggered on UTC Time {DateTime.UtcNow}");
 
+            //Get all the jobs that need to be moved to feedback pending
+            var jobIdsThatNeedFeedbackPending = (await _jobsService.GetAllJobsThatArePastEndDateButStatusStillNotSetToFeedback()).AlwaysList();
 
+            await _jobEventsService.GenerateJobStatusChangedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobIdsThatNeedFeedbackPending,
+                JobStatus.FeedbackPending);
+        }
+
+        [FunctionName(nameof(MoveFinishedJobsFromSearch))]
+        public async Task MoveFinishedJobsFromSearch([TimerTrigger("%FunctionSettings:MoveFinishedJobsFromSearchSchedule%", RunOnStartup = false)] TimerInfo myTimer)
+        {
+            _logger.LogInformation($"{nameof(MoveFinishedJobsFromSearch)} - triggered on UTC Time {DateTime.UtcNow}");
+
+            //Get all the jobs that are finished and remove them from Azure Search
+            var JobsThatHaveFinished = (await _jobsService.GetAllJobsThatAreFinished()).AlwaysList();
+            await _jobEventsService.RemoveFinishedJobsFromSearch(JobsThatHaveFinished);
         }
     }
 }

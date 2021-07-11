@@ -113,10 +113,7 @@ namespace Rosterd.Client.Api
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rosterd.Client.Api v1"));
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();//.RequireAuthorization();
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }
