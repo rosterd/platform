@@ -1,11 +1,11 @@
 import React, {useContext, useEffect} from 'react';
+import {useAuth0} from '@auth0/auth0-react';
+import {AuthType} from 'shared/constants/AppEnums';
 import AppContext from '../../utility/AppContext';
 import Layouts from './Layouts';
 import useStyles from '../../../shared/jss/common/common.style';
 import AppContextPropsType from '../../../types/AppContextPropsType';
 import LayoutContextProvider from './LayoutContextProvider';
-import {useAuth0} from '@auth0/auth0-react';
-import {AuthType} from 'shared/constants/AppEnums';
 
 interface CremaLayoutProps {}
 
@@ -21,7 +21,7 @@ const CremaLayout: React.FC<CremaLayoutProps> = () => {
         loginWithRedirect();
       } else {
         const idToken = await getIdTokenClaims();
-        const roles = idToken && idToken['https://rosterd.com/roles'];
+        const roles = idToken && process.env.REACT_APP_AUTH0_ROLES_NAMESPACE && idToken[process.env.REACT_APP_AUTH0_ROLES_NAMESPACE];
         updateAuthUser({
           uid: '',
           displayName: user?.nickname,
