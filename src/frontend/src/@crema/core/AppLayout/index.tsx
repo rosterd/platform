@@ -22,12 +22,16 @@ const CremaLayout: React.FC<CremaLayoutProps> = () => {
       } else {
         const idToken = await getIdTokenClaims();
         const roles = idToken && process.env.REACT_APP_AUTH0_ROLES_NAMESPACE && idToken[process.env.REACT_APP_AUTH0_ROLES_NAMESPACE];
+        const orgId = idToken?.org_id;
+        if (orgId) localStorage.setItem('organization_id', orgId);
+
         updateAuthUser({
           uid: '',
           displayName: user?.nickname,
           email: user?.email,
           authType: AuthType.AUTH0,
           role: roles || [],
+          orgId: idToken?.org_id,
         });
       }
     })();
