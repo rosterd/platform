@@ -20,26 +20,34 @@ const providerConfig = {
   clientId: process.env.REACT_APP_AUTH0_CLIENT_ID || '',
   ...(process.env.REACT_APP_AUTH0_AUDIENCE ? {audience: process.env.REACT_APP_AUTH0_AUDIENCE} : null),
   redirectUri: window.location.origin,
+  currentOrganization: null,
   onRedirectCallback,
 };
 
-const App = () => (
-  <Auth0Provider {...providerConfig}>
-    <ContextProvider>
-      <InfoViewContextProvider>
-        <CremaThemeProvider>
-          <CremaStyleProvider>
-            <LocaleProvider>
-              <BrowserRouter>
-                <CssBaseline />
-                <AppLayout />
-              </BrowserRouter>
-            </LocaleProvider>
-          </CremaStyleProvider>
-        </CremaThemeProvider>
-      </InfoViewContextProvider>
-    </ContextProvider>
-  </Auth0Provider>
-);
+const App = () => {
+  const currentOrganization = localStorage.getItem('organization_id');
+  const auth0Config = {
+    ...providerConfig,
+    ...(currentOrganization ? {organization: currentOrganization} : null),
+  };
+  return (
+    <Auth0Provider {...auth0Config}>
+      <ContextProvider>
+        <InfoViewContextProvider>
+          <CremaThemeProvider>
+            <CremaStyleProvider>
+              <LocaleProvider>
+                <BrowserRouter>
+                  <CssBaseline />
+                  <AppLayout />
+                </BrowserRouter>
+              </LocaleProvider>
+            </CremaStyleProvider>
+          </CremaThemeProvider>
+        </InfoViewContextProvider>
+      </ContextProvider>
+    </Auth0Provider>
+  );
+};
 
 export default App;
