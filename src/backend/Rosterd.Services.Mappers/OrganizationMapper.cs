@@ -17,7 +17,10 @@ namespace Rosterd.Services.Mappers
             {
                 OrganizationId = dataModel.OrganizationId,
                 OrganizationName = dataModel.OrganizationName,
-                Address = dataModel.Address
+                Auth0OrganizationName = dataModel.Auth0OrganizationId,
+                Phone = dataModel.Phone,
+                Address = dataModel.Address,
+                Comments = dataModel.Comments
             };
 
             return organizationModel;
@@ -37,7 +40,10 @@ namespace Rosterd.Services.Mappers
         {
             organizationFromDb.Address = domainModelToUpdate.Address;
             organizationFromDb.OrganizationName = domainModelToUpdate.OrganizationName;
-
+            organizationFromDb.Auth0OrganizationId = domainModelToUpdate.Auth0OrganizationName;
+            organizationFromDb.Phone = domainModelToUpdate.Phone;
+            organizationFromDb.Comments = domainModelToUpdate.Comments;
+            
             return organizationFromDb;
         }
 
@@ -46,8 +52,10 @@ namespace Rosterd.Services.Mappers
             var organizationToSave = new Data.SqlServer.Models.Organization
             {
                 OrganizationName = domainModel.OrganizationName,
+                Auth0OrganizationId = domainModel.Auth0OrganizationName,
                 Address = domainModel.Address,
-                TenantId = domainModel.TenantId.Value
+                Comments = domainModel.Comments,
+                Phone = domainModel.Phone
             };
 
             return organizationToSave;

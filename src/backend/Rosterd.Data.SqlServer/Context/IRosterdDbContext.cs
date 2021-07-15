@@ -19,7 +19,6 @@ namespace Rosterd.Data.SqlServer.Context
         DbSet<Skill> Skills { get; set; }
         DbSet<StaffFacility> StaffFacilities { get; set; }
         DbSet<StaffSkill> StaffSkills { get; set; }
-        DbSet<Tenant> Tenants { get; set; }
         DbSet<Staff> Staff { get; set; }
 
 

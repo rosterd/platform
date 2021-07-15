@@ -14,6 +14,15 @@ namespace Rosterd.Domain.Models.OrganizationModels
 
         [Required]
         [StringLength(1000)]
+        public string Auth0OrganizationName { get; set; }
+
+        [StringLength(1000)]
+        public string Phone { get; set; }
+
+        [StringLength(1000)]
         public string Address { get; set; }
+
+        [StringLength(1000)]
+        public string Comments { get; set; }
     }
 }

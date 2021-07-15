@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 namespace Rosterd.Data.SqlServer.Models
 {
     [Table("Organization")]
-    [Index(nameof(TenantId), Name = "IX_Fk_Organization_Tenant")]
     public partial class Organization
     {
         public Organization()
@@ -20,16 +19,18 @@ namespace Rosterd.Data.SqlServer.Models
 
         [Key]
         public long OrganizationId { get; set; }
-        public long TenantId { get; set; }
         [Required]
         [StringLength(1000)]
         public string OrganizationName { get; set; }
         [StringLength(1000)]
+        public string Auth0OrganizationId { get; set; }
+        [StringLength(1000)]
         public string Address { get; set; }
+        [StringLength(1000)]
+        public string Phone { get; set; }
+        [StringLength(1000)]
+        public string Comments { get; set; }
 
-        [ForeignKey(nameof(TenantId))]
-        [InverseProperty("Organizations")]
-        public virtual Tenant Tenant { get; set; }
         [InverseProperty(nameof(Facility.Organzation))]
         public virtual ICollection<Facility> Facilities { get; set; }
     }

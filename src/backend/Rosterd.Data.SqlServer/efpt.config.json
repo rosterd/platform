@@ -60,13 +60,9 @@
       {
          "Name": "[dbo].[StaffSkill]",
          "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Tenant]",
-         "ObjectType": 0
       }
    ],
-   "UiHint": "sqls-rosterd-prod.rosterd",
+   "UiHint": "P:\\penteractnz\\rosterd\\src\\backend\\Rosterd.Database\\Rosterd.Database.sqlproj",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
