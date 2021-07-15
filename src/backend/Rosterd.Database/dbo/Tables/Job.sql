@@ -14,13 +14,14 @@
     [LastJobStatusChangeDateTimeUTC] DATETIME2 (7)   NOT NULL,
     [Responsibilities]               NVARCHAR (MAX)  NULL,
     [Experience]                     NVARCHAR (MAX)  NULL,
-    [PreviouslyCancelledJobId]       BIGINT          NULL,
     [IsDayShift]                     BIT             NULL,
     [IsNightShift]                   BIT             NULL,
     CONSTRAINT [Pk_Job_JobId] PRIMARY KEY CLUSTERED ([JobId] ASC),
     CONSTRAINT [Fk_Job_Facility] FOREIGN KEY ([FacilityId]) REFERENCES [dbo].[Facility] ([FacilityId]),
     CONSTRAINT [Unq_Job_JobId] UNIQUE NONCLUSTERED ([JobId] ASC)
 );
+
+
 
 
 
