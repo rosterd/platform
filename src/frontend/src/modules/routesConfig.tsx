@@ -28,6 +28,7 @@ const routesConfig: NavItemProps[] = [
     type: 'item',
     icon: 'group',
     url: '/resources',
+    auth: ['Manager'],
   },
   {
     id: 'skills',
@@ -36,15 +37,55 @@ const routesConfig: NavItemProps[] = [
     type: 'item',
     icon: 'directionsRun',
     url: '/skills',
+    auth: ['Manager'],
   },
   {
-    id: 'facilities',
-    title: 'Facilities',
-    messageId: 'sidebar.facilities',
-    type: 'item',
+    id: 'facilitiesManagement',
+    title: 'Facilities Management',
+    messageId: 'sidebar.facilitiesManagement',
+    type: 'collapse',
     icon: 'business',
-    url: '/facilities',
     auth: ['Admin'],
+    children: [
+      {
+        id: 'facilities',
+        title: 'Facilities',
+        messageId: 'sidebar.facilitiesManagement.facilities',
+        type: 'item',
+        url: '/facilities',
+      },
+      {
+        id: 'admin',
+        title: 'Admins',
+        messageId: 'sidebar.facilitiesManagement.admin',
+        type: 'item',
+        url: '/admins',
+      },
+    ],
+  },
+  {
+    id: 'organizations',
+    title: 'Organizations Management',
+    messageId: 'sidebar.organizationManagement',
+    type: 'collapse',
+    icon: 'business',
+    auth: ['RosterdAdmin'],
+    children: [
+      {
+        id: 'organisations',
+        title: 'Organisations',
+        messageId: 'sidebar.organizationManagement.organizations',
+        type: 'item',
+        url: '/organizations',
+      },
+      {
+        id: 'admin',
+        title: 'Admins',
+        messageId: 'sidebar.facilitiesManagement.admin',
+        type: 'item',
+        url: '/organization-admins',
+      },
+    ],
   },
   {
     id: 'jobs',
@@ -53,6 +94,7 @@ const routesConfig: NavItemProps[] = [
     type: 'item',
     icon: 'work',
     url: '/jobs',
+    auth: ['Manager'],
   },
   {
     id: 'reports',
@@ -61,6 +103,7 @@ const routesConfig: NavItemProps[] = [
     type: 'item',
     icon: 'assessment',
     url: '/reports',
+    auth: ['Manager'],
   },
 ];
 export default routesConfig;

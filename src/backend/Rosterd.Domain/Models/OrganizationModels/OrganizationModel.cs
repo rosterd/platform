@@ -6,8 +6,6 @@ namespace Rosterd.Domain.Models.OrganizationModels
     {
         public long? OrganizationId { get; set; }
 
-        public long? TenantId { get; set; }
-
         [Required]
         [StringLength(1000)]
         public string OrganizationName { get; set; }

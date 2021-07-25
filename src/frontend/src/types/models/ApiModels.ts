@@ -599,71 +599,6 @@ export interface paths {
         };
       };
     };
-    delete: {
-      parameters: {
-        query: {
-          /** The Organization to be deleted */
-          organizationId?: number;
-        };
-        path: {
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: unknown;
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
   };
   "/api/v{version}/Skills": {
     get: {
@@ -1170,6 +1105,69 @@ export interface paths {
         500: unknown;
       };
     };
+    delete: {
+      parameters: {
+        path: {
+          /** The Facility to be deleted */
+          facilityId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
   };
   "/api/v{version}/Jobs/{jobId}": {
     get: {
@@ -1381,6 +1379,69 @@ export interface paths {
         500: unknown;
       };
     };
+    delete: {
+      parameters: {
+        path: {
+          /** The Organization to be deleted */
+          organizationId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
   };
   "/api/v{version}/Skills/{skillId}": {
     get: {
@@ -1399,6 +1460,69 @@ export interface paths {
             "text/json": components["schemas"]["SkillModel"];
           };
         };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        path: {
+          /** The Skill to be deleted */
+          skillId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
         /** Bad Request */
         400: {
           content: {
@@ -1593,140 +1717,6 @@ export interface paths {
         path: {
           /** The Staff member to mark as inactive */
           staffId: number;
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: unknown;
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
-  };
-  "/api/v{version}/facilities/facilityid": {
-    delete: {
-      parameters: {
-        query: {
-          /** The Facility to be deleted */
-          facilityId?: number;
-        };
-        path: {
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: unknown;
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
-  };
-  "/api/v{version}/Skills/skillId": {
-    delete: {
-      parameters: {
-        query: {
-          /** The Skill to be deleted */
-          skillId?: number;
-        };
-        path: {
           version: string;
         };
       };
@@ -2185,7 +2175,7 @@ export interface components {
       | "NoShow"
       | "InProgress"
       | "FeedbackPending"
-      | "Finished"
+      | "Completed"
       | "Expired"
       | "Cancelled";
     OrganizationModel: {
