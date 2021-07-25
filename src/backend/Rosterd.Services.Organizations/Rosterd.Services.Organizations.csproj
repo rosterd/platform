@@ -1,21 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Z.ExtensionMethods" Version="2.1.1" />
+    <PackageReference Include="Z.ExtensionMethods" Version="2.1.1"/>
+    <PackageReference Include="RestSharp" Version="106.12.0"/>
+    <PackageReference Include="RestSharp.Serializers.SystemTextJson" Version="106.12.0"/>
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj" />
-    <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
-    <ProjectReference Include="..\Rosterd.Infrastructure.Extensions\Rosterd.Infrastructure.Extensions.csproj" />
-    <ProjectReference Include="..\Rosterd.Services.Mappers\Rosterd.Services.Mappers.csproj" />
+    <ProjectReference Include="..\Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj"/>
+    <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj"/>
+    <ProjectReference Include="..\Rosterd.Infrastructure.Extensions\Rosterd.Infrastructure.Extensions.csproj"/>
+    <ProjectReference Include="..\Rosterd.Services.Mappers\Rosterd.Services.Mappers.csproj"/>
   </ItemGroup>
-
   <ItemGroup>
-    <Folder Include="Interfaces\" />
+    <Folder Include="Interfaces\"/>
   </ItemGroup>
 </Project>

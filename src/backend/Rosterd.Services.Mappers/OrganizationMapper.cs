@@ -55,7 +55,6 @@ namespace Rosterd.Services.Mappers
                 Auth0OrganizationId = domainModel.Auth0OrganizationName,
                 Address = domainModel.Address,
                 Comments = domainModel.Comments,
-                Phone = domainModel.Phone
             };
 
             return organizationToSave;

@@ -13,7 +13,6 @@ using Rosterd.Web.Infra.ValidationAttributes;
 
 namespace Rosterd.Admin.Api.Controllers
 {
-    //TODO: This should only be available to rosterd super admins
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Organizations")]
     public class OrganizationsController : BaseApiController

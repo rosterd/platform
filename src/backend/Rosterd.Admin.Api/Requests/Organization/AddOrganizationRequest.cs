@@ -16,8 +16,6 @@ namespace Rosterd.Admin.Api.Requests.Organization
 
             //Organization id should be null when creating, this is auto-assigned by us as the primary key
             RuleFor(s => s.Organization.OrganizationId).Null();
-
-            RuleFor(s => s.Organization.TenantId).NotNull();
         }
     }
 }
