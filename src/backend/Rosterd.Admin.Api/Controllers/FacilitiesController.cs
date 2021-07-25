@@ -13,6 +13,7 @@ using Rosterd.Web.Infra.Filters.Swagger;
 using Rosterd.Web.Infra.ValidationAttributes;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 using Microsoft.AspNetCore.Authorization;
+using Rosterd.Domain.Settings;
 
 namespace Rosterd.Admin.Api.Controllers
 {

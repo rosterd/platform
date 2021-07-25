@@ -49,7 +49,7 @@ namespace Rosterd.Admin.Api
             //Add auth and JWT as the first thing (This always needs to be the first thing to configure)
             //services.AddCustomAuthenticationWithJwtBearer(Configuration);
 
-            var domain = $"https://{Configuration["Auth0:Domain"]}/";
+            var domain = $"https://{Configuration["Auth0Settings:Domain"]}/";
 
             services
             .AddAuthentication(options =>   {
@@ -58,15 +58,14 @@ namespace Rosterd.Admin.Api
             })
             .AddJwtBearer(options => {
                 options.Authority = domain;
-                options.Audience = Configuration["Auth0:Audience"];
+                options.Audience = Configuration["Auth0Settings:Audience"];
             });
             
             services.AddAuthorization(options => {
                 options.AddPolicy("read:jobs", policy => policy.Requirements.Add(new HasScopeRequirement("read:jobs", domain)));
                 options.AddPolicy("create:facility", policy => policy.Requirements.Add(new HasScopeRequirement("create:facility", domain)));
             });
-
-
+            
             services
                 .AddApplicationInsightsTelemetry()
                 .AddAppAndDatabaseDependencies(Configuration, HostingEnvironment)

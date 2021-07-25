@@ -28,6 +28,7 @@ namespace Rosterd.Web.Infra.Extensions
         public static IServiceCollection AddCustomCaching(this IServiceCollection services) =>
             services
                 .AddMemoryCache()
+
                 // Adds IDistributedCache which is a distributed cache shared between multiple servers.
                 //For now memory cache will serve us ok, when the use case comes we can change to Redis with
                 //AddDistributedRedisCache

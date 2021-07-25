@@ -1,4 +1,6 @@
 using System;
+using Auth0.AuthenticationApi;
+using Auth0.ManagementApi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.EventGrid;
@@ -11,8 +13,10 @@ using Microsoft.Extensions.Hosting;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.TableStorage.Context;
 using Rosterd.Domain;
+using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
+using Rosterd.Services.Auth0;
 using Rosterd.Services.Facilities;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Services.Jobs;
@@ -34,6 +38,7 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
         {
             //Register all the settings
             services.Configure<AppSettings>(config.GetSection(nameof(AppSettings)));
+            services.Configure<Auth0Settings>(config.GetSection(nameof(Auth0Settings)));
 
             // Add useful interface for accessing the ActionContext && HttpContext && IUrlHelper outside a controller (ie: in the middleware)
             services.AddHttpContextAccessor();
@@ -69,6 +74,12 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 
             //Event grids
             services.AddScoped<IEventGridClient>(provider => new EventGridClient(new TopicCredentials(config.GetValue<string>("AppSettings:EventGridTopicKey"))));
+
+            //Auth0
+            var domain = $"{config["Auth0:Domain"]}/";
+            services.AddSingleton<IManagementConnection, HttpClientManagementConnection>();
+            services.AddSingleton<AuthenticationApiClient>(s => new AuthenticationApiClient(domain));
+            services.AddSingleton<IAuth0AuthenticationService, Auth0AuthenticationService>();
         }
 
         public static void RegisterDatabaseDependencies(this IServiceCollection services, IConfiguration config, IWebHostEnvironment hostingEnvironment)

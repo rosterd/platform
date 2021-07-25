@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.StaffModels;
+using Rosterd.Domain.Settings;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 using Rosterd.Web.Infra.ValidationAttributes;

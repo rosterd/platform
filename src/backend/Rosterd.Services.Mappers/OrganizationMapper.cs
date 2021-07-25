@@ -52,9 +52,9 @@ namespace Rosterd.Services.Mappers
             var organizationToSave = new Data.SqlServer.Models.Organization
             {
                 OrganizationName = domainModel.OrganizationName,
-                Auth0OrganizationId = domainModel.Auth0OrganizationName,
                 Address = domainModel.Address,
                 Comments = domainModel.Comments,
+                IsActive = true
             };
 
             return organizationToSave;

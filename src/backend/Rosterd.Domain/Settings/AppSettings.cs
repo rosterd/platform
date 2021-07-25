@@ -1,4 +1,4 @@
-namespace Rosterd.Admin.Api
+namespace Rosterd.Domain.Settings
 {
     public class AppSettings
     {

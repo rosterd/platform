@@ -1,3 +1,5 @@
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +9,7 @@ using Rosterd.Admin.Api.Requests.Organization;
 using Rosterd.Domain;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.OrganizationModels;
+using Rosterd.Domain.Settings;
 using Rosterd.Services.Organizations.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 using Rosterd.Web.Infra.ValidationAttributes;
@@ -69,17 +72,14 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
-        ///     Update an Organization
+        /// Update an Organization.
+        /// THIS IS NOT IMPLEMENTED, WILL RETURN A 500
         /// </summary>
         /// <param name="request">The Organization to update</param>
         /// <returns></returns>
         [HttpPut]
         [OperationOrderAttribute(4)]
-        public async Task<ActionResult<OrganizationModel>> UpdateOrganization([Required] [FromBody] UpdateOrganizationRequest request)
-        {
-            var organization = await _organizationService.UpdateOrganization(request.Organization);
-            return organization;
-        }
+        public async Task<ActionResult<OrganizationModel>> UpdateOrganization([Required] [FromBody] UpdateOrganizationRequest request) => throw new NotImplementedException("Not Implemented");
 
 
         /// <summary>

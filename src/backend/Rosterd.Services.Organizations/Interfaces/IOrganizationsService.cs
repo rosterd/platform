@@ -23,13 +23,6 @@ namespace Rosterd.Services.Organizations.Interfaces
         Task<OrganizationModel> CreateOrganization(OrganizationModel organizationModel);
 
         /// <summary>
-        /// Updates an existing organization
-        /// </summary>
-        /// <param name="organizationModel"></param>
-        /// <returns></returns>
-        Task<OrganizationModel> UpdateOrganization(OrganizationModel organizationModel);
-
-        /// <summary>
         /// Deletes organization
         /// </summary>
         /// <param name="organizationId"></param>

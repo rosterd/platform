@@ -22,6 +22,7 @@ namespace Rosterd.Data.SqlServer.Models
         [Required]
         [StringLength(1000)]
         public string OrganizationName { get; set; }
+        [Required]
         [StringLength(1000)]
         public string Auth0OrganizationId { get; set; }
         [StringLength(1000)]
@@ -30,6 +31,7 @@ namespace Rosterd.Data.SqlServer.Models
         public string Phone { get; set; }
         [StringLength(1000)]
         public string Comments { get; set; }
+        public bool IsActive { get; set; }
 
         [InverseProperty(nameof(Facility.Organzation))]
         public virtual ICollection<Facility> Facilities { get; set; }

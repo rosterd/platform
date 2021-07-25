@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Job;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.JobModels;
+using Rosterd.Domain.Settings;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Rosterd.Domain;
+using Rosterd.Domain.Settings;
 
 namespace Rosterd.Admin.Api.Controllers
 {
