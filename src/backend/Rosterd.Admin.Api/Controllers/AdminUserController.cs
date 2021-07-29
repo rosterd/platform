@@ -17,11 +17,11 @@ using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParam
 namespace Rosterd.Admin.Api.Controllers
 {
     /// <summary>
-    /// All actions related to staff
+    /// All actions related to admin users
     /// </summary>
     [ApiVersion("1.0")]
-    [ApiExplorerSettings(GroupName = "Staff")]
-    public class StaffController : BaseApiController
+    [ApiExplorerSettings(GroupName = "Admin User")]
+    public class AdminUserController : BaseApiController
     {
         private readonly ILogger<StaffController> _logger;
         private readonly IStaffService _staffService;
@@ -29,7 +29,8 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IStaffEventsService _staffEventsService;
         private readonly IEventGridClient _eventGridClient;
 
-        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService, IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings) : base(appSettings)
+        public AdminUserController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService,
+            IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings) : base(appSettings)
         {
             _logger = logger;
             _staffService = staffService;
@@ -46,17 +47,21 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [OperationOrder(1)]
-        public async Task<ActionResult<Domain.Models.PagedList<StaffModel>>> GetAllStaff([FromQuery] long? facilityId, [FromQuery] PagingQueryStringParameters pagingParameters)
+        public async Task<ActionResult<Domain.Models.PagedList<StaffModel>>> GetAllAdmins([FromQuery] long? facilityId, [FromQuery] PagingQueryStringParameters pagingParameters)
         {
-            pagingParameters ??= new PagingQueryStringParameters();
-            Domain.Models.PagedList<StaffModel> pagedList;
+            var organizationId = 36;
 
-            if (facilityId == null)
-                pagedList = await _staffService.GetAllStaff(pagingParameters);
-            else
-                pagedList = await _staffService.GetStaffForFacility(pagingParameters, facilityId.Value);
+            //pagingParameters ??= new PagingQueryStringParameters();
+            //Domain.Models.PagedList<StaffModel> pagedList;
 
-            return pagedList;
+            //if (facilityId == null)
+            //    pagedList = await _staffService.GetAllStaff(pagingParameters);
+            //else
+            //    pagedList = await _staffService.GetStaffForFacility(pagingParameters, facilityId.Value);
+
+            //return pagedList;
+
+            return null;
         }
 
         /// <summary>
@@ -67,18 +72,19 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(2)]
         public async Task<ActionResult<StaffModel>> GetStaffById([ValidNumberRequired] long? id)
         {
-            var staffModel = await _staffService.GetStaff(id.Value);
-            return staffModel;
+            //var staffModel = await _staffService.GetStaff(id.Value);
+            //return staffModel;
+            return null;
         }
 
         /// <summary>
-        /// Adds a new Staff member
+        /// Adds a new admin user
         /// </summary>
-        /// <param name="request">The Staff member to add</param>
+        /// <param name="request">The admin to add</param>
         /// <returns></returns>
         [HttpPost]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<StaffModel>> AddNewStaffMember([FromBody] AddAdminUserRequest request)
+        public async Task<ActionResult<StaffModel>> AddNewAdminUser([FromBody] AddAdminUserRequest request)
         {
             //Create the staff
             var staff = await _staffService.CreateStaff(AddAdminUserRequest.ToStaffModel(request));

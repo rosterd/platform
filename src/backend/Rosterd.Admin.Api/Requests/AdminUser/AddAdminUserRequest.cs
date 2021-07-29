@@ -2,16 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using FluentValidation;
-using Rosterd.Data.SqlServer.Models;
-using Rosterd.Domain;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Web.Infra.ValidationAttributes;
 
-namespace Rosterd.Admin.Api.Requests.Staff
+namespace Rosterd.Admin.Api.Requests.AdminUser
 {
     public class AddAdminUserRequest
     {
