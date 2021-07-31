@@ -16,7 +16,8 @@ using Rosterd.Domain;
 using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
-using Rosterd.Services.Auth0;
+using Rosterd.Services.Auth;
+using Rosterd.Services.Auth.Interfaces;
 using Rosterd.Services.Facilities;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Services.Jobs;
@@ -75,11 +76,12 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             //Event grids
             services.AddScoped<IEventGridClient>(provider => new EventGridClient(new TopicCredentials(config.GetValue<string>("AppSettings:EventGridTopicKey"))));
 
-            //Auth0
+            //Auth0, auth, roles
             var domain = $"{config["Auth0:Domain"]}/";
             services.AddSingleton<IManagementConnection, HttpClientManagementConnection>();
             services.AddSingleton<AuthenticationApiClient>(s => new AuthenticationApiClient(domain));
             services.AddSingleton<IAuth0AuthenticationService, Auth0AuthenticationService>();
+            services.AddSingleton<IRolesService, RolesService>();
         }
 
         public static void RegisterDatabaseDependencies(this IServiceCollection services, IConfiguration config, IWebHostEnvironment hostingEnvironment)

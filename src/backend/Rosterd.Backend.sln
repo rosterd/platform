@@ -70,7 +70,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Infrastructure.Sear
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Organizations", "Rosterd.Services.Organizations\Rosterd.Services.Organizations.csproj", "{32CFF422-C4A4-41CA-875D-051E3E2A28B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Services.Auth0", "Rosterd.Services.Auth0\Rosterd.Services.Auth0.csproj", "{AC5F13FB-87C8-48E3-9876-AA4D030CBBC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Auth", "Rosterd.Services.Auth\Rosterd.Services.Auth.csproj", "{A8D63EAF-14D3-4729-81D2-E171346C0740}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -163,10 +163,10 @@ Global
 		{32CFF422-C4A4-41CA-875D-051E3E2A28B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32CFF422-C4A4-41CA-875D-051E3E2A28B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32CFF422-C4A4-41CA-875D-051E3E2A28B9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AC5F13FB-87C8-48E3-9876-AA4D030CBBC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AC5F13FB-87C8-48E3-9876-AA4D030CBBC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AC5F13FB-87C8-48E3-9876-AA4D030CBBC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AC5F13FB-87C8-48E3-9876-AA4D030CBBC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8D63EAF-14D3-4729-81D2-E171346C0740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8D63EAF-14D3-4729-81D2-E171346C0740}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8D63EAF-14D3-4729-81D2-E171346C0740}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8D63EAF-14D3-4729-81D2-E171346C0740}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -195,7 +195,7 @@ Global
 		{0A156225-BED5-4CC9-8ECE-18B2D035B878} = {9D54CBC3-F894-415E-A94C-885229B7EE36}
 		{CA656106-0AB4-4703-80BB-B4E00AF8B2ED} = {49EB7B71-D49C-48A9-B929-B4FCC1D0DFC6}
 		{32CFF422-C4A4-41CA-875D-051E3E2A28B9} = {C16B881C-491C-4B94-92DA-ACE6A9D489BF}
-		{AC5F13FB-87C8-48E3-9876-AA4D030CBBC8} = {C16B881C-491C-4B94-92DA-ACE6A9D489BF}
+		{A8D63EAF-14D3-4729-81D2-E171346C0740} = {C16B881C-491C-4B94-92DA-ACE6A9D489BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2DA4ED17-3CA8-499E-A97F-35DAF7C0E6C3}

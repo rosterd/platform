@@ -36,7 +36,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj" />
     <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
-    <ProjectReference Include="..\Rosterd.Services.Auth0\Rosterd.Services.Auth0.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Facilities\Rosterd.Services.Facilities.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Jobs\Rosterd.Services.Jobs.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Skills\Rosterd.Services.Skills.csproj" />

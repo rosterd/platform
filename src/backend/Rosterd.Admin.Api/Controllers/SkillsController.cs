@@ -96,6 +96,5 @@ namespace Rosterd.Admin.Api.Controllers
             await _skillService.RemoveSkill(skillId.Value);
             return Ok();
         }
-
     }
 }

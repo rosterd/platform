@@ -13,7 +13,7 @@ using Auth0.AuthenticationApi;
 using Auth0.AuthenticationApi.Models;
 using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
-using Rosterd.Services.Auth0;
+using Rosterd.Services.Auth.Interfaces;
 
 namespace Rosterd.Services.Organizations
 { public class OrganizationsService : IOrganizationsService

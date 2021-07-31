@@ -6,8 +6,9 @@ using Auth0.ManagementApi;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Rosterd.Domain.Settings;
+using Rosterd.Services.Auth.Interfaces;
 
-namespace Rosterd.Services.Auth0
+namespace Rosterd.Services.Auth
 {
     public class Auth0AuthenticationService : IAuth0AuthenticationService
     {
