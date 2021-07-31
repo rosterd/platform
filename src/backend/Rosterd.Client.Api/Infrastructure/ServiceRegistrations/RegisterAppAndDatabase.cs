@@ -12,8 +12,6 @@ using Rosterd.Infrastructure.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
 using Rosterd.Services.Jobs;
 using Rosterd.Services.Jobs.Interfaces;
-using Rosterd.Services.Users;
-using Rosterd.Services.Users.Interfaces;
 
 namespace Rosterd.Client.Api.Infrastructure.ServiceRegistrations
 {
@@ -29,7 +27,6 @@ namespace Rosterd.Client.Api.Infrastructure.ServiceRegistrations
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //Services
-            services.AddScoped<IAdminUserService, AdminUserService>();
             services.AddScoped<IJobsService, JobsService>();
 
             //User context

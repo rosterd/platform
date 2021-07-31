@@ -78,10 +78,10 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<StaffModel>> AddNewStaffMember([FromBody] AddAdminUserRequest request)
+        public async Task<ActionResult<StaffModel>> AddNewStaffMember([FromBody] AddStaffRequest request)
         {
             //Create the staff
-            var staff = await _staffService.CreateStaff(AddAdminUserRequest.ToStaffModel(request));
+            var staff = await _staffService.CreateStaff(AddStaffRequest.ToStaffModel(request));
 
             //Generate a new staff created event
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staff.StaffId.Value);

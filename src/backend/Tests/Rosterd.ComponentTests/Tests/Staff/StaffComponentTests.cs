@@ -95,7 +95,7 @@ namespace Rosterd.ComponentTests.Tests.Staff
         private async Task<int> createStaffAsync()
         {
             var staffId = new Random().Next(1000);
-            var addUpdateStaffRequest = new AddAdminUserRequest
+            var addUpdateStaffRequest = new AddStaffRequest
             {
                 
             };

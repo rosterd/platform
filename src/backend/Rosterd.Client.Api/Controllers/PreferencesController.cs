@@ -10,7 +10,6 @@ using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
-using Rosterd.Services.Users.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 
 namespace Rosterd.Client.Api.Controllers

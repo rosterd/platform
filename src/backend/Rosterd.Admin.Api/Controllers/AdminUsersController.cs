@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Rosterd.Admin.Api.Requests.AdminUser;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.StaffModels;
@@ -21,7 +22,7 @@ namespace Rosterd.Admin.Api.Controllers
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Admin User")]
-    public class AdminUserController : BaseApiController
+    public class AdminUsersController : BaseApiController
     {
         private readonly ILogger<StaffController> _logger;
         private readonly IStaffService _staffService;
@@ -29,7 +30,7 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IStaffEventsService _staffEventsService;
         private readonly IEventGridClient _eventGridClient;
 
-        public AdminUserController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService,
+        public AdminUsersController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService,
             IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings) : base(appSettings)
         {
             _logger = logger;
@@ -40,58 +41,29 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
-        /// Gets all the resources 
+        /// Gets all the admins for this organization
         /// </summary>
-        /// <param name="facilityId">The facility id to filter all the list of Staff by</param>
-        /// <param name="pagingParameters"></param>
+        /// <param name="organizationId">The Organization to get all admins for</param>
         /// <returns></returns>
-        [HttpGet]
-        [OperationOrder(1)]
-        public async Task<ActionResult<Domain.Models.PagedList<StaffModel>>> GetAllAdmins([FromQuery] long? facilityId, [FromQuery] PagingQueryStringParameters pagingParameters)
+        [HttpGet("{organizationId}")]
+        [OperationOrderAttribute(1)]
+        public async Task<ActionResult> GetAllAdminsForOrganization()
         {
-            var organizationId = 36;
-
-            //pagingParameters ??= new PagingQueryStringParameters();
-            //Domain.Models.PagedList<StaffModel> pagedList;
-
-            //if (facilityId == null)
-            //    pagedList = await _staffService.GetAllStaff(pagingParameters);
-            //else
-            //    pagedList = await _staffService.GetStaffForFacility(pagingParameters, facilityId.Value);
-
-            //return pagedList;
-
+            //TODO: once we get org from token
             return null;
         }
 
         /// <summary>
-        /// Get Staff by Id
+        /// Adds a new organization admin user
         /// </summary>
-        /// <returns></returns>
-        [HttpGet("{id}")]
-        [OperationOrderAttribute(2)]
-        public async Task<ActionResult<StaffModel>> GetStaffById([ValidNumberRequired] long? id)
-        {
-            //var staffModel = await _staffService.GetStaff(id.Value);
-            //return staffModel;
-            return null;
-        }
-
-        /// <summary>
-        /// Adds a new admin user
-        /// </summary>
-        /// <param name="request">The admin to add</param>
+        /// <param name="request">The admin to add for the organization</param>
         /// <returns></returns>
         [HttpPost]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<StaffModel>> AddNewAdminUser([FromBody] AddAdminUserRequest request)
+        public async Task<ActionResult<StaffModel>> AddOrganizationAdminUser([FromBody] AddAdminUserRequest request)
         {
-            //Create the staff
-            var staff = await _staffService.CreateStaff(AddAdminUserRequest.ToStaffModel(request));
-
-            //Generate a new staff created event
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staff.StaffId.Value);
-            return staff;
+            //TODO:
+            return null;
         }
 
         /// <summary>

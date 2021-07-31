@@ -13,7 +13,7 @@ using Rosterd.Web.Infra.ValidationAttributes;
 
 namespace Rosterd.Admin.Api.Requests.Staff
 {
-    public class AddAdminUserRequest
+    public class AddStaffRequest
     {
         [Required(AllowEmptyStrings = false)]
         [StringLength(1000, MinimumLength = 1)]
@@ -69,7 +69,7 @@ namespace Rosterd.Admin.Api.Requests.Staff
         [CollectionIsRequiredAndShouldNotBeEmpty]
         public List<long> SkillIds { get; set; }
 
-        public static StaffModel ToStaffModel(AddAdminUserRequest request) =>
+        public static StaffModel ToStaffModel(AddStaffRequest request) =>
             new StaffModel
             {
                 FirstName = request.FirstName,

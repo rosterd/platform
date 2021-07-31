@@ -64,5 +64,14 @@ namespace Rosterd.Domain
         {
             public const string GenericError = "An error occured while performing this operation, please try again at a later time.";
         }
+
+        public static class Roles
+        {
+            public const string OrganizationAdmin = "OrganizationAdmin";
+
+            public const string SuperAdmin = "SuperAdmin";
+
+            public const string Staff = "Staff";
+        }
     }
 }
