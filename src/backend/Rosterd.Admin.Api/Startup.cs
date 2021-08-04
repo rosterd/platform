@@ -17,6 +17,7 @@ using Rosterd.Web.Infra;
 using Rosterd.Web.Infra.Extensions;
 using Rosterd.Web.Infra.Middleware;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Rosterd.Admin.Api
 {
@@ -59,10 +60,13 @@ namespace Rosterd.Admin.Api
             .AddJwtBearer(options => {
                 options.Authority = domain;
                 options.Audience = Configuration["Auth0Settings:Audience"];
+                options.TokenValidationParameters = new TokenValidationParameters {
+                    NameClaimType = "Roles",
+                    RoleClaimType = "https://rosterd.com/roles"
+                };
             });
             
             services.AddAuthorization(options => {
-                options.AddPolicy("read:jobs", policy => policy.Requirements.Add(new HasScopeRequirement("read:jobs", domain)));
                 options.AddPolicy("create:facility", policy => policy.Requirements.Add(new HasScopeRequirement("create:facility", domain)));
             });
             

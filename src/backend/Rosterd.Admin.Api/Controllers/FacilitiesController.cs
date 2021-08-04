@@ -64,7 +64,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Facility to add</param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize("create:facility")]
+        [Authorize(Roles = "Admin")]
         [OperationOrderAttribute(3)]
         public async Task<ActionResult<FacilityModel>> AddNewFacility([Required][FromBody] AddFacilityRequest request)
         {
