@@ -7,11 +7,12 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import {getFacilities} from 'services';
+import {getFacilities, addFacility} from 'services';
 import {components} from 'types/models';
-import AddFacilityModal from './components/AddFacilityModal';
+import AddFacilityModal, {AddFacilityFormValues} from './components/AddFacilityModal';
 
 type GetFacilitiesResponse = components['schemas']['FacilityModelPagedList'];
+type AddFacilityRequest = components['schemas']['AddFacilityRequest'];
 type Facility = components['schemas']['FacilityModel'];
 
 const useStyles = makeStyles(() => ({
@@ -45,6 +46,18 @@ const Facilities: React.FC = (): JSX.Element => {
     })();
   }, []);
 
+  const handleAddFacility = async (values: AddFacilityFormValues) => {
+    setLoading(true);
+    const requestBody: AddFacilityRequest = {
+      facilityToAdd: values,
+    };
+    const facilityRes = await requestMaker<Facility>(addFacility(requestBody));
+    setLoading(false);
+    if (facilityRes) {
+      setFacilities([facilityRes, ...facilities]);
+    }
+  };
+
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <Box>
@@ -75,7 +88,7 @@ const Facilities: React.FC = (): JSX.Element => {
             isLoading={loading}
           />
         </Box>
-        <AddFacilityModal open={showAddFacility} handleClose={() => setShowAddFacility(false)} />
+        <AddFacilityModal open={showAddFacility} onAddFacility={handleAddFacility} handleClose={() => setShowAddFacility(false)} />
       </Box>
     </AppAnimate>
   );

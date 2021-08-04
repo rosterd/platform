@@ -7,12 +7,13 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import {getOrganizations} from 'services';
+import {getOrganizations, addOrganization} from 'services';
 import {components} from 'types/models';
-import AddOrganizationModal from './components/AddOrganizationModal';
+import AddOrganizationModal, {AddOrganizationFormValues} from './components/AddOrganizationModal';
 
 type GetOrganizationsResponse = components['schemas']['OrganizationModelPagedList'];
 type Organization = components['schemas']['OrganizationModel'];
+type AddOrganizationRequest = components['schemas']['AddOrganizationRequest'];
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -45,6 +46,17 @@ const Organizations: React.FC = (): JSX.Element => {
     })();
   }, []);
 
+  const handleAddOrganization = async (values: AddOrganizationFormValues) => {
+    const requestBody: AddOrganizationRequest = {
+      organization: values,
+    };
+
+    const organizationsRes = await requestMaker<Organization>(addOrganization(requestBody));
+    if (organizationsRes) {
+      setOrganizations([organizationsRes, ...organizations]);
+    }
+  };
+
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <Box>
@@ -74,11 +86,7 @@ const Organizations: React.FC = (): JSX.Element => {
             isLoading={loading}
           />
         </Box>
-        <AddOrganizationModal
-          open={showAddOrganization}
-          handleClose={() => setShowAddOrganization(false)}
-          updateOrganizations={(orgs) => setOrganizations(orgs)}
-        />
+        <AddOrganizationModal open={showAddOrganization} handleClose={() => setShowAddOrganization(false)} onAddOrganization={handleAddOrganization} />
       </Box>
     </AppAnimate>
   );

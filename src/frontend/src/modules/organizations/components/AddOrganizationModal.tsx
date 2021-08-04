@@ -5,60 +5,66 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {Formik, Form, Field} from 'formik';
-import {Button, LinearProgress, TextareaAutosize} from '@material-ui/core';
+import {Button, LinearProgress} from '@material-ui/core';
 import {TextField} from 'formik-material-ui';
-import useRequest from 'shared/hooks/useRequest';
-import {getOrganizations} from 'services';
+import * as yup from 'yup';
 
-interface AddOrganizationModalProps {
-  open: boolean;
-  handleClose: () => void;
-  updateOrganizations: (org: any) => void;
-}
-
-interface FormValues {
-  name: string;
-  address: string;
-}
-
-interface GetFacilitiesResponse {
-  organizationId: number;
+export interface AddOrganizationFormValues {
   organizationName: string;
-  auth0OrganizationName: string;
+  auth0OrganizationName?: string;
   phone: string;
   address: string;
   comments: string;
 }
 
+interface AddOrganizationModalProps {
+  open: boolean;
+  handleClose: () => void;
+  onAddOrganization: (values: AddOrganizationFormValues) => void;
+}
+
 const AddOrganizationModal: React.FC<AddOrganizationModalProps> = (props): JSX.Element => {
-  const {requestMaker} = useRequest();
+  const validationSchema = yup.object({
+    organizationName: yup.string().required('Please enter Organization Name'),
+    phone: yup.string().required('Please enter Organization Phone'),
+    address: yup.string().required('Please enter Organization Address'),
+  });
+
   return (
     <Formik
       initialValues={{
-        name: '',
+        organizationName: '',
+        phone: '',
         address: '',
+        comments: '',
       }}
-      validate={(values: FormValues) => {
-        const errors: Partial<FormValues> = {};
-        console.log(values);
+      validationSchema={validationSchema}
+      validate={() => {
+        const errors: Partial<AddOrganizationFormValues> = {};
         return errors;
       }}
-      onSubmit={async (values, {setSubmitting}) => {
+      onSubmit={async (values, {setSubmitting, resetForm}) => {
+        setSubmitting(true);
+        await props.onAddOrganization({
+          ...values,
+          organizationName: values.organizationName.replace(/\s+/g, ''),
+          auth0OrganizationName: values.organizationName,
+        });
         setSubmitting(false);
-        const organizationsRes = await requestMaker<GetFacilitiesResponse>(getOrganizations());
-        if (organizationsRes) {
-          // props.updateOrganizations(organizationsRes.items || []);
-        }
-        alert(JSON.stringify(values, null, 2));
+        resetForm();
       }}>
       {({submitForm, isSubmitting}) => (
         <Dialog fullWidth maxWidth='sm' open={props.open} onClose={props.handleClose} aria-labelledby='form-dialog-title'>
           <DialogTitle id='form-dialog-title'>Add Organization</DialogTitle>
           <DialogContent>
             <Form>
-              <Field component={TextField} name='name' label='Name' fullWidth />
+              <Field component={TextField} name='organizationName' label='Organization Name' fullWidth />
               <br />
-              <Field component={TextareaAutosize} name='adress' label='Address' fullWidth />
+              <Field component={TextField} name='phone' label='Phone' fullWidth />
+              <br />
+              <Field component={TextField} name='address' label='Address' fullWidth />
+              <br />
+              <Field component={TextField} name='comments' label='Comments' fullWidth />
               <br />
 
               {isSubmitting && <LinearProgress />}

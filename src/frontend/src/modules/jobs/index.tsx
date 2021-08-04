@@ -1,15 +1,7 @@
 import React, {useState} from 'react';
 import Box from '@material-ui/core/Box';
 import AppAnimate from '@crema/core/AppAnimate';
-import {
-  AppBar,
-  Tabs,
-  Tab,
-  makeStyles,
-  Typography,
-  Button,
-  Grid,
-} from '@material-ui/core';
+import {AppBar, Tabs, Tab, makeStyles, Typography, Button, Grid} from '@material-ui/core';
 import MaterialTable from 'material-table';
 import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
@@ -37,12 +29,7 @@ function TabPanel(props: TabPanelProps) {
   const {children, value, index, ...other} = props;
 
   return (
-    <div
-      role='tabpanel'
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}>
+    <div role='tabpanel' hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
       {value === index && (
         <Box p={3}>
           <Typography>{children}</Typography>
@@ -64,26 +51,14 @@ const Jobs = (): JSX.Element => {
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <Box>
         <Box mb={{xs: 4, sm: 4, xl: 6}}>
-          <Grid
-            container
-            direction='row'
-            justify='space-between'
-            alignItems='center'>
+          <Grid container direction='row' justify='space-between' alignItems='center'>
             <Grid item xs={6}>
-              <Box
-                component='h2'
-                color='text.primary'
-                fontSize={16}
-                fontWeight={Fonts.BOLD}>
+              <Box component='h2' color='text.primary' fontSize={16} fontWeight={Fonts.BOLD}>
                 <IntlMessages id='jobs.heading' />
               </Box>
             </Grid>
             <Grid item xs={6} className={classes.buttonContainer}>
-              <Button
-                variant='contained'
-                color='primary'
-                startIcon={<AddIcon />}
-                onClick={() => setShowJobModal(true)}>
+              <Button variant='contained' color='primary' startIcon={<AddIcon />} onClick={() => setShowJobModal(true)}>
                 Publish Job
               </Button>
             </Grid>
@@ -92,10 +67,7 @@ const Jobs = (): JSX.Element => {
         <Box>
           <div className={classes.root}>
             <AppBar position='static'>
-              <Tabs
-                value={tabIndex}
-                onChange={handleTabChange}
-                aria-label='simple tabs example'>
+              <Tabs value={tabIndex} onChange={handleTabChange} aria-label='simple tabs example'>
                 <Tab label='Active' />
                 <Tab label='Fulfilled' />
               </Tabs>
@@ -158,10 +130,7 @@ const Jobs = (): JSX.Element => {
             </TabPanel>
           </div>
         </Box>
-        <PublishJobModal
-          open={showJobModal}
-          handleClose={() => setShowJobModal(false)}
-        />
+        <PublishJobModal open={showJobModal} handleClose={() => setShowJobModal(false)} />
       </Box>
     </AppAnimate>
   );

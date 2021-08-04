@@ -1,5 +1,10 @@
 import {AxiosRequestConfig} from 'axios';
+import {components} from 'types/models';
 
-export const getOrganizations = (): AxiosRequestConfig & {scope?: string} => ({url: 'organizations'});
+type AddOrganizationRequest = components['schemas']['AddOrganizationRequest'];
 
-export const addOrganization = (data: any): AxiosRequestConfig & {scope?: string} => ({method: 'POST', url: 'organizations', data});
+const url = 'organizations';
+
+export const getOrganizations = (): AxiosRequestConfig & {scope?: string} => ({url});
+
+export const addOrganization = (data: AddOrganizationRequest): AxiosRequestConfig & {scope?: string} => ({method: 'POST', url, data});
