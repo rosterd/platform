@@ -12,7 +12,7 @@ namespace Rosterd.Services.Auth.Interfaces
 
         Task SendPasswordResetEmailToUser(string usersEmailAddress);
 
-        Task<User> CreateUserAndAddToOrganization(string auth0OrganizationId, string email, string firstName, string middleName, string lastName,
+        Task<User> CreateUserAndAddToOrganization(string auth0OrganizationId, string email, string firstName, string lastName,
             string phoneNumber);
     }
 }

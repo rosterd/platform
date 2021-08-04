@@ -31,47 +31,33 @@ namespace Rosterd.Services.Auth
         }
 
         ///<inheritdoc/>
-        public async Task AddOrganizationAdmin(string auth0OrganizationId, AdminUserModel adminUserModel)
-        {
-            var auth0ApiManagementClient = await _auth0AuthenticationService.GetAuth0ApiManagementClient();
-
-            //1. Create the user in auth0 with a random password
-            //2. Add this user to the organization
-            var userCreatedInAuth0 = await _auth0AuthenticationService.CreateUserAndAddToOrganization(auth0OrganizationId, adminUserModel.Email,
-                adminUserModel.FirstName, adminUserModel.MiddleName, adminUserModel.LastName, adminUserModel.MobilePhoneNumber);
-
-            //3. Add the organization admin role to this user
-            var organizationAdminRole = await _rolesService.GetRole(RosterdRoleEnum.OrganizationAdmin);
-            if (organizationAdminRole == null)
-                throw new RoleDoesNotExistException();
-
-            await auth0ApiManagementClient.Roles.AssignUsersAsync(organizationAdminRole.RoleId, new AssignUsersRequest {Users = new[] {userCreatedInAuth0.UserId}});
-
-            //By this point we have created the user, add them to the to the organization and assigned them the role org-admin
-            //4. Now, final thing we need to do is trigger a password-change event so the user will get an email
-            await _auth0AuthenticationService.SendPasswordResetEmailToUser(adminUserModel.Email);
-        }
+        public async Task<AdminUserModel> AddOrganizationAdmin(string auth0OrganizationId, AdminUserModel adminUserModel) => await AddAdmin(auth0OrganizationId, adminUserModel, RosterdRoleEnum.OrganizationAdmin);
 
         ///<inheritdoc/>
-        public async Task AddFacilityAdmin(string auth0OrganizationId, AdminUserModel adminUserModel)
+        public async Task<AdminUserModel> AddFacilityAdmin(string auth0OrganizationId, AdminUserModel adminUserModel) => await AddAdmin(auth0OrganizationId, adminUserModel, RosterdRoleEnum.FacilityAdmin);
+
+        public async Task<AdminUserModel> AddAdmin(string auth0OrganizationId, AdminUserModel adminUserModel, RosterdRoleEnum roleToAddForUser)
         {
             var auth0ApiManagementClient = await _auth0AuthenticationService.GetAuth0ApiManagementClient();
 
             //1. Create the user in auth0 with a random password
             //2. Add this user to the organization
             var userCreatedInAuth0 = await _auth0AuthenticationService.CreateUserAndAddToOrganization(auth0OrganizationId, adminUserModel.Email,
-                adminUserModel.FirstName, adminUserModel.MiddleName, adminUserModel.LastName, adminUserModel.MobilePhoneNumber);
+                adminUserModel.FirstName, adminUserModel.LastName, adminUserModel.PhoneNumber);
 
             //3. Add the organization admin role to this user
-            var facilityAdminRole = await _rolesService.GetRole(RosterdRoleEnum.FacilityAdmin);
-            if (facilityAdminRole == null)
+            var roleToAdd = await _rolesService.GetRole(roleToAddForUser);
+            if (roleToAdd == null)
                 throw new RoleDoesNotExistException();
 
-            await auth0ApiManagementClient.Roles.AssignUsersAsync(facilityAdminRole.RoleId, new AssignUsersRequest { Users = new[] { userCreatedInAuth0.UserId } });
+            await auth0ApiManagementClient.Roles.AssignUsersAsync(roleToAdd.RoleId, new AssignUsersRequest { Users = new[] { userCreatedInAuth0.UserId } });
 
             //By this point we have created the user, add them to the to the organization and assigned them the role org-admin
             //4. Now, final thing we need to do is trigger a password-change event so the user will get an email
             await _auth0AuthenticationService.SendPasswordResetEmailToUser(adminUserModel.Email);
+
+            adminUserModel.AdminUserId = userCreatedInAuth0.UserId;
+            return adminUserModel;
         }
     }
 }
