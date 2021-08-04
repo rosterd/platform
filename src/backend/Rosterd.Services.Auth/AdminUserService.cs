@@ -49,8 +49,8 @@ namespace Rosterd.Services.Auth
             var roleToAdd = await _rolesService.GetRole(roleToAddForUser);
             if (roleToAdd == null)
                 throw new RoleDoesNotExistException();
-
-            await auth0ApiManagementClient.Roles.AssignUsersAsync(roleToAdd.RoleId, new AssignUsersRequest { Users = new[] { userCreatedInAuth0.UserId } });
+            
+            await auth0ApiManagementClient.Organizations.AddMemberRolesAsync(auth0OrganizationId, userCreatedInAuth0.UserId, new OrganizationAddMemberRolesRequest {Roles = new List<string> {roleToAdd.RoleId}});
 
             //By this point we have created the user, add them to the to the organization and assigned them the role org-admin
             //4. Now, final thing we need to do is trigger a password-change event so the user will get an email

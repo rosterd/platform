@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using RestSharp;
 using Rosterd.Admin.Api.Requests.AdminUser;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Domain;
@@ -62,6 +63,8 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(2)]
         public async Task<ActionResult<AdminUserModel>> AddOrganizationAdminUser([FromBody] AddAdminUserRequest request)
         {
+            //var s = HttpContext.User;
+
             var adminUserModel = await _adminUserService.AddOrganizationAdmin("org_pbP7xVjEopDANVRF", request.ToModel());
             return adminUserModel;
 
