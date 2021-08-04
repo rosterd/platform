@@ -9,6 +9,7 @@ using Auth0.ManagementApi.Models;
 using Auth0.ManagementApi.Paging;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models.Roles;
 using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Extensions;
@@ -19,7 +20,6 @@ namespace Rosterd.Services.Auth
     public class RolesService : IRolesService
     {
         private readonly IAuth0AuthenticationService _auth0AuthenticationService;
-
 
         public RolesService(IAuth0AuthenticationService auth0AuthenticationService) => _auth0AuthenticationService = auth0AuthenticationService;
 
@@ -51,6 +51,14 @@ namespace Rosterd.Services.Auth
                 RoleName = role.Name,
                 RoleDescription = role.Description
             };
+        }
+
+        public async Task<RosterdRole> GetRole(RosterdRoleEnum rosterdRoleEnum)
+        {
+            var allRoles = await GetAllRoles();
+            var matchingRole = allRoles.FirstOrDefault(s => s.RoleName == rosterdRoleEnum.ToString());
+
+            return matchingRole;
         }
 
         public async Task<RosterdRole> AddRole(RosterdRole roleToAdd)

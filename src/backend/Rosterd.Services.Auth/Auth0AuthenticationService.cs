@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Auth0.AuthenticationApi;
 using Auth0.AuthenticationApi.Models;
 using Auth0.ManagementApi;
+using Auth0.ManagementApi.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Rosterd.Domain.Settings;
@@ -57,5 +59,32 @@ namespace Rosterd.Services.Auth
             return managementClient;
         }
 
+        public async Task SendPasswordResetEmailToUser(string usersEmailAddress) =>
+            await _auth0AuthenticationApiClient.ChangePasswordAsync(new ChangePasswordRequest
+            {
+                ClientId = _auth0Settings.ClientId, Connection = _auth0Settings.Connection, Email = usersEmailAddress
+            });
+
+        public async Task<User> CreateUserAndAddToOrganization(string auth0OrganizationId, string email, string firstName, string middleName, string lastName, string phoneNumber)
+        {
+            var auth0ApiManagementClient = await GetAuth0ApiManagementClient();
+
+            //Create the user in auth0 with a random password
+            var userCreatedInAuth0 = await auth0ApiManagementClient.Users.CreateAsync(new UserCreateRequest
+            {
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
+                PhoneNumber = phoneNumber,
+                FullName = $"{firstName} {middleName} {lastName}",
+                Password = Guid.NewGuid().ToString()
+            });
+
+            //Add this user to the organization
+            await auth0ApiManagementClient.Organizations.AddMembersAsync(auth0OrganizationId,
+                new OrganizationAddMembersRequest { Members = new List<string> { userCreatedInAuth0.UserId } });
+
+            return userCreatedInAuth0;
+        }
     }
 }

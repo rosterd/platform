@@ -9,5 +9,10 @@ namespace Rosterd.Domain.Settings
         public string ClientId { get; set; }
 
         public string ClientSecret { get; set; }
+
+        /// <summary>
+        /// The name of the database connection configured to your client
+        /// </summary>
+        public string Connection { get; set; }
     }
 }

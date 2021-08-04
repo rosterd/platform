@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Auth0.ManagementApi;
+using Auth0.ManagementApi.Models;
 
 namespace Rosterd.Services.Auth.Interfaces
 {
@@ -8,5 +9,10 @@ namespace Rosterd.Services.Auth.Interfaces
         Task<string> GetAccessTokenForManagementApi();
 
         Task<ManagementApiClient> GetAuth0ApiManagementClient();
+
+        Task SendPasswordResetEmailToUser(string usersEmailAddress);
+
+        Task<User> CreateUserAndAddToOrganization(string auth0OrganizationId, string email, string firstName, string middleName, string lastName,
+            string phoneNumber);
     }
 }
