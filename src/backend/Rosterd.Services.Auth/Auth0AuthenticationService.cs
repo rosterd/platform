@@ -62,10 +62,10 @@ namespace Rosterd.Services.Auth
         public async Task SendPasswordResetEmailToUser(string usersEmailAddress) =>
             await _auth0AuthenticationApiClient.ChangePasswordAsync(new ChangePasswordRequest
             {
-                ClientId = _auth0Settings.ClientId, Connection = _auth0Settings.Connection, Email = usersEmailAddress
+                ClientId = _auth0Settings.ClientId, Connection = _auth0Settings.ConnectionName, Email = usersEmailAddress
             });
 
-        public async Task<User> CreateUserAndAddToOrganization(string auth0OrganizationId, string email, string firstName, string middleName, string lastName, string phoneNumber)
+        public async Task<User> CreateUserAndAddToOrganization(string auth0OrganizationId, string email, string firstName, string lastName, string phoneNumber)
         {
             var auth0ApiManagementClient = await GetAuth0ApiManagementClient();
 
@@ -75,9 +75,11 @@ namespace Rosterd.Services.Auth
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
-                PhoneNumber = phoneNumber,
-                FullName = $"{firstName} {middleName} {lastName}",
-                Password = Guid.NewGuid().ToString()
+                //PhoneNumber = phoneNumber,
+                FullName = $"{firstName} {lastName}",
+                Password = Guid.NewGuid().ToString(),
+                Connection = _auth0Settings.ConnectionName,
+                VerifyEmail = false //setting this to true will send a verify your email to the user, we don't want to do that at this stage
             });
 
             //Add this user to the organization

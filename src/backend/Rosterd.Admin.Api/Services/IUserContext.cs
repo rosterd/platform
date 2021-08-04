@@ -8,26 +8,34 @@ namespace Rosterd.Admin.Api.Services
     public interface IUserContext
     {
         /// <summary>
-        /// Checks if a tenant and user exists for the currently logged in user
+        /// Gets the user id from auth 0
         /// </summary>
-        /// <returns></returns>
-        Task<bool> DoesTenantAndUserExist();
+        string Auth0Id { get; }
 
         /// <summary>
-        /// Gets the tenant of the current logged in user.
-        /// NB: This gets the full tenant object and can be a bit expensive if you just need the tenant id
-        /// then calls the GetTenantIdForUser() method
+        /// Gets the users organization id (from auth 0, the auth0 id of the organization)
         /// </summary>
-        Task<long> GetTenantIdForUser();
+        string UsersOrganizationId { get; }
 
         /// <summary>
-        /// Gets the tenant of the current logged in user.
-        /// NB: This gets the full tenant object and StaffToAuth0Id object from cache
-        /// can be a bit expensive due to the weight of the object (serializing/deserializing from cache)
-        /// if you just need the tenant id
-        /// then call the GetTenantIdForUser() method which is a very light weight and fast
+        /// The email address of the user
         /// </summary>
-        Task<(TenantModel Tenant, StaffModel Staff)> GetTenantAndUser();
+        string UserEmailAddress { get; set; }
+
+        /// <summary>
+        /// The users first name
+        /// </summary>
+        string UsersFirstName { get; set; }
+
+        /// <summary>
+        /// The users last name
+        /// </summary>
+        string UsersLastName { get; set; }
+
+        /// <summary>
+        /// The users phone number
+        /// </summary>
+        string UsersPhoneNumber { get; set; }
 
         /// <summary>
         /// Gets all the roles for the user
@@ -35,24 +43,9 @@ namespace Rosterd.Admin.Api.Services
         IEnumerable<string> Roles { get; }
 
         /// <summary>
-        /// Gets the unique id from Azure B2C for the user
-        /// </summary>
-        string IdmUserId { get; }
-
-        /// <summary>
         /// Gets the raw access token received from Auth0,
-        /// This can be useful if we need to call profile in b2c or anything external call we need to make for the user
+        /// This can be useful if we need to call profile api in auth0 or anything external call we need to make for the user
         /// </summary>
         string AccessToken { get; }
-
-        string UserName { get; }
-
-        string UserNickname { get; }
-
-        string UserPictureHref { get; }
-
-        string UserEmail { get; }
-
-        bool IsUserEmailVerified { get; }
     }
 }

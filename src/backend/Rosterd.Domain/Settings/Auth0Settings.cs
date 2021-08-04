@@ -13,6 +13,8 @@ namespace Rosterd.Domain.Settings
         /// <summary>
         /// The name of the database connection configured to your client
         /// </summary>
-        public string Connection { get; set; }
+        public string ConnectionName { get; set; }
+
+        public string ConnectionId { get; set; }
     }
 }

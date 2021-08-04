@@ -13,7 +13,7 @@ namespace Rosterd.DataGenerators
         [Fact]
         public async Task CleanExistingJobsDataAndBringItToLatest()
         {
-            var options = new DbContextOptionsBuilder<RosterdDbContext>().UseSqlServer(connectionString: "Server=tcp:sqls-rosterd-prod.database.windows.net,1433;Initial Catalog=rosterd;Persist Security Info=False;User ID=rosterd-admin-user;Password=K66pth1sS@f5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            var options = new DbContextOptionsBuilder<RosterdDbContext>().UseSqlServer(connectionString: "Server=tcp:sqls-rosterd-prod.database.windows.net,1433;Initial Catalog=rosterd;Persist Security Info=False;User ID=rosterd-admin-user;Password=K66pth1sS@f5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;ConnectionName Timeout=30;");
             var context = new RosterdDbContext(options.Options);
 
             var count = 0;

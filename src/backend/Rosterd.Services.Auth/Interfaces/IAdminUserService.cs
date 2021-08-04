@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Auth0.AuthenticationApi;
 using Auth0.ManagementApi;
 using Microsoft.Extensions.Options;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models.AdminUserModels;
 using Rosterd.Domain.Models.Roles;
 using Rosterd.Domain.Settings;
@@ -21,7 +22,7 @@ namespace Rosterd.Services.Auth.Interfaces
         /// <param name="auth0OrganizationId"></param>
         /// <param name="adminUserModel"></param>
         /// <returns></returns>
-        Task AddOrganizationAdmin(string auth0OrganizationId, AdminUserModel adminUserModel);
+        Task<AdminUserModel> AddOrganizationAdmin(string auth0OrganizationId, AdminUserModel adminUserModel);
 
         /// <summary>
         /// Create facility admin for organization
@@ -34,6 +35,8 @@ namespace Rosterd.Services.Auth.Interfaces
         /// <param name="auth0OrganizationId"></param>
         /// <param name="adminUserModel"></param>
         /// <returns></returns>
-        Task AddFacilityAdmin(string auth0OrganizationId, AdminUserModel adminUserModel);
+        Task<AdminUserModel> AddFacilityAdmin(string auth0OrganizationId, AdminUserModel adminUserModel);
+
+        Task<AdminUserModel> AddAdmin(string auth0OrganizationId, AdminUserModel adminUserModel, RosterdRoleEnum roleToAddForUser);
     }
 }
