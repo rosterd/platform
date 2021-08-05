@@ -16,6 +16,7 @@ namespace Rosterd.Services.Mappers
             var organizationModel = new OrganizationModel
             {
                 OrganizationId = dataModel.OrganizationId,
+                Auth0OrganizationId = dataModel.Auth0OrganizationId,
                 OrganizationName = dataModel.OrganizationName,
                 Auth0OrganizationName = dataModel.Auth0OrganizationId,
                 Phone = dataModel.Phone,
@@ -34,17 +35,6 @@ namespace Rosterd.Services.Mappers
 
             var organizationModels = pagedList.Select(organization => organization.ToDomainModel()).AlwaysList();
             return organizationModels;
-        }
-
-        public static Organization ToDataModel(this OrganizationModel domainModelToUpdate, Organization organizationFromDb)
-        {
-            organizationFromDb.Address = domainModelToUpdate.Address;
-            organizationFromDb.OrganizationName = domainModelToUpdate.OrganizationName;
-            organizationFromDb.Auth0OrganizationId = domainModelToUpdate.Auth0OrganizationName;
-            organizationFromDb.Phone = domainModelToUpdate.Phone;
-            organizationFromDb.Comments = domainModelToUpdate.Comments;
-            
-            return organizationFromDb;
         }
 
         public static Data.SqlServer.Models.Organization ToNewOrganization(this OrganizationModel domainModel)

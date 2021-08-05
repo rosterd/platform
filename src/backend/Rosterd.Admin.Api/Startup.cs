@@ -65,10 +65,11 @@ namespace Rosterd.Admin.Api
                     RoleClaimType = "https://rosterd.com/roles"
                 };
             });
-            
-            services.AddAuthorization(options => {
-                options.AddPolicy("create:facility", policy => policy.Requirements.Add(new HasScopeRequirement("create:facility", domain)));
-            });
+
+            //In future if want fine grain access, then we need to use scopes like this
+            //services.AddAuthorization(options => {
+            //    options.AddPolicy("create:facility", policy => policy.Requirements.Add(new HasScopeRequirement("create:facility", domain)));
+            //});
             
             services
                 .AddApplicationInsightsTelemetry()
