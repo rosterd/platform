@@ -18,7 +18,6 @@ namespace Rosterd.Services.Mappers
                 OrganizationId = dataModel.OrganizationId,
                 Auth0OrganizationId = dataModel.Auth0OrganizationId,
                 OrganizationName = dataModel.OrganizationName,
-                Auth0OrganizationName = dataModel.Auth0OrganizationId,
                 Phone = dataModel.Phone,
                 Address = dataModel.Address,
                 Comments = dataModel.Comments

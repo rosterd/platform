@@ -12,10 +12,6 @@ namespace Rosterd.Domain.Models.OrganizationModels
         [StringLength(1000)]
         public string OrganizationName { get; set; }
 
-        [Required]
-        [StringLength(1000)]
-        public string Auth0OrganizationName { get; set; }
-
         [StringLength(1000)]
         public string Phone { get; set; }
 
