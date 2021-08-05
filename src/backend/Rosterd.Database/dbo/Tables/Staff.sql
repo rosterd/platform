@@ -1,5 +1,6 @@
 ﻿CREATE TABLE [dbo].[Staff] (
     [StaffId]           BIGINT          IDENTITY (1, 1) NOT NULL,
+    [Auth0Id]           NVARCHAR (MAX)  NOT NULL,
     [FirstName]         NVARCHAR (1000) NOT NULL,
     [MiddleName]        NVARCHAR (1000) NULL,
     [LastName]          NVARCHAR (1000) NOT NULL,
@@ -15,4 +16,6 @@
     [Comments]          NVARCHAR (1000) NULL,
     CONSTRAINT [Pk_Resource_ResourceId] PRIMARY KEY CLUSTERED ([StaffId] ASC)
 );
+
+
 

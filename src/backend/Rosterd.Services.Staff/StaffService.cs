@@ -71,6 +71,8 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task<StaffModel> CreateStaff(StaffModel staffModel)
         {
+            //TODO:Populate auth0id
+
             //Populate staff details
             var staffToCreate = staffModel.ToNewStaff();
             var newStaff = await _context.Staff.AddAsync(staffToCreate);

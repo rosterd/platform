@@ -14,51 +14,7 @@
    "SelectedToBeGenerated": 2,
    "Tables": [
       {
-         "Name": "[dbo].[Capability]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Facility]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[FacilityCapability]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Job]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[JobSkill]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[JobStaff]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[JobStatusChange]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Organization]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Skill]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Staff]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[StaffFacility]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[StaffSkill]",
          "ObjectType": 0
       }
    ],
