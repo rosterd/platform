@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Rosterd.Domain.Enums;
 
 namespace Rosterd.Domain
 {
@@ -63,6 +64,22 @@ namespace Rosterd.Domain
         public static class ErrorMessages
         {
             public const string GenericError = "An error occured while performing this operation, please try again at a later time.";
+        }
+
+        public static class RosterdRoleNames
+        {
+            public const string FacilityAdmin = "FacilityAdmin";
+            public const string RosterdAdmin = "RosterdAdmin";
+            public const string Staff = "Staff";
+            public const string OrganizationAdmin = "OrganizationAdmin";
+        }
+
+        public static class AccessTokenFields
+        {
+            public const string Auth0OrganizationId = "org_id";
+            public const string Auth0UserId = "sub";
+            public const string AccessToken = "access_token";
+            public const string Roles = "https://rosterd.com/roles";
         }
     }
 }

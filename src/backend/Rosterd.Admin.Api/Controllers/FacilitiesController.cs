@@ -19,6 +19,7 @@ namespace Rosterd.Admin.Api.Controllers
 {
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Facilities")]
+    [Authorize(Roles = "Admin")] //TODO: Link to constant which is linked to enum
     public class FacilitiesController : BaseApiController
     {
         private readonly IFacilitiesService _facilitiesService;
@@ -64,7 +65,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Facility to add</param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize(Roles = "Admin")]
         [OperationOrderAttribute(3)]
         public async Task<ActionResult<FacilityModel>> AddNewFacility([Required][FromBody] AddFacilityRequest request)
         {
@@ -89,7 +89,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Facility to update</param>
         /// <returns></returns>
         [HttpPut]
-        [Authorize("create:facility")]
         [OperationOrderAttribute(4)]
         public async Task<ActionResult<FacilityModel>> UpdateFacility([Required] UpdateFacilityRequest request)
         {

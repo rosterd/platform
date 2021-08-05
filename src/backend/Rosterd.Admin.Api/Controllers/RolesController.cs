@@ -14,7 +14,7 @@ using Rosterd.Domain.Models.Roles;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Domain.Settings;
-using Rosterd.Services.Auth.Interfaces;
+using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 using Rosterd.Web.Infra.ValidationAttributes;

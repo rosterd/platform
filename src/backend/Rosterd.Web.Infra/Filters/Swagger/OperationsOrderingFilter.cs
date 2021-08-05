@@ -10,21 +10,26 @@ namespace Rosterd.Web.Infra.Filters.Swagger
     {
         public void Apply(OpenApiDocument openApiDoc, DocumentFilterContext context)
         {
-            var paths = new Dictionary<KeyValuePair<string, OpenApiPathItem>, int>();
-            foreach (var path in openApiDoc.Paths)
-            {
-                if (!(context.ApiDescriptions.FirstOrDefault(x => x.RelativePath.Replace("/", string.Empty)
-                        .Equals(path.Key.Replace("/", string.Empty), StringComparison.OrdinalIgnoreCase))?
-                    .ActionDescriptor?.EndpointMetadata?.FirstOrDefault(x => x is OperationOrderAttribute) is OperationOrderAttribute orderAttribute))
-                    throw new ArgumentNullException("there is no order for operation " + path.Key);
+            //var paths = new Dictionary<KeyValuePair<string, OpenApiPathItem>, int>();
+            //foreach (var path in openApiDoc.Paths)
+            //{
+            //    if (!(context.ApiDescriptions.FirstOrDefault(x => x.RelativePath.Replace("/", string.Empty)
+            //            .Equals(path.Key.Replace("/", string.Empty), StringComparison.OrdinalIgnoreCase))?
+            //        .ActionDescriptor?.EndpointMetadata?.FirstOrDefault(x => x is OperationOrderAttribute) is OperationOrderAttribute orderAttribute))
+            //    {
+            //        continue;
+            //    }
 
-                var order = orderAttribute.Order;
-                paths.Add(path, order);
-            }
+            //    var order = orderAttribute.Order;
+            //    paths.Add(path, order);
+            //}
 
-            var orderedPaths = paths.OrderBy(x => x.Value).ToList();
-            openApiDoc.Paths.Clear();
-            orderedPaths.ForEach(x => openApiDoc.Paths.Add(x.Key.Key, x.Key.Value));
+            //if (paths.Count == 0)
+            //    return;
+
+            //var orderedPaths = paths.OrderBy(x => x.Value).ToList();
+            //openApiDoc.Paths.Clear();
+            //orderedPaths.ForEach(x => openApiDoc.Paths.Add(x.Key.Key, x.Key.Value));
         }
     }
 

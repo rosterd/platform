@@ -2,30 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
-using Rosterd.Admin.Api.Services;
-using Rosterd.Domain.Exceptions;
-using Rosterd.Domain.Models.StaffModels;
-using Rosterd.Domain.Models.Tenants;
-using Rosterd.Domain.Settings;
-using Rosterd.Web.Infra.Extensions;
+using Rosterd.Domain;
+using Rosterd.Domain.Enums;
 
 namespace Rosterd.Admin.Api.Services
 {
     /// <summary>
-    /// The context provides various bits of information about the logged in user, their roles and claims
-    /// The tenant this current user belongs to is cached for the specified duration
+    ///     The context provides various bits of information about the logged in user, their roles and claims
+    ///     The tenant this current user belongs to is cached for the specified duration
     /// </summary>
     public class UserContext : IUserContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        
+
         public UserContext(IHttpContextAccessor httpContextAccessor) => _httpContextAccessor = httpContextAccessor;
 
-        public string Auth0Id {
+        public string UserAuth0Id
+        {
             get
             {
                 var auth0Id = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
@@ -33,18 +27,43 @@ namespace Rosterd.Admin.Api.Services
             }
         }
 
-        public string UsersOrganizationId { get; }
+        public string UsersAuth0OrganizationId
+        {
+            get
+            {
+                var auth0OrganizationId = _httpContextAccessor.HttpContext.User.Claims.First(s => s.Type == RosterdConstants.AccessTokenFields.Auth0OrganizationId).Value;
+                return auth0OrganizationId;
+            }
+        }
+        public string AccessToken
+        {
+            get
+            {
+                var accessToken = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == RosterdConstants.AccessTokenFields.AccessToken).Value;
+                return accessToken;
+            }
+        }
 
-        public string UserEmailAddress { get; set; }
+        //TODO Not working, need to debug why roles are not available
+        public IEnumerable<string> Roles => _httpContextAccessor.HttpContext.User.Claims.Where(s => s.Type == RosterdConstants.AccessTokenFields.Roles).Select(s => s.Value);
 
-        public string UsersFirstName { get; set; }
+        public bool IsUserInRole(RosterdRoleEnum rosterdRole) => !Roles.IsNullOrEmpty() && Roles.Contains(rosterdRole.ToString());
 
-        public string UsersLastName { get; set; }
+        public string UserEmailAddress =>
+            throw new NotImplementedException(
+                "Not yet implemented, when we need this we can add it to the access token and grab it from there, for now the access token does not have this.");
 
-        public string UsersPhoneNumber { get; set; }
+        public string UsersFirstName =>
+            throw new NotImplementedException(
+                "Not yet implemented, when we need this we can add it to the access token and grab it from there, for now the access token does not have this.");
 
-        public IEnumerable<string> Roles { get; }
+        public string UsersLastName =>
+            throw new NotImplementedException(
+                "Not yet implemented, when we need this we can add it to the access token and grab it from there, for now the access token does not have this.");
 
-        public string AccessToken { get; }
+        public string UsersPhoneNumber =>
+            throw new NotImplementedException(
+                "Not yet implemented, when we need this we can add it to the access token and grab it from there, for now the access token does not have this.");
+
     }
 }

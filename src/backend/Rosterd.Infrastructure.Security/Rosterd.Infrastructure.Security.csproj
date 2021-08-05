@@ -5,7 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Z.ExtensionMethods" Version="2.1.1" />
+    <PackageReference Include="Auth0.AuthenticationApi" Version="7.8.1" />
+    <PackageReference Include="Auth0.ManagementApi" Version="7.8.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.1.15" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
+    <ProjectReference Include="..\Rosterd.Infrastructure.Extensions\Rosterd.Infrastructure.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

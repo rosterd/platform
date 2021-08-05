@@ -46,32 +46,9 @@ namespace Rosterd.Admin.Api
         {
             if (HostingEnvironment.IsDevelopment())
                 IdentityModelEventSource.ShowPII = true;
-
-            //Add auth and JWT as the first thing (This always needs to be the first thing to configure)
-            //services.AddCustomAuthenticationWithJwtBearer(Configuration);
-
-            var domain = $"https://{Configuration["Auth0Settings:Domain"]}/";
-
-            services
-            .AddAuthentication(options =>   {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options => {
-                options.Authority = domain;
-                options.Audience = Configuration["Auth0Settings:Audience"];
-                options.TokenValidationParameters = new TokenValidationParameters {
-                    NameClaimType = "Roles",
-                    RoleClaimType = "https://rosterd.com/roles"
-                };
-            });
-
-            //In future if want fine grain access, then we need to use scopes like this
-            //services.AddAuthorization(options => {
-            //    options.AddPolicy("create:facility", policy => policy.Requirements.Add(new HasScopeRequirement("create:facility", domain)));
-            //});
             
             services
+                .AddCustomAuthenticationWithJwtBearer(Configuration) //Add auth and JWT as the first thing (This always needs to be the first thing to configure)
                 .AddApplicationInsightsTelemetry()
                 .AddAppAndDatabaseDependencies(Configuration, HostingEnvironment)
                 .AddCustomSwagger("Rosterd Admin Api", "v1")

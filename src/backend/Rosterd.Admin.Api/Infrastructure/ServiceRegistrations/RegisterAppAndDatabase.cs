@@ -10,14 +10,15 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Rosterd.Admin.Api.Services;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.TableStorage.Context;
 using Rosterd.Domain;
 using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
-using Rosterd.Services.Auth;
-using Rosterd.Services.Auth.Interfaces;
+using Rosterd.Infrastructure.Security;
+using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Facilities;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Services.Jobs;
@@ -66,7 +67,7 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 
 
             //User context
-
+            services.AddScoped<IUserContext, UserContext>();
 
             //Db contexts
             services.AddScoped<IRosterdDbContext, RosterdDbContext>();
