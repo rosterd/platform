@@ -10,6 +10,8 @@ namespace Rosterd.Domain.Models.StaffModels
     {
         public long? StaffId { get; set; }
 
+        public string Auth0Id { get; set; }
+
         [Required(AllowEmptyStrings = false)]
         [StringLength(1000, MinimumLength = 1)]
         public string FirstName { get; set; }
@@ -26,13 +28,7 @@ namespace Rosterd.Domain.Models.StaffModels
         public string Email { get; set; }
 
         [StringLength(1000)]
-        public string HomePhoneNumber { get; set; }
-
-        [StringLength(1000)]
         public string MobilePhoneNumber { get; set; }
-
-        [StringLength(1000)]
-        public string OtherPhoneNumber { get; set; }
 
         public bool IsActive { get; set; }
 

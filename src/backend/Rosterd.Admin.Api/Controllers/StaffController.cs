@@ -6,9 +6,11 @@ using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Staff;
+using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Domain.Settings;
+using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 using Rosterd.Web.Infra.ValidationAttributes;
@@ -28,14 +30,18 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IStaffSkillsService _staffSkillsService;
         private readonly IStaffEventsService _staffEventsService;
         private readonly IEventGridClient _eventGridClient;
+        private readonly IAuth0UserService _auth0UserService;
+        private readonly IUserContext _userContext;
 
-        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService, IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings) : base(appSettings)
+        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService, IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IAuth0UserService auth0UserService, IUserContext userContext) : base(appSettings)
         {
             _logger = logger;
             _staffService = staffService;
             _staffSkillsService = staffSkillsService;
             _staffEventsService = staffEventsService;
             _eventGridClient = eventGridClient;
+            _auth0UserService = auth0UserService;
+            _userContext = userContext;
         }
 
         /// <summary>
@@ -80,8 +86,13 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(2)]
         public async Task<ActionResult<StaffModel>> AddNewStaffMember([FromBody] AddStaffRequest request)
         {
-            //Create the staff
-            var staff = await _staffService.CreateStaff(AddStaffRequest.ToStaffModel(request));
+            //1. Create the staff in auth0
+            var userCreatedInAuth0 = await _auth0UserService.AddStaff(_userContext.UsersAuth0OrganizationId, request.FirstName, request.LastName, request.Email, request.MobilePhoneNumber);
+            
+            //2. Create the staff in our db
+            var staffToCreateInDb = request.ToStaffModel();
+            staffToCreateInDb.Auth0Id = userCreatedInAuth0.UserAuth0Id;
+            var staff = await _staffService.CreateStaff(staffToCreateInDb);
 
             //Generate a new staff created event
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staff.StaffId.Value);

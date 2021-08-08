@@ -24,13 +24,12 @@ namespace Rosterd.Services.Mappers
                 JobTitle = dataModel.JobTitle,
                 LastName = dataModel.LastName,
                 MiddleName = dataModel.MiddleName,
-                HomePhoneNumber = dataModel.HomePhoneNumber,
                 MobilePhoneNumber = dataModel.MobilePhoneNumber,
-                OtherPhoneNumber = dataModel.OtherPhoneNumber,
                 Address = dataModel.Address,
                 Comments = dataModel.Comments,
                 DateOfBirth = dataModel.DateOfBirth,
-                IsAvailable = dataModel.IsAvailable
+                IsAvailable = dataModel.IsAvailable,
+                Auth0Id = dataModel.Auth0Id
             };
 
             staffModel.StaffFacilities = dataModel.StaffFacilities.AlwaysList().Select(s => new FacilityModel
@@ -60,12 +59,10 @@ namespace Rosterd.Services.Mappers
                 JobTitle = dataModel.JobTitle,
                 LastName = dataModel.LastName,
                 MiddleName = dataModel.MiddleName,
-                HomePhoneNumber = dataModel.HomePhoneNumber,
                 MobilePhoneNumber = dataModel.MobilePhoneNumber,
-                OtherPhoneNumber = dataModel.OtherPhoneNumber,
                 IsAvailable = dataModel.IsAvailable.ToString(),
                 Address = dataModel.Address,
-                DateOfBirth = dataModel.DateOfBirth?.ToString("yyyy MMMM dd") ?? string.Empty,
+                DateOfBirth = dataModel.DateOfBirth?.ToString("yyyy MMMM dd") ?? string.Empty
             };
 
             var staffFacility = dataModel.StaffFacilities.FirstOrDefault();
@@ -99,9 +96,7 @@ namespace Rosterd.Services.Mappers
             staffFromDb.MiddleName = domainModel.MiddleName;
             staffFromDb.LastName = domainModel.LastName;
             staffFromDb.Email = domainModel.Email;
-            staffFromDb.HomePhoneNumber = domainModel.HomePhoneNumber;
             staffFromDb.MobilePhoneNumber = domainModel.MobilePhoneNumber;
-            staffFromDb.OtherPhoneNumber = domainModel.OtherPhoneNumber;
             staffFromDb.JobTitle = domainModel.JobTitle;
             staffFromDb.Comments = domainModel.Comments;
             staffFromDb.Address = domainModel.Address;
@@ -121,14 +116,12 @@ namespace Rosterd.Services.Mappers
                 MiddleName = domainModel.MiddleName,
                 LastName = domainModel.LastName,
                 Email = domainModel.Email,
-                HomePhoneNumber = domainModel.HomePhoneNumber,
                 MobilePhoneNumber = domainModel.MobilePhoneNumber,
-                OtherPhoneNumber = domainModel.OtherPhoneNumber,
                 JobTitle = domainModel.JobTitle,
                 Comments = domainModel.Comments,
                 Address = domainModel.Address,
-                DateOfBirth = domainModel.DateOfBirth
-
+                DateOfBirth = domainModel.DateOfBirth,
+                Auth0Id = domainModel.Auth0Id
             };
 
             return staffToSave;

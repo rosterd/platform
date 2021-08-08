@@ -75,7 +75,7 @@ namespace Rosterd.Infrastructure.Security
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
-                //PhoneNumber = phoneNumber,
+                //MobilePhoneNumber = phoneNumber,
                 FullName = $"{firstName} {lastName}",
                 Password = Guid.NewGuid().ToString(),
                 Connection = _auth0Settings.ConnectionName,

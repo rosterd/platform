@@ -29,20 +29,28 @@ namespace Rosterd.Admin.Api.Controllers
     public class AdminUsersController : BaseApiController
     {
         private readonly ILogger<StaffController> _logger;
-        private readonly IAdminUserService _adminUserService;
+        private readonly IAuth0UserService _adminUserService;
         private readonly IStaffEventsService _staffEventsService;
         private readonly IEventGridClient _eventGridClient;
         private readonly IUserContext _userContext;
+        private readonly IStaffService _staffService;
 
-        public AdminUsersController(ILogger<StaffController> logger, IAdminUserService adminUserService,
-            IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IUserContext userContext) : base(appSettings)
+        public AdminUsersController(ILogger<StaffController> logger, IAuth0UserService adminUserService,
+            IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IUserContext userContext,
+            IStaffService staffService) : base(appSettings)
         {
             _logger = logger;
             _adminUserService = adminUserService;
             _staffEventsService = staffEventsService;
             _eventGridClient = eventGridClient;
             _userContext = userContext;
+            _staffService = staffService;
         }
+
+        //TODO:
+        //- List of organization admins
+        //- List of facility admins
+
 
         /// <summary>
         /// Adds a new organization admin user
@@ -50,7 +58,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The admin to add for the organization</param>
         /// <returns></returns>
         [HttpPost("organization-admins")]
-        public async Task<ActionResult<AdminUserModel>> AddOrganizationAdminUser([FromBody] AddAdminUserRequest request)
+        public async Task<ActionResult<Auth0UserModel>> AddOrganizationAdminUser([FromBody] AddAdminUserRequest request)
         {
             //var sampleOrgId = "org_pbP7xVjEopDANVRF";
             var adminUserModel = await _adminUserService.AddOrganizationAdmin(_userContext.UsersAuth0OrganizationId, request.ToModel());
@@ -63,10 +71,17 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The admin to add for the facility</param>
         /// <returns></returns>
         [HttpPost("facility-admins")]
-        public async Task<ActionResult<AdminUserModel>> AddFacilityAdminUser([FromBody] AddAdminUserRequest request)
+        public async Task<ActionResult<StaffModel>> AddFacilityAdminUser([FromBody] AddAdminWhoIsAlsoStaffRequest request)
         {
-            var adminUserModel = await _adminUserService.AddFacilityAdmin(_userContext.UsersAuth0OrganizationId, request.ToModel());
-            return adminUserModel;
+            //1. Create user in auth0
+            var adminUserModel = await _adminUserService.AddFacilityAdmin(_userContext.UsersAuth0OrganizationId, request.ToAdminUserModel());
+
+            //2. Create the staff record in our db
+            var staffToCreate = request.ToStaffModel();
+            staffToCreate.Auth0Id = adminUserModel.UserAuth0Id;
+            var staffCreated = await _staffService.CreateStaff(staffToCreate);
+
+            return staffCreated;
         }
     }
 }

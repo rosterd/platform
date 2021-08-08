@@ -8,9 +8,12 @@
     [Country]       NVARCHAR (1000) NOT NULL,
     [PhoneNumber1]  NVARCHAR (1000) NOT NULL,
     [PhoneNumber2]  NVARCHAR (1000) NULL,
+    [IsActive]      BIT             NOT NULL,
     CONSTRAINT [Pk_Facility_FacilityId] PRIMARY KEY CLUSTERED ([FacilityId] ASC),
     CONSTRAINT [Fk_Facility_Organization] FOREIGN KEY ([OrganzationId]) REFERENCES [dbo].[Organization] ([OrganizationId])
 );
+
+
 
 
 

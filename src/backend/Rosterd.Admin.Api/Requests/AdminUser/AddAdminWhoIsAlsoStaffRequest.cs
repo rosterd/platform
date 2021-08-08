@@ -2,25 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using FluentValidation;
-using Rosterd.Data.SqlServer.Models;
-using Rosterd.Domain;
+using Rosterd.Domain.Models.AdminUserModels;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Web.Infra.ValidationAttributes;
 
-namespace Rosterd.Admin.Api.Requests.Staff
+namespace Rosterd.Admin.Api.Requests.AdminUser
 {
-    public class AddStaffRequest
+    public class AddAdminWhoIsAlsoStaffRequest
     {
         [Required(AllowEmptyStrings = false)]
         [StringLength(1000, MinimumLength = 1)]
         public string FirstName { get; set; }
-
-        [MaxLength(1000)]
-        public string MiddleName { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         [StringLength(1000, MinimumLength = 1)]
@@ -31,13 +26,13 @@ namespace Rosterd.Admin.Api.Requests.Staff
         public string Email { get; set; }
 
         [StringLength(1000)]
+        public string PhoneNumber { get; set; }
+
+        [MaxLength(1000)]
+        public string MiddleName { get; set; }
+
+        [StringLength(1000)]
         public string MobilePhoneNumber { get; set; }
-
-        [Required]
-        public bool? IsActive { get; set; }
-
-        [Required]
-        public bool? IsAvailable { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
 
@@ -63,23 +58,25 @@ namespace Rosterd.Admin.Api.Requests.Staff
         [CollectionIsRequiredAndShouldNotBeEmpty]
         public List<long> SkillIds { get; set; }
 
+        public Auth0UserModel ToAdminUserModel() => new Auth0UserModel {FirstName = FirstName, LastName = LastName, Email = Email, MobilePhoneNumber = PhoneNumber};
+
         public StaffModel ToStaffModel() =>
             new StaffModel
             {
                 FirstName = FirstName,
                 Email = Email,
-                IsActive = IsActive.Value,
+                IsActive = true,
                 JobTitle = JobTitle,
                 LastName = LastName,
                 MiddleName = MiddleName,
                 MobilePhoneNumber = MobilePhoneNumber,
-                IsAvailable = IsAvailable.Value,
+                IsAvailable = true,
                 DateOfBirth = DateOfBirth,
                 Address = Address,
                 Comments = Comments,
 
                 StaffFacilities = new List<FacilityModel> { new FacilityModel { FacilityId = FacilityId.Value } },
-                StaffSkills = SkillIds.AlwaysList().Select(s => new SkillModel{SkillId = s }).AlwaysList()
+                StaffSkills = SkillIds.AlwaysList().Select(s => new SkillModel { SkillId = s }).AlwaysList()
             };
     }
 }

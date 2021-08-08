@@ -13,6 +13,7 @@ using Rosterd.Web.Infra.Filters.Swagger;
 using Rosterd.Web.Infra.ValidationAttributes;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 using Microsoft.AspNetCore.Authorization;
+using Rosterd.Admin.Api.Services;
 using Rosterd.Domain.Settings;
 
 namespace Rosterd.Admin.Api.Controllers
@@ -24,11 +25,13 @@ namespace Rosterd.Admin.Api.Controllers
     {
         private readonly IFacilitiesService _facilitiesService;
         private readonly ILogger<FacilitiesController> _logger;
+        private readonly IUserContext _userContext;
 
-        public FacilitiesController(ILogger<FacilitiesController> logger, IFacilitiesService facilitiesService, IOptions<AppSettings> appSettings) : base(appSettings)
+        public FacilitiesController(ILogger<FacilitiesController> logger, IFacilitiesService facilitiesService, IOptions<AppSettings> appSettings, IUserContext userContext) : base(appSettings)
         {
             _logger = logger;
             _facilitiesService = facilitiesService;
+            _userContext = userContext;
         }
 
         /// <summary>
@@ -68,8 +71,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(3)]
         public async Task<ActionResult<FacilityModel>> AddNewFacility([Required][FromBody] AddFacilityRequest request)
         {
-            //TODO: remove hard-coding of organization now, this will need to come from JWT once auth is there
-            request.FacilityToAdd.Organization = new OrganizationModel { OrganizationId = 7 };
+            request.FacilityToAdd.Organization = new OrganizationModel {Auth0OrganizationId = _userContext.UsersAuth0OrganizationId};
 
             //Validate duplicates
             var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(request.FacilityToAdd);
@@ -92,8 +94,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(4)]
         public async Task<ActionResult<FacilityModel>> UpdateFacility([Required] UpdateFacilityRequest request)
         {
-            //TODO: remove hard-coding of organization now, this will need to come from JWT once auth is there
-            request.FacilityToUpdate.Organization = new OrganizationModel { OrganizationId = 7 };
+            request.FacilityToUpdate.Organization = new OrganizationModel { Auth0OrganizationId = _userContext.UsersAuth0OrganizationId };
 
             //Validate duplicates
             var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(request.FacilityToUpdate);

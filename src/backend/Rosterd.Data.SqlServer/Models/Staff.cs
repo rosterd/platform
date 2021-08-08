@@ -40,12 +40,10 @@ namespace Rosterd.Data.SqlServer.Models
         public DateTime? DateOfBirth { get; set; }
         [StringLength(1000)]
         public string Email { get; set; }
-        [StringLength(1000)]
-        public string HomePhoneNumber { get; set; }
+       
         [StringLength(1000)]
         public string MobilePhoneNumber { get; set; }
-        [StringLength(1000)]
-        public string OtherPhoneNumber { get; set; }
+       
         [StringLength(1000)]
         public string Address { get; set; }
         [StringLength(1000)]

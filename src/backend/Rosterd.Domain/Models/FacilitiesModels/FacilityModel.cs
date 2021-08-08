@@ -35,6 +35,9 @@ namespace Rosterd.Domain.Models.FacilitiesModels
         [StringLength(1000)]
         public string PhoneNumber1 { get; set; }
 
+        [Required]
+        public bool? IsActive { get; set; }
+
         [StringLength(1000)]
         public string PhoneNumber2 { get; set; }
 

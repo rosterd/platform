@@ -51,7 +51,7 @@ namespace Rosterd.Services.Facilities
             var facility = await _context.Facilities.FindAsync(facilityId);
             if (facility != null)
             {
-                _context.Facilities.Remove(facility);
+                facility.IsActive = false;
                 await _context.SaveChangesAsync();
             }
         }

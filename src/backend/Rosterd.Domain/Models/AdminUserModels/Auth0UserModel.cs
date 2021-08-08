@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Rosterd.Domain.Models.AdminUserModels
 {
-    public class AdminUserModel
+    public class Auth0UserModel
     {
         [Required]
-        public string AdminUserId { get; set; }
+        public string UserAuth0Id { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         [StringLength(1000, MinimumLength = 1)]
@@ -21,6 +21,6 @@ namespace Rosterd.Domain.Models.AdminUserModels
         public string Email { get; set; }
 
         [StringLength(1000)]
-        public string PhoneNumber { get; set; }
+        public string MobilePhoneNumber { get; set; }
     }
 }

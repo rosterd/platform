@@ -28,8 +28,7 @@ namespace Rosterd.Admin.Api.Requests.AdminUser
         [StringLength(1000)]
         public string PhoneNumber { get; set; }
 
-        public AdminUserModel ToModel() => new AdminUserModel {FirstName = FirstName, LastName = LastName, Email = Email, PhoneNumber = PhoneNumber};
+        public Auth0UserModel ToModel() => new Auth0UserModel {FirstName = FirstName, LastName = LastName, Email = Email, MobilePhoneNumber = PhoneNumber};
     }
-
 
 }

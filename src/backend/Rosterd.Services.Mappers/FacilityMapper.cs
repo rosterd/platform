@@ -22,7 +22,8 @@ namespace Rosterd.Services.Mappers
                 Country = dataModel.Country,
                 PhoneNumber1 = dataModel.PhoneNumber1,
                 PhoneNumber2 = dataModel.PhoneNumber2,
-                Organization = new OrganizationModel { OrganizationId = dataModel.OrganzationId }
+                Organization = new OrganizationModel { OrganizationId = dataModel.OrganzationId},
+                IsActive = dataModel.IsActive
             };
 
             return facilityModel;
@@ -47,6 +48,7 @@ namespace Rosterd.Services.Mappers
             existingDataModelFromDb.PhoneNumber1 = domainModelToUpdate.PhoneNumber1;
             existingDataModelFromDb.PhoneNumber2 = domainModelToUpdate.PhoneNumber2;
             existingDataModelFromDb.Suburb = domainModelToUpdate.Suburb;
+            existingDataModelFromDb.IsActive = domainModelToUpdate.IsActive.Value;
             
             return existingDataModelFromDb;
         }
@@ -62,6 +64,7 @@ namespace Rosterd.Services.Mappers
                 PhoneNumber1 = domainModel.PhoneNumber1,
                 PhoneNumber2 = domainModel.PhoneNumber2,
                 Suburb = domainModel.Suburb,
+                IsActive = domainModel.IsActive.Value,
 
                 OrganzationId = domainModel.Organization.OrganizationId.Value
             };
