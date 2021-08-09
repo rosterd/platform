@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Rosterd.Domain.Enums;
+using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.AdminUserModels;
 
 namespace Rosterd.Infrastructure.Security.Interfaces
@@ -34,5 +36,7 @@ namespace Rosterd.Infrastructure.Security.Interfaces
         Task<Auth0UserModel> AddStaff(string auth0OrganizationId, string firstName, string lastName, string email, string mobilePhoneNumber);
 
         Task<Auth0UserModel> AddUserToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel, RosterdRoleEnum roleToAddForUser);
+
+        Task<PagedList<Auth0UserModel>> GetAdminUsers(string auth0OrganizationId, PagingQueryStringParameters pagingParams);
     }
 }

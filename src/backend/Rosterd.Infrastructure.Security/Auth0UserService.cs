@@ -1,9 +1,13 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Auth0.ManagementApi.Models;
+using Auth0.ManagementApi.Paging;
 using Rosterd.Domain.Enums;
 using Rosterd.Domain.Exceptions;
+using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.AdminUserModels;
+using Rosterd.Infrastructure.Extensions;
 using Rosterd.Infrastructure.Security.Interfaces;
 
 namespace Rosterd.Infrastructure.Security
@@ -51,6 +55,46 @@ namespace Rosterd.Infrastructure.Security
 
             adminUserModel.UserAuth0Id = userCreatedInAuth0.UserId;
             return adminUserModel;
+        }
+
+        public async Task<Domain.Models.PagedList<Auth0UserModel>> GetAdminUsers(string auth0OrganizationId, PagingQueryStringParameters pagingParams)
+        {
+            var auth0ApiManagementClient = await _auth0AuthenticationService.GetAuth0ApiManagementClient();
+
+            var allOrganizationMembers = auth0ApiManagementClient.Organizations.GetAllMembersAsync(auth0OrganizationId,
+                new PaginationInfo(pagingParams.PageNumber, pagingParams.PageSize, true));
+
+            if (allOrganizationMembers == null || allOrganizationMembers.Result.IsNullOrEmpty())
+                return Domain.Models.PagedList<Auth0UserModel>.EmptyPagedList();
+
+
+            var auth0UserModels = new List<Auth0UserModel>();
+            foreach (var organizationMember in allOrganizationMembers.Result)
+            {
+                var userRoles = auth0ApiManagementClient.Users.GetRolesAsync(organizationMember.UserId, new PaginationInfo());
+
+                //Only admin users
+                if (userRoles != null && userRoles.Result.IsNullOrEmpty())
+                    continue;
+
+                //If use ris staff role then not an admin
+                var isStaff = userRoles.Result.FirstOrDefault(s => s.Name == RosterdRoleEnum.Staff.ToString());
+                if(isStaff != null)
+                    continue;
+
+                auth0UserModels.Add(new Auth0UserModel
+                {
+                    Email = organizationMember.Email,
+                    FirstName = organizationMember.Name,
+                    LastName = string.Empty,
+                    MobilePhoneNumber = string.Empty,
+                    UserAuth0Id = organizationMember.UserId,
+                    RosterdRolesForUser = userRoles.Result.AlwaysList().Select(s => s.Name.ToEnum<RosterdRoleEnum>()).AlwaysList()
+                });
+            }
+
+            return new Domain.Models.PagedList<Auth0UserModel>(auth0UserModels, allOrganizationMembers.Result.Paging.Total, pagingParams.PageNumber,
+                pagingParams.PageSize);
         }
     }
 }

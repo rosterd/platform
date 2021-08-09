@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using Rosterd.Admin.Api.Requests.AdminUser;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
+using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.AdminUserModels;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Domain.Settings;
@@ -51,6 +53,17 @@ namespace Rosterd.Admin.Api.Controllers
         //- List of organization admins
         //- List of facility admins
 
+        /// <summary>
+        /// Gets a list of all the organization admins for the organization
+        /// </summary>
+        /// <param name="pagingParameters"></param>
+        /// <returns></returns>
+        [HttpGet("admins")]
+        public async Task<ActionResult<PagedList<Auth0UserModel>>> GetListOfOrganizationAdmins([FromQuery] PagingQueryStringParameters pagingParameters)
+        {
+            var organizationAdmins = await _adminUserService.GetAdminUsers(_userContext.UsersAuth0OrganizationId, pagingParameters);
+            return organizationAdmins;
+        }
 
         /// <summary>
         /// Adds a new organization admin user
@@ -60,7 +73,6 @@ namespace Rosterd.Admin.Api.Controllers
         [HttpPost("organization-admins")]
         public async Task<ActionResult<Auth0UserModel>> AddOrganizationAdminUser([FromBody] AddAdminUserRequest request)
         {
-            //var sampleOrgId = "org_pbP7xVjEopDANVRF";
             var adminUserModel = await _adminUserService.AddOrganizationAdmin(_userContext.UsersAuth0OrganizationId, request.ToModel());
             return adminUserModel;
         }

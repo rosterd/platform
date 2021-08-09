@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Rosterd.Domain.Enums;
 
 namespace Rosterd.Domain.Models.AdminUserModels
 {
@@ -22,5 +24,7 @@ namespace Rosterd.Domain.Models.AdminUserModels
 
         [StringLength(1000)]
         public string MobilePhoneNumber { get; set; }
+
+        public List<RosterdRoleEnum> RosterdRolesForUser { get; set; }
     }
 }

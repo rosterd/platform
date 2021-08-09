@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Rosterd.Domain.Models
@@ -10,6 +11,15 @@ namespace Rosterd.Domain.Models
             PageSize = pageSize;
             CurrentPage = currentPage;
             TotalPages = totalPages;
+            Items = items;
+        }
+
+        public PagedList(List<T> items, int totalCount, int currentPage, int pageSize)
+        {
+            TotalCount = totalCount;
+            PageSize = pageSize;
+            CurrentPage = currentPage;
+            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
             Items = items;
         }
 
