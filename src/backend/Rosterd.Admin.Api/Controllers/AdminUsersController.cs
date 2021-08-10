@@ -18,6 +18,7 @@ using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using Rosterd.Web.Infra.Security;
 using Rosterd.Web.Infra.ValidationAttributes;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
@@ -28,6 +29,7 @@ namespace Rosterd.Admin.Api.Controllers
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Admin User")]
+    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.OrganizationAdmin, RosterdConstants.RosterdRoleNames.RosterdAdmin)]
     public class AdminUsersController : BaseApiController
     {
         private readonly ILogger<StaffController> _logger;
@@ -49,10 +51,6 @@ namespace Rosterd.Admin.Api.Controllers
             _staffService = staffService;
         }
 
-        //TODO:
-        //- List of organization admins
-        //- List of facility admins
-
         /// <summary>
         /// Gets a list of all the organization admins for the organization
         /// </summary>
@@ -73,7 +71,7 @@ namespace Rosterd.Admin.Api.Controllers
         [HttpPost("organization-admins")]
         public async Task<ActionResult<Auth0UserModel>> AddOrganizationAdminUser([FromBody] AddAdminUserRequest request)
         {
-            var adminUserModel = await _adminUserService.AddOrganizationAdmin(_userContext.UsersAuth0OrganizationId, request.ToModel());
+            var adminUserModel = await _adminUserService.AddOrganizationAdminToAuth0(_userContext.UsersAuth0OrganizationId, request.ToModel());
             return adminUserModel;
         }
 
@@ -86,7 +84,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<StaffModel>> AddFacilityAdminUser([FromBody] AddAdminWhoIsAlsoStaffRequest request)
         {
             //1. Create user in auth0
-            var adminUserModel = await _adminUserService.AddFacilityAdmin(_userContext.UsersAuth0OrganizationId, request.ToAdminUserModel());
+            var adminUserModel = await _adminUserService.AddFacilityAdminToAuth0(_userContext.UsersAuth0OrganizationId, request.ToAdminUserModel());
 
             //2. Create the staff record in our db
             var staffToCreate = request.ToStaffModel();

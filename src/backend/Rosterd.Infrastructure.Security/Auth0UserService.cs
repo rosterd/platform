@@ -24,14 +24,20 @@ namespace Rosterd.Infrastructure.Security
         }
 
         ///<inheritdoc/>
-        public async Task<Auth0UserModel> AddOrganizationAdmin(string auth0OrganizationId, Auth0UserModel adminUserModel) => await AddUserToAuth0(auth0OrganizationId, adminUserModel, RosterdRoleEnum.OrganizationAdmin);
+        public async Task<Auth0UserModel> AddOrganizationAdminToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel) => await AddUserToAuth0(auth0OrganizationId, adminUserModel, RosterdRoleEnum.OrganizationAdmin);
 
         ///<inheritdoc/>
-        public async Task<Auth0UserModel> AddFacilityAdmin(string auth0OrganizationId, Auth0UserModel adminUserModel) => await AddUserToAuth0(auth0OrganizationId, adminUserModel, RosterdRoleEnum.FacilityAdmin);
+        public async Task<Auth0UserModel> AddFacilityAdminToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel) => await AddUserToAuth0(auth0OrganizationId, adminUserModel, RosterdRoleEnum.FacilityAdmin);
 
-        public async Task<Auth0UserModel> AddStaff(string auth0OrganizationId, string firstName, string lastName, string email, string mobilePhoneNumber) =>
+        public async Task<Auth0UserModel> AddStaffToAuth0(string auth0OrganizationId, string firstName, string lastName, string email, string mobilePhoneNumber) =>
             await AddUserToAuth0(auth0OrganizationId,
                 new Auth0UserModel {Email = email, FirstName = firstName, LastName = lastName, MobilePhoneNumber = mobilePhoneNumber}, RosterdRoleEnum.Staff);
+
+        public async Task RemoveUserFromAuth0(string auth0Id)
+        {
+            var auth0ApiManagementClient = await _auth0AuthenticationService.GetAuth0ApiManagementClient();
+            await auth0ApiManagementClient.Users.DeleteAsync(auth0Id);
+        }
 
         public async Task<Auth0UserModel> AddUserToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel, RosterdRoleEnum roleToAddForUser)
         {

@@ -10,6 +10,7 @@ using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Settings;
 using Rosterd.Services.Skills.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using Rosterd.Web.Infra.Security;
 using Rosterd.Web.Infra.ValidationAttributes;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
@@ -17,6 +18,7 @@ namespace Rosterd.Admin.Api.Controllers
 {
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Skills")]
+    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.FacilityAdmin, RosterdConstants.RosterdRoleNames.OrganizationAdmin, RosterdConstants.RosterdRoleNames.RosterdAdmin)]
     public class SkillsController : BaseApiController
     {
         private readonly ILogger<SkillsController> _logger;

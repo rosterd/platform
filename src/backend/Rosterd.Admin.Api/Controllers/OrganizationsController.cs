@@ -11,12 +11,14 @@ using Rosterd.Domain.Models.OrganizationModels;
 using Rosterd.Domain.Settings;
 using Rosterd.Services.Organizations.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using Rosterd.Web.Infra.Security;
 using Rosterd.Web.Infra.ValidationAttributes;
 
 namespace Rosterd.Admin.Api.Controllers
 {
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Organizations")]
+    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.RosterdAdmin)]
     public class OrganizationsController : BaseApiController
     {
         private readonly ILogger<OrganizationsController> _logger;

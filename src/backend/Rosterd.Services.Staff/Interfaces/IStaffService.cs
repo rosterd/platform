@@ -49,7 +49,7 @@ namespace Rosterd.Services.Staff.Interfaces
         /// </summary>
         /// <param name="staffId"></param>
         /// <returns></returns>
-        Task UpdateStaffToInactive(long staffId);
+        Task<StaffModel> UpdateStaffToInactive(long staffId);
 
         /// <summary>
         /// Updates the status of a given staff member to active

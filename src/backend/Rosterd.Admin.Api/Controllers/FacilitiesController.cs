@@ -15,12 +15,13 @@ using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParam
 using Microsoft.AspNetCore.Authorization;
 using Rosterd.Admin.Api.Services;
 using Rosterd.Domain.Settings;
+using Rosterd.Web.Infra.Security;
 
 namespace Rosterd.Admin.Api.Controllers
 {
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Facilities")]
-    [Authorize(Roles = "Admin")] //TODO: Link to constant which is linked to enum
+    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.OrganizationAdmin, RosterdConstants.RosterdRoleNames.RosterdAdmin)]
     public class FacilitiesController : BaseApiController
     {
         private readonly IFacilitiesService _facilitiesService;
