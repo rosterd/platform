@@ -132,7 +132,7 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task UpdateStaffToInactive(long staffId)
+        public async Task<StaffModel> UpdateStaffToInactive(long staffId)
         {
             var staff = await _context.Staff.FindAsync(staffId);
 
@@ -140,7 +140,11 @@ namespace Rosterd.Services.Staff
             {
                 staff.IsActive = false;
                 await _context.SaveChangesAsync();
+
+                return staff.ToDomainModel();
             }
+
+            return null;
         }
 
         ///<inheritdoc/>

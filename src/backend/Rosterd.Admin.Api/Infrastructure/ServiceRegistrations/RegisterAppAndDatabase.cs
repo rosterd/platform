@@ -53,8 +53,7 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             services.AddScoped<ISkillsService, SkillsService>();
             services.AddScoped<IJobsService, JobsService>();
             services.AddScoped<IOrganizationsService, OrganizationsService>();
-            services.AddScoped<IAuth0UserService, Auth0UserService>();
-
+            
             //Search
             services.AddScoped<ISearchIndexProvider>(s => new SearchIndexProvider(config.GetValue<string>("AppSettings:SearchServiceEndpoint"),
                 config.GetValue<string>("AppSettings:SearchServiceApiKey")));
@@ -78,10 +77,11 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 
             //Auth0, auth, roles
             var domain = $"{config["Auth0:Domain"]}/";
-            services.AddSingleton<IManagementConnection, HttpClientManagementConnection>();
-            services.AddSingleton<AuthenticationApiClient>(s => new AuthenticationApiClient(domain));
-            services.AddSingleton<IAuth0AuthenticationService, Auth0AuthenticationService>();
-            services.AddSingleton<IRolesService, RolesService>();
+            services.AddSingleton<IManagementConnection, HttpClientManagementConnection>(); //part of auth0 sdk, auth0 recommends this to be singleton due to reuse of httpclient under the hood
+            services.AddSingleton<AuthenticationApiClient>(s => new AuthenticationApiClient(domain)); //part of auth0 sdk, auth0 recommends this to be singleton due to reuse of httpclient under the hood
+            services.AddScoped<IAuth0AuthenticationService, Auth0AuthenticationService>();
+            services.AddScoped<IRolesService, RolesService>();
+            services.AddScoped<IAuth0UserService, Auth0UserService>();
         }
 
         public static void RegisterDatabaseDependencies(this IServiceCollection services, IConfiguration config, IWebHostEnvironment hostingEnvironment)

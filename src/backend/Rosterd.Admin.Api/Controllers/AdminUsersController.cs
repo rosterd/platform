@@ -71,7 +71,7 @@ namespace Rosterd.Admin.Api.Controllers
         [HttpPost("organization-admins")]
         public async Task<ActionResult<Auth0UserModel>> AddOrganizationAdminUser([FromBody] AddAdminUserRequest request)
         {
-            var adminUserModel = await _adminUserService.AddOrganizationAdmin(_userContext.UsersAuth0OrganizationId, request.ToModel());
+            var adminUserModel = await _adminUserService.AddOrganizationAdminToAuth0(_userContext.UsersAuth0OrganizationId, request.ToModel());
             return adminUserModel;
         }
 
@@ -84,7 +84,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<StaffModel>> AddFacilityAdminUser([FromBody] AddAdminWhoIsAlsoStaffRequest request)
         {
             //1. Create user in auth0
-            var adminUserModel = await _adminUserService.AddFacilityAdmin(_userContext.UsersAuth0OrganizationId, request.ToAdminUserModel());
+            var adminUserModel = await _adminUserService.AddFacilityAdminToAuth0(_userContext.UsersAuth0OrganizationId, request.ToAdminUserModel());
 
             //2. Create the staff record in our db
             var staffToCreate = request.ToStaffModel();

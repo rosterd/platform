@@ -89,7 +89,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<StaffModel>> AddNewStaffMember([FromBody] AddStaffRequest request)
         {
             //1. Create the staff in auth0
-            var userCreatedInAuth0 = await _auth0UserService.AddStaff(_userContext.UsersAuth0OrganizationId, request.FirstName, request.LastName, request.Email, request.MobilePhoneNumber);
+            var userCreatedInAuth0 = await _auth0UserService.AddStaffToAuth0(_userContext.UsersAuth0OrganizationId, request.FirstName, request.LastName, request.Email, request.MobilePhoneNumber);
             
             //2. Create the staff in our db
             var staffToCreateInDb = request.ToStaffModel();
@@ -139,7 +139,13 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(4)]
         public async Task<ActionResult> RemoveStaffMember([ValidNumberRequired] long? staffId)
         {
-            await _staffService.UpdateStaffToInactive(staffId.Value);
+            //1. Mark as not active in our db
+            var staffModel = await _staffService.UpdateStaffToInactive(staffId.Value);
+
+            //2. Remove from auth0
+            if (staffModel != null)
+                await _auth0UserService.RemoveUserFromAuth0(staffModel.Auth0Id);
+
             await _staffEventsService.GenerateStaffDeletedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
             return Ok();
         }

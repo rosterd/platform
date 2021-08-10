@@ -18,7 +18,7 @@ namespace Rosterd.Infrastructure.Security.Interfaces
         /// <param name="auth0OrganizationId"></param>
         /// <param name="adminUserModel"></param>
         /// <returns></returns>
-        Task<Auth0UserModel> AddOrganizationAdmin(string auth0OrganizationId, Auth0UserModel adminUserModel);
+        Task<Auth0UserModel> AddOrganizationAdminToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel);
 
         /// <summary>
         /// Create facility admin for organization
@@ -31,11 +31,13 @@ namespace Rosterd.Infrastructure.Security.Interfaces
         /// <param name="auth0OrganizationId"></param>
         /// <param name="adminUserModel"></param>
         /// <returns></returns>
-        Task<Auth0UserModel> AddFacilityAdmin(string auth0OrganizationId, Auth0UserModel adminUserModel);
+        Task<Auth0UserModel> AddFacilityAdminToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel);
 
-        Task<Auth0UserModel> AddStaff(string auth0OrganizationId, string firstName, string lastName, string email, string mobilePhoneNumber);
+        Task<Auth0UserModel> AddStaffToAuth0(string auth0OrganizationId, string firstName, string lastName, string email, string mobilePhoneNumber);
 
         Task<Auth0UserModel> AddUserToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel, RosterdRoleEnum roleToAddForUser);
+
+        Task RemoveUserFromAuth0(string auth0Id);
 
         Task<PagedList<Auth0UserModel>> GetAdminUsers(string auth0OrganizationId, PagingQueryStringParameters pagingParams);
     }
