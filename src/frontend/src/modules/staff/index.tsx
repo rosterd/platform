@@ -6,7 +6,7 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import AddResourceModal from './components/AddResourceModal';
+import AddStaffModal from './components/AddStaffModal';
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -19,34 +19,23 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Resources = () => {
+const StaffList: React.FC = (): JSX.Element => {
   const classes = useStyles();
-  const [showAddResource, setShowAddResource] = useState(false);
+  const [showAddStaffModal, setShowAddStaffModal] = useState(false);
+
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <Box>
         <Box mb={{xs: 4, sm: 4, xl: 6}}>
-          <Grid
-            container
-            direction='row'
-            justify='space-between'
-            alignItems='center'>
+          <Grid container direction='row' justify='space-between' alignItems='center'>
             <Grid item xs={6}>
-              <Box
-                component='h2'
-                color='text.primary'
-                fontSize={16}
-                fontWeight={Fonts.BOLD}>
-                <IntlMessages id='resources.heading' />
+              <Box component='h2' color='text.primary' fontSize={16} fontWeight={Fonts.BOLD}>
+                <IntlMessages id='staff.heading' />
               </Box>
             </Grid>
             <Grid item xs={6} className={classes.buttonContainer}>
-              <Button
-                variant='contained'
-                color='primary'
-                startIcon={<AddIcon />}
-                onClick={() => setShowAddResource(true)}>
-                Add Resource
+              <Button variant='contained' color='primary' startIcon={<AddIcon />} onClick={() => setShowAddStaffModal(true)}>
+                Add Staff
               </Button>
             </Grid>
           </Grid>
@@ -87,13 +76,10 @@ const Resources = () => {
             ]}
           />
         </Box>
-        <AddResourceModal
-          open={showAddResource}
-          handleClose={() => setShowAddResource(false)}
-        />
+        <AddStaffModal open={showAddStaffModal} handleClose={() => setShowAddStaffModal(false)} />
       </Box>
     </AppAnimate>
   );
 };
 
-export default Resources;
+export default StaffList;

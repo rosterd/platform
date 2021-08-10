@@ -56,7 +56,7 @@ const AddFacilityModal: React.FC<AddFacilityModalProps> = (props): JSX.Element =
       }}>
       {({submitForm, isSubmitting}) => (
         <Dialog fullWidth maxWidth='sm' open={props.open} onClose={props.handleClose} aria-labelledby='form-dialog-title'>
-          <DialogTitle id='form-dialog-title'>Add Resource</DialogTitle>
+          <DialogTitle id='form-dialog-title'>Add Staff</DialogTitle>
           <DialogContent>
             <Form>
               <Field component={TextField} name='facilityName' label='Facility Name' fullWidth />

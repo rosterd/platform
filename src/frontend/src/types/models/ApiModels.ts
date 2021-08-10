@@ -12,6 +12,160 @@ export interface paths {
       };
     };
   };
+  "/api/v{version}/adminusers/facility-admins": {
+    post: {
+      parameters: {
+        path: {
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["AdminUserModel"];
+            "application/json": components["schemas"]["AdminUserModel"];
+            "text/json": components["schemas"]["AdminUserModel"];
+          };
+        };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+      /** The admin to add for the facility */
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["AddAdminUserRequest"];
+          "text/json": components["schemas"]["AddAdminUserRequest"];
+          "application/*+json": components["schemas"]["AddAdminUserRequest"];
+        };
+      };
+    };
+  };
+  "/api/v{version}/adminusers/organization-admins": {
+    post: {
+      parameters: {
+        path: {
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["AdminUserModel"];
+            "application/json": components["schemas"]["AdminUserModel"];
+            "text/json": components["schemas"]["AdminUserModel"];
+          };
+        };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+      /** The admin to add for the organization */
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["AddAdminUserRequest"];
+          "text/json": components["schemas"]["AddAdminUserRequest"];
+          "application/*+json": components["schemas"]["AddAdminUserRequest"];
+        };
+      };
+    };
+  };
   "/api/v{version}/facilities": {
     get: {
       parameters: {
@@ -235,6 +389,139 @@ export interface paths {
       };
     };
   };
+  "/api/v{version}/facilities/{facilityid}": {
+    get: {
+      parameters: {
+        path: {
+          facilityId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["FacilityModel"];
+            "application/json": components["schemas"]["FacilityModel"];
+            "text/json": components["schemas"]["FacilityModel"];
+          };
+        };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        path: {
+          /** The Facility to be deleted */
+          facilityId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+  };
   "/api/v{version}/Jobs": {
     get: {
       parameters: {
@@ -373,6 +660,147 @@ export interface paths {
           "application/json": components["schemas"]["AddJobRequest"];
           "text/json": components["schemas"]["AddJobRequest"];
           "application/*+json": components["schemas"]["AddJobRequest"];
+        };
+      };
+    };
+  };
+  "/api/v{version}/Jobs/{jobId}": {
+    get: {
+      parameters: {
+        path: {
+          jobId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["JobModel"];
+            "application/json": components["schemas"]["JobModel"];
+            "text/json": components["schemas"]["JobModel"];
+          };
+        };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        path: {
+          /** The Job to be removed */
+          jobId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+      /** The reason for the job cancellation */
+      requestBody: {
+        content: {
+          "application/json": string;
+          "text/json": string;
+          "application/*+json": string;
         };
       };
     };
@@ -600,6 +1028,410 @@ export interface paths {
       };
     };
   };
+  "/api/v{version}/Organizations/{organizationId}": {
+    get: {
+      parameters: {
+        path: {
+          organizationId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["OrganizationModel"];
+            "application/json": components["schemas"]["OrganizationModel"];
+            "text/json": components["schemas"]["OrganizationModel"];
+          };
+        };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        path: {
+          /** The Organization to be deleted */
+          organizationId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+  };
+  "/api/v{version}/Roles": {
+    get: {
+      parameters: {
+        path: {
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["RosterdRole"][];
+            "application/json": components["schemas"]["RosterdRole"][];
+            "text/json": components["schemas"]["RosterdRole"][];
+          };
+        };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        path: {
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+      /** The role to add */
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["AddRoleRequest"];
+          "text/json": components["schemas"]["AddRoleRequest"];
+          "application/*+json": components["schemas"]["AddRoleRequest"];
+        };
+      };
+    };
+  };
+  "/api/v{version}/Roles/{roleId}": {
+    get: {
+      parameters: {
+        path: {
+          roleId: string;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["RosterdRole"];
+            "application/json": components["schemas"]["RosterdRole"];
+            "text/json": components["schemas"]["RosterdRole"];
+          };
+        };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        path: {
+          /** The role to be deleted */
+          roleId: string;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+  };
   "/api/v{version}/Skills": {
     get: {
       parameters: {
@@ -808,6 +1640,139 @@ export interface paths {
           "text/json": components["schemas"]["AddUpdateSkillRequest"];
           "application/*+json": components["schemas"]["AddUpdateSkillRequest"];
         };
+      };
+    };
+  };
+  "/api/v{version}/Skills/{skillId}": {
+    get: {
+      parameters: {
+        path: {
+          skillId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["SkillModel"];
+            "application/json": components["schemas"]["SkillModel"];
+            "text/json": components["schemas"]["SkillModel"];
+          };
+        };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        path: {
+          /** The Skill to be deleted */
+          skillId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
       };
     };
   };
@@ -1036,546 +2001,6 @@ export interface paths {
       };
     };
   };
-  "/api/v{version}/facilities/{facilityid}": {
-    get: {
-      parameters: {
-        path: {
-          facilityId: number;
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["FacilityModel"];
-            "application/json": components["schemas"]["FacilityModel"];
-            "text/json": components["schemas"]["FacilityModel"];
-          };
-        };
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        path: {
-          /** The Facility to be deleted */
-          facilityId: number;
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: unknown;
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
-  };
-  "/api/v{version}/Jobs/{jobId}": {
-    get: {
-      parameters: {
-        path: {
-          jobId: number;
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["JobModel"];
-            "application/json": components["schemas"]["JobModel"];
-            "text/json": components["schemas"]["JobModel"];
-          };
-        };
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        path: {
-          /** The Job to be removed */
-          jobId: number;
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: unknown;
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-      /** The reason for the job cancellation */
-      requestBody: {
-        content: {
-          "application/json": string;
-          "text/json": string;
-          "application/*+json": string;
-        };
-      };
-    };
-  };
-  "/api/v{version}/Organizations/{organizationId}": {
-    get: {
-      parameters: {
-        path: {
-          organizationId: number;
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["OrganizationModel"];
-            "application/json": components["schemas"]["OrganizationModel"];
-            "text/json": components["schemas"]["OrganizationModel"];
-          };
-        };
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        path: {
-          /** The Organization to be deleted */
-          organizationId: number;
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: unknown;
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
-  };
-  "/api/v{version}/Skills/{skillId}": {
-    get: {
-      parameters: {
-        path: {
-          skillId: number;
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["SkillModel"];
-            "application/json": components["schemas"]["SkillModel"];
-            "text/json": components["schemas"]["SkillModel"];
-          };
-        };
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        path: {
-          /** The Skill to be deleted */
-          skillId: number;
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: unknown;
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
-  };
   "/api/v{version}/Staff/{id}": {
     get: {
       parameters: {
@@ -1593,71 +2018,6 @@ export interface paths {
             "text/json": components["schemas"]["StaffModel"];
           };
         };
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
-  };
-  "/api/v{version}/Staff/{staffId}/reactivate": {
-    patch: {
-      parameters: {
-        path: {
-          /** The staff id to update */
-          staffId: number;
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: unknown;
         /** Bad Request */
         400: {
           content: {
@@ -1908,6 +2268,71 @@ export interface paths {
       };
     };
   };
+  "/api/v{version}/Staff/{staffId}/reactivate": {
+    patch: {
+      parameters: {
+        path: {
+          /** The staff id to update */
+          staffId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+  };
   "/api/v{version}/Staff/{staffId}/skills": {
     put: {
       parameters: {
@@ -2059,6 +2484,12 @@ export interface paths {
 
 export interface components {
   schemas: {
+    AddAdminUserRequest: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      phoneNumber?: string | null;
+    };
     AddFacilityRequest: {
       facilityToAdd?: components["schemas"]["FacilityModel"];
     };
@@ -2081,6 +2512,10 @@ export interface components {
     };
     AddOrganizationRequest: {
       organization?: components["schemas"]["OrganizationModel"];
+    };
+    AddRoleRequest: {
+      roleName: string;
+      roleDescription: string;
     };
     AddSkillsToStaffRequest: {
       skillsToAdd?: number[] | null;
@@ -2109,6 +2544,13 @@ export interface components {
     };
     AddUpdateSkillRequest: {
       skillToAddOrUpdate?: components["schemas"]["SkillModel"];
+    };
+    AdminUserModel: {
+      adminUserId: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      phoneNumber?: string | null;
     };
     FacilityCapabilityModel: { [key: string]: unknown };
     FacilityModel: {
@@ -2180,9 +2622,11 @@ export interface components {
       | "Cancelled";
     OrganizationModel: {
       organizationId?: number | null;
-      tenantId?: number | null;
+      auth0OrganizationId?: string | null;
       organizationName: string;
-      address: string;
+      phone?: string | null;
+      address?: string | null;
+      comments?: string | null;
     };
     OrganizationModelPagedList: {
       currentPage?: number;
@@ -2200,6 +2644,11 @@ export interface components {
       detail?: string | null;
       instance?: string | null;
     } & { [key: string]: any };
+    RosterdRole: {
+      roleId?: string | null;
+      roleName?: string | null;
+      roleDescription?: string | null;
+    };
     SkillModel: {
       skillId?: number;
       skillName: string;

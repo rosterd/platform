@@ -41,7 +41,7 @@ const Organizations: React.FC = (): JSX.Element => {
       const organizationsRes = await requestMaker<GetOrganizationsResponse>(getOrganizations());
       setLoading(false);
       if (organizationsRes) {
-        setOrganizations(organizationsRes.items || []);
+        setOrganizations((organizationsRes?.items || []).filter((org) => org.auth0OrganizationId?.indexOf('org_') !== -1) || []);
       }
     })();
   }, []);
@@ -78,9 +78,9 @@ const Organizations: React.FC = (): JSX.Element => {
           <MaterialTable
             title=''
             columns={[
-              {title: 'Id', field: 'organizationId'},
               {title: 'Organization Name', field: 'organizationName'},
               {title: 'Address', field: 'address'},
+              {title: 'Comments', field: 'comments'},
             ]}
             data={organizations}
             isLoading={loading}

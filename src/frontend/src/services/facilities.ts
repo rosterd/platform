@@ -11,7 +11,6 @@ export const addFacility = (data: AddFacilityRequest): AxiosRequestConfig & {sco
   method: 'POST',
   url,
   data,
-  scope: 'create:facility',
 });
 
 export const updateFacility = (): AxiosRequestConfig & {scope?: string} => ({method: 'PUT', url, scope: 'create:facility'});

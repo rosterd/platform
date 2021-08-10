@@ -6,8 +6,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {Formik, Form, Field} from 'formik';
 import {Button, LinearProgress} from '@material-ui/core';
 import {TextField} from 'formik-material-ui';
+import * as yup from 'yup';
 
-interface AddResourceModalProps {
+interface AddStaffModalProps {
   open: boolean;
   handleClose: () => void;
 }
@@ -20,7 +21,14 @@ interface FormValues {
   address: string;
 }
 
-export default function AddResourceModal(props: AddResourceModalProps) {
+const AddStaffModal = (props: AddStaffModalProps) => {
+  const validationSchema = yup.object({
+    name: yup.string().required('Please enter name'),
+    email: yup.string().email().required('Please enter valid email'),
+    mobile: yup.string().required('Please enter mobile'),
+    skill: yup.string().email().required('Please enter atleast one skill'),
+    address: yup.string().email().required('Please enter address'),
+  });
   return (
     <Formik
       initialValues={{
@@ -30,13 +38,12 @@ export default function AddResourceModal(props: AddResourceModalProps) {
         skill: '',
         address: '',
       }}
+      validationSchema={validationSchema}
       validate={(values) => {
         const errors: Partial<FormValues> = {};
         if (!values.email) {
           errors.email = 'Required';
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-        ) {
+        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
           errors.email = 'Invalid email address';
         }
         return errors;
@@ -48,46 +55,19 @@ export default function AddResourceModal(props: AddResourceModalProps) {
         }, 500);
       }}>
       {({submitForm, isSubmitting}) => (
-        <Dialog
-          fullWidth
-          maxWidth='sm'
-          open={props.open}
-          onClose={props.handleClose}
-          aria-labelledby='form-dialog-title'>
-          <DialogTitle id='form-dialog-title'>Add Resource</DialogTitle>
+        <Dialog fullWidth maxWidth='sm' open={props.open} onClose={props.handleClose} aria-labelledby='form-dialog-title'>
+          <DialogTitle id='form-dialog-title'>Add Staff</DialogTitle>
           <DialogContent>
             <Form>
               <Field component={TextField} name='name' label='Name' fullWidth />
               <br />
-              <Field
-                component={TextField}
-                name='email'
-                type='email'
-                label='Email'
-                fullWidth
-              />
+              <Field component={TextField} name='email' type='email' label='Email' fullWidth />
               <br />
-              <Field
-                component={TextField}
-                name='mobile'
-                type='tel'
-                label='Mobile Number'
-                fullWidth
-              />
+              <Field component={TextField} name='mobile' type='tel' label='Mobile Number' fullWidth />
               <br />
-              <Field
-                component={TextField}
-                name='skill'
-                label='Skill'
-                fullWidth
-              />
+              <Field component={TextField} name='skill' label='Skill' fullWidth />
               <br />
-              <Field
-                component={TextField}
-                name='address'
-                label='Address'
-                fullWidth
-              />
+              <Field component={TextField} name='address' label='Address' fullWidth />
               <br />
               {isSubmitting && <LinearProgress />}
             </Form>
@@ -96,11 +76,7 @@ export default function AddResourceModal(props: AddResourceModalProps) {
             <Button onClick={props.handleClose} color='primary'>
               Cancel
             </Button>
-            <Button
-              onClick={submitForm}
-              color='primary'
-              disabled={isSubmitting}
-              variant='contained'>
+            <Button onClick={submitForm} color='primary' disabled={isSubmitting} variant='contained'>
               Add
             </Button>
           </DialogActions>
@@ -108,4 +84,6 @@ export default function AddResourceModal(props: AddResourceModalProps) {
       )}
     </Formik>
   );
-}
+};
+
+export default AddStaffModal;

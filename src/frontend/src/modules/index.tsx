@@ -38,20 +38,24 @@ const pageRouteConfigs: PageRouteConfig[] = [
     component: React.lazy(() => import('./facilities')),
   },
   {
-    path: '/admins',
-    component: React.lazy(() => import('./admins')),
+    path: '/facility-admins',
+    component: React.lazy(() => import('./facilityAdmin')),
   },
   {
     path: '/organizations',
     component: React.lazy(() => import('./organizations')),
   },
   {
+    path: '/organization-admins',
+    component: React.lazy(() => import('./organizationAdmin')),
+  },
+  {
     path: '/skills',
     component: React.lazy(() => import('./skills')),
   },
   {
-    path: '/resources',
-    component: React.lazy(() => import('./resources')),
+    path: '/staff',
+    component: React.lazy(() => import('./staff')),
   },
 ];
 

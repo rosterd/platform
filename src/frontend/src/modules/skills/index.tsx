@@ -6,8 +6,9 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core';
 import {components} from 'types/models';
-import {getSkills} from 'services';
+import {getSkills, deleteSkill, addSkill, updateSkill} from 'services';
 import useRequest from 'shared/hooks/useRequest';
+import {AxiosRequestConfig} from 'axios';
 
 type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
 type Skill = components['schemas']['SkillModel'];
@@ -22,20 +23,60 @@ const useStyles = makeStyles(() => ({
 
 const initialState: Skill[] = [];
 
-const Resources = () => {
+const Skills: React.FC = (): JSX.Element => {
   const classes = useStyles();
+  const [results, setResults] = useState({} as GetSkillsResponse);
   const [skills, setSkills] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const {requestMaker} = useRequest();
 
+  const fetchData = async (config: AxiosRequestConfig) => {
+    setLoading(true);
+    const skillsResponse = await requestMaker<GetSkillsResponse>(config);
+    setLoading(false);
+    setResults(skillsResponse);
+    setSkills(skillsResponse.items || []);
+  };
+
   useEffect(() => {
     (async () => {
-      setLoading(true);
-      const skillsResponse = await requestMaker<GetSkillsResponse>(getSkills());
-      setLoading(false);
-      setSkills(skillsResponse.items || []);
+      await fetchData(getSkills());
     })();
   }, []);
+
+  const onAdd = async (skillToAdd: Skill) => {
+    setLoading(true);
+    const addedSkill = await requestMaker<Skill>(
+      addSkill({
+        skillToAddOrUpdate: skillToAdd,
+      }),
+    );
+    setLoading(false);
+    setSkills([addedSkill, ...skills]);
+  };
+
+  const onUpdate = async (skillToUpdate: Skill) => {
+    setLoading(true);
+    const updatedSkill = await requestMaker<Skill>(
+      updateSkill({
+        skillToAddOrUpdate: skillToUpdate,
+      }),
+    );
+    setLoading(false);
+    setSkills(skills.map((skill) => (skill.skillId === skillToUpdate.skillId ? updatedSkill : skill)));
+  };
+
+  const onDelete = async (deletedSkill: Skill) => {
+    setLoading(true);
+    await requestMaker<GetSkillsResponse>(deleteSkill(deletedSkill?.skillId));
+    setLoading(false);
+    setSkills(skills.filter((skill) => skill.skillId !== deletedSkill.skillId));
+  };
+
+  const handlePageChange = async (page: number, pageSize: number) => {
+    const requestConfig = getSkills();
+    await fetchData({...requestConfig, url: `${requestConfig.url}?pageNumber=${page + 1}&pageSize=${pageSize}`});
+  };
 
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
@@ -53,37 +94,16 @@ const Resources = () => {
             data={skills}
             isLoading={loading}
             editable={{
-              onRowAdd: (newData) =>
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    setSkills([...skills, newData]);
-                    resolve(true);
-                  }, 1000);
-                }),
-              onRowUpdate: (newData, oldData) =>
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    const dataUpdate = [...skills];
-                    const index = (oldData as any).tableData.id;
-                    dataUpdate[index] = newData;
-                    setSkills([...dataUpdate]);
-                    resolve(true);
-                  }, 1000);
-                }),
-              onRowDelete: (oldData) =>
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    const dataDelete = [...skills];
-                    const index = (oldData as any).tableData.id;
-                    dataDelete.splice(index, 1);
-                    setSkills([...dataDelete]);
-                    resolve(true);
-                  }, 1000);
-                }),
+              onRowAdd: onAdd,
+              onRowUpdate: onUpdate,
+              onRowDelete: onDelete,
             }}
             options={{
               actionsColumnIndex: -1,
             }}
+            onChangePage={handlePageChange}
+            page={(results?.currentPage || 1) - 1}
+            totalCount={results.totalCount}
           />
         </Box>
       </Box>
@@ -91,4 +111,4 @@ const Resources = () => {
   );
 };
 
-export default Resources;
+export default Skills;

@@ -24,24 +24,14 @@ const Dashboard = (): JSX.Element => {
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <>
-        <Box
-          component='h2'
-          color='text.primary'
-          className={classes.textUppercase}
-          fontSize={16}
-          mb={{xs: 4, sm: 4, xl: 6}}
-          fontWeight={Fonts.BOLD}>
+        <Box component='h2' color='text.primary' className={classes.textUppercase} fontSize={16} mb={{xs: 4, sm: 4, xl: 6}} fontWeight={Fonts.BOLD}>
           <IntlMessages id='dashboard.quickStats' />
         </Box>
         <Box paddingTop={{xl: 4}} clone>
           <GridContainer>
             <Grid item xs={12} sm={6} md={4}>
               <StatsCard
-                icon={
-                  <WorkIcon
-                    style={{fontSize: isBreakPointDown('md') ? 30 : 40}}
-                  />
-                }
+                icon={<WorkIcon style={{fontSize: isBreakPointDown('md') ? 30 : 40}} />}
                 bgColor={red[500]}
                 data={{count: '20'}}
                 heading={<IntlMessages id='dashboard.stats.jobs' />}
@@ -49,23 +39,15 @@ const Dashboard = (): JSX.Element => {
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
               <StatsCard
-                icon={
-                  <PersonIcon
-                    style={{fontSize: isBreakPointDown('md') ? 30 : 40}}
-                  />
-                }
+                icon={<PersonIcon style={{fontSize: isBreakPointDown('md') ? 30 : 40}} />}
                 bgColor={blue[500]}
                 data={{count: '16'}}
-                heading={<IntlMessages id='dashboard.stats.resources' />}
+                heading={<IntlMessages id='dashboard.stats.staff' />}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
               <StatsCard
-                icon={
-                  <MonetizationOnIcon
-                    style={{fontSize: isBreakPointDown('md') ? 30 : 40}}
-                  />
-                }
+                icon={<MonetizationOnIcon style={{fontSize: isBreakPointDown('md') ? 30 : 40}} />}
                 bgColor={indigo[500]}
                 data={{count: '2000'}}
                 heading={<IntlMessages id='dashboard.stats.save' />}

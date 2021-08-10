@@ -7,12 +7,12 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import {getFacilities} from 'services';
+import {addOrganizationAdmin} from 'services';
 import {components} from 'types/models';
-import AddAdminModal from './components/AddAdminModal';
+import AddAdminModal from 'shared/components/AddAdminModal';
 
-type GetFacilitiesResponse = components['schemas']['FacilityModelPagedList'];
-type Facility = components['schemas']['FacilityModel'];
+type AddAdminUserRequest = components['schemas']['AddAdminUserRequest'];
+type AdminUserModel = components['schemas']['AdminUserModel'];
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -25,25 +25,28 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const initialState: Facility[] = [];
+const initialState: AdminUserModel[] = [];
 
-const Facilities: React.FC = (): JSX.Element => {
+const OrganizationAdmin: React.FC = (): JSX.Element => {
   const classes = useStyles();
-  const [facilities, setFacilities] = useState(initialState);
-  const [showAddFacility, setShowAddFacility] = useState(false);
+  const [admins, setAdmins] = useState(initialState);
+  const [showAddAdminModal, setShowAddAdminModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const {requestMaker} = useRequest();
 
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const facilitiesRes = await requestMaker<GetFacilitiesResponse>(getFacilities());
+      // TODO once admin get api is ready we need to make request here
+      console.log('Get admin have to implement');
       setLoading(false);
-      if (facilitiesRes) {
-        setFacilities(facilitiesRes.items || []);
-      }
     })();
   }, []);
+
+  const handleAddFacilityAdmin = async (values: AddAdminUserRequest) => {
+    const admin = await requestMaker<AdminUserModel>(addOrganizationAdmin(values));
+    setAdmins([...admins, admin]);
+  };
 
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
@@ -52,12 +55,12 @@ const Facilities: React.FC = (): JSX.Element => {
           <Grid container direction='row' justify='space-between' alignItems='center'>
             <Grid item xs={6}>
               <Box component='h2' color='text.primary' fontSize={16} fontWeight={Fonts.BOLD}>
-                <IntlMessages id='admins.heading' />
+                <IntlMessages id='organization.admins.heading' />
               </Box>
             </Grid>
             <Grid item xs={6} className={classes.buttonContainer}>
-              <Button variant='contained' color='primary' startIcon={<AddIcon />} onClick={() => setShowAddFacility(true)}>
-                Invite Admin
+              <Button variant='contained' color='primary' startIcon={<AddIcon />} onClick={() => setShowAddAdminModal(true)}>
+                Inivite Organization Admin
               </Button>
             </Grid>
           </Grid>
@@ -66,18 +69,19 @@ const Facilities: React.FC = (): JSX.Element => {
           <MaterialTable
             title=''
             columns={[
-              {title: 'Name', field: 'facilityName'},
+              {title: 'First Name', field: 'firstName'},
+              {title: 'Last Name', field: 'lastName'},
               {title: 'Email', field: 'address'},
-              {title: 'Facility', field: 'facilityName'},
+              {title: 'Phone', field: 'phone'},
             ]}
-            data={facilities}
+            data={admins}
             isLoading={loading}
           />
         </Box>
-        <AddAdminModal facilities={facilities} open={showAddFacility} handleClose={() => setShowAddFacility(false)} />
+        <AddAdminModal open={showAddAdminModal} onAddAdmin={handleAddFacilityAdmin} handleClose={() => setShowAddAdminModal(false)} />
       </Box>
     </AppAnimate>
   );
 };
 
-export default Facilities;
+export default OrganizationAdmin;
