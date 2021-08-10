@@ -1,0 +1,21 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - scripts/rosterd-public-website-ui-pipeline.yml
+      - src/public-website
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+    submodules: true
+  - task: AzureStaticWebApp@0
+    inputs:
+      app_location: '/'
+      api_location: 'api'
+      output_location: ''
+      azure_static_web_apps_api_token: $(deployment_token)
