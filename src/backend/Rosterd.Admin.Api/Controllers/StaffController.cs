@@ -13,6 +13,7 @@ using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using Rosterd.Web.Infra.Security;
 using Rosterd.Web.Infra.ValidationAttributes;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
@@ -23,6 +24,7 @@ namespace Rosterd.Admin.Api.Controllers
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Staff")]
+    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.FacilityAdmin, RosterdConstants.RosterdRoleNames.OrganizationAdmin, RosterdConstants.RosterdRoleNames.RosterdAdmin)]
     public class StaffController : BaseApiController
     {
         private readonly ILogger<StaffController> _logger;

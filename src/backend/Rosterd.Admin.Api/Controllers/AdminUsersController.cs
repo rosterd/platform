@@ -18,6 +18,7 @@ using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using Rosterd.Web.Infra.Security;
 using Rosterd.Web.Infra.ValidationAttributes;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
@@ -28,6 +29,7 @@ namespace Rosterd.Admin.Api.Controllers
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Admin User")]
+    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.OrganizationAdmin, RosterdConstants.RosterdRoleNames.RosterdAdmin)]
     public class AdminUsersController : BaseApiController
     {
         private readonly ILogger<StaffController> _logger;
@@ -48,10 +50,6 @@ namespace Rosterd.Admin.Api.Controllers
             _userContext = userContext;
             _staffService = staffService;
         }
-
-        //TODO:
-        //- List of organization admins
-        //- List of facility admins
 
         /// <summary>
         /// Gets a list of all the organization admins for the organization
