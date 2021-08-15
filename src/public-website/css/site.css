@@ -132,6 +132,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .rosterd__info-section .rosterd__block .rosterd__text p {
   text-align: left;
+  font-size: 1.15rem;
 }
 
 .rosterd__info-section .rosterd__block .rosterd__text .rosterd__btn {
@@ -200,6 +201,34 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
 }
 
+.circle-sketch-highlight{
+  position:relative;
+}
+
+.marker-highlight{
+  background-color: #2edbad;
+}
+
+.header{
+  padding-bottom: 0px !important;
+}
+
+.basic-2 {
+  padding-top: 0px !important;
+}
+
+.centered-text{
+  text-align: center !important;
+}
+
+.hero-text-list{
+  font-weight: 700;
+  color: #0D2273;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
 @media (min-width: 992px) {
   .navbar-collapse {
     height: 42px;
@@ -251,5 +280,9 @@ h1, h2, h3, h4, h5, h6 {
   }
   .rosterd__footer-section > div {
     margin-bottom: 3rem;
+  }
+
+  .hero-text-list{   
+    margin-bottom: 1.5rem;
   }
 }

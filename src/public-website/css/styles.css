@@ -701,7 +701,7 @@ input[type="checkbox"] {
 /*********************/
 .basic-3 {
   padding-top: 5rem;
-  padding-bottom: 5rem;
+  /* padding-bottom: 5rem; */
 }
 
 .basic-3 .image-container {
