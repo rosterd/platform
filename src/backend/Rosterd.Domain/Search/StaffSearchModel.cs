@@ -15,38 +15,19 @@ namespace Rosterd.Domain.Search
         public string FirstName { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string MiddleName { get; set; }
-
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string LastName { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string Email { get; set; }
 
         [SearchableField]
-        public string HomePhoneNumber { get; set; }
-
-        [SearchableField]
         public string MobilePhoneNumber { get; set; }
-
-        [SearchableField]
-        public string OtherPhoneNumber { get; set; }
 
         [SearchableField]
         public string IsActive { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string JobTitle { get; set; }
-
-        [SearchableField]
-        public string IsAvailable { get; set; }
-
-        [SearchableField]
-        public string DateOfBirth { get; set; }
-
-        [SearchableField]
-        public string Address { get; set; }
-        
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string[] Skills { get; set; }

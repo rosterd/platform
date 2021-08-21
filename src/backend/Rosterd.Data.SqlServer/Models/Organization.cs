@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Rosterd.Data.SqlServer.Models
 {
     [Table("Organization")]
+    [Index(nameof(Auth0OrganizationId), Name = "IX_Organization_Auth0OrganizationId", IsUnique = true)]
     public partial class Organization
     {
         public Organization()
@@ -23,7 +24,7 @@ namespace Rosterd.Data.SqlServer.Models
         [StringLength(1000)]
         public string OrganizationName { get; set; }
         [Required]
-        [StringLength(1000)]
+        [StringLength(130)]
         public string Auth0OrganizationId { get; set; }
         [StringLength(1000)]
         public string Address { get; set; }

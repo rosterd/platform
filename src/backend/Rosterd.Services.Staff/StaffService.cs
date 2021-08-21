@@ -115,11 +115,7 @@ namespace Rosterd.Services.Staff
         public async Task<StaffModel> UpdateStaff(StaffModel staffModel)
         {
             //Get the existing staff
-            var staffFromDb = await _context.Staff
-                .Include(s => s.StaffSkills)
-                .Include(s => s.StaffFacilities)
-                .FirstOrDefaultAsync(s => s.StaffId == staffModel.StaffId.Value);
-
+            var staffFromDb = await _context.Staff.FindAsync(staffModel.StaffId.Value);
             if (staffFromDb == null)
                 throw new EntityNotFoundException();
 

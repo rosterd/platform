@@ -19,9 +19,6 @@ namespace Rosterd.Admin.Api.Requests.Staff
         [StringLength(1000, MinimumLength = 1)]
         public string FirstName { get; set; }
 
-        [MaxLength(1000)]
-        public string MiddleName { get; set; }
-
         [Required(AllowEmptyStrings = false)]
         [StringLength(1000, MinimumLength = 1)]
         public string LastName { get; set; }
@@ -31,24 +28,7 @@ namespace Rosterd.Admin.Api.Requests.Staff
         public string Email { get; set; }
 
         [StringLength(1000)]
-        public string HomePhoneNumber { get; set; }
-
-        [StringLength(1000)]
         public string MobilePhoneNumber { get; set; }
-
-        [StringLength(1000)]
-        public string OtherPhoneNumber { get; set; }
-
-        [Required]
-        public bool? IsActive { get; set; }
-
-        [Required]
-        public bool? IsAvailable { get; set; }
-
-        public DateTime? DateOfBirth { get; set; }
-
-        [StringLength(1000)]
-        public string Address { get; set; }
 
         [StringLength(1000)]
         public string Comments { get; set; }
@@ -62,14 +42,9 @@ namespace Rosterd.Admin.Api.Requests.Staff
                 StaffId = request.StaffId,
                 FirstName = request.FirstName,
                 Email = request.Email,
-                IsActive = request.IsActive.Value,
                 JobTitle = request.JobTitle,
                 LastName = request.LastName,
-                MiddleName = request.MiddleName,
                 MobilePhoneNumber = request.MobilePhoneNumber,
-                IsAvailable = request.IsAvailable.Value,
-                DateOfBirth = request.DateOfBirth,
-                Address = request.Address,
                 Comments = request.Comments
             };
     }

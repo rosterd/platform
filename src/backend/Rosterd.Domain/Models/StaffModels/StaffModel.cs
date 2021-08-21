@@ -16,9 +16,6 @@ namespace Rosterd.Domain.Models.StaffModels
         [StringLength(1000, MinimumLength = 1)]
         public string FirstName { get; set; }
 
-        [MaxLength(1000)]
-        public string MiddleName { get; set; }
-
         [Required(AllowEmptyStrings = false)]
         [StringLength(1000, MinimumLength = 1)]
         public string LastName { get; set; }
@@ -31,13 +28,6 @@ namespace Rosterd.Domain.Models.StaffModels
         public string MobilePhoneNumber { get; set; }
 
         public bool IsActive { get; set; }
-
-        public bool IsAvailable { get; set; }
-
-        public DateTime? DateOfBirth { get; set; }
-
-        [StringLength(1000)]
-        public string Address { get; set; }
 
         [StringLength(1000)]
         public string Comments { get; set; }

@@ -15,6 +15,7 @@ namespace Rosterd.Services.Mappers
     {
         public static StaffModel ToDomainModel(this Data.SqlServer.Models.Staff dataModel)
         {
+            // ReSharper disable once UseObjectOrCollectionInitializer
             var staffModel = new StaffModel
             {
                 StaffId = dataModel.StaffId,
@@ -23,12 +24,8 @@ namespace Rosterd.Services.Mappers
                 IsActive = dataModel.IsActive ?? true,
                 JobTitle = dataModel.JobTitle,
                 LastName = dataModel.LastName,
-                MiddleName = dataModel.MiddleName,
                 MobilePhoneNumber = dataModel.MobilePhoneNumber,
-                Address = dataModel.Address,
                 Comments = dataModel.Comments,
-                DateOfBirth = dataModel.DateOfBirth,
-                IsAvailable = dataModel.IsAvailable,
                 Auth0Id = dataModel.Auth0Id
             };
 
@@ -36,7 +33,7 @@ namespace Rosterd.Services.Mappers
             {
                 FacilityId = s.FacilityId,
                 FacilityName = s.FacilityName,
-                
+
             }).AlwaysList();
 
             staffModel.StaffSkills = dataModel.StaffSkills.AlwaysList().Select(s => new SkillModel
@@ -58,11 +55,7 @@ namespace Rosterd.Services.Mappers
                 IsActive = dataModel.IsActive?.ToString() ?? true.ToString(),
                 JobTitle = dataModel.JobTitle,
                 LastName = dataModel.LastName,
-                MiddleName = dataModel.MiddleName,
                 MobilePhoneNumber = dataModel.MobilePhoneNumber,
-                IsAvailable = dataModel.IsAvailable.ToString(),
-                Address = dataModel.Address,
-                DateOfBirth = dataModel.DateOfBirth?.ToString("yyyy MMMM dd") ?? string.Empty
             };
 
             var staffFacility = dataModel.StaffFacilities.FirstOrDefault();
@@ -91,17 +84,12 @@ namespace Rosterd.Services.Mappers
 
         public static Staff ToDataModel(this StaffModel domainModel, Staff staffFromDb)
         {
-            staffFromDb.IsActive = domainModel.IsActive;
             staffFromDb.FirstName = domainModel.FirstName;
-            staffFromDb.MiddleName = domainModel.MiddleName;
             staffFromDb.LastName = domainModel.LastName;
             staffFromDb.Email = domainModel.Email;
             staffFromDb.MobilePhoneNumber = domainModel.MobilePhoneNumber;
             staffFromDb.JobTitle = domainModel.JobTitle;
             staffFromDb.Comments = domainModel.Comments;
-            staffFromDb.Address = domainModel.Address;
-            staffFromDb.DateOfBirth = domainModel.DateOfBirth;
-            staffFromDb.IsAvailable = domainModel.IsAvailable;
 
             return staffFromDb;
         }
@@ -111,16 +99,12 @@ namespace Rosterd.Services.Mappers
             var staffToSave = new Data.SqlServer.Models.Staff
             {
                 IsActive = domainModel.IsActive,
-                IsAvailable = domainModel.IsAvailable,
                 FirstName = domainModel.FirstName,
-                MiddleName = domainModel.MiddleName,
                 LastName = domainModel.LastName,
                 Email = domainModel.Email,
                 MobilePhoneNumber = domainModel.MobilePhoneNumber,
                 JobTitle = domainModel.JobTitle,
                 Comments = domainModel.Comments,
-                Address = domainModel.Address,
-                DateOfBirth = domainModel.DateOfBirth,
                 Auth0Id = domainModel.Auth0Id
             };
 

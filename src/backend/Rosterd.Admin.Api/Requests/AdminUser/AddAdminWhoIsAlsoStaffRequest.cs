@@ -68,11 +68,7 @@ namespace Rosterd.Admin.Api.Requests.AdminUser
                 IsActive = true,
                 JobTitle = JobTitle,
                 LastName = LastName,
-                MiddleName = MiddleName,
                 MobilePhoneNumber = MobilePhoneNumber,
-                IsAvailable = true,
-                DateOfBirth = DateOfBirth,
-                Address = Address,
                 Comments = Comments,
 
                 StaffFacilities = new List<FacilityModel> { new FacilityModel { FacilityId = FacilityId.Value } },

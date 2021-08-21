@@ -15,7 +15,7 @@ namespace Rosterd.Admin.Api.Requests.Facility
         public AddFacilityRequestValidator()
         {
             RuleFor(s => s.FacilityToAdd).NotNull();
-            
+
             //Facility id should be null when creating a facility, this is auto-assigned by us as the primary key
             RuleFor(s => s.FacilityToAdd.FacilityId).Null();
 
