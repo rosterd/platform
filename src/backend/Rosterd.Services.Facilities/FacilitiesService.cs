@@ -29,7 +29,7 @@ namespace Rosterd.Services.Facilities
             var domainModels = pagedList.ToDomainModels();
             return new PagedList<FacilityModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
-        
+
         public async Task<FacilityModel> GetFacility(long facilityId)
         {
             var facility = await _context.Facilities.FindAsync(facilityId);
@@ -38,10 +38,15 @@ namespace Rosterd.Services.Facilities
 
         public async Task<FacilityModel> CreateFacility(FacilityModel facilityModel)
         {
+            var organization = await _context.Organizations.FirstOrDefaultAsync(s => s.Auth0OrganizationId == facilityModel.Organization.Auth0OrganizationId);
+            if (organization == null)
+                throw new EntityNotFoundException("the given auth0 organization id was not found");
+
             var facilityToCreate = facilityModel.ToNewFacility();
+            facilityToCreate.OrganzationId = organization.OrganizationId;
 
             await _context.Facilities.AddAsync(facilityToCreate);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
 
             return facilityToCreate.ToDomainModel();
         }
