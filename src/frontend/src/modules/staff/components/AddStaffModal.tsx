@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -6,7 +6,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {Formik, Form, Field} from 'formik';
 import {Button, LinearProgress} from '@material-ui/core';
 import {TextField} from 'formik-material-ui';
+import useRequest from 'shared/hooks/useRequest';
 import * as yup from 'yup';
+import {getSkills} from 'services';
+import {components} from 'types/models';
+import SkillsInput from './SkillsInput';
+import AddressInput from './AddressInput';
 
 interface AddStaffModalProps {
   open: boolean;
@@ -21,7 +26,21 @@ interface FormValues {
   address: string;
 }
 
+type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
+type Skill = components['schemas']['SkillModel'];
+const initialState: Skill[] = [];
+
 const AddStaffModal = (props: AddStaffModalProps) => {
+  const [skills, setSkills] = useState(initialState);
+  const {requestMaker} = useRequest();
+
+  useEffect(() => {
+    (async () => {
+      const skillsResponse = await requestMaker<GetSkillsResponse>(getSkills());
+      setSkills(skillsResponse.items || []);
+    })();
+  }, []);
+
   const validationSchema = yup.object({
     name: yup.string().required('Please enter name'),
     email: yup.string().email().required('Please enter valid email'),
@@ -65,9 +84,9 @@ const AddStaffModal = (props: AddStaffModalProps) => {
               <br />
               <Field component={TextField} name='mobile' type='tel' label='Mobile Number' fullWidth />
               <br />
-              <Field component={TextField} name='skill' label='Skill' fullWidth />
+              <SkillsInput skills={skills} label='Skills' />
               <br />
-              <Field component={TextField} name='address' label='Address' fullWidth />
+              <AddressInput />
               <br />
               {isSubmitting && <LinearProgress />}
             </Form>
