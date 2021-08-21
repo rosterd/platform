@@ -36,6 +36,10 @@ namespace Rosterd.Data.SqlServer.Models
         [Required]
         [StringLength(1000)]
         public string Country { get; set; }
+        [Column(TypeName = "decimal(12, 9)")]
+        public decimal Latitude { get; set; }
+        [Column(TypeName = "decimal(12, 9)")]
+        public decimal Longitude { get; set; }
         [Required]
         [StringLength(1000)]
         public string PhoneNumber1 { get; set; }
