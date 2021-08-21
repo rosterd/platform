@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using FluentValidation;
 using Rosterd.Domain.Models.FacilitiesModels;
@@ -6,21 +7,50 @@ namespace Rosterd.Admin.Api.Requests.Facility
 {
     public class AddFacilityRequest
     {
-        public FacilityModel FacilityToAdd { get; set; }
-    }
+        [Required]
+        [StringLength(1000)]
+        public string FacilityName { get; set; }
 
-    public class AddFacilityRequestValidator : AbstractValidator<AddFacilityRequest>
-    {
+        [Required]
+        [StringLength(1000)]
+        public string Address { get; set; }
 
-        public AddFacilityRequestValidator()
-        {
-            RuleFor(s => s.FacilityToAdd).NotNull();
+        [StringLength(1000)]
+        public string Suburb { get; set; }
 
-            //Facility id should be null when creating a facility, this is auto-assigned by us as the primary key
-            RuleFor(s => s.FacilityToAdd.FacilityId).Null();
+        [Required]
+        [StringLength(1000)]
+        public string City { get; set; }
 
-            //This will be not be populated by us, will be taken from the JWT, should not be sent by the client
-            RuleFor(s => s.FacilityToAdd.Organization).Null();
-        }
+        [Required]
+        [StringLength(1000)]
+        public string Country { get; set; }
+
+        [Required]
+        public decimal Latitude { get; set; }
+
+        [Required]
+        public decimal Longitude { get; set; }
+
+        [Required]
+        [StringLength(1000)]
+        public string PhoneNumber1 { get; set; }
+
+        [StringLength(1000)]
+        public string PhoneNumber2 { get; set; }
+
+        public FacilityModel ToFacilityModel() =>
+            new FacilityModel
+            {
+                FacilityName = FacilityName,
+                Address = Address,
+                Suburb = Suburb,
+                City = City,
+                Country = Country,
+                Latitude = Latitude,
+                Longitude = Longitude,
+                PhoneNumber1 = PhoneNumber1,
+                PhoneNumber2 = PhoneNumber2
+            };
     }
 }

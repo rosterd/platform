@@ -103,7 +103,7 @@ namespace Rosterd.Services.Mappers
 
             var jobModels = searchResults.GetResults().Select(job =>
                 new JobModel
-                { 
+                {
                     Comments = job.Document.Comments,
                     Description = job.Document.Description,
                     Experience = job.Document.Experience,
@@ -143,7 +143,7 @@ namespace Rosterd.Services.Mappers
             {
                 JobTitle = domainModel.JobTitle,
                 Description = domainModel.Description,
-                FacilityId = domainModel.Facility.FacilityId.Value,
+                FacilityId = domainModel.Facility.FacilityId,
                 JobStartDateTimeUtc = domainModel.JobStartDateTimeUtc,
                 JobEndDateTimeUtc = domainModel.JobEndDateTimeUtc,
                 Comments = domainModel.Comments,

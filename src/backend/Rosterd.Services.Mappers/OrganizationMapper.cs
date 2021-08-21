@@ -20,7 +20,8 @@ namespace Rosterd.Services.Mappers
                 OrganizationName = dataModel.OrganizationName,
                 Phone = dataModel.Phone,
                 Address = dataModel.Address,
-                Comments = dataModel.Comments
+                Comments = dataModel.Comments,
+                IsActive = dataModel.IsActive
             };
 
             return organizationModel;
@@ -43,7 +44,7 @@ namespace Rosterd.Services.Mappers
                 OrganizationName = domainModel.OrganizationName,
                 Address = domainModel.Address,
                 Comments = domainModel.Comments,
-                IsActive = true
+                IsActive = domainModel.IsActive
             };
 
             return organizationToSave;

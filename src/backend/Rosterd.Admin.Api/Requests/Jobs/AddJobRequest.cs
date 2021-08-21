@@ -8,7 +8,7 @@ using Rosterd.Domain.Models.JobModels;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Web.Infra.ValidationAttributes;
 
-namespace Rosterd.Admin.Api.Requests.Job
+namespace Rosterd.Admin.Api.Requests.Jobs
 {
     public class AddJobRequest
     {
@@ -48,11 +48,6 @@ namespace Rosterd.Admin.Api.Requests.Job
 
         [CollectionIsRequiredAndShouldNotBeEmpty]
         public List<long> SkillsRequiredForJob { get; set; }
-
-        /// <summary>
-        /// Only required if an existing job was cancelled and new one created based of the old one
-        /// </summary>
-        public long? PreviouslyCancelledJobId { get; set; }
 
         public JobModel ToDomainModel()
         {

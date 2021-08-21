@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 using Rosterd.Domain.Models.OrganizationModels;
 
@@ -5,17 +6,27 @@ namespace Rosterd.Admin.Api.Requests.Organization
 {
     public class AddOrganizationRequest
     {
-       public OrganizationModel Organization { get; set; }
-    }
+        [Required]
+        [StringLength(1000)]
+        public string OrganizationName { get; set; }
 
-    public class AddOrganizationRequestValidator : AbstractValidator<AddOrganizationRequest>
-    {
-        public AddOrganizationRequestValidator()
-        {
-            RuleFor(s => s.Organization).NotNull();
+        [StringLength(1000)]
+        public string Phone { get; set; }
 
-            //Organization id should be null when creating, this is auto-assigned by us as the primary key
-            RuleFor(s => s.Organization.OrganizationId).Null();
-        }
+        [StringLength(1000)]
+        public string Address { get; set; }
+
+        [StringLength(1000)]
+        public string Comments { get; set; }
+
+        public OrganizationModel ToOrganizationModel() =>
+            new OrganizationModel()
+            {
+                OrganizationName = OrganizationName,
+                Phone = Phone,
+                Address = Address,
+                Comments = Comments,
+                IsActive = true //default is true when creating
+            };
     }
 }

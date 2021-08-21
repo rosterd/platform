@@ -40,7 +40,7 @@ namespace Rosterd.Services.Facilities
         {
             var organization = await _context.Organizations.FirstOrDefaultAsync(s => s.Auth0OrganizationId == facilityModel.Organization.Auth0OrganizationId);
             if (organization == null)
-                throw new EntityNotFoundException("the given auth0 organization id was not found");
+                throw new EntityNotFoundException($"The given organization was not found, we don't have a matching organization with auth0 organization id {facilityModel.Organization.Auth0OrganizationId}");
 
             var facilityToCreate = facilityModel.ToNewFacility();
             facilityToCreate.OrganzationId = organization.OrganizationId;
@@ -56,18 +56,34 @@ namespace Rosterd.Services.Facilities
             var facility = await _context.Facilities.FindAsync(facilityId);
             if (facility != null)
             {
+                //If its already removed then return nothing to do
+                if (facility.IsActive == false)
+                    return;
+
                 facility.IsActive = false;
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task ReactivateFacility(long facilityId)
+        {
+            var facility = await _context.Facilities.FindAsync(facilityId);
+            if (facility != null)
+            {
+                //Already active nothing to do
+                if (facility.IsActive)
+                    return;
+
+                facility.IsActive = true;
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public async Task<FacilityModel> UpdateFacility(FacilityModel facilityModel)
         {
-            if (facilityModel.FacilityId == null)
-                throw new ArgumentNullException();
-
             var existingFacility = await _context.Facilities.FindAsync(facilityModel.FacilityId);
             if (existingFacility == null)
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException($"No existing facility with id {facilityModel.FacilityId} was not found");
 
             var facilityModelToUpdate = facilityModel.ToDataModel(existingFacility);
 

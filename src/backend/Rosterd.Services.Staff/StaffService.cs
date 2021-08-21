@@ -81,7 +81,7 @@ namespace Rosterd.Services.Staff
             //Populate the default staff facilities
             if (staffModel.StaffFacilities.IsNotNullOrEmpty())
             {
-                var facilityIds = staffModel.StaffFacilities.Select(s => s.FacilityId.Value).AlwaysList();
+                var facilityIds = staffModel.StaffFacilities.Select(s => s.FacilityId).AlwaysList();
                 var facilitiesFromDb = _context.StaffFacilities.Where(s => facilityIds.Contains(s.FacilityId));
 
                 foreach (var facility in facilitiesFromDb)
@@ -163,7 +163,7 @@ namespace Rosterd.Services.Staff
             _context.StaffFacilities.RemoveRange(existingStaffFacilities);
 
             //Add the new ones
-            var newFacilityIds = facilityModels.AlwaysList().Select(s => s.FacilityId.Value);
+            var newFacilityIds = facilityModels.AlwaysList().Select(s => s.FacilityId);
             var newFacilities = _context.StaffFacilities.Where(s => newFacilityIds.Contains(s.FacilityId));
             foreach (var facility in newFacilities.AlwaysList())
             {

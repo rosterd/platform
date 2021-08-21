@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Rosterd.Admin.Api.Requests.Job;
+using Rosterd.Admin.Api.Requests.Jobs;
+using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Settings;
@@ -29,17 +30,19 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IJobsService _jobService;
         private readonly IJobEventsService _jobEventsService;
         private readonly IEventGridClient _eventGridClient;
+        private readonly IUserContext _userContext;
 
-        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobEventsService jobEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings) : base(appSettings)
+        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobEventsService jobEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IUserContext userContext) : base(appSettings)
         {
             _logger = logger;
             _jobService = jobsService;
             _jobEventsService = jobEventsService;
             _eventGridClient = eventGridClient;
+            _userContext = userContext;
         }
 
         /// <summary>
-        /// Gets all the jobs 
+        /// Gets all the jobs
         /// </summary>
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
@@ -48,7 +51,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<Domain.Models.PagedList<JobModel>>> GetAllJobs([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetAllJobs(pagingParameters);
+            var pagedList = await _jobService.GetAllJobs(pagingParameters, _userContext.UsersAuth0OrganizationId);
 
             return pagedList;
         }
@@ -61,12 +64,17 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(2)]
         public async Task<ActionResult<JobModel>> GetJobById([ValidNumberRequired] long? jobId)
         {
-            var jobModel = await _jobService.GetJob(jobId.Value);
+            var jobModel = await _jobService.GetJob(jobId.Value, _userContext.UsersAuth0OrganizationId);
             return jobModel;
         }
 
         /// <summary>
         /// Adds a new Job
+        /// Validation:
+        /// -------------------
+        /// 1. "Either no-grace-period' or 'grace-period-to-cancel-minutes' must be specified"
+        /// 2. Job has to be either a day or night shift, but cant be both at the same time
+        /// 3. Job end date time must be greater than start date time
         /// </summary>
         /// <param name="request">The Job to add</param>
         /// <returns></returns>
@@ -84,7 +92,7 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
-        /// Sets the job status to 'Cancelled' 
+        /// Sets the job status to 'Cancelled'
         /// </summary>
         /// <param name="jobId">The Job to be removed</param>
         /// <param name="jobCancellationReason">The reason for the job cancellation</param>

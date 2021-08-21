@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
-using Rosterd.Admin.Api.Requests.Job;
+using Rosterd.Admin.Api.Requests.Jobs;
 using Rosterd.ComponentTests.Fixture;
 using Rosterd.ComponentTests.Helpers;
 using Rosterd.Domain.Models;

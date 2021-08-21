@@ -11,6 +11,7 @@ using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain;
 using Rosterd.Domain.Enums;
+using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Search;
@@ -33,9 +34,11 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters)
+        public async Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
-            var query = _context.Jobs.Include(s => s.Facility);
+            var organization = await GetOrganization(auth0OrganizationId);
+
+            var query = _context.Jobs.Include(s => s.Facility).Where(s => s.Facility.OrganzationId == organization.OrganizationId);
             var pagedList = await PagingList<Job>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
@@ -43,9 +46,14 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task<JobModel> GetJob(long jobId)
+        public async Task<JobModel> GetJob(long jobId, string auth0OrganizationId)
         {
-            var job = await _context.Jobs.Include(s => s.Facility).FirstOrDefaultAsync(s => s.JobId == jobId);
+            var organization = await GetOrganization(auth0OrganizationId);
+
+            var job = await _context.Jobs.Include(s => s.Facility)
+                .Where(s => s.Facility.OrganzationId == organization.OrganizationId)
+                .FirstOrDefaultAsync(s => s.JobId == jobId);
+
             return job?.ToDomainModel();
         }
 
@@ -60,6 +68,7 @@ namespace Rosterd.Services.Jobs
             jobToCreate.JobsStatusName = JobStatus.Published.ToString();
             jobToCreate.JobPostedDateTimeUtc = jobToCreate.LastJobStatusChangeDateTimeUtc = utcNow;
             jobToCreate.LastJobStatusChangeDateTimeUtc = utcNow;
+            jobToCreate.FacilityId = jobModel.Facility.FacilityId;
 
             //Add the job to be created and insert the job so we get the job id bad
             var jobCreated = await _context.Jobs.AddAsync(jobToCreate);
@@ -164,7 +173,7 @@ namespace Rosterd.Services.Jobs
         {
             var job = await _context.Jobs.FindAsync(jobId);
             var jobStaff = new JobStaff {JobId = jobId, StaffId = staffId};
-            
+
             //Assign the job to staff
             await _context.JobStaffs.AddAsync(jobStaff);
 
@@ -174,7 +183,7 @@ namespace Rosterd.Services.Jobs
             //Change status in the main job table
             job.JobStatusId = JobStatus.Accepted.ToInt32();
             job.JobsStatusName = JobStatus.Accepted.ToString();
-            
+
             //Do an update to the db (all in one transaction by default)
             await _context.SaveChangesAsync();
 
@@ -255,6 +264,15 @@ namespace Rosterd.Services.Jobs
                     .ToListAsync();
 
             return jobsThatAreFinished;
+        }
+
+        private async Task<Organization> GetOrganization(string auth0OrganizationId)
+        {
+            var organization = await _context.Organizations.FirstOrDefaultAsync(s => s.Auth0OrganizationId == auth0OrganizationId);
+            if (organization == null)
+                throw new EntityNotFoundException($"The given organization was not found, we don't have a matching organization with auth0 organization id {auth0OrganizationId}");
+
+            return organization;
         }
     }
 }

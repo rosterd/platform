@@ -48,7 +48,8 @@ namespace Rosterd.Services.Mappers
             existingDataModelFromDb.PhoneNumber1 = domainModelToUpdate.PhoneNumber1;
             existingDataModelFromDb.PhoneNumber2 = domainModelToUpdate.PhoneNumber2;
             existingDataModelFromDb.Suburb = domainModelToUpdate.Suburb;
-            existingDataModelFromDb.IsActive = domainModelToUpdate.IsActive.Value;
+            existingDataModelFromDb.Latitude = domainModelToUpdate.Latitude;
+            existingDataModelFromDb.Longitude = domainModelToUpdate.Longitude;
 
             return existingDataModelFromDb;
         }

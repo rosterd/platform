@@ -1,21 +1,35 @@
+using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 using Rosterd.Domain.Models.OrganizationModels;
+using Rosterd.Web.Infra.ValidationAttributes;
 
 namespace Rosterd.Admin.Api.Requests.Organization
 {
     public class UpdateOrganizationRequest
     {
-       public OrganizationModel Organization { get; set; }
-    }
+        [ValidNumberRequired]
+        public long OrganizationId { get; set; }
 
-    public class UpdateOrganizationRequestValidator : AbstractValidator<UpdateOrganizationRequest>
-    {
-        public UpdateOrganizationRequestValidator()
-        {
-            RuleFor(s => s.Organization).NotNull();
+        [Required]
+        [StringLength(1000)]
+        public string OrganizationName { get; set; }
 
-            //Organization id should be present when updating, so we know which one to update
-            RuleFor(s => s.Organization.OrganizationId).NotNull();
-        }
+        [StringLength(1000)]
+        public string Phone { get; set; }
+
+        [StringLength(1000)]
+        public string Address { get; set; }
+
+        [StringLength(1000)]
+        public string Comments { get; set; }
+
+        public OrganizationModel ToOrganizationModel() =>
+            new OrganizationModel()
+            {
+                OrganizationName = OrganizationName,
+                Phone = Phone,
+                Address = Address,
+                Comments = Comments
+            };
     }
 }

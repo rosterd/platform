@@ -6,20 +6,16 @@ namespace Rosterd.Domain.Models.FacilitiesModels
 {
     public class FacilityModel
     {
-        /// <summary>
-        /// When creating a facility this will be null
-        /// </summary>
-        public long? FacilityId { get; set; }
+        public long FacilityId { get; set; }
 
         [Required]
         [StringLength(1000)]
         public string FacilityName { get; set; }
-        
+
         [Required]
         [StringLength(1000)]
         public string Address { get; set; }
 
-        [Required]
         [StringLength(1000)]
         public string Suburb { get; set; }
 
@@ -30,6 +26,12 @@ namespace Rosterd.Domain.Models.FacilitiesModels
         [Required]
         [StringLength(1000)]
         public string Country { get; set; }
+
+        [Required]
+        public decimal Latitude { get; set; }
+
+        [Required]
+        public decimal Longitude { get; set; }
 
         [Required]
         [StringLength(1000)]

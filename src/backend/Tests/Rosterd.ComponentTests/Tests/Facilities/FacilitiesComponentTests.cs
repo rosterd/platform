@@ -100,17 +100,15 @@ namespace Rosterd.ComponentTests.Tests.Facilities
             var facilityId = new Random().Next(1000);
             var addUpdateFacilityRequest = new AddFacilityRequest
             {
-                FacilityToAdd = new FacilityModel
-                {
-                    FacilityId = facilityId,
                     FacilityName = "ComponentTestFacility",
-                    Organization = new OrganizationModel {OrganizationId = 0},
+                    Latitude = 10,
+                    Longitude = 10,
                     City = "Auckland",
                     Suburb = "Mt Eden",
                     Address = "308 Shacks Road, Mt Eden",
                     Country = "NZ",
-                    PhoneNumber1 = "0912345007"
-                }
+                    PhoneNumber1 = "0912345007",
+                    PhoneNumber2 = "090898490"
             };
             var stringContent = new StringContent(JsonConvert.SerializeObject(addUpdateFacilityRequest), Encoding.UTF8, "application/json");
             var response = await _appFixture.HttpClient.PostAsync(ApiConstants.FACILITIES_ENDPOINT, stringContent);

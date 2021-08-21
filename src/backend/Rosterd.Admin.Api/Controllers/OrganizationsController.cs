@@ -35,14 +35,16 @@ namespace Rosterd.Admin.Api.Controllers
         ///     Gets all the organizations
         /// </summary>
         /// <param name="pagingParameters"></param>
+        /// <param name="activeOrganizationsOnly">True = only active organizations will be returned.
+        /// False = all organization will be returned
+        /// The default is true</param>
         /// <returns></returns>
         [HttpGet]
         [OperationOrder(1)]
-        public async Task<ActionResult<PagedList<OrganizationModel>>> GetAllOrganizations([FromQuery] PagingQueryStringParameters pagingParameters)
+        public async Task<ActionResult<PagedList<OrganizationModel>>> GetAllOrganizations([FromQuery] PagingQueryStringParameters pagingParameters, [FromQuery] bool activeOrganizationsOnly = true)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-
-            var pagedList = await _organizationService.GetAllOrganizations(pagingParameters);
+            var pagedList = await _organizationService.GetAllOrganizations(pagingParameters, activeOrganizationsOnly);
 
             return pagedList;
         }
@@ -68,7 +70,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(3)]
         public async Task<ActionResult<OrganizationModel>> CreateNewOrganization([Required] [FromBody] AddOrganizationRequest request)
         {
-            var organization = await _organizationService.CreateOrganization(request.Organization);
+            var organization = await _organizationService.CreateOrganization(request.ToOrganizationModel());
             return organization;
         }
 

@@ -31,11 +31,18 @@ namespace Rosterd.Services.Facilities.Interfaces
         Task<FacilityModel> UpdateFacility(FacilityModel facilityModel);
 
         /// <summary>
-        /// Deletes facility
+        /// Deletes a facility
         /// </summary>
         /// <param name="facilityId"></param>
         /// <returns></returns>
         Task RemoveFacility(long facilityId);
+
+        /// <summary>
+        /// Un-deletes a facility
+        /// </summary>
+        /// <param name="facilityId"></param>
+        /// <returns></returns>
+        Task ReactivateFacility(long facilityId);
 
         Task<bool> DoesFacilityWithSameNameExistForOrganization(FacilityModel facilityModel);
     }

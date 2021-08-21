@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
@@ -27,10 +28,9 @@ namespace Rosterd.Services.Organizations
             _auth0AuthenticationService = auth0AuthenticationService;
         }
 
-        public async Task<PagedList<OrganizationModel>> GetAllOrganizations(PagingQueryStringParameters pagingParameters)
+        public async Task<PagedList<OrganizationModel>> GetAllOrganizations(PagingQueryStringParameters pagingParameters, bool activeOrganizationsOnly)
         {
-            var query = _context.Organizations;
-            
+            var query = activeOrganizationsOnly ? _context.Organizations.Where(s => s.IsActive == true) : _context.Organizations;
             var pagedList = await PagingList<Data.SqlServer.Models.Organization>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
@@ -46,11 +46,10 @@ namespace Rosterd.Services.Organizations
 
         public async Task<OrganizationModel> CreateOrganization(OrganizationModel organizationModel)
         {
-            //TODO: remove white space from organization name
             var organizationToCreate = organizationModel.ToNewOrganization();
             var organizationCreateRequest = new OrganizationCreateRequest
             {
-                Name = $"organization-{organizationModel.OrganizationName.ToLower()}",
+                Name = $"organization-{organizationModel.OrganizationName.ToLower().Replace(" ", string.Empty)}", //lower-case and strip white space other wise Auth0 will throw errors
                 DisplayName = organizationModel.OrganizationName
             };
 

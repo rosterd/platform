@@ -13,15 +13,17 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// Gets all the jobs
         /// </summary>
         /// <param name="pagingParameters"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters);
+        Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters, string auth0OrganizationId);
 
         /// <summary>
         /// Gets a specific job
         /// </summary>
         /// <param name="jobId"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task<JobModel> GetJob(long jobId);
+        Task<JobModel> GetJob(long jobId, string auth0OrganizationId);
 
         /// <summary>
         /// Adds a new job

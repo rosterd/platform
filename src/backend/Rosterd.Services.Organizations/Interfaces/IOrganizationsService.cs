@@ -6,7 +6,7 @@ namespace Rosterd.Services.Organizations.Interfaces
 {
     public interface IOrganizationsService
     {
-        Task<PagedList<OrganizationModel>> GetAllOrganizations(PagingQueryStringParameters pagingParameters);
+        Task<PagedList<OrganizationModel>> GetAllOrganizations(PagingQueryStringParameters pagingParameters, bool activeOrganizationsOnly);
 
         /// <summary>
         /// Gets a specific organization

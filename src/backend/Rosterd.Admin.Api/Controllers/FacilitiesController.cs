@@ -27,6 +27,7 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IFacilitiesService _facilitiesService;
         private readonly ILogger<FacilitiesController> _logger;
         private readonly IUserContext _userContext;
+        private FacilityModel facilityToUpdate;
 
         public FacilitiesController(ILogger<FacilitiesController> logger, IFacilitiesService facilitiesService, IOptions<AppSettings> appSettings, IUserContext userContext) : base(appSettings)
         {
@@ -72,17 +73,18 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(3)]
         public async Task<ActionResult<FacilityModel>> AddNewFacility([Required][FromBody] AddFacilityRequest request)
         {
-            request.FacilityToAdd.Organization = new OrganizationModel {Auth0OrganizationId = _userContext.UsersAuth0OrganizationId};
+            var facilityModelToAdd = request.ToFacilityModel();
+            facilityModelToAdd.Organization = new OrganizationModel { Auth0OrganizationId = _userContext.UsersAuth0OrganizationId };
 
             //Validate duplicates
-            var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(request.FacilityToAdd);
+            var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(facilityModelToAdd);
             if (duplicatesExist)
             {
-                ModelState.TryAddModelError("FacilityToAdd.FacilityName", $"Facility with name {request.FacilityToAdd.FacilityName} already exits");
+                ModelState.TryAddModelError("FacilityToAdd.FacilityName", $"Facility with name {facilityModelToAdd.FacilityName} already exits");
                 return BadRequest(ModelState);
             }
 
-            var facilityAdded = await _facilitiesService.CreateFacility(request.FacilityToAdd);
+            var facilityAdded = await _facilitiesService.CreateFacility(facilityModelToAdd);
             return facilityAdded;
         }
 
@@ -95,21 +97,34 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(4)]
         public async Task<ActionResult<FacilityModel>> UpdateFacility([Required] UpdateFacilityRequest request)
         {
-            request.FacilityToUpdate.Organization = new OrganizationModel { Auth0OrganizationId = _userContext.UsersAuth0OrganizationId };
+            facilityToUpdate = request.ToFacilityModel();
+            facilityToUpdate.Organization = new OrganizationModel { Auth0OrganizationId = _userContext.UsersAuth0OrganizationId };
 
             //Validate duplicates
-            var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(request.FacilityToUpdate);
+            var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(facilityToUpdate);
             if (duplicatesExist)
             {
-                ModelState.TryAddModelError("FacilityToUpdate.FacilityName", $"Facility with name {request.FacilityToUpdate.FacilityName} already exits");
+                ModelState.TryAddModelError("FacilityToUpdate.FacilityName", $"Facility with name {facilityToUpdate.FacilityName} already exits");
                 return BadRequest(ModelState);
             }
 
-            var updatedFacility = await _facilitiesService.UpdateFacility(request.FacilityToUpdate);
-
+            var updatedFacility = await _facilitiesService.UpdateFacility(facilityToUpdate);
             return updatedFacility;
         }
 
+        /// <summary>
+        /// Reactivate the facility, status will be set to active again
+        /// </summary>
+        /// <param name="facilityId">The facility id to update</param>
+        /// <returns></returns>
+        [HttpPatch("{facilityId}/reactivate")]
+
+        [OperationOrderAttribute(3)]
+        public async Task<ActionResult> ReactivateFacility([ValidNumberRequired] long? facilityId)
+        {
+            await _facilitiesService.ReactivateFacility(facilityId.Value);
+            return Ok();
+        }
 
         /// <summary>
         ///     Deletes Facility
