@@ -8,3 +8,15 @@
     CONSTRAINT [Fk_JobStaff_Staff] FOREIGN KEY ([StaffId]) REFERENCES [dbo].[Staff] ([StaffId])
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_StaffId]
+    ON [dbo].[JobStaff]([StaffId] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_JobId]
+    ON [dbo].[JobStaff]([JobId] ASC);
+
