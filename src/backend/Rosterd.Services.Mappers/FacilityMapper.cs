@@ -49,7 +49,7 @@ namespace Rosterd.Services.Mappers
             existingDataModelFromDb.PhoneNumber2 = domainModelToUpdate.PhoneNumber2;
             existingDataModelFromDb.Suburb = domainModelToUpdate.Suburb;
             existingDataModelFromDb.IsActive = domainModelToUpdate.IsActive.Value;
-            
+
             return existingDataModelFromDb;
         }
 
@@ -64,9 +64,7 @@ namespace Rosterd.Services.Mappers
                 PhoneNumber1 = domainModel.PhoneNumber1,
                 PhoneNumber2 = domainModel.PhoneNumber2,
                 Suburb = domainModel.Suburb,
-                IsActive = domainModel.IsActive.Value,
-
-                OrganzationId = domainModel.Organization.OrganizationId.Value
+                IsActive = domainModel.IsActive.Value
             };
 
             return facilityToSave;
