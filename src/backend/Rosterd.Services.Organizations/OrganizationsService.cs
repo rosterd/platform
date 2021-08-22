@@ -37,7 +37,6 @@ namespace Rosterd.Services.Organizations
             return new PagedList<OrganizationModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
 
-
         public async Task<OrganizationModel> GetOrganization(long organizationId)
         {
             var organization = await _context.Organizations.FindAsync(organizationId);
@@ -49,7 +48,7 @@ namespace Rosterd.Services.Organizations
             var organizationToCreate = organizationModel.ToNewOrganization();
             var organizationCreateRequest = new OrganizationCreateRequest
             {
-                Name = $"organization-{organizationModel.OrganizationName.ToLower().Replace(" ", string.Empty)}", //lower-case and strip white space other wise Auth0 will throw errors
+                Name = organizationModel.OrganizationName.ToLower().Replace(" ", string.Empty), //lower-case and strip white space other wise Auth0 will throw errors
                 DisplayName = organizationModel.OrganizationName
             };
 
