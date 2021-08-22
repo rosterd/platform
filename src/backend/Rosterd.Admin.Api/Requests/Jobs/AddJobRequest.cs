@@ -21,6 +21,7 @@ namespace Rosterd.Admin.Api.Requests.Jobs
         public string Description { get; set; }
 
         [ValidNumberRequired]
+        [Required]
         public long? FacilityId { get; set; }
 
         [Required]
