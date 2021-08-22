@@ -7,11 +7,13 @@ import {useField} from 'formik';
 type Skill = components['schemas']['SkillModel'];
 interface Props {
   label: string;
+  name: string;
   skills: Skill[];
+  selected?: Skill[];
 }
 
-const SkillsInput = ({label, skills}: Props): JSX.Element => {
-  const [field, meta, helpers] = useField(label);
+const SkillsInput = ({label, name, skills, selected = []}: Props): JSX.Element => {
+  const [field, meta, helpers] = useField(name);
   const {setValue} = helpers;
 
   return (
@@ -20,6 +22,7 @@ const SkillsInput = ({label, skills}: Props): JSX.Element => {
         multiple
         id='tags-standard'
         options={skills}
+        value={selected}
         getOptionLabel={(option) => option?.skillName}
         onChange={(event, newValue) => {
           const skillIds = newValue.map(({skillId}) => skillId);

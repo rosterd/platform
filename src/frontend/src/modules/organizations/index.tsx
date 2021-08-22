@@ -47,9 +47,7 @@ const Organizations: React.FC = (): JSX.Element => {
   }, []);
 
   const handleAddOrganization = async (values: AddOrganizationFormValues) => {
-    const requestBody: AddOrganizationRequest = {
-      organization: values,
-    };
+    const requestBody: AddOrganizationRequest = {...values};
 
     const organizationsRes = await requestMaker<Organization>(addOrganization(requestBody));
     if (organizationsRes) {

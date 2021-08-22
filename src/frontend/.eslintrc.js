@@ -30,6 +30,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': ['error'],
     'react/jsx-props-no-spreading': 'off',
     'no-process-env': 'off',
+    'react/require-default-props': 'off',
   },
   settings: {
     'import/resolver': {

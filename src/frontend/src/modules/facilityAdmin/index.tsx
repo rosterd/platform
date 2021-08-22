@@ -12,7 +12,7 @@ import {components} from 'types/models';
 import AddAdminModal from 'shared/components/AddAdminModal';
 
 type AddAdminUserRequest = components['schemas']['AddAdminUserRequest'];
-type AdminUserModel = components['schemas']['AdminUserModel'];
+type AdminUserModel = components['schemas']['Auth0UserModel'];
 
 const useStyles = makeStyles(() => ({
   materialTable: {

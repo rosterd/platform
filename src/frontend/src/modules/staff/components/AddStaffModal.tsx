@@ -10,8 +10,7 @@ import useRequest from 'shared/hooks/useRequest';
 import * as yup from 'yup';
 import {getSkills} from 'services';
 import {components} from 'types/models';
-import SkillsInput from './SkillsInput';
-import AddressInput from './AddressInput';
+import SkillsInput from 'shared/components/Skills';
 
 interface AddStaffModalProps {
   open: boolean;
@@ -22,8 +21,7 @@ interface FormValues {
   email: string;
   name: string;
   mobile: number;
-  skill: string;
-  address: string;
+  skills: number[];
 }
 
 type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
@@ -45,8 +43,6 @@ const AddStaffModal = (props: AddStaffModalProps) => {
     name: yup.string().required('Please enter name'),
     email: yup.string().email().required('Please enter valid email'),
     mobile: yup.string().required('Please enter mobile'),
-    skill: yup.string().email().required('Please enter atleast one skill'),
-    address: yup.string().email().required('Please enter address'),
   });
   return (
     <Formik
@@ -54,8 +50,7 @@ const AddStaffModal = (props: AddStaffModalProps) => {
         name: '',
         email: '',
         mobile: '',
-        skill: '',
-        address: '',
+        skills: [],
       }}
       validationSchema={validationSchema}
       validate={(values) => {
@@ -84,9 +79,7 @@ const AddStaffModal = (props: AddStaffModalProps) => {
               <br />
               <Field component={TextField} name='mobile' type='tel' label='Mobile Number' fullWidth />
               <br />
-              <SkillsInput skills={skills} label='Skills' />
-              <br />
-              <AddressInput />
+              <SkillsInput skills={skills} label='Skills' name='skills' />
               <br />
               {isSubmitting && <LinearProgress />}
             </Form>
