@@ -119,7 +119,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="facilityId">The facility id to update</param>
         /// <returns></returns>
         [HttpPatch("{facilityId}/reactivate")]
-
         [OperationOrderAttribute(3)]
         public async Task<ActionResult> ReactivateFacility([ValidNumberRequired] long? facilityId)
         {

@@ -29,7 +29,7 @@ namespace Rosterd.Admin.Api.Controllers
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Admin User")]
-    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.OrganizationAdmin)]
+    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.OrganizationAdmin, RosterdConstants.RosterdRoleNames.RosterdAdmin)]
     public class AdminUsersController : BaseApiController
     {
         private readonly ILogger<StaffController> _logger;
@@ -69,7 +69,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The admin to add for the organization</param>
         /// <returns></returns>
         [HttpPost("organization-admins")]
-        [AuthorizeByRole(RosterdConstants.RosterdRoleNames.RosterdAdmin)]
         public async Task<ActionResult<Auth0UserModel>> AddOrganizationAdminUser([FromBody] AddAdminUserRequest request)
         {
             var adminUserModel = await _adminUserService.AddOrganizationAdminToAuth0(request.Auth0OrganizationId, request.ToModel());
