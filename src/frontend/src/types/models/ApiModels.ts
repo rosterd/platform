@@ -9,6 +9,83 @@ export interface paths {
       responses: {
         /** Success */
         200: unknown;
+        /** Unauthorized */
+        401: unknown;
+        /** Forbidden */
+        403: unknown;
+      };
+    };
+  };
+  "/api/v{version}/adminusers/admins": {
+    get: {
+      parameters: {
+        query: {
+          pageNumber?: number;
+          pageSize?: number;
+        };
+        path: {
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["Auth0UserModelPagedList"];
+            "application/json": components["schemas"]["Auth0UserModelPagedList"];
+            "text/json": components["schemas"]["Auth0UserModelPagedList"];
+          };
+        };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
       };
     };
   };
@@ -23,9 +100,9 @@ export interface paths {
         /** Success */
         200: {
           content: {
-            "text/plain": components["schemas"]["AdminUserModel"];
-            "application/json": components["schemas"]["AdminUserModel"];
-            "text/json": components["schemas"]["AdminUserModel"];
+            "text/plain": components["schemas"]["StaffModel"];
+            "application/json": components["schemas"]["StaffModel"];
+            "text/json": components["schemas"]["StaffModel"];
           };
         };
         /** Bad Request */
@@ -82,9 +159,9 @@ export interface paths {
       /** The admin to add for the facility */
       requestBody: {
         content: {
-          "application/json": components["schemas"]["AddAdminUserRequest"];
-          "text/json": components["schemas"]["AddAdminUserRequest"];
-          "application/*+json": components["schemas"]["AddAdminUserRequest"];
+          "application/json": components["schemas"]["AddAdminWhoIsAlsoStaffRequest"];
+          "text/json": components["schemas"]["AddAdminWhoIsAlsoStaffRequest"];
+          "application/*+json": components["schemas"]["AddAdminWhoIsAlsoStaffRequest"];
         };
       };
     };
@@ -100,9 +177,9 @@ export interface paths {
         /** Success */
         200: {
           content: {
-            "text/plain": components["schemas"]["AdminUserModel"];
-            "application/json": components["schemas"]["AdminUserModel"];
-            "text/json": components["schemas"]["AdminUserModel"];
+            "text/plain": components["schemas"]["Auth0UserModel"];
+            "application/json": components["schemas"]["Auth0UserModel"];
+            "text/json": components["schemas"]["Auth0UserModel"];
           };
         };
         /** Bad Request */
@@ -522,6 +599,71 @@ export interface paths {
       };
     };
   };
+  "/api/v{version}/facilities/{facilityid}/reactivate": {
+    patch: {
+      parameters: {
+        path: {
+          /** The facility id to update */
+          facilityId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+  };
   "/api/v{version}/Jobs": {
     get: {
       parameters: {
@@ -811,6 +953,12 @@ export interface paths {
         query: {
           pageNumber?: number;
           pageSize?: number;
+          /**
+           * True = only active organizations will be returned.
+           *             False = all organization will be returned
+           *             The default is true
+           */
+          activeOrganizationsOnly?: boolean;
         };
         path: {
           version: string;
@@ -2490,8 +2638,35 @@ export interface components {
       email: string;
       phoneNumber?: string | null;
     };
+    AddAdminWhoIsAlsoStaffRequest: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      phoneNumber?: string | null;
+      middleName?: string | null;
+      mobilePhoneNumber?: string | null;
+      dateOfBirth?: string | null;
+      address?: string | null;
+      comments?: string | null;
+      jobTitle?: string | null;
+      /**
+       * The facility this staff belongs too
+       * Initially when creating a staff, a staff will need to belong to at least one facility, later you can add more or remove
+       */
+      facilityId?: number | null;
+      /** The list of skills that the staff has, when creating should at least have one */
+      skillIds?: number[] | null;
+    };
     AddFacilityRequest: {
-      facilityToAdd?: components["schemas"]["FacilityModel"];
+      facilityName: string;
+      address: string;
+      suburb?: string | null;
+      city: string;
+      country: string;
+      latitude: number;
+      longitude: number;
+      phoneNumber1: string;
+      phoneNumber2?: string | null;
     };
     AddJobRequest: {
       jobTitle: string;
@@ -2507,11 +2682,12 @@ export interface components {
       isDayShift?: boolean;
       isNightShift?: boolean;
       skillsRequiredForJob?: number[] | null;
-      /** Only required if an existing job was cancelled and new one created based of the old one */
-      previouslyCancelledJobId?: number | null;
     };
     AddOrganizationRequest: {
-      organization?: components["schemas"]["OrganizationModel"];
+      organizationName: string;
+      phone?: string | null;
+      address?: string | null;
+      comments?: string | null;
     };
     AddRoleRequest: {
       roleName: string;
@@ -2522,16 +2698,9 @@ export interface components {
     };
     AddStaffRequest: {
       firstName: string;
-      middleName?: string | null;
       lastName: string;
       email: string;
-      homePhoneNumber?: string | null;
       mobilePhoneNumber?: string | null;
-      otherPhoneNumber?: string | null;
-      isActive: boolean;
-      isAvailable: boolean;
-      dateOfBirth?: string | null;
-      address?: string | null;
       comments?: string | null;
       jobTitle?: string | null;
       /**
@@ -2545,22 +2714,35 @@ export interface components {
     AddUpdateSkillRequest: {
       skillToAddOrUpdate?: components["schemas"]["SkillModel"];
     };
-    AdminUserModel: {
-      adminUserId: string;
+    Auth0UserModel: {
+      userAuth0Id: string;
       firstName: string;
       lastName: string;
       email: string;
-      phoneNumber?: string | null;
+      mobilePhoneNumber?: string | null;
+      rosterdRolesForUser?: components["schemas"]["RosterdRoleEnum"][] | null;
+    };
+    Auth0UserModelPagedList: {
+      currentPage?: number;
+      totalPages?: number;
+      pageSize?: number;
+      totalCount?: number;
+      hasPrevious?: boolean;
+      hasNext?: boolean;
+      items?: components["schemas"]["Auth0UserModel"][] | null;
     };
     FacilityCapabilityModel: { [key: string]: unknown };
     FacilityModel: {
-      facilityId?: number | null;
+      facilityId?: number;
       facilityName: string;
       address: string;
-      suburb: string;
+      suburb?: string | null;
       city: string;
       country: string;
+      latitude: number;
+      longitude: number;
       phoneNumber1: string;
+      isActive: boolean;
       phoneNumber2?: string | null;
       organization?: components["schemas"]["OrganizationModel"];
       facilityCapabilities?:
@@ -2621,12 +2803,13 @@ export interface components {
       | "Expired"
       | "Cancelled";
     OrganizationModel: {
-      organizationId?: number | null;
+      organizationId?: number;
       auth0OrganizationId?: string | null;
       organizationName: string;
       phone?: string | null;
       address?: string | null;
       comments?: string | null;
+      isActive?: boolean;
     };
     OrganizationModelPagedList: {
       currentPage?: number;
@@ -2649,6 +2832,11 @@ export interface components {
       roleName?: string | null;
       roleDescription?: string | null;
     };
+    RosterdRoleEnum:
+      | "OrganizationAdmin"
+      | "RosterdAdmin"
+      | "FacilityAdmin"
+      | "Staff";
     SkillModel: {
       skillId?: number;
       skillName: string;
@@ -2665,17 +2853,12 @@ export interface components {
     };
     StaffModel: {
       staffId?: number | null;
+      auth0Id?: string | null;
       firstName: string;
-      middleName?: string | null;
       lastName: string;
       email: string;
-      homePhoneNumber?: string | null;
       mobilePhoneNumber?: string | null;
-      otherPhoneNumber?: string | null;
       isActive?: boolean;
-      isAvailable?: boolean;
-      dateOfBirth?: string | null;
-      address?: string | null;
       comments?: string | null;
       jobTitle?: string | null;
       staffSkills?: components["schemas"]["SkillModel"][] | null;
@@ -2691,24 +2874,30 @@ export interface components {
       items?: components["schemas"]["StaffModel"][] | null;
     };
     UpdateFacilityRequest: {
-      facilityToUpdate?: components["schemas"]["FacilityModel"];
+      facilityId?: number;
+      facilityName: string;
+      address: string;
+      suburb?: string | null;
+      city: string;
+      country: string;
+      latitude: number;
+      longitude: number;
+      phoneNumber1: string;
+      phoneNumber2?: string | null;
     };
     UpdateOrganizationRequest: {
-      organization?: components["schemas"]["OrganizationModel"];
+      organizationId?: number;
+      organizationName: string;
+      phone?: string | null;
+      address?: string | null;
+      comments?: string | null;
     };
     UpdateStaffRequest: {
       staffId?: number | null;
       firstName: string;
-      middleName?: string | null;
       lastName: string;
       email: string;
-      homePhoneNumber?: string | null;
       mobilePhoneNumber?: string | null;
-      otherPhoneNumber?: string | null;
-      isActive: boolean;
-      isAvailable: boolean;
-      dateOfBirth?: string | null;
-      address?: string | null;
       comments?: string | null;
       jobTitle?: string | null;
     };
