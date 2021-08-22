@@ -46,7 +46,7 @@ namespace Rosterd.Services.Facilities.Interfaces
         /// <returns></returns>
         Task ReactivateFacility(long facilityId);
 
-        Task<bool> DoesFacilityWithSameNameExistForOrganization(FacilityModel facilityModel, string auth0OrganizationId);
+        Task<bool> DoesFacilityWithSameNameExistForOrganization(FacilityModel facilityModel, string auth0OrganizationId, string allowedName = null);
     }
 
 }

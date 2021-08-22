@@ -96,7 +96,7 @@ namespace Rosterd.Services.Facilities
             return facilityModelToUpdate.ToDomainModel();
         }
 
-        public async Task<bool> DoesFacilityWithSameNameExistForOrganization(FacilityModel facilityModel, string auth0OrganizationId)
+        public async Task<bool> DoesFacilityWithSameNameExistForOrganization(FacilityModel facilityModel, string auth0OrganizationId, string allowedName = null)
         {
             var organization = await _context.GetOrganization(auth0OrganizationId);
 
@@ -104,6 +104,11 @@ namespace Rosterd.Services.Facilities
                 await (from facility in _context.Facilities
                 where facility.OrganzationId == organization.OrganizationId && EF.Functions.Like(facility.FacilityName, facilityModel.FacilityName)
                 select facility).FirstOrDefaultAsync();
+
+            if (allowedName != null && matchingFacilities != null)
+            {
+                return matchingFacilities.FacilityName.ToLower() != allowedName.ToLower();
+            }
 
             return matchingFacilities != null;
         }

@@ -19,6 +19,7 @@ namespace Rosterd.Services.Mappers
                 FacilityName = dataModel.FacilityName,
                 Address = dataModel.Address,
                 City = dataModel.City,
+                Suburb = dataModel.Suburb,
                 Country = dataModel.Country,
                 PhoneNumber1 = dataModel.PhoneNumber1,
                 PhoneNumber2 = dataModel.PhoneNumber2,

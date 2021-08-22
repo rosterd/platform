@@ -27,7 +27,6 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IFacilitiesService _facilitiesService;
         private readonly ILogger<FacilitiesController> _logger;
         private readonly IUserContext _userContext;
-        private FacilityModel facilityToUpdate;
 
         public FacilitiesController(ILogger<FacilitiesController> logger, IFacilitiesService facilitiesService, IOptions<AppSettings> appSettings, IUserContext userContext) : base(appSettings)
         {
@@ -96,11 +95,14 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(4)]
         public async Task<ActionResult<FacilityModel>> UpdateFacility([Required] UpdateFacilityRequest request)
         {
-            facilityToUpdate = request.ToFacilityModel();
+            var facilityToUpdate = request.ToFacilityModel();
             facilityToUpdate.Organization = new OrganizationModel { Auth0OrganizationId = _userContext.UsersAuth0OrganizationId };
 
+            //Existing facility
+            var existingFacility = await _facilitiesService.GetFacility(request.FacilityId, _userContext.UsersAuth0OrganizationId);
+
             //Validate duplicates
-            var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(facilityToUpdate, _userContext.UsersAuth0OrganizationId);
+            var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(facilityToUpdate, _userContext.UsersAuth0OrganizationId, existingFacility.FacilityName);
             if (duplicatesExist)
             {
                 ModelState.TryAddModelError("FacilityToUpdate.FacilityName", $"Facility with name {facilityToUpdate.FacilityName} already exits");
