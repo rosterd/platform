@@ -10,14 +10,20 @@ using Microsoft.EntityFrameworkCore;
 namespace Rosterd.Data.SqlServer.Models
 {
     [Table("Skill")]
+    [Index(nameof(OrganizationId), Name = "IX_Skill_OrganizationId")]
     public partial class Skill
     {
         [Key]
         public long SkillId { get; set; }
+        public long OrganizationId { get; set; }
         [Required]
         [StringLength(1000)]
         public string SkillName { get; set; }
         [StringLength(1000)]
         public string Description { get; set; }
+
+        [ForeignKey(nameof(OrganizationId))]
+        [InverseProperty("Skills")]
+        public virtual Organization Organization { get; set; }
     }
 }

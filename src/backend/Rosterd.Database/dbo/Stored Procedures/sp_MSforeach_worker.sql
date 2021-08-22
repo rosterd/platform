@@ -1,10 +1,4 @@
----- /* TRUNCATE ALL TABLES IN A DATABASE */
---EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
---EXEC sp_MSForEachTable 'DELETE FROM ?'
---EXEC sp_MSForEachTable 'ALTER TABLE ? CHECK CONSTRAINT ALL'
---EXEC sp_MSforeachtable 'DBCC CHECKIDENT ( ''?'', RESEED, 0)'
-
-CREATE proc [dbo].[sp_MSforeach_worker]
+﻿CREATE proc [dbo].[sp_MSforeach_worker]
         @command1 nvarchar(2000), @replacechar nchar(1) = N'?', @command2 nvarchar(2000) = null, @command3 nvarchar(2000) = null, @worker_type int =1
     as
 
@@ -12,6 +6,12 @@ CREATE proc [dbo].[sp_MSforeach_worker]
         qnum                int             NOT NULL,
         qchar               nvarchar(2000)  COLLATE database_default NULL
     )
+
+	---- /* TRUNCATE ALL TABLES IN A DATABASE */
+--EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
+--EXEC sp_MSForEachTable 'DELETE FROM ?'
+--EXEC sp_MSForEachTable 'ALTER TABLE ? CHECK CONSTRAINT ALL'
+--EXEC sp_MSforeachtable 'DBCC CHECKIDENT ( ''?'', RESEED, 0)'
 
     set nocount on
     declare @name nvarchar(517), @namelen int, @q1 nvarchar(2000), @q2 nvarchar(2000)

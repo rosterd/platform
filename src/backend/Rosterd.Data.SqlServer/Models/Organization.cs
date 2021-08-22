@@ -16,6 +16,8 @@ namespace Rosterd.Data.SqlServer.Models
         public Organization()
         {
             Facilities = new HashSet<Facility>();
+            Skills = new HashSet<Skill>();
+            Staff = new HashSet<Staff>();
         }
 
         [Key]
@@ -36,5 +38,9 @@ namespace Rosterd.Data.SqlServer.Models
 
         [InverseProperty(nameof(Facility.Organzation))]
         public virtual ICollection<Facility> Facilities { get; set; }
+        [InverseProperty(nameof(Skill.Organization))]
+        public virtual ICollection<Skill> Skills { get; set; }
+        [InverseProperty("Organization")]
+        public virtual ICollection<Staff> Staff { get; set; }
     }
 }

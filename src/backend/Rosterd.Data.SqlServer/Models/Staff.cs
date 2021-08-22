@@ -24,6 +24,7 @@ namespace Rosterd.Data.SqlServer.Models
         [Required]
         [StringLength(130)]
         public string Auth0Id { get; set; }
+        public long OrganizationId { get; set; }
         [Required]
         [StringLength(1000)]
         public string FirstName { get; set; }
@@ -40,6 +41,9 @@ namespace Rosterd.Data.SqlServer.Models
         [StringLength(1000)]
         public string Comments { get; set; }
 
+        [ForeignKey(nameof(OrganizationId))]
+        [InverseProperty("Staff")]
+        public virtual Organization Organization { get; set; }
         [InverseProperty(nameof(JobStaff.Staff))]
         public virtual ICollection<JobStaff> JobStaffs { get; set; }
         [InverseProperty(nameof(StaffFacility.Staff))]

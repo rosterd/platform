@@ -1,4 +1,4 @@
----- /* TRUNCATE ALL TABLES IN A DATABASE */
+﻿---- /* TRUNCATE ALL TABLES IN A DATABASE */
 --EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
 --EXEC sp_MSForEachTable 'DELETE FROM ?'
 --EXEC sp_MSForEachTable 'ALTER TABLE ? CHECK CONSTRAINT ALL'
@@ -9,6 +9,14 @@ CREATE proc [dbo].[sp_MSforeachtable]
   @command3 nvarchar(2000) = null, @whereand nvarchar(2000) = null,
     @precommand nvarchar(2000) = null, @postcommand nvarchar(2000) = null
 AS
+
+---- /* TRUNCATE ALL TABLES IN A DATABASE */
+--EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
+--EXEC sp_MSForEachTable 'DELETE FROM ?'
+--EXEC sp_MSForEachTable 'ALTER TABLE ? CHECK CONSTRAINT ALL'
+--EXEC sp_MSforeachtable 'DBCC CHECKIDENT ( ''?'', RESEED, 0)'
+
+
     declare @mscat nvarchar(12)
     select @mscat = ltrim(str(convert(int, 0x0002)))
     if (@precommand is not null)
