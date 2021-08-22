@@ -53,7 +53,7 @@ const Staff: React.FC = (): JSX.Element => {
 
   const onUpdate = async (staffToUpdate: Staff) => {
     setLoading(true);
-    const updatedSkill = await requestMaker<Staff>(updateStaff(staffToUpdate));
+    await requestMaker<Staff>(updateStaff(staffToUpdate));
     setLoading(false);
   };
 
