@@ -25,7 +25,8 @@
     "removeComments": false,
     "sourceMap": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "types": ["google.maps"]
   },
   "exclude": ["node_modules"],
   "include": ["react-app-env.d.ts", "src"]

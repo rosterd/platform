@@ -8,6 +8,7 @@ import {Formik, Form, Field} from 'formik';
 import {Button, LinearProgress} from '@material-ui/core';
 import {TextField} from 'formik-material-ui';
 import * as yup from 'yup';
+import AddressInput from 'shared/components/Address';
 
 export interface AddFacilityFormValues {
   facilityName: string;
@@ -28,7 +29,13 @@ interface AddFacilityModalProps {
 const AddFacilityModal: React.FC<AddFacilityModalProps> = (props): JSX.Element => {
   const validationSchema = yup.object({
     facilityName: yup.string().required('Please enter Facility Name'),
-    address: yup.string().required('Please enter Facility Address'),
+    address: yup
+      .object()
+      .nullable()
+      .shape({
+        prediction: yup.string().required('Please enter Facility Address'),
+      })
+      .required('Please enter Facility Address'),
   });
 
   return (
@@ -61,13 +68,7 @@ const AddFacilityModal: React.FC<AddFacilityModalProps> = (props): JSX.Element =
             <Form>
               <Field component={TextField} name='facilityName' label='Facility Name' fullWidth />
               <br />
-              <Field component={TextField} name='address' label='Facility Address' fullWidth />
-              <br />
-              <Field component={TextField} name='suburb' label='Suburb' fullWidth />
-              <br />
-              <Field component={TextField} name='city' label='City' fullWidth />
-              <br />
-              <Field component={TextField} name='country' label='Country' fullWidth />
+              <AddressInput label='Facility Address' name='address' />
               <br />
               <Field component={TextField} name='phoneNumber1' label='Phone Number' fullWidth />
               <br />
