@@ -2633,6 +2633,8 @@ export interface paths {
 export interface components {
   schemas: {
     AddAdminUserRequest: {
+      /** The auth0 organization id to add this admin too */
+      auth0OrganizationId: string;
       firstName: string;
       lastName: string;
       email: string;
