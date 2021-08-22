@@ -13,6 +13,12 @@ namespace Rosterd.Admin.Api.Requests.AdminUser
 {
     public class AddAdminUserRequest
     {
+        /// <summary>
+        /// The auth0 organization id to add this admin too
+        /// </summary>
+        [Required]
+        public string Auth0OrganizationId { get; set; }
+
         [Required(AllowEmptyStrings = false)]
         [StringLength(1000, MinimumLength = 1)]
         public string FirstName { get; set; }
