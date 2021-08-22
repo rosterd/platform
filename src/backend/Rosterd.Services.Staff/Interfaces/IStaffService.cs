@@ -13,22 +13,25 @@ namespace Rosterd.Services.Staff.Interfaces
         /// </summary>
         /// <param name="pagingParameters"></param>
         /// <param name="facilityId"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId);
+        Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId, string auth0OrganizationId);
 
         /// <summary>
         /// Gets all the Staff members
         /// </summary>
         /// <param name="pagingParameters"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task<PagedList<StaffModel>> GetAllStaff(PagingQueryStringParameters pagingParameters);
+        Task<PagedList<StaffModel>> GetAllStaff(PagingQueryStringParameters pagingParameters, string auth0OrganizationId);
 
         /// <summary>
-        /// Gets a specific staffmember
+        /// Gets a specific staff member
         /// </summary>
         /// <param name="staffId"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task<StaffModel> GetStaff(long staffId);
+        Task<StaffModel> GetStaff(long staffId, string auth0OrganizationId);
 
         /// <summary>
         /// Adds a new Staff member

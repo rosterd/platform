@@ -26,5 +26,9 @@
 
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
+  </ItemGroup>
+
 
 </Project>

@@ -4,6 +4,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
+using Rosterd.Data.SqlServer.Extensions;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Exceptions;
@@ -21,26 +22,28 @@ namespace Rosterd.Services.Facilities
         public FacilitiesService(IRosterdDbContext context) => _context = context;
 
 
-        public async Task<PagedList<FacilityModel>> GetAllFacilities(PagingQueryStringParameters pagingParameters)
+        public async Task<PagedList<FacilityModel>> GetAllFacilities(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
-            var query = _context.Facilities;
+            var organization = await _context.GetOrganization(auth0OrganizationId);
+
+            var query = _context.Facilities.Where(s => s.OrganzationId == organization.OrganizationId);
             var pagedList = await PagingList<Data.SqlServer.Models.Facility>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
             return new PagedList<FacilityModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
 
-        public async Task<FacilityModel> GetFacility(long facilityId)
+        public async Task<FacilityModel> GetFacility(long facilityId, string auth0OrganizationId)
         {
-            var facility = await _context.Facilities.FindAsync(facilityId);
+            var organization = await _context.GetOrganization(auth0OrganizationId);
+
+            var facility = await _context.Facilities.Where(s => s.OrganzationId == organization.OrganizationId && s.FacilityId == facilityId).FirstOrDefaultAsync();
             return facility?.ToDomainModel();
         }
 
-        public async Task<FacilityModel> CreateFacility(FacilityModel facilityModel)
+        public async Task<FacilityModel> CreateFacility(FacilityModel facilityModel, string auth0OrganizationId)
         {
-            var organization = await _context.Organizations.FirstOrDefaultAsync(s => s.Auth0OrganizationId == facilityModel.Organization.Auth0OrganizationId);
-            if (organization == null)
-                throw new EntityNotFoundException($"The given organization was not found, we don't have a matching organization with auth0 organization id {facilityModel.Organization.Auth0OrganizationId}");
+            var organization = await _context.GetOrganization(auth0OrganizationId);
 
             var facilityToCreate = facilityModel.ToNewFacility();
             facilityToCreate.OrganzationId = organization.OrganizationId;
@@ -93,11 +96,13 @@ namespace Rosterd.Services.Facilities
             return facilityModelToUpdate.ToDomainModel();
         }
 
-        public async Task<bool> DoesFacilityWithSameNameExistForOrganization(FacilityModel facilityModel)
+        public async Task<bool> DoesFacilityWithSameNameExistForOrganization(FacilityModel facilityModel, string auth0OrganizationId)
         {
+            var organization = await _context.GetOrganization(auth0OrganizationId);
+
             var matchingFacilities =
                 await (from facility in _context.Facilities
-                where facility.OrganzationId == facilityModel.Organization.OrganizationId && EF.Functions.Like(facility.FacilityName, facilityModel.FacilityName)
+                where facility.OrganzationId == organization.OrganizationId && EF.Functions.Like(facility.FacilityName, facilityModel.FacilityName)
                 select facility).FirstOrDefaultAsync();
 
             return matchingFacilities != null;

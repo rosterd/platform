@@ -46,8 +46,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<Domain.Models.PagedList<FacilityModel>>> GetAllFacilities([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-
-            var pagedList = await _facilitiesService.GetAllFacilities(pagingParameters);
+            var pagedList = await _facilitiesService.GetAllFacilities(pagingParameters, _userContext.UsersAuth0OrganizationId);
 
             return pagedList;
         }
@@ -60,7 +59,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(2)]
         public async Task<ActionResult<FacilityModel>> GetFacilityById([ValidNumberRequired] long? facilityId)
         {
-            var facilityModel = await _facilitiesService.GetFacility(facilityId.Value);
+            var facilityModel = await _facilitiesService.GetFacility(facilityId.Value, _userContext.UsersAuth0OrganizationId);
             return facilityModel;
         }
 
@@ -77,14 +76,14 @@ namespace Rosterd.Admin.Api.Controllers
             facilityModelToAdd.Organization = new OrganizationModel { Auth0OrganizationId = _userContext.UsersAuth0OrganizationId };
 
             //Validate duplicates
-            var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(facilityModelToAdd);
+            var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(facilityModelToAdd, _userContext.UsersAuth0OrganizationId);
             if (duplicatesExist)
             {
                 ModelState.TryAddModelError("FacilityToAdd.FacilityName", $"Facility with name {facilityModelToAdd.FacilityName} already exits");
                 return BadRequest(ModelState);
             }
 
-            var facilityAdded = await _facilitiesService.CreateFacility(facilityModelToAdd);
+            var facilityAdded = await _facilitiesService.CreateFacility(facilityModelToAdd, _userContext.UsersAuth0OrganizationId);
             return facilityAdded;
         }
 
@@ -101,7 +100,7 @@ namespace Rosterd.Admin.Api.Controllers
             facilityToUpdate.Organization = new OrganizationModel { Auth0OrganizationId = _userContext.UsersAuth0OrganizationId };
 
             //Validate duplicates
-            var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(facilityToUpdate);
+            var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(facilityToUpdate, _userContext.UsersAuth0OrganizationId);
             if (duplicatesExist)
             {
                 ModelState.TryAddModelError("FacilityToUpdate.FacilityName", $"Facility with name {facilityToUpdate.FacilityName} already exits");

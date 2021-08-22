@@ -7,6 +7,7 @@ using Azure.Search.Documents.Models;
 using Microsoft.Azure.EventGrid;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
+using Rosterd.Data.SqlServer.Extensions;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain;
@@ -36,7 +37,7 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
-            var organization = await GetOrganization(auth0OrganizationId);
+            var organization = await _context.GetOrganization(auth0OrganizationId);
 
             var query = _context.Jobs.Include(s => s.Facility).Where(s => s.Facility.OrganzationId == organization.OrganizationId);
             var pagedList = await PagingList<Job>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
@@ -48,7 +49,7 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<JobModel> GetJob(long jobId, string auth0OrganizationId)
         {
-            var organization = await GetOrganization(auth0OrganizationId);
+            var organization = await _context.GetOrganization(auth0OrganizationId);
 
             var job = await _context.Jobs.Include(s => s.Facility)
                 .Where(s => s.Facility.OrganzationId == organization.OrganizationId)
@@ -264,15 +265,6 @@ namespace Rosterd.Services.Jobs
                     .ToListAsync();
 
             return jobsThatAreFinished;
-        }
-
-        private async Task<Organization> GetOrganization(string auth0OrganizationId)
-        {
-            var organization = await _context.Organizations.FirstOrDefaultAsync(s => s.Auth0OrganizationId == auth0OrganizationId);
-            if (organization == null)
-                throw new EntityNotFoundException($"The given organization was not found, we don't have a matching organization with auth0 organization id {auth0OrganizationId}");
-
-            return organization;
         }
     }
 }

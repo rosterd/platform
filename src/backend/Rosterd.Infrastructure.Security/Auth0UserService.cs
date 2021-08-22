@@ -29,7 +29,7 @@ namespace Rosterd.Infrastructure.Security
         ///<inheritdoc/>
         public async Task<Auth0UserModel> AddFacilityAdminToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel) => await AddUserToAuth0(auth0OrganizationId, adminUserModel, RosterdRoleEnum.FacilityAdmin);
 
-        public async Task<Auth0UserModel> AddStaffToAuth0(string auth0OrganizationId, string firstName, string lastName, string email, string mobilePhoneNumber) =>
+        public async Task<Auth0UserModel> AddStaffToAuth0(string auth0OrganizationId, string firstName, string lastName, string email, string mobilePhoneNumber, string usersAuth0OrganizationId) =>
             await AddUserToAuth0(auth0OrganizationId,
                 new Auth0UserModel {Email = email, FirstName = firstName, LastName = lastName, MobilePhoneNumber = mobilePhoneNumber}, RosterdRoleEnum.Staff);
 

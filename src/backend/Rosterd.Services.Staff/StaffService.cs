@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
+using Rosterd.Data.SqlServer.Extensions;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Data.TableStorage.Context;
@@ -31,8 +32,18 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId)
+        public async Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId, string auth0OrganizationId)
         {
+            //TODO: Org check
+
+            //Check if the facility belongs to the organization of the user
+            var organization = await _context.GetOrganization(auth0OrganizationId);
+            var facility = await _context.Facilities.FindAsync(facilityId);
+
+            //The facility provided does not match the organization
+            if (facility.OrganzationId != organization.OrganizationId)
+                return PagedList<StaffModel>.EmptyPagedList();
+
             var query = _context.Staff
                 .Where(staff => staff.StaffFacilities.Any(facility => facility.FacilityId == facilityId))
                 .Include(s => s.StaffFacilities)
@@ -45,8 +56,10 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task<PagedList<StaffModel>> GetAllStaff(PagingQueryStringParameters pagingParameters)
+        public async Task<PagedList<StaffModel>> GetAllStaff(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
+            //TODO: Org check
+
             var query = _context.Staff;
             var pagedList = await PagingList<Data.SqlServer.Models.Staff>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
@@ -55,8 +68,10 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task<StaffModel> GetStaff(long staffId)
+        public async Task<StaffModel> GetStaff(long staffId, string auth0OrganizationId)
         {
+            //TODO: Org check
+
             var staff = await _context.Staff
                 .Include(s => s.StaffFacilities)
                 .Include(s => s.StaffSkills)
@@ -71,6 +86,8 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task<StaffModel> CreateStaff(StaffModel staffModel)
         {
+            //TODO: Org check
+
             if (staffModel.Auth0Id.IsNullOrEmpty())
                 throw new Auth0IdNotSetException();
 

@@ -47,7 +47,7 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
-        /// Gets all the resources 
+        /// Gets all the resources
         /// </summary>
         /// <param name="facilityId">The facility id to filter all the list of Staff by</param>
         /// <param name="pagingParameters"></param>
@@ -60,9 +60,9 @@ namespace Rosterd.Admin.Api.Controllers
             Domain.Models.PagedList<StaffModel> pagedList;
 
             if (facilityId == null)
-                pagedList = await _staffService.GetAllStaff(pagingParameters);
+                pagedList = await _staffService.GetAllStaff(pagingParameters, _userContext.UsersAuth0OrganizationId);
             else
-                pagedList = await _staffService.GetStaffForFacility(pagingParameters, facilityId.Value);
+                pagedList = await _staffService.GetStaffForFacility(pagingParameters, facilityId.Value, _userContext.UsersAuth0OrganizationId);
 
             return pagedList;
         }
@@ -75,7 +75,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(2)]
         public async Task<ActionResult<StaffModel>> GetStaffById([ValidNumberRequired] long? id)
         {
-            var staffModel = await _staffService.GetStaff(id.Value);
+            var staffModel = await _staffService.GetStaff(id.Value, _userContext.UsersAuth0OrganizationId);
             return staffModel;
         }
 
@@ -89,8 +89,8 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<StaffModel>> AddNewStaffMember([FromBody] AddStaffRequest request)
         {
             //1. Create the staff in auth0
-            var userCreatedInAuth0 = await _auth0UserService.AddStaffToAuth0(_userContext.UsersAuth0OrganizationId, request.FirstName, request.LastName, request.Email, request.MobilePhoneNumber);
-            
+            var userCreatedInAuth0 = await _auth0UserService.AddStaffToAuth0(_userContext.UsersAuth0OrganizationId, request.FirstName, request.LastName, request.Email, request.MobilePhoneNumber, _userContext.UsersAuth0OrganizationId);
+
             //2. Create the staff in our db
             var staffToCreateInDb = request.ToStaffModel();
             staffToCreateInDb.Auth0Id = userCreatedInAuth0.UserAuth0Id;
@@ -129,7 +129,7 @@ namespace Rosterd.Admin.Api.Controllers
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
             return Ok();
         }
-        
+
         /// <summary>
         /// Makes a Staff member as inactive
         /// </summary>
