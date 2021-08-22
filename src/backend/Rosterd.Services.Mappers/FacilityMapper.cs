@@ -65,7 +65,7 @@ namespace Rosterd.Services.Mappers
                 PhoneNumber1 = domainModel.PhoneNumber1,
                 PhoneNumber2 = domainModel.PhoneNumber2,
                 Suburb = domainModel.Suburb,
-                IsActive = domainModel.IsActive.Value
+                IsActive = domainModel.IsActive ?? true //True when creating
             };
 
             return facilityToSave;
