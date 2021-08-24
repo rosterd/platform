@@ -11,6 +11,7 @@ import * as yup from 'yup';
 import {getSkills} from 'services';
 import {components} from 'types/models';
 import SkillsInput from 'shared/components/Skills';
+import AddressInput from 'shared/components/Address';
 
 interface AddStaffModalProps {
   open: boolean;
@@ -80,6 +81,8 @@ const AddStaffModal = (props: AddStaffModalProps) => {
               <Field component={TextField} name='mobile' type='tel' label='Mobile Number' fullWidth />
               <br />
               <SkillsInput skills={skills} label='Skills' name='skills' />
+              <br />
+              <AddressInput name='address' label='Address' />
               <br />
               {isSubmitting && <LinearProgress />}
             </Form>
