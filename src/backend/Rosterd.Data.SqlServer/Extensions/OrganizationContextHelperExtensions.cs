@@ -16,6 +16,7 @@ namespace Rosterd.Data.SqlServer.Extensions
         /// <returns>The matching organization if present otherwise an exception is thrown</returns>
         public static async Task<Organization> GetOrganization(this IRosterdDbContext context, string auth0OrganizationId)
         {
+            //TODO: Cache this in memory, as we wont have that many organizations and we can do a restart of the app if we need at a new one for now.
             var organization = await context.Organizations.FirstOrDefaultAsync(s => s.Auth0OrganizationId == auth0OrganizationId);
             if (organization == null)
                 throw new EntityNotFoundException($"The given organization was not found, we don't have a matching organization with auth0 organization id {auth0OrganizationId}");

@@ -53,7 +53,11 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             services.AddScoped<ISkillsService, SkillsService>();
             services.AddScoped<IJobsService, JobsService>();
             services.AddScoped<IOrganizationsService, OrganizationsService>();
-            
+
+            services.AddScoped<IStaffValidationService, StaffValidationService>();
+            services.AddScoped<IJobsValidationService, JobsValidationService>();
+            services.AddScoped<IFacilitiesValidationService, FacilitiesValidationService>();
+
             //Search
             services.AddScoped<ISearchIndexProvider>(s => new SearchIndexProvider(config.GetValue<string>("AppSettings:SearchServiceEndpoint"),
                 config.GetValue<string>("AppSettings:SearchServiceApiKey")));

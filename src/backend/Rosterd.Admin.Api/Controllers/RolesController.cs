@@ -54,7 +54,14 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpGet("{roleId}")]
         [OperationOrderAttribute(2)]
-        public async Task<ActionResult<RosterdRole>> GetRoleById([Required(AllowEmptyStrings = false)] string roleId) => await _rolesService.GetRole(roleId);
+        public async Task<ActionResult<RosterdRole>> GetRoleById([Required(AllowEmptyStrings = false)] string roleId)
+        {
+            var role = await _rolesService.GetRole(roleId);
+            if (role == null)
+                return NotFound();
+
+            return role;
+        }
 
         /// <summary>
         /// Adds a new role

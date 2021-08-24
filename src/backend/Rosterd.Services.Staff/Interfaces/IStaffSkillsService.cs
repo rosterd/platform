@@ -14,15 +14,17 @@ namespace Rosterd.Services.Staff.Interfaces
         /// </summary>
         /// <param name="staffId"></param>
         /// <param name="skillModels"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task UpdateAllSkillsForStaff(long staffId, List<SkillModel> skillModels);
+        Task UpdateAllSkillsForStaff(long staffId, List<SkillModel> skillModels, string auth0OrganizationId);
 
         /// <summary>
         /// Removes list of skills for a Staff
         /// </summary>
         /// <param name="staffId"></param>
         /// <param name="skillModels"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task DeleteSkillsForStaff(long staffId, List<SkillModel> skillModels);
+        Task DeleteSkillsForStaff(long staffId, List<SkillModel> skillModels, string auth0OrganizationId);
     }
 }

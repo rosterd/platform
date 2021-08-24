@@ -37,53 +37,51 @@ namespace Rosterd.Services.Staff.Interfaces
         /// Adds a new Staff member
         /// </summary>
         /// <param name="staffModel"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns>The id of the newly created staff</returns>
-        Task<StaffModel> CreateStaff(StaffModel staffModel);
+        Task<StaffModel> CreateStaff(StaffModel staffModel, string auth0OrganizationId);
 
         /// <summary>
         /// Updates an existing Staff member
         /// </summary>
         /// <param name="staffModel"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task<StaffModel> UpdateStaff(StaffModel staffModel);
+        Task<StaffModel> UpdateStaff(StaffModel staffModel, string auth0OrganizationId);
 
         /// <summary>
         /// Marks a Staff member as inactive
         /// </summary>
         /// <param name="staffId"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task<StaffModel> UpdateStaffToInactive(long staffId);
+        Task<StaffModel> UpdateStaffToInactive(long staffId, string auth0OrganizationId);
 
         /// <summary>
         /// Updates the status of a given staff member to active
         /// </summary>
         /// <param name="staffId"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task UpdateStaffToActive(long staffId);
-
-        /// <summary>
-        /// Moves a Staff member to another facility
-        /// </summary>
-        /// <param name="staffId"></param>
-        /// <param name="facilityModels"></param>
-        /// <returns></returns>
-        Task DeleteAllExistingFacilitiesForStaffAndAddNew(long staffId, List<FacilityModel> facilityModels);
+        Task UpdateStaffToActive(long staffId, string auth0OrganizationId);
 
         /// <summary>
         /// Associates the facility to the staff member
         /// </summary>
         /// <param name="staffId"></param>
         /// <param name="facilityId"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task AddFacilityToStaff(long staffId, long facilityId);
+        Task AddFacilityToStaff(long staffId, long facilityId, string auth0OrganizationId);
 
         /// <summary>
         /// Removes the facility association with a staff member
         /// </summary>
         /// <param name="staffId"></param>
         /// <param name="facilityId"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task RemoveFacilityFromStaff(long staffId, long facilityId);
+        Task RemoveFacilityFromStaff(long staffId, long facilityId, string auth0OrganizationId);
 
         /// <summary>
         /// Gets the staff's preferences

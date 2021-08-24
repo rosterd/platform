@@ -29,16 +29,18 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// Adds a new job
         /// </summary>
         /// <param name="jobModel"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task<JobModel> CreateJob(JobModel jobModel);
+        Task<JobModel> CreateJob(JobModel jobModel, string auth0OrganizationId);
 
         /// <summary>
         /// Deletes job
         /// </summary>
         /// <param name="jobId"></param>
-        /// <param name="jobCancellationReason"></param>
+        /// <param name="cancellationReason"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task RemoveJob(long jobId, string jobCancellationReason);
+        Task RemoveJob(long jobId, string cancellationReason, string auth0OrganizationId);
 
         /// <summary>
         /// Gets all the jobs that are relevant for a given staff

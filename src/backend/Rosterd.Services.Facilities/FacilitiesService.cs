@@ -18,9 +18,13 @@ namespace Rosterd.Services.Facilities
     public class FacilitiesService: IFacilitiesService
     {
         private readonly IRosterdDbContext _context;
+        private readonly IFacilitiesValidationService _facilitiesValidationService;
 
-        public FacilitiesService(IRosterdDbContext context) => _context = context;
-
+        public FacilitiesService(IRosterdDbContext context, IFacilitiesValidationService facilitiesValidationService)
+        {
+            _context = context;
+            _facilitiesValidationService = facilitiesValidationService;
+        }
 
         public async Task<PagedList<FacilityModel>> GetAllFacilities(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
@@ -54,8 +58,10 @@ namespace Rosterd.Services.Facilities
             return facilityToCreate.ToDomainModel();
         }
 
-        public async Task RemoveFacility(long facilityId)
+        public async Task RemoveFacility(long facilityId, string auth0OrganizationId)
         {
+            await _facilitiesValidationService.ValidateFacilityBelongsToOrganization(facilityId, auth0OrganizationId);
+
             var facility = await _context.Facilities.FindAsync(facilityId);
             if (facility != null)
             {
@@ -68,8 +74,10 @@ namespace Rosterd.Services.Facilities
             }
         }
 
-        public async Task ReactivateFacility(long facilityId)
+        public async Task ReactivateFacility(long facilityId, string auth0OrganizationId)
         {
+            await _facilitiesValidationService.ValidateFacilityBelongsToOrganization(facilityId, auth0OrganizationId);
+
             var facility = await _context.Facilities.FindAsync(facilityId);
             if (facility != null)
             {
@@ -82,11 +90,13 @@ namespace Rosterd.Services.Facilities
             }
         }
 
-        public async Task<FacilityModel> UpdateFacility(FacilityModel facilityModel)
+        public async Task<FacilityModel> UpdateFacility(FacilityModel facilityModel, string auth0OrganizationId)
         {
             var existingFacility = await _context.Facilities.FindAsync(facilityModel.FacilityId);
             if (existingFacility == null)
                 throw new EntityNotFoundException($"No existing facility with id {facilityModel.FacilityId} was not found");
+
+            await _facilitiesValidationService.ValidateFacilityBelongsToOrganization(existingFacility.FacilityId, auth0OrganizationId);
 
             var facilityModelToUpdate = facilityModel.ToDataModel(existingFacility);
 

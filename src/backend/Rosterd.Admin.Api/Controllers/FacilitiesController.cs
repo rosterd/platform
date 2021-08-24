@@ -59,7 +59,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<FacilityModel>> GetFacilityById([ValidNumberRequired] long? facilityId)
         {
             var facilityModel = await _facilitiesService.GetFacility(facilityId.Value, _userContext.UsersAuth0OrganizationId);
-            return facilityModel;
+            return facilityModel == null  ? NotFound() : facilityModel;
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Rosterd.Admin.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var updatedFacility = await _facilitiesService.UpdateFacility(facilityToUpdate);
+            var updatedFacility = await _facilitiesService.UpdateFacility(facilityToUpdate, _userContext.UsersAuth0OrganizationId);
             return updatedFacility;
         }
 
@@ -122,7 +122,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(3)]
         public async Task<ActionResult> ReactivateFacility([ValidNumberRequired] long? facilityId)
         {
-            await _facilitiesService.ReactivateFacility(facilityId.Value);
+            await _facilitiesService.ReactivateFacility(facilityId.Value, _userContext.UsersAuth0OrganizationId);
             return Ok();
         }
 
@@ -135,7 +135,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(5)]
         public async Task<ActionResult> RemoveFacility([ValidNumberRequired] long? facilityId)
         {
-            await _facilitiesService.RemoveFacility(facilityId.Value);
+            await _facilitiesService.RemoveFacility(facilityId.Value, _userContext.UsersAuth0OrganizationId);
             return Ok();
         }
     }

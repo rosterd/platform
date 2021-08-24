@@ -89,7 +89,7 @@ namespace Rosterd.Admin.Api.Controllers
             //2. Create the staff record in our db
             var staffToCreate = request.ToStaffModel();
             staffToCreate.Auth0Id = adminUserModel.UserAuth0Id;
-            var staffCreated = await _staffService.CreateStaff(staffToCreate);
+            var staffCreated = await _staffService.CreateStaff(staffToCreate, _userContext.UsersAuth0OrganizationId);
 
             return staffCreated;
         }

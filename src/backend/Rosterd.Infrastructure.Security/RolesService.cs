@@ -38,6 +38,9 @@ namespace Rosterd.Infrastructure.Security
             var auth0ApiManagementClient = await _auth0AuthenticationService.GetAuth0ApiManagementClient();
             var role = await auth0ApiManagementClient.Roles.GetAsync(roleId);
 
+            if (role == null)
+                return null;
+
             return new RosterdRole
             {
                 RoleId = role.Id,

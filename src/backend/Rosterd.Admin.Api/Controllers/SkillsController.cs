@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Skills;
+using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
+using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Settings;
 using Rosterd.Services.Skills.Interfaces;
@@ -23,15 +25,17 @@ namespace Rosterd.Admin.Api.Controllers
     {
         private readonly ILogger<SkillsController> _logger;
         private readonly ISkillsService _skillService;
+        private readonly IUserContext _userContext;
 
-        public SkillsController(ILogger<SkillsController> logger, ISkillsService skillService, IOptions<AppSettings> appSettings) : base(appSettings)
+        public SkillsController(ILogger<SkillsController> logger, ISkillsService skillService, IOptions<AppSettings> appSettings, IUserContext userContext) : base(appSettings)
         {
             _logger = logger;
             _skillService = skillService;
+            _userContext = userContext;
         }
 
         /// <summary>
-        /// Gets all the resources 
+        /// Gets all the resources
         /// </summary>
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
@@ -40,9 +44,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<Domain.Models.PagedList<SkillModel>>> GetAllSkills([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-            Domain.Models.PagedList<SkillModel> pagedList;
-
-            pagedList = await _skillService.GetAllSkills(pagingParameters);
+            var pagedList = await _skillService.GetAllSkills(pagingParameters, _userContext.UsersAuth0OrganizationId);
 
             return pagedList;
         }
@@ -55,8 +57,8 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(2)]
         public async Task<ActionResult<SkillModel>> GetSkillById([ValidNumberRequired] long? skillId)
         {
-            var skillModel = await _skillService.GetSkill(skillId.Value);
-            return skillModel;
+            var skillModel = await _skillService.GetSkill(skillId.Value, _userContext.UsersAuth0OrganizationId);
+            return skillModel == null ? NotFound() : skillModel;
         }
 
         /// <summary>
@@ -68,7 +70,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(3)]
         public async Task<ActionResult> AddNewSkill([FromBody] AddUpdateSkillRequest request)
         {
-            await _skillService.CreateSkill(request.SkillToAddOrUpdate);
+            await _skillService.CreateSkill(request.SkillToAddOrUpdate, _userContext.UsersAuth0OrganizationId);
             return Ok();
         }
 
@@ -81,7 +83,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(4)]
         public async Task<ActionResult> UpdateSkill([FromBody] AddUpdateSkillRequest request)
         {
-            await _skillService.UpdateSkill(request.SkillToAddOrUpdate);
+            await _skillService.UpdateSkill(request.SkillToAddOrUpdate, _userContext.UsersAuth0OrganizationId);
             return Ok();
         }
 
@@ -95,7 +97,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(5)]
         public async Task<ActionResult> RemoveSkill([ValidNumberRequired] long? skillId)
         {
-            await _skillService.RemoveSkill(skillId.Value);
+            await _skillService.RemoveSkill(skillId.Value, _userContext.UsersAuth0OrganizationId);
             return Ok();
         }
     }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
+using Rosterd.Data.SqlServer.Extensions;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Services.Staff.Interfaces;
@@ -12,14 +13,22 @@ namespace Rosterd.Services.Staff
     public class StaffSkillsService : IStaffSkillsService
     {
         private readonly IRosterdDbContext _context;
+        private readonly IStaffValidationService _staffValidationService;
 
-        public StaffSkillsService(IRosterdDbContext context) => _context = context;
+        public StaffSkillsService(IRosterdDbContext context, IStaffValidationService staffValidationService)
+        {
+            _context = context;
+            _staffValidationService = staffValidationService;
+        }
 
         /// <inheritdoc />
-        public async Task UpdateAllSkillsForStaff(long staffId, List<SkillModel> skillModels)
+        public async Task UpdateAllSkillsForStaff(long staffId, List<SkillModel> skillModels, string auth0OrganizationId)
         {
             if (skillModels.IsNullOrEmpty())
                 return;
+
+            //If the staff is not for this organization do nothing
+            await _staffValidationService.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
 
             foreach (var skillModel in skillModels)
             {
@@ -41,10 +50,13 @@ namespace Rosterd.Services.Staff
         }
 
         /// <inheritdoc />
-        public async Task DeleteSkillsForStaff(long staffId, List<SkillModel> skillModels)
+        public async Task DeleteSkillsForStaff(long staffId, List<SkillModel> skillModels, string auth0OrganizationId)
         {
             if (skillModels.IsNullOrEmpty())
                 return;
+
+            //If the staff is not for this organization do nothing
+            await _staffValidationService.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
 
             foreach (var skillModel in skillModels)
             {

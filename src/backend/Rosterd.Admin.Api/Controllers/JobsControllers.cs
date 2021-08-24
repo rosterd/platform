@@ -84,7 +84,7 @@ namespace Rosterd.Admin.Api.Controllers
         {
             //Create Job
             var domainModelToSave = request.ToDomainModel();
-            var newJob = await _jobService.CreateJob(domainModelToSave);
+            var newJob = await _jobService.CreateJob(domainModelToSave, _userContext.UsersAuth0OrganizationId);
 
             //Generate a new job created event
             await _jobEventsService.GenerateNewJobCreatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, newJob.JobId);
@@ -101,7 +101,7 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(4)]
         public async Task<ActionResult> RemoveJob([ValidNumberRequired] long? jobId, [Required][FromBody] string jobCancellationReason)
         {
-            await _jobService.RemoveJob(jobId.Value, jobCancellationReason);
+            await _jobService.RemoveJob(jobId.Value, jobCancellationReason, _userContext.UsersAuth0OrganizationId);
 
             //Generate a new job deleted event
             await _jobEventsService.GenerateJobCancelledEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobId.Value);

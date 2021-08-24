@@ -6,10 +6,12 @@ using Azure.Search.Documents;
 using Azure.Search.Documents.Models;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
+using Rosterd.Data.SqlServer.Extensions;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain;
 using Rosterd.Domain.Enums;
+using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Search;
@@ -52,7 +54,7 @@ namespace Rosterd.Services.Jobs
         {
             var errorMessages = new List<string>();
             var job = await _context.Jobs.FindAsync(jobId);
-            
+
             //1. Validate grace period
             if(job.NoGracePeriod is true)
                 errorMessages.Add("This job can not be cancelled once it has been accepted.");
@@ -61,6 +63,22 @@ namespace Rosterd.Services.Jobs
                 errorMessages.Add("You have past the grace time to cancel this job.");
 
             return (errorMessages.IsNotNullOrEmpty(), errorMessages);
+        }
+
+        /// <summary>
+        /// Checks to see if the facility belongs to the organization.
+        /// Throws an entitynotfound exception if the facility does not belong to the organization
+        /// </summary>
+        /// <param name="facilityId">the facility id</param>
+        /// <param name="auth0OrganizationId">The auth0 organization id</param>
+        /// <returns></returns>
+        public async Task ValidateFacilityBelongsToOrganization(long facilityId, string auth0OrganizationId)
+        {
+            var organization = await _context.GetOrganization(auth0OrganizationId);
+
+            var facility = await _context.Facilities.FirstOrDefaultAsync(s => s.FacilityId == facilityId && s.OrganzationId == organization.OrganizationId);
+            if (facility == null)
+                throw new EntityNotFoundException($"Facility {facilityId} does not belong to organization {organization.OrganizationId}");
         }
     }
 }

@@ -27,11 +27,13 @@ namespace Rosterd.Services.Jobs
     {
         private readonly IRosterdDbContext _context;
         private readonly ISearchIndexProvider _searchIndexProvider;
+        private readonly IJobsValidationService _jobsValidationService;
 
-        public JobsService(IRosterdDbContext context, ISearchIndexProvider searchIndexProvider)
+        public JobsService(IRosterdDbContext context, ISearchIndexProvider searchIndexProvider, IJobsValidationService jobsValidationService)
         {
             _context = context;
             _searchIndexProvider = searchIndexProvider;
+            _jobsValidationService = jobsValidationService;
         }
 
         ///<inheritdoc/>
@@ -59,8 +61,10 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task<JobModel> CreateJob(JobModel jobModel)
+        public async Task<JobModel> CreateJob(JobModel jobModel, string auth0OrganizationId)
         {
+            await _jobsValidationService.ValidateFacilityBelongsToOrganization(jobModel.Facility.FacilityId, auth0OrganizationId);
+
             var jobToCreate = jobModel.ToNewJob();
             var utcNow = DateTime.UtcNow;
 
@@ -83,16 +87,18 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task RemoveJob(long jobId, string jobCancellationReason)
+        public async Task RemoveJob(long jobId, string cancellationReason, string auth0OrganizationId)
         {
             var job = await _context.Jobs.FindAsync(jobId);
             if (job != null)
             {
+                await _jobsValidationService.ValidateFacilityBelongsToOrganization(job.FacilityId, auth0OrganizationId);
+
                 job.JobStatusId = (int)JobStatus.Cancelled;
                 job.JobsStatusName = JobStatus.Cancelled.ToString();
                 job.LastJobStatusChangeDateTimeUtc = DateTime.UtcNow;
 
-                await CreateJobsStatusChangeRecord(jobId, JobStatus.Cancelled, jobCancellationReason);
+                await CreateJobsStatusChangeRecord(jobId, JobStatus.Cancelled, auth0OrganizationId);
 
                 await _context.SaveChangesAsync();
             }
@@ -101,6 +107,8 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetRelevantJobsForStaff(long staffId, PagingQueryStringParameters pagingParameters)
         {
+            //TODO:Org Check
+
             var staffSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.StaffIndex);
             var jobsSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.JobsIndex);
 
@@ -136,6 +144,8 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetCurrentJobsForStaff(long staffId, PagingQueryStringParameters pagingParameters)
         {
+            //TODO:Org Check
+
             var currentJobsForStaffQuery =
                 _context.JobStaffs
                         .Include(s => s.Job)
@@ -151,6 +161,8 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetJobsForStaff(long staffId, List<JobStatus> jobsStatusesToQueryFor, PagingQueryStringParameters pagingParameters)
         {
+            //TODO:Org Check
+
             var statusList = jobsStatusesToQueryFor.AlwaysList().Select(s => (long)s).AlwaysList();
 
             var completedJobsForStaffQuery =
@@ -172,6 +184,8 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<bool> AcceptJobForStaff(long jobId, long staffId)
         {
+            //TODO:Org Check
+
             var job = await _context.Jobs.FindAsync(jobId);
             var jobStaff = new JobStaff {JobId = jobId, StaffId = staffId};
 
@@ -194,6 +208,8 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<bool> CancelJobForStaff(long jobId, long staffId)
         {
+            //TODO:Org Check
+
             var job = await _context.Jobs.FindAsync(jobId);
             var jobStaff = await _context.JobStaffs.FirstOrDefaultAsync(s => s.JobId == jobId && s.StaffId == staffId);
 
@@ -216,6 +232,8 @@ namespace Rosterd.Services.Jobs
 
         ///<inheritdoc/>
         public async Task CreateJobsStatusChangeRecord(long jobId, JobStatus jobStatusChangedTo, string statusChangeReason, DateTime? eventOccurredDateTime = null) =>
+
+            //TODO:Org Check
             await _context.JobStatusChanges.AddAsync(new JobStatusChange
             {
                 JobId = jobId,
@@ -228,6 +246,8 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<IEnumerable<long>> GetAllJobsThatAreExpiredButStatusStillNotSetToExpired()
         {
+            //TODO:Org Check
+
             var publishedStatus = (int) JobStatus.Published;
             var currentDateTime = DateTime.UtcNow;
 
@@ -242,6 +262,8 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<IEnumerable<long>> GetAllJobsThatArePastEndDateButStatusStillNotSetToFeedback()
         {
+            //TODO:Org Check
+
             var inProgressStatus = (int) JobStatus.InProgress;
             var currentDateTime = DateTime.UtcNow;
 
@@ -256,6 +278,8 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<IEnumerable<long>> GetAllJobsThatAreFinished()
         {
+            //TODO:Org Check
+
             var completedStatus = (int) JobStatus.Completed;
             var noShowStatus = (int)JobStatus.NoShow;
 

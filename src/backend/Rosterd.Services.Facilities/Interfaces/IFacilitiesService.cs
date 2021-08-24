@@ -29,22 +29,25 @@ namespace Rosterd.Services.Facilities.Interfaces
         /// Updates an existing facility
         /// </summary>
         /// <param name="facilityModel"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task<FacilityModel> UpdateFacility(FacilityModel facilityModel);
+        Task<FacilityModel> UpdateFacility(FacilityModel facilityModel, string auth0OrganizationId);
 
         /// <summary>
         /// Deletes a facility
         /// </summary>
         /// <param name="facilityId"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task RemoveFacility(long facilityId);
+        Task RemoveFacility(long facilityId, string auth0OrganizationId);
 
         /// <summary>
         /// Un-deletes a facility
         /// </summary>
         /// <param name="facilityId"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task ReactivateFacility(long facilityId);
+        Task ReactivateFacility(long facilityId, string auth0OrganizationId);
 
         Task<bool> DoesFacilityWithSameNameExistForOrganization(FacilityModel facilityModel, string auth0OrganizationId, string allowedName = null);
     }

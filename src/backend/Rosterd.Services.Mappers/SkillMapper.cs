@@ -16,7 +16,6 @@ namespace Rosterd.Services.Mappers
                 SkillId = dataModel.SkillId,
                 SkillName = dataModel.SkillName,
                 Description = dataModel.Description
-
             };
 
             return skillModel;
