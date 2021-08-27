@@ -16,7 +16,7 @@ namespace Rosterd.Infrastructure.Security
         ///<inheritdoc/>
         public async Task ValidateFacilityBelongsToOrganization(long facilityId, string auth0OrganizationId)
         {
-            var organization = await ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var facility = await _context.Facilities.FirstOrDefaultAsync(s => s.FacilityId == facilityId && s.OrganzationId == organization.OrganizationId);
             if (facility == null)
@@ -26,7 +26,7 @@ namespace Rosterd.Infrastructure.Security
         ///<inheritdoc/>
         public async Task ValidateStaffBelongsToOrganization(long staffId, string auth0OrganizationId)
         {
-            var organization = await ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var staff = await _context.Staff.FirstOrDefaultAsync(s => s.StaffId == staffId && s.OrganizationId == organization.OrganizationId);
             if (staff == null)
@@ -34,7 +34,7 @@ namespace Rosterd.Infrastructure.Security
         }
 
         ///<inheritdoc/>
-        public async Task<Organization> ValidateOrganizationAndGetIfValid(string auth0OrganizationId)
+        public async Task<Organization> ValidateOrganizationExistsAndGetIfValid(string auth0OrganizationId)
         {
             //TODO: Cache this in memory, as we wont have that many organizations and we can do a restart of the app if we need at a new one for now.
             var organization = await _context.Organizations.FirstOrDefaultAsync(s => s.Auth0OrganizationId == auth0OrganizationId);

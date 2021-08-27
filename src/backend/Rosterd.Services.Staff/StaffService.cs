@@ -37,7 +37,7 @@ namespace Rosterd.Services.Staff
         public async Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId, string auth0OrganizationId)
         {
             //Check if the facility belongs to the organization of the user
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
             var facility = await _context.Facilities.FindAsync(facilityId);
 
             //The facility provided does not match the organization
@@ -58,7 +58,7 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task<PagedList<StaffModel>> GetAllStaff(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var query = _context.Staff.Where(s => s.OrganizationId == organization.OrganizationId);
             var pagedList = await PagingList<Data.SqlServer.Models.Staff>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
@@ -86,7 +86,7 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task<StaffModel> CreateStaff(StaffModel staffModel, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             if (staffModel.Auth0Id.IsNullOrEmpty())
                 throw new Auth0IdNotSetException();

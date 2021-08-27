@@ -26,7 +26,7 @@ namespace Rosterd.Services.Skills
 
         public async Task<PagedList<SkillModel>> GetAllSkills(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var query = _context.Skills.Where(s => s.OrganizationId == organization.OrganizationId);
             var pagedList = await PagingList<Data.SqlServer.Models.Skill>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
@@ -37,7 +37,7 @@ namespace Rosterd.Services.Skills
 
         public async Task<SkillModel> GetSkill(long skillId, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var skill = await _context.Skills.FirstOrDefaultAsync(s => s.OrganizationId == organization.OrganizationId && s.SkillId == skillId);
             return skill?.ToDomainModel();
@@ -45,7 +45,7 @@ namespace Rosterd.Services.Skills
 
         public async Task CreateSkill(SkillModel skillModel, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
             await ThrowDuplicateExceptionIfSkillAlreadyExists(skillModel.SkillName, organization);
 
             var skillToCreate = skillModel.ToNewSkill();
@@ -57,7 +57,7 @@ namespace Rosterd.Services.Skills
 
         public async Task RemoveSkill(long skillId, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var skill = await _context.Skills.FirstOrDefaultAsync(s => s.OrganizationId == organization.OrganizationId && s.SkillId == skillId);
             if(skill == null)
@@ -68,7 +68,7 @@ namespace Rosterd.Services.Skills
         }
         public async Task UpdateSkill(SkillModel skillModel, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var skillFromDb = await _context.Skills.FirstOrDefaultAsync(s => s.OrganizationId == organization.OrganizationId && s.SkillId == skillModel.SkillId);
             if (skillFromDb == null)

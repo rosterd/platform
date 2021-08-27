@@ -28,7 +28,7 @@ namespace Rosterd.Services.Facilities
 
         public async Task<PagedList<FacilityModel>> GetAllFacilities(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var query = _context.Facilities.Where(s => s.OrganzationId == organization.OrganizationId);
             var pagedList = await PagingList<Data.SqlServer.Models.Facility>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
@@ -39,7 +39,7 @@ namespace Rosterd.Services.Facilities
 
         public async Task<FacilityModel> GetFacility(long facilityId, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var facility = await _context.Facilities.Where(s => s.OrganzationId == organization.OrganizationId && s.FacilityId == facilityId).FirstOrDefaultAsync();
             return facility?.ToDomainModel();
@@ -47,7 +47,7 @@ namespace Rosterd.Services.Facilities
 
         public async Task<FacilityModel> CreateFacility(FacilityModel facilityModel, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var facilityToCreate = facilityModel.ToNewFacility();
             facilityToCreate.OrganzationId = organization.OrganizationId;
@@ -108,7 +108,7 @@ namespace Rosterd.Services.Facilities
 
         public async Task<bool> DoesFacilityWithSameNameExistForOrganization(FacilityModel facilityModel, string auth0OrganizationId, string allowedName = null)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var matchingFacilities =
                 await (from facility in _context.Facilities

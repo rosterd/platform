@@ -39,7 +39,7 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var query = _context.Jobs.Include(s => s.Facility).Where(s => s.Facility.OrganzationId == organization.OrganizationId);
             var pagedList = await PagingList<Job>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
@@ -51,7 +51,7 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<JobModel> GetJob(long jobId, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             var job = await _context.Jobs.Include(s => s.Facility)
                 .Where(s => s.Facility.OrganzationId == organization.OrganizationId)
