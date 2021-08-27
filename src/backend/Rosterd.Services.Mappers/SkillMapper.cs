@@ -33,7 +33,7 @@ namespace Rosterd.Services.Mappers
 
         public static Skill ToDataModel(this SkillModel domainModel, Skill skillFromDb)
         {
-            skillFromDb.SkillName = domainModel.SkillName;
+            skillFromDb.SkillName = domainModel.SkillName.ToLower();
             skillFromDb.Description = domainModel.Description;
             return skillFromDb;
         }

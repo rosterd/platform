@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Extensions;
 using Rosterd.Data.SqlServer.Helpers;
+using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.SkillsModels;
@@ -39,9 +40,9 @@ namespace Rosterd.Services.Skills
 
         public async Task CreateSkill(SkillModel skillModel, string auth0OrganizationId)
         {
-            await ThrowDuplicateExceptionIfSkillAlreadyExists(skillModel.SkillName);
-
             var organization = await _context.GetOrganization(auth0OrganizationId);
+            await ThrowDuplicateExceptionIfSkillAlreadyExists(skillModel.SkillName, organization);
+
             var skillToCreate = skillModel.ToNewSkill();
             skillToCreate.OrganizationId = organization.OrganizationId;
 
@@ -54,11 +55,11 @@ namespace Rosterd.Services.Skills
             var organization = await _context.GetOrganization(auth0OrganizationId);
 
             var skill = await _context.Skills.FirstOrDefaultAsync(s => s.OrganizationId == organization.OrganizationId && s.SkillId == skillId);
-            if (skill != null)
-            {
-                _context.Skills.Remove(skill);
-                await _context.SaveChangesAsync();
-            }
+            if(skill == null)
+                throw new EntityNotFoundException();
+
+            _context.Skills.Remove(skill);
+            await _context.SaveChangesAsync();
         }
         public async Task UpdateSkill(SkillModel skillModel, string auth0OrganizationId)
         {
@@ -74,9 +75,9 @@ namespace Rosterd.Services.Skills
             await _context.SaveChangesAsync();
         }
 
-        private async Task ThrowDuplicateExceptionIfSkillAlreadyExists(string skillName)
+        private async Task ThrowDuplicateExceptionIfSkillAlreadyExists(string skillName, Organization organization)
         {
-            var existingSkillsWithSameName = await _context.Skills.AnyAsync(s => s.SkillName == skillName.ToLower());
+            var existingSkillsWithSameName = await _context.Skills.AnyAsync(s => s.SkillName == skillName.ToLower() && s.OrganizationId == organization.OrganizationId);
             if(existingSkillsWithSameName)
                 throw new EntityAlreadyExistsException();
         }

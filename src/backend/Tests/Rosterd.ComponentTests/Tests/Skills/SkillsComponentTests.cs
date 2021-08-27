@@ -95,13 +95,10 @@ namespace Rosterd.ComponentTests.Tests.Skills
         private async Task<int> createSkillAsync()
         {
             var skillId = new Random().Next(1000);
-            var addUpdateSkillRequest = new AddUpdateSkillRequest
+            var addUpdateSkillRequest = new AddSkillRequest
             {
-                SkillToAddOrUpdate = new SkillModel
-                {
-                    SkillId = skillId,
-                    Description = ""
-                }
+                SkillName = "test",
+                Description = "test"
             };
             var stringContent = new StringContent(JsonConvert.SerializeObject(addUpdateSkillRequest), Encoding.UTF8, "application/json");
             var response = await _appFixture.HttpClient.PostAsync(ApiConstants.SKILLS_ENDPOINT, stringContent);
