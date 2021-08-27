@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
-using Rosterd.Data.SqlServer.Extensions;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Data.TableStorage.Context;
@@ -14,6 +13,7 @@ using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Infrastructure.Extensions;
+using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Mappers;
 using Rosterd.Services.Staff.Interfaces;
 
@@ -24,20 +24,20 @@ namespace Rosterd.Services.Staff
     {
         private readonly IRosterdDbContext _context;
         private readonly IAzureTableStorage _azureTableStorage;
-        private readonly IStaffValidationService _staffValidationService;
+        private readonly IBelongsToValidator _belongsToValidator;
 
-        public StaffService(IRosterdDbContext context, IAzureTableStorage azureTableStorage, IStaffValidationService staffValidationService)
+        public StaffService(IRosterdDbContext context, IAzureTableStorage azureTableStorage, IBelongsToValidator belongsToValidator)
         {
             _context = context;
             _azureTableStorage = azureTableStorage;
-            _staffValidationService = staffValidationService;
+            _belongsToValidator = belongsToValidator;
         }
 
         ///<inheritdoc/>
         public async Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId, string auth0OrganizationId)
         {
             //Check if the facility belongs to the organization of the user
-            var organization = await _context.GetOrganization(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
             var facility = await _context.Facilities.FindAsync(facilityId);
 
             //The facility provided does not match the organization
@@ -58,7 +58,7 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task<PagedList<StaffModel>> GetAllStaff(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
-            var organization = await _context.GetOrganization(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
 
             var query = _context.Staff.Where(s => s.OrganizationId == organization.OrganizationId);
             var pagedList = await PagingList<Data.SqlServer.Models.Staff>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
@@ -70,7 +70,7 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task<StaffModel> GetStaff(long staffId, string auth0OrganizationId)
         {
-            await _staffValidationService.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
+            await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
 
             var staff = await _context.Staff
                 .Include(s => s.StaffFacilities)
@@ -86,7 +86,7 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task<StaffModel> CreateStaff(StaffModel staffModel, string auth0OrganizationId)
         {
-            var organization = await _context.GetOrganization(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
 
             if (staffModel.Auth0Id.IsNullOrEmpty())
                 throw new Auth0IdNotSetException();
@@ -132,7 +132,7 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task<StaffModel> UpdateStaff(StaffModel staffModel, string auth0OrganizationId)
         {
-            await _staffValidationService.ValidateStaffBelongsToOrganization(staffModel.StaffId.Value, auth0OrganizationId);
+            await _belongsToValidator.ValidateStaffBelongsToOrganization(staffModel.StaffId.Value, auth0OrganizationId);
 
             //Get the existing staff
             var staffFromDb = await _context.Staff.FindAsync(staffModel.StaffId.Value);
@@ -150,7 +150,7 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task<StaffModel> UpdateStaffToInactive(long staffId, string auth0OrganizationId)
         {
-            await _staffValidationService.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
+            await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
 
             var staff = await _context.Staff.FindAsync(staffId);
 
@@ -168,7 +168,7 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task UpdateStaffToActive(long staffId, string auth0OrganizationId)
         {
-            await _staffValidationService.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
+            await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
 
             var staff = await _context.Staff.FindAsync(staffId);
 
@@ -181,7 +181,7 @@ namespace Rosterd.Services.Staff
 
         public async Task AddFacilityToStaff(long staffId, long facilityId, string auth0OrganizationId)
         {
-            await _staffValidationService.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
+            await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
 
             var facility = await _context.Facilities.FindAsync(facilityId);
             if (facility != null)
@@ -201,7 +201,7 @@ namespace Rosterd.Services.Staff
 
         public async Task RemoveFacilityFromStaff(long staffId, long facilityId, string auth0OrganizationId)
         {
-            await _staffValidationService.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
+            await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
 
             var staffFacility = await _context.StaffFacilities.FirstOrDefaultAsync(s => s.FacilityId == facilityId && s.StaffId == staffId);
             if (staffFacility != null)

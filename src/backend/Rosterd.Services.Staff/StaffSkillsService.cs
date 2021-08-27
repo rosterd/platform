@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
-using Rosterd.Data.SqlServer.Extensions;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.SkillsModels;
+using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.Services.Staff
@@ -13,12 +13,12 @@ namespace Rosterd.Services.Staff
     public class StaffSkillsService : IStaffSkillsService
     {
         private readonly IRosterdDbContext _context;
-        private readonly IStaffValidationService _staffValidationService;
+        private readonly IBelongsToValidator _belongsToValidator;
 
-        public StaffSkillsService(IRosterdDbContext context, IStaffValidationService staffValidationService)
+        public StaffSkillsService(IRosterdDbContext context, IBelongsToValidator belongsToValidator)
         {
             _context = context;
-            _staffValidationService = staffValidationService;
+            _belongsToValidator = belongsToValidator;
         }
 
         /// <inheritdoc />
@@ -28,7 +28,7 @@ namespace Rosterd.Services.Staff
                 return;
 
             //If the staff is not for this organization do nothing
-            await _staffValidationService.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
+            await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
 
             foreach (var skillModel in skillModels)
             {
@@ -56,7 +56,7 @@ namespace Rosterd.Services.Staff
                 return;
 
             //If the staff is not for this organization do nothing
-            await _staffValidationService.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
+            await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
 
             foreach (var skillModel in skillModels)
             {

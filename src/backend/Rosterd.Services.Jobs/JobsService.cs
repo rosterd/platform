@@ -7,7 +7,6 @@ using Azure.Search.Documents.Models;
 using Microsoft.Azure.EventGrid;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
-using Rosterd.Data.SqlServer.Extensions;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain;
@@ -18,6 +17,7 @@ using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Search;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Infrastructure.Search.Interfaces;
+using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Mappers;
 
@@ -27,19 +27,19 @@ namespace Rosterd.Services.Jobs
     {
         private readonly IRosterdDbContext _context;
         private readonly ISearchIndexProvider _searchIndexProvider;
-        private readonly IJobsValidationService _jobsValidationService;
+        private readonly IBelongsToValidator _belongsToValidator;
 
-        public JobsService(IRosterdDbContext context, ISearchIndexProvider searchIndexProvider, IJobsValidationService jobsValidationService)
+        public JobsService(IRosterdDbContext context, ISearchIndexProvider searchIndexProvider, IBelongsToValidator belongsToValidator)
         {
             _context = context;
             _searchIndexProvider = searchIndexProvider;
-            _jobsValidationService = jobsValidationService;
+            _belongsToValidator = belongsToValidator;
         }
 
         ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
-            var organization = await _context.GetOrganization(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
 
             var query = _context.Jobs.Include(s => s.Facility).Where(s => s.Facility.OrganzationId == organization.OrganizationId);
             var pagedList = await PagingList<Job>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
@@ -51,7 +51,7 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<JobModel> GetJob(long jobId, string auth0OrganizationId)
         {
-            var organization = await _context.GetOrganization(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
 
             var job = await _context.Jobs.Include(s => s.Facility)
                 .Where(s => s.Facility.OrganzationId == organization.OrganizationId)
@@ -63,7 +63,7 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<JobModel> CreateJob(JobModel jobModel, string auth0OrganizationId)
         {
-            await _jobsValidationService.ValidateFacilityBelongsToOrganization(jobModel.Facility.FacilityId, auth0OrganizationId);
+            await _belongsToValidator.ValidateFacilityBelongsToOrganization(jobModel.Facility.FacilityId, auth0OrganizationId);
 
             var jobToCreate = jobModel.ToNewJob();
             var utcNow = DateTime.UtcNow;
@@ -92,7 +92,7 @@ namespace Rosterd.Services.Jobs
             var job = await _context.Jobs.FindAsync(jobId);
             if (job != null)
             {
-                await _jobsValidationService.ValidateFacilityBelongsToOrganization(job.FacilityId, auth0OrganizationId);
+                await _belongsToValidator.ValidateFacilityBelongsToOrganization(job.FacilityId, auth0OrganizationId);
 
                 job.JobStatusId = (int)JobStatus.Cancelled;
                 job.JobsStatusName = JobStatus.Cancelled.ToString();

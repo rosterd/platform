@@ -4,12 +4,12 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
-using Rosterd.Data.SqlServer.Extensions;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
+using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Services.Mappers;
 
@@ -18,17 +18,17 @@ namespace Rosterd.Services.Facilities
     public class FacilitiesService: IFacilitiesService
     {
         private readonly IRosterdDbContext _context;
-        private readonly IFacilitiesValidationService _facilitiesValidationService;
+        private readonly IBelongsToValidator _belongsToValidator;
 
-        public FacilitiesService(IRosterdDbContext context, IFacilitiesValidationService facilitiesValidationService)
+        public FacilitiesService(IRosterdDbContext context, IBelongsToValidator belongsToValidator)
         {
             _context = context;
-            _facilitiesValidationService = facilitiesValidationService;
+            _belongsToValidator = belongsToValidator;
         }
 
         public async Task<PagedList<FacilityModel>> GetAllFacilities(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
-            var organization = await _context.GetOrganization(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
 
             var query = _context.Facilities.Where(s => s.OrganzationId == organization.OrganizationId);
             var pagedList = await PagingList<Data.SqlServer.Models.Facility>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
@@ -39,7 +39,7 @@ namespace Rosterd.Services.Facilities
 
         public async Task<FacilityModel> GetFacility(long facilityId, string auth0OrganizationId)
         {
-            var organization = await _context.GetOrganization(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
 
             var facility = await _context.Facilities.Where(s => s.OrganzationId == organization.OrganizationId && s.FacilityId == facilityId).FirstOrDefaultAsync();
             return facility?.ToDomainModel();
@@ -47,7 +47,7 @@ namespace Rosterd.Services.Facilities
 
         public async Task<FacilityModel> CreateFacility(FacilityModel facilityModel, string auth0OrganizationId)
         {
-            var organization = await _context.GetOrganization(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
 
             var facilityToCreate = facilityModel.ToNewFacility();
             facilityToCreate.OrganzationId = organization.OrganizationId;
@@ -60,7 +60,7 @@ namespace Rosterd.Services.Facilities
 
         public async Task RemoveFacility(long facilityId, string auth0OrganizationId)
         {
-            await _facilitiesValidationService.ValidateFacilityBelongsToOrganization(facilityId, auth0OrganizationId);
+            await _belongsToValidator.ValidateFacilityBelongsToOrganization(facilityId, auth0OrganizationId);
 
             var facility = await _context.Facilities.FindAsync(facilityId);
             if (facility != null)
@@ -76,7 +76,7 @@ namespace Rosterd.Services.Facilities
 
         public async Task ReactivateFacility(long facilityId, string auth0OrganizationId)
         {
-            await _facilitiesValidationService.ValidateFacilityBelongsToOrganization(facilityId, auth0OrganizationId);
+            await _belongsToValidator.ValidateFacilityBelongsToOrganization(facilityId, auth0OrganizationId);
 
             var facility = await _context.Facilities.FindAsync(facilityId);
             if (facility != null)
@@ -96,7 +96,7 @@ namespace Rosterd.Services.Facilities
             if (existingFacility == null)
                 throw new EntityNotFoundException($"No existing facility with id {facilityModel.FacilityId} was not found");
 
-            await _facilitiesValidationService.ValidateFacilityBelongsToOrganization(existingFacility.FacilityId, auth0OrganizationId);
+            await _belongsToValidator.ValidateFacilityBelongsToOrganization(existingFacility.FacilityId, auth0OrganizationId);
 
             var facilityModelToUpdate = facilityModel.ToDataModel(existingFacility);
 
@@ -108,7 +108,7 @@ namespace Rosterd.Services.Facilities
 
         public async Task<bool> DoesFacilityWithSameNameExistForOrganization(FacilityModel facilityModel, string auth0OrganizationId, string allowedName = null)
         {
-            var organization = await _context.GetOrganization(auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationAndGetIfValid(auth0OrganizationId);
 
             var matchingFacilities =
                 await (from facility in _context.Facilities

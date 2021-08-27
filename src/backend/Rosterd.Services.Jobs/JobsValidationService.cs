@@ -6,7 +6,6 @@ using Azure.Search.Documents;
 using Azure.Search.Documents.Models;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
-using Rosterd.Data.SqlServer.Extensions;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain;
@@ -17,6 +16,7 @@ using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Search;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Infrastructure.Search.Interfaces;
+using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Mappers;
 
@@ -26,11 +26,13 @@ namespace Rosterd.Services.Jobs
     {
         private readonly IRosterdDbContext _context;
         private readonly ISearchIndexProvider _searchIndexProvider;
+        private readonly IBelongsToValidator _belongsToValidator;
 
-        public JobsValidationService(IRosterdDbContext context, ISearchIndexProvider searchIndexProvider)
+        public JobsValidationService(IRosterdDbContext context, ISearchIndexProvider searchIndexProvider, IBelongsToValidator belongsToValidator)
         {
             _context = context;
             _searchIndexProvider = searchIndexProvider;
+            _belongsToValidator = belongsToValidator;
         }
 
         public async Task<(bool isJobValid, IEnumerable<string> errorMessages)> IsJobStillValidToAccept(long jobId)
@@ -63,22 +65,6 @@ namespace Rosterd.Services.Jobs
                 errorMessages.Add("You have past the grace time to cancel this job.");
 
             return (errorMessages.IsNotNullOrEmpty(), errorMessages);
-        }
-
-        /// <summary>
-        /// Checks to see if the facility belongs to the organization.
-        /// Throws an entitynotfound exception if the facility does not belong to the organization
-        /// </summary>
-        /// <param name="facilityId">the facility id</param>
-        /// <param name="auth0OrganizationId">The auth0 organization id</param>
-        /// <returns></returns>
-        public async Task ValidateFacilityBelongsToOrganization(long facilityId, string auth0OrganizationId)
-        {
-            var organization = await _context.GetOrganization(auth0OrganizationId);
-
-            var facility = await _context.Facilities.FirstOrDefaultAsync(s => s.FacilityId == facilityId && s.OrganzationId == organization.OrganizationId);
-            if (facility == null)
-                throw new EntityNotFoundException($"Facility {facilityId} does not belong to organization {organization.OrganizationId}");
         }
     }
 }

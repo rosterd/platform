@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj" />
     <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
     <ProjectReference Include="..\Rosterd.Infrastructure.Extensions\Rosterd.Infrastructure.Extensions.csproj" />
   </ItemGroup>
