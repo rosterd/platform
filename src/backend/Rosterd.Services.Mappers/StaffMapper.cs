@@ -86,7 +86,6 @@ namespace Rosterd.Services.Mappers
         {
             staffFromDb.FirstName = domainModel.FirstName;
             staffFromDb.LastName = domainModel.LastName;
-            staffFromDb.Email = domainModel.Email;
             staffFromDb.MobilePhoneNumber = domainModel.MobilePhoneNumber;
             staffFromDb.JobTitle = domainModel.JobTitle;
             staffFromDb.Comments = domainModel.Comments;

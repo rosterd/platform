@@ -86,10 +86,10 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task<StaffModel> CreateStaff(StaffModel staffModel, string auth0OrganizationId)
         {
-            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
-
             if (staffModel.Auth0Id.IsNullOrEmpty())
                 throw new Auth0IdNotSetException();
+
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
             //Populate staff details
             var staffToCreate = staffModel.ToNewStaff();
@@ -182,6 +182,7 @@ namespace Rosterd.Services.Staff
         public async Task AddFacilityToStaff(long staffId, long facilityId, string auth0OrganizationId)
         {
             await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
+            await _belongsToValidator.ValidateFacilityBelongsToOrganization(facilityId, auth0OrganizationId);
 
             var facility = await _context.Facilities.FindAsync(facilityId);
             if (facility != null)
@@ -202,6 +203,7 @@ namespace Rosterd.Services.Staff
         public async Task RemoveFacilityFromStaff(long staffId, long facilityId, string auth0OrganizationId)
         {
             await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
+            await _belongsToValidator.ValidateFacilityBelongsToOrganization(facilityId, auth0OrganizationId);
 
             var staffFacility = await _context.StaffFacilities.FirstOrDefaultAsync(s => s.FacilityId == facilityId && s.StaffId == staffId);
             if (staffFacility != null)

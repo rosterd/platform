@@ -68,10 +68,10 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [OperationOrderAttribute(3)]
-        public async Task<ActionResult> AddNewSkill([FromBody] AddSkillRequest request)
+        public async Task<ActionResult<SkillModel>> AddNewSkill([FromBody] AddSkillRequest request)
         {
-            await _skillService.CreateSkill(request.ToSkillModel(), _userContext.UsersAuth0OrganizationId);
-            return Ok();
+            var skillModel = await _skillService.CreateSkill(request.ToSkillModel(), _userContext.UsersAuth0OrganizationId);
+            return skillModel;
         }
 
         /// <summary>
@@ -81,12 +81,11 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [OperationOrderAttribute(4)]
-        public async Task<ActionResult> UpdateSkill([FromBody] UpdateSkillRequest request)
+        public async Task<ActionResult<SkillModel>> UpdateSkill([FromBody] UpdateSkillRequest request)
         {
-            await _skillService.UpdateSkill(request.ToSkillModel(), _userContext.UsersAuth0OrganizationId);
-            return Ok();
+            var skillModel = await _skillService.UpdateSkill(request.ToSkillModel(), _userContext.UsersAuth0OrganizationId);
+            return skillModel;
         }
-
 
         /// <summary>
         /// Deletes Skill

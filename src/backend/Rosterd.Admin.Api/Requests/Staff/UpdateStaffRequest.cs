@@ -23,10 +23,6 @@ namespace Rosterd.Admin.Api.Requests.Staff
         [StringLength(1000, MinimumLength = 1)]
         public string LastName { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
-        [StringLength(1000, MinimumLength = 1)]
-        public string Email { get; set; }
-
         [StringLength(1000)]
         public string MobilePhoneNumber { get; set; }
 
@@ -41,7 +37,6 @@ namespace Rosterd.Admin.Api.Requests.Staff
             {
                 StaffId = request.StaffId,
                 FirstName = request.FirstName,
-                Email = request.Email,
                 JobTitle = request.JobTitle,
                 LastName = request.LastName,
                 MobilePhoneNumber = request.MobilePhoneNumber,
