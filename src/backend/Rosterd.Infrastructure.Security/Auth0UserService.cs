@@ -67,25 +67,25 @@ namespace Rosterd.Infrastructure.Security
         {
             var auth0ApiManagementClient = await _auth0AuthenticationService.GetAuth0ApiManagementClient();
 
-            var allOrganizationMembers = auth0ApiManagementClient.Organizations.GetAllMembersAsync(auth0OrganizationId,
-                new PaginationInfo(pagingParams.PageNumber, pagingParams.PageSize, true));
+            var allOrganizationMembers = await auth0ApiManagementClient.Organizations.GetAllMembersAsync(auth0OrganizationId,
+                new PaginationInfo(pagingParams.PageNumber - 1, pagingParams.PageSize, true));
 
-            if (allOrganizationMembers == null || allOrganizationMembers.Result.IsNullOrEmpty())
+            if (allOrganizationMembers == null || allOrganizationMembers.IsNullOrEmpty())
                 return Domain.Models.PagedList<Auth0UserModel>.EmptyPagedList();
 
 
             var auth0UserModels = new List<Auth0UserModel>();
-            foreach (var organizationMember in allOrganizationMembers.Result)
+            foreach (var organizationMember in allOrganizationMembers)
             {
-                var userRoles = auth0ApiManagementClient.Users.GetRolesAsync(organizationMember.UserId, new PaginationInfo());
+                var userRoles = await auth0ApiManagementClient.Organizations.GetAllMemberRolesAsync(auth0OrganizationId, organizationMember.UserId, new PaginationInfo());
 
                 //Only admin users
-                if (userRoles != null && userRoles.Result.IsNullOrEmpty())
+                if ( userRoles.IsNullOrEmpty())
                     continue;
 
                 //If use ris staff role then not an admin
-                var isStaff = userRoles.Result.FirstOrDefault(s => s.Name == RosterdRoleEnum.Staff.ToString());
-                if(isStaff != null)
+                var isStaff = userRoles.FirstOrDefault(s => s.Name == RosterdRoleEnum.Staff.ToString());
+                if (isStaff != null)
                     continue;
 
                 auth0UserModels.Add(new Auth0UserModel
@@ -95,11 +95,11 @@ namespace Rosterd.Infrastructure.Security
                     LastName = string.Empty,
                     MobilePhoneNumber = string.Empty,
                     UserAuth0Id = organizationMember.UserId,
-                    RosterdRolesForUser = userRoles.Result.AlwaysList().Select(s => s.Name.ToEnum<RosterdRoleEnum>()).AlwaysList()
+                    RosterdRolesForUser = userRoles.AlwaysList().Select(s => s.Name.ToEnum<RosterdRoleEnum>()).AlwaysList()
                 });
             }
 
-            return new Domain.Models.PagedList<Auth0UserModel>(auth0UserModels, allOrganizationMembers.Result.Paging.Total, pagingParams.PageNumber,
+            return new Domain.Models.PagedList<Auth0UserModel>(auth0UserModels, auth0UserModels.Count, pagingParams.PageNumber,
                 pagingParams.PageSize);
         }
     }
