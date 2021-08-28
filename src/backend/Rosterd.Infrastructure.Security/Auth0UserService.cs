@@ -23,15 +23,39 @@ namespace Rosterd.Infrastructure.Security
             _rolesService = rolesService;
         }
 
-        ///<inheritdoc/>
-        public async Task<Auth0UserModel> AddOrganizationAdminToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel) => await AddUserToAuth0(auth0OrganizationId, adminUserModel, RosterdRoleEnum.OrganizationAdmin);
+        /// <inheritdoc />
+        public async Task<Auth0UserModel> AddOrganizationAdminToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel) =>
+            await AddUserToAuth0(auth0OrganizationId, adminUserModel, RosterdRoleEnum.OrganizationAdmin);
 
-        ///<inheritdoc/>
-        public async Task<Auth0UserModel> AddFacilityAdminToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel) => await AddUserToAuth0(auth0OrganizationId, adminUserModel, RosterdRoleEnum.FacilityAdmin);
+        /// <inheritdoc />
+        public async Task<Auth0UserModel> UpdateOrganizationAdminInAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel)
+        {
+            var auth0ApiManagementClient = await _auth0AuthenticationService.GetAuth0ApiManagementClient();
 
-        public async Task<Auth0UserModel> AddStaffToAuth0(string auth0OrganizationId, string firstName, string lastName, string email, string mobilePhoneNumber, string usersAuth0OrganizationId) =>
+            //Validate if the provided user belongs to the given organization
+            var allOrganizationsForUser = await auth0ApiManagementClient.Users.GetAllOrganizationsAsync(adminUserModel.UserAuth0Id, new PaginationInfo());
+            var usersOrganization = allOrganizationsForUser.AlwaysList().FirstOrDefault(s => s.Id == auth0OrganizationId);
+            if (usersOrganization == null)
+                throw new EntityNotFoundException($"Auth0-userid {adminUserModel.UserAuth0Id} does not belong to auth0-organization-id {auth0OrganizationId}");
+
+            await auth0ApiManagementClient.Users.UpdateAsync(adminUserModel.UserAuth0Id,
+            new UserUpdateRequest
+            {
+                FirstName = adminUserModel.FirstName, LastName = adminUserModel.LastName,
+                //PhoneNumber = adminUserModel.MobilePhoneNumber TODO: sort out formatting errors with phone numbers in auth0
+            });
+
+            return adminUserModel;
+        }
+
+        /// <inheritdoc />
+        public async Task<Auth0UserModel> AddFacilityAdminToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel) =>
+            await AddUserToAuth0(auth0OrganizationId, adminUserModel, RosterdRoleEnum.FacilityAdmin);
+
+        public async Task<Auth0UserModel> AddStaffToAuth0(string auth0OrganizationId, string firstName, string lastName, string email, string mobilePhoneNumber,
+            string usersAuth0OrganizationId) =>
             await AddUserToAuth0(auth0OrganizationId,
-                new Auth0UserModel {Email = email, FirstName = firstName, LastName = lastName, MobilePhoneNumber = mobilePhoneNumber}, RosterdRoleEnum.Staff);
+                new Auth0UserModel { Email = email, FirstName = firstName, LastName = lastName, MobilePhoneNumber = mobilePhoneNumber }, RosterdRoleEnum.Staff);
 
         public async Task RemoveUserFromAuth0(string auth0Id)
         {
@@ -52,8 +76,9 @@ namespace Rosterd.Infrastructure.Security
             var roleToAdd = await _rolesService.GetRole(roleToAddForUser);
             if (roleToAdd == null)
                 throw new RoleDoesNotExistException();
-            
-            await auth0ApiManagementClient.Organizations.AddMemberRolesAsync(auth0OrganizationId, userCreatedInAuth0.UserId, new OrganizationAddMemberRolesRequest {Roles = new List<string> {roleToAdd.RoleId}});
+
+            await auth0ApiManagementClient.Organizations.AddMemberRolesAsync(auth0OrganizationId, userCreatedInAuth0.UserId,
+                new OrganizationAddMemberRolesRequest { Roles = new List<string> { roleToAdd.RoleId } });
 
             //By this point we have created the user, add them to the to the organization and assigned them the role org-admin
             //4. Now, final thing we need to do is trigger a password-change event so the user will get an email
@@ -77,10 +102,11 @@ namespace Rosterd.Infrastructure.Security
             var auth0UserModels = new List<Auth0UserModel>();
             foreach (var organizationMember in allOrganizationMembers)
             {
-                var userRoles = await auth0ApiManagementClient.Organizations.GetAllMemberRolesAsync(auth0OrganizationId, organizationMember.UserId, new PaginationInfo());
+                var userRoles = await auth0ApiManagementClient.Organizations.GetAllMemberRolesAsync(auth0OrganizationId, organizationMember.UserId,
+                    new PaginationInfo());
 
                 //Only admin users
-                if ( userRoles.IsNullOrEmpty())
+                if (userRoles.IsNullOrEmpty())
                     continue;
 
                 //If use ris staff role then not an admin

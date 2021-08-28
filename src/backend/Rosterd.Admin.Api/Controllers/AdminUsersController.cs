@@ -20,7 +20,6 @@ using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 using Rosterd.Web.Infra.Security;
 using Rosterd.Web.Infra.ValidationAttributes;
-using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
 namespace Rosterd.Admin.Api.Controllers
 {
@@ -71,7 +70,11 @@ namespace Rosterd.Admin.Api.Controllers
         [HttpPost("organization-admins")]
         public async Task<ActionResult<Auth0UserModel>> AddOrganizationAdminUser([FromBody] AddAdminUserRequest request)
         {
-            var adminUserModel = await _adminUserService.AddOrganizationAdminToAuth0(request.Auth0OrganizationId, request.ToModel());
+            if (_userContext.IsUserRosterdAdmin() && request.Auth0OrganizationId.IsNullOrEmpty())
+                return BadRequest("You are a RosterdAdmin.  Auth0OrganizationId is required");
+
+            var auth0OrganizationId = _userContext.IsUserRosterdAdmin() ? request.Auth0OrganizationId : _userContext.UsersAuth0OrganizationId;
+            var adminUserModel = await _adminUserService.AddOrganizationAdminToAuth0(auth0OrganizationId, request.ToModel());
             return adminUserModel;
         }
 
@@ -81,13 +84,14 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The organization admin member to update</param>
         /// <returns></returns>
         [HttpPut("organization-admins")]
-        public async Task<ActionResult<StaffModel>> UpdateOrganizationAdminUser([FromBody] UpdateStaffRequest request)
+        public async Task<ActionResult<Auth0UserModel>> UpdateOrganizationAdminUser([FromBody] UpdateAdminUserRequest request)
         {
-            //TODO:
-            return null;
-            //var staff = await _staffService.UpdateStaff(UpdateStaffRequest.ToStaffModel(request), _userContext.UsersAuth0OrganizationId);
-            //await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
-            //return staff;
+            if (_userContext.IsUserRosterdAdmin() && request.Auth0OrganizationId.IsNullOrEmpty())
+                return BadRequest("You are a RosterdAdmin.  Auth0OrganizationId is required");
+
+            var auth0OrganizationId = _userContext.IsUserRosterdAdmin() ? request.Auth0OrganizationId : _userContext.UsersAuth0OrganizationId;
+            var adminUserModel = await _adminUserService.UpdateOrganizationAdminInAuth0(auth0OrganizationId, request.ToAuth0UserModel());
+            return adminUserModel;
         }
 
         /// <summary>
@@ -107,21 +111,6 @@ namespace Rosterd.Admin.Api.Controllers
             var staffCreated = await _staffService.CreateStaff(staffToCreate, _userContext.UsersAuth0OrganizationId);
 
             return staffCreated;
-        }
-
-        /// <summary>
-        /// Update a facility admin user
-        /// </summary>
-        /// <param name="request">The facility admin member to update</param>
-        /// <returns></returns>
-        [HttpPut("facility-admins")]
-        public async Task<ActionResult<StaffModel>> UpdateFacilityAdminUser([FromBody] UpdateStaffRequest request)
-        {
-            //TODO:
-            return null;
-            //var staff = await _staffService.UpdateStaff(UpdateStaffRequest.ToStaffModel(request), _userContext.UsersAuth0OrganizationId);
-            //await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
-            //return staff;
         }
     }
 }

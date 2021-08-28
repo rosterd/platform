@@ -21,6 +21,14 @@ namespace Rosterd.Infrastructure.Security.Interfaces
         Task<Auth0UserModel> AddOrganizationAdminToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel);
 
         /// <summary>
+        /// Updates an organization admin details
+        /// </summary>
+        /// <param name="auth0OrganizationId"></param>
+        /// <param name="adminUserModel"></param>
+        /// <returns></returns>
+        Task<Auth0UserModel> UpdateOrganizationAdminInAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel);
+
+        /// <summary>
         /// Create facility admin for organization
         /// 1. Create a user in user store
         /// 2. Add this user to the Organization

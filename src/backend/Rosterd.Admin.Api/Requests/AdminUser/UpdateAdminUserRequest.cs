@@ -12,13 +12,20 @@ using Rosterd.Web.Infra.ValidationAttributes;
 
 namespace Rosterd.Admin.Api.Requests.AdminUser
 {
-    public class AddAdminUserRequest
+    public class UpdateAdminUserRequest
     {
         /// <summary>
         /// The auth0 organization id to add this admin too
         /// </summary>
         [StringLength(130, MinimumLength = 1)]
         public string Auth0OrganizationId { get; set; }
+
+        /// <summary>
+        /// The users auth0 id
+        /// </summary>
+        [Required(AllowEmptyStrings = false)]
+        [StringLength(130, MinimumLength = 1)]
+        public string Auth0UserId { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         [StringLength(1000, MinimumLength = 1)]
@@ -28,13 +35,9 @@ namespace Rosterd.Admin.Api.Requests.AdminUser
         [StringLength(1000, MinimumLength = 1)]
         public string LastName { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
-        [StringLength(1000, MinimumLength = 1)]
-        public string Email { get; set; }
-
         [StringLength(1000)]
         public string PhoneNumber { get; set; }
 
-        public Auth0UserModel ToModel() => new Auth0UserModel {FirstName = FirstName, LastName = LastName, Email = Email, MobilePhoneNumber = PhoneNumber};
+        public Auth0UserModel ToAuth0UserModel() => new Auth0UserModel {FirstName = FirstName, LastName = LastName, MobilePhoneNumber = PhoneNumber, UserAuth0Id = Auth0UserId};
     }
 }
