@@ -4,7 +4,7 @@ namespace Rosterd.Domain.Models.SkillsModels
 {
     public class SkillModel
     {
-        public long? SkillId { get; set; }
+        public long SkillId { get; set; }
 
         [Required]
         [StringLength(1000)]

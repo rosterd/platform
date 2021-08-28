@@ -91,38 +91,31 @@ namespace Rosterd.Services.Staff
 
             var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
+            foreach (var facilityModel in staffModel.StaffFacilities.AlwaysList())
+                await _belongsToValidator.ValidateFacilityBelongsToOrganization(facilityModel.FacilityId, auth0OrganizationId);
+
+            foreach (var staffSkillModel in staffModel.StaffSkills.AlwaysList())
+                await _belongsToValidator.ValidateSkillBelongsToOrganization(staffSkillModel.SkillId, auth0OrganizationId);
+
             //Populate staff details
             var staffToCreate = staffModel.ToNewStaff();
             staffToCreate.OrganizationId = organization.OrganizationId;
             var newStaff = await _context.Staff.AddAsync(staffToCreate);
 
             //Populate the default staff facilities
-            if (staffModel.StaffFacilities.IsNotNullOrEmpty())
+            var facilityIds = staffModel.StaffFacilities.Select(s => s.FacilityId).AlwaysList();
+            var facilitiesFromDb = _context.StaffFacilities.Where(s => facilityIds.Contains(s.FacilityId));
+            foreach (var facility in facilitiesFromDb.AlwaysList())
             {
-                var facilityIds = staffModel.StaffFacilities.Select(s => s.FacilityId).AlwaysList();
-                var facilitiesFromDb = _context.StaffFacilities.Where(s => facilityIds.Contains(s.FacilityId));
-
-                foreach (var facility in facilitiesFromDb)
-                {
-                    newStaff.Entity.StaffFacilities.Add(new StaffFacility
-                    {
-                        FacilityId = facility.FacilityId,
-                        FacilityName = facility.FacilityName,
-                        StaffId = newStaff.Entity.StaffId
-                    });
-                }
+                newStaff.Entity.StaffFacilities.Add(new StaffFacility { FacilityId = facility.FacilityId, FacilityName = facility.FacilityName, StaffId = newStaff.Entity.StaffId });
             }
 
             //Populate the default staff skills
-            if (staffModel.StaffSkills.IsNotNullOrEmpty())
+            var skillIds = staffModel.StaffSkills.Select(s => s.SkillId).AlwaysList();
+            var skillsFromDb = _context.Skills.Where(s => skillIds.Contains(s.SkillId));
+            foreach (var skill in skillsFromDb.AlwaysList())
             {
-                var skillIds = staffModel.StaffSkills.Select(s => s.SkillId).AlwaysList();
-                var skillsFromDb = _context.Skills.Where(s => skillIds.Contains(s.SkillId));
-
-                foreach (var skill in skillsFromDb)
-                {
-                    newStaff.Entity.StaffSkills.Add(new StaffSkill { SkillId = skill.SkillId, SkillName = skill.SkillName, StaffId = newStaff.Entity.StaffId });
-                }
+                newStaff.Entity.StaffSkills.Add(new StaffSkill { SkillId = skill.SkillId, SkillName = skill.SkillName, StaffId = newStaff.Entity.StaffId });
             }
 
             await _context.SaveChangesAsync();

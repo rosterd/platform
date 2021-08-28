@@ -26,6 +26,8 @@ namespace Rosterd.Infrastructure.Security.Interfaces
         /// <returns></returns>
         Task ValidateStaffBelongsToOrganization(long staffId, string auth0OrganizationId);
 
+        Task ValidateSkillBelongsToOrganization(long skillId, string auth0OrganizationId);
+
         Task<Organization> ValidateOrganizationExistsAndGetIfValid(string auth0OrganizationId);
     }
 }
