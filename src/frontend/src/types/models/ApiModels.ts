@@ -16,7 +16,7 @@ export interface paths {
       };
     };
   };
-  "/api/v{version}/adminusers/admins": {
+  "/api/v{version}/adminusers": {
     get: {
       parameters: {
         query: {
@@ -90,7 +90,7 @@ export interface paths {
     };
   };
   "/api/v{version}/adminusers/facility-admins": {
-    get: {
+    post: {
       parameters: {
         path: {
           version: string;
@@ -167,7 +167,7 @@ export interface paths {
     };
   };
   "/api/v{version}/adminusers/organization-admins": {
-    get: {
+    post: {
       parameters: {
         path: {
           version: string;
@@ -1660,7 +1660,13 @@ export interface paths {
       };
       responses: {
         /** Success */
-        200: unknown;
+        200: {
+          content: {
+            "text/plain": components["schemas"]["SkillModel"];
+            "application/json": components["schemas"]["SkillModel"];
+            "text/json": components["schemas"]["SkillModel"];
+          };
+        };
         /** Bad Request */
         400: {
           content: {
@@ -1715,9 +1721,9 @@ export interface paths {
       /** The Skill to update */
       requestBody: {
         content: {
-          "application/json": components["schemas"]["AddUpdateSkillRequest"];
-          "text/json": components["schemas"]["AddUpdateSkillRequest"];
-          "application/*+json": components["schemas"]["AddUpdateSkillRequest"];
+          "application/json": components["schemas"]["UpdateSkillRequest"];
+          "text/json": components["schemas"]["UpdateSkillRequest"];
+          "application/*+json": components["schemas"]["UpdateSkillRequest"];
         };
       };
     };
@@ -1729,7 +1735,13 @@ export interface paths {
       };
       responses: {
         /** Success */
-        200: unknown;
+        200: {
+          content: {
+            "text/plain": components["schemas"]["SkillModel"];
+            "application/json": components["schemas"]["SkillModel"];
+            "text/json": components["schemas"]["SkillModel"];
+          };
+        };
         /** Bad Request */
         400: {
           content: {
@@ -1784,9 +1796,9 @@ export interface paths {
       /** The Skill to add */
       requestBody: {
         content: {
-          "application/json": components["schemas"]["AddUpdateSkillRequest"];
-          "text/json": components["schemas"]["AddUpdateSkillRequest"];
-          "application/*+json": components["schemas"]["AddUpdateSkillRequest"];
+          "application/json": components["schemas"]["AddSkillRequest"];
+          "text/json": components["schemas"]["AddSkillRequest"];
+          "application/*+json": components["schemas"]["AddSkillRequest"];
         };
       };
     };
@@ -1928,8 +1940,6 @@ export interface paths {
     get: {
       parameters: {
         query: {
-          /** The facility id to filter all the list of Staff by */
-          facilityId?: number;
           pageNumber?: number;
           pageSize?: number;
         };
@@ -2284,138 +2294,6 @@ export interface paths {
       };
     };
   };
-  "/api/v{version}/Staff/{staffId}/facilities/{facilityId}": {
-    post: {
-      parameters: {
-        path: {
-          /** The Staff id */
-          staffId: number;
-          /** The facility id to add */
-          facilityId: number;
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: unknown;
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        path: {
-          /** The Staff id */
-          staffId: number;
-          /** The facility id to add */
-          facilityId: number;
-          version: string;
-        };
-      };
-      responses: {
-        /** Success */
-        200: unknown;
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
-      };
-    };
-  };
   "/api/v{version}/Staff/{staffId}/reactivate": {
     patch: {
       parameters: {
@@ -2484,13 +2362,10 @@ export interface paths {
   "/api/v{version}/Staff/{staffId}/skills": {
     put: {
       parameters: {
-        query: {
-          /** The Staff id */
-          staffId?: number;
-        };
         path: {
+          /** The Staff id */
+          staffId: number;
           version: string;
-          staffId: string;
         };
       };
       responses: {
@@ -2550,9 +2425,9 @@ export interface paths {
       /** The skills to add */
       requestBody: {
         content: {
-          "application/json": components["schemas"]["AddSkillsToStaffRequest"];
-          "text/json": components["schemas"]["AddSkillsToStaffRequest"];
-          "application/*+json": components["schemas"]["AddSkillsToStaffRequest"];
+          "application/json": components["schemas"]["SkillsToStaffRequest"];
+          "text/json": components["schemas"]["SkillsToStaffRequest"];
+          "application/*+json": components["schemas"]["SkillsToStaffRequest"];
         };
       };
     };
@@ -2621,9 +2496,9 @@ export interface paths {
       /** The skills to delete */
       requestBody: {
         content: {
-          "application/json": components["schemas"]["AddSkillsToStaffRequest"];
-          "text/json": components["schemas"]["AddSkillsToStaffRequest"];
-          "application/*+json": components["schemas"]["AddSkillsToStaffRequest"];
+          "application/json": components["schemas"]["SkillsToStaffRequest"];
+          "text/json": components["schemas"]["SkillsToStaffRequest"];
+          "application/*+json": components["schemas"]["SkillsToStaffRequest"];
         };
       };
     };
@@ -2634,7 +2509,7 @@ export interface components {
   schemas: {
     AddAdminUserRequest: {
       /** The auth0 organization id to add this admin too */
-      auth0OrganizationId: string;
+      auth0OrganizationId?: string | null;
       firstName: string;
       lastName: string;
       email: string;
@@ -2651,11 +2526,6 @@ export interface components {
       address?: string | null;
       comments?: string | null;
       jobTitle?: string | null;
-      /**
-       * The facility this staff belongs too
-       * Initially when creating a staff, a staff will need to belong to at least one facility, later you can add more or remove
-       */
-      facilityId?: number | null;
       /** The list of skills that the staff has, when creating should at least have one */
       skillIds?: number[] | null;
     };
@@ -2695,8 +2565,9 @@ export interface components {
       roleName: string;
       roleDescription: string;
     };
-    AddSkillsToStaffRequest: {
-      skillsToAdd?: number[] | null;
+    AddSkillRequest: {
+      skillName: string;
+      description?: string | null;
     };
     AddStaffRequest: {
       firstName: string;
@@ -2705,16 +2576,8 @@ export interface components {
       mobilePhoneNumber?: string | null;
       comments?: string | null;
       jobTitle?: string | null;
-      /**
-       * The facility this staff belongs too
-       * Initially when creating a staff, a staff will need to belong to at least one facility, later you can add more or remove
-       */
-      facilityId?: number | null;
       /** The list of skills that the staff has, when creating should at least have one */
       skillIds?: number[] | null;
-    };
-    AddUpdateSkillRequest: {
-      skillToAddOrUpdate?: components["schemas"]["SkillModel"];
     };
     Auth0UserModel: {
       userAuth0Id: string;
@@ -2853,6 +2716,9 @@ export interface components {
       hasNext?: boolean;
       items?: components["schemas"]["SkillModel"][] | null;
     };
+    SkillsToStaffRequest: {
+      skills?: number[] | null;
+    };
     StaffModel: {
       staffId?: number | null;
       auth0Id?: string | null;
@@ -2864,7 +2730,6 @@ export interface components {
       comments?: string | null;
       jobTitle?: string | null;
       staffSkills?: components["schemas"]["SkillModel"][] | null;
-      staffFacilities?: components["schemas"]["FacilityModel"][] | null;
     };
     StaffModelPagedList: {
       currentPage?: number;
@@ -2894,11 +2759,15 @@ export interface components {
       address?: string | null;
       comments?: string | null;
     };
+    UpdateSkillRequest: {
+      skillId: number;
+      skillName: string;
+      description?: string | null;
+    };
     UpdateStaffRequest: {
       staffId?: number | null;
       firstName: string;
       lastName: string;
-      email: string;
       mobilePhoneNumber?: string | null;
       comments?: string | null;
       jobTitle?: string | null;

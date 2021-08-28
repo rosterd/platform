@@ -1,12 +1,5 @@
-import {
-  FooterType,
-  LayoutType,
-  NavStyle,
-  RouteTransition,
-  ThemeMode,
-  ThemeStyle,
-} from '../shared/constants/AppEnums';
-import {LanguageProps} from '../@crema/core/LanguageSwitcher/data';
+import {FooterType, LayoutType, NavStyle, RouteTransition, ThemeMode, ThemeStyle} from 'shared/constants/AppEnums';
+import {LanguageProps} from '@crema/core/LanguageSwitcher/data';
 import {PaletteType, Theme, Transitions} from '@material-ui/core';
 import {Direction} from '@material-ui/core/styles/createMuiTheme';
 import {ZIndex} from '@material-ui/core/styles/zIndex';
@@ -138,6 +131,7 @@ export interface CremaTheme extends Theme {
   shadows: Shadows;
   transitions: Transitions;
   zIndex: ZIndex;
+  // eslint-disable-next-line camelcase
   unstable_strictMode?: boolean;
 }
 

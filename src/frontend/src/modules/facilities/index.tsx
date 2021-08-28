@@ -7,7 +7,7 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import {getFacilities, addFacility} from 'services';
+import {getFacilities, addFacility, deleteFacility} from 'services';
 import {components} from 'types/models';
 import AddFacilityModal, {AddFacilityFormValues} from './components/AddFacilityModal';
 
@@ -61,11 +61,15 @@ const Facilities: React.FC = (): JSX.Element => {
   };
 
   const onUpdate = async (facilityToUpdate: Facility) => {
+    setShowAddFacility(true);
     console.log(facilityToUpdate);
   };
 
   const onDelete = async (facilityToDelete: Facility) => {
-    console.log(facilityToDelete);
+    setLoading(true);
+    await requestMaker(deleteFacility(facilityToDelete.facilityId || 0));
+    setLoading(false);
+    setFacilities(facilities.filter((facility) => facility.facilityId !== facilityToDelete.facilityId));
   };
 
   return (

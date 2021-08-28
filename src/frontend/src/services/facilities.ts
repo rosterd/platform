@@ -15,4 +15,4 @@ export const addFacility = (data: AddFacilityRequest): AxiosRequestConfig & {sco
 
 export const updateFacility = (): AxiosRequestConfig & {scope?: string} => ({method: 'PUT', url, scope: 'create:facility'});
 
-export const deleteFacility = (): AxiosRequestConfig & {scope?: string} => ({method: 'DELETE', url});
+export const deleteFacility = (facilityId: number): AxiosRequestConfig & {scope?: string} => ({method: 'DELETE', url: `${url}/${facilityId}`});

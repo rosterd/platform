@@ -12,6 +12,7 @@ import {AxiosRequestConfig} from 'axios';
 
 type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
 type Skill = components['schemas']['SkillModel'];
+type UpdateSkillRequest = components['schemas']['UpdateSkillRequest'];
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -46,22 +47,14 @@ const Skills: React.FC = (): JSX.Element => {
 
   const onAdd = async (skillToAdd: Skill) => {
     setLoading(true);
-    const addedSkill = await requestMaker<Skill>(
-      addSkill({
-        skillToAddOrUpdate: skillToAdd,
-      }),
-    );
+    const addedSkill = await requestMaker<Skill>(addSkill(skillToAdd));
     setLoading(false);
     setSkills([addedSkill, ...skills]);
   };
 
   const onUpdate = async (skillToUpdate: Skill) => {
     setLoading(true);
-    const updatedSkill = await requestMaker<Skill>(
-      updateSkill({
-        skillToAddOrUpdate: skillToUpdate,
-      }),
-    );
+    const updatedSkill = await requestMaker<Skill>(updateSkill(skillToUpdate as UpdateSkillRequest));
     setLoading(false);
     setSkills(skills.map((skill) => (skill.skillId === skillToUpdate.skillId ? updatedSkill : skill)));
   };

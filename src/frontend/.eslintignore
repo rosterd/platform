@@ -1,2 +1,7 @@
 src/@crema/*
 src/modules/auth/*
+node_modules
+build
+public
+ApiModels.ts
+package.json
