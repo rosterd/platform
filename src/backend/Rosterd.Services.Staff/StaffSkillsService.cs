@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.SkillsModels;
+using Rosterd.Infrastructure.Extensions;
 using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 
@@ -27,8 +28,9 @@ namespace Rosterd.Services.Staff
             if (skillModels.IsNullOrEmpty())
                 return;
 
-            //If the staff is not for this organization do nothing
+            //If the staff or skills are not for this organization do nothing
             await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
+            await _belongsToValidator.ValidateSkillsBelongsToOrganization(skillModels.AlwaysList().Select(s => s.SkillId).AlwaysList(), auth0OrganizationId);
 
             foreach (var skillModel in skillModels)
             {
@@ -55,8 +57,9 @@ namespace Rosterd.Services.Staff
             if (skillModels.IsNullOrEmpty())
                 return;
 
-            //If the staff is not for this organization do nothing
+            //If the staff or skills are not for this organization do nothing
             await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
+            await _belongsToValidator.ValidateSkillsBelongsToOrganization(skillModels.AlwaysList().Select(s => s.SkillId).AlwaysList(), auth0OrganizationId);
 
             foreach (var skillModel in skillModels)
             {

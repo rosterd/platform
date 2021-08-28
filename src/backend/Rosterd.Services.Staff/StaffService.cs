@@ -90,12 +90,8 @@ namespace Rosterd.Services.Staff
                 throw new Auth0IdNotSetException();
 
             var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
-
-            foreach (var facilityModel in staffModel.StaffFacilities.AlwaysList())
-                await _belongsToValidator.ValidateFacilityBelongsToOrganization(facilityModel.FacilityId, auth0OrganizationId);
-
-            foreach (var staffSkillModel in staffModel.StaffSkills.AlwaysList())
-                await _belongsToValidator.ValidateSkillBelongsToOrganization(staffSkillModel.SkillId, auth0OrganizationId);
+            await _belongsToValidator.ValidateFacilitiesBelongsToOrganization(staffModel.StaffFacilities.AlwaysList().Select(s => s.FacilityId).AlwaysList(), auth0OrganizationId);
+            await _belongsToValidator.ValidateSkillsBelongsToOrganization(staffModel.StaffSkills.AlwaysList().Select(s => s.SkillId).AlwaysList(), auth0OrganizationId);
 
             //Populate staff details
             var staffToCreate = staffModel.ToNewStaff();
