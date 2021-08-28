@@ -9,24 +9,25 @@ interface Props {
   label: string;
   name: string;
   skills: Skill[];
-  selected?: Skill[];
 }
 
-const SkillsInput = ({label, name, skills, selected = []}: Props): JSX.Element => {
+const SkillsInput = ({label, name, skills}: Props): JSX.Element => {
   const [field, meta, helpers] = useField<number[]>(name);
   const {setValue} = helpers;
 
+  const selectedSkillIds = field.value || [];
+  const selectedSkills = selectedSkillIds.map((skillId) => skills.find((skill) => skill.skillId === skillId));
   return (
     <>
       <Autocomplete
         multiple
         id='tags-standard'
         options={skills}
-        value={selected}
-        getOptionSelected={(option, value) => value.skillId === option.skillId}
-        getOptionLabel={(option) => option?.skillName}
+        value={selectedSkills}
+        getOptionSelected={(option, value) => value?.skillId === option?.skillId}
+        getOptionLabel={(option) => option?.skillName || ''}
         onChange={(event, newValue) => {
-          const skillIds = newValue.map(({skillId}) => skillId || 0);
+          const skillIds = newValue.map((skill) => skill?.skillId || 0);
           setValue(skillIds);
         }}
         renderInput={(params) => <TextField {...params} variant='standard' label={label} {...field} placeholder='Select Skills' />}
