@@ -193,7 +193,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// <returns></returns>
         [HttpPut("{staffId}/skills")]
         [OperationOrderAttribute(7)]
-        public async Task<ActionResult> AddSkillToStaff([FromQuery][ValidNumberRequired] long? staffId, [FromBody] SkillsToStaffRequest request)
+        public async Task<ActionResult> AddSkillToStaff([ValidNumberRequired] long? staffId, [FromBody] SkillsToStaffRequest request)
         {
             await _staffSkillsService.UpdateAllSkillsForStaff(staffId.Value, SkillsToStaffRequest.ToSkillModels(request), _userContext.UsersAuth0OrganizationId);
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
