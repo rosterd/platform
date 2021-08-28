@@ -3,9 +3,9 @@ import {components} from 'types/models';
 
 type AddAdminUserRequest = components['schemas']['AddAdminUserRequest'];
 type AddAdminWhoIsAlsoStaffRequest = components['schemas']['AddAdminWhoIsAlsoStaffRequest'];
-
-const facilityUrl = 'adminusers/facility-admins';
-const organizationUrl = 'adminusers/organization-admins';
+const url = 'adminusers';
+const facilityUrl = `${url}/facility-admins`;
+const organizationUrl = `${url}/organization-admins`;
 
 export const addFacilityAdmin = (data: AddAdminWhoIsAlsoStaffRequest): AxiosRequestConfig & {scope?: string} => ({
   method: 'POST',
@@ -19,6 +19,4 @@ export const addOrganizationAdmin = (data: AddAdminUserRequest): AxiosRequestCon
   data,
 });
 
-export const getFacilityAdmins = (): AxiosRequestConfig & {scope?: string} => ({url: 'adminusers/admins'});
-
-export const getOrganizationAdmins = (): AxiosRequestConfig & {scope?: string} => ({url: organizationUrl});
+export const getAdmins = (): AxiosRequestConfig & {scope?: string} => ({url});

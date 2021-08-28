@@ -7,7 +7,7 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import {addFacilityAdmin, getFacilityAdmins} from 'services';
+import {addFacilityAdmin, getAdmins} from 'services';
 import {components} from 'types/models';
 import AddAdminModal from 'shared/components/AddAdminModal';
 import {AxiosRequestConfig} from 'axios';
@@ -40,14 +40,16 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
   const fetchData = async (config: AxiosRequestConfig) => {
     setLoading(true);
     const adminsRes = await requestMaker<GetAdminsResponse>(config);
-    setLoading(false);
     setResults(adminsRes);
-    setAdmins(adminsRes.items || []);
+    const allAdmins = adminsRes.items || [];
+    const facilityAdmins = allAdmins.filter((admin) => admin.rosterdRolesForUser?.indexOf('FacilityAdmin') !== -1);
+    setAdmins(facilityAdmins);
+    setLoading(false);
   };
 
   useEffect(() => {
     (async () => {
-      await fetchData(getFacilityAdmins());
+      await fetchData(getAdmins());
     })();
   }, []);
 
@@ -57,7 +59,7 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
   };
 
   const handlePageChange = async (page: number, pageSize: number) => {
-    const requestConfig = getFacilityAdmins();
+    const requestConfig = getAdmins();
     await fetchData({...requestConfig, url: `${requestConfig.url}?pageNumber=${page + 1}&pageSize=${pageSize}`});
   };
 
@@ -84,8 +86,8 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
             columns={[
               {title: 'First Name', field: 'firstName'},
               {title: 'Last Name', field: 'lastName'},
-              {title: 'Email', field: 'address'},
-              {title: 'Phone', field: 'phone'},
+              {title: 'Email', field: 'email'},
+              {title: 'Phone', field: 'mobilePhoneNumber'},
             ]}
             data={admins}
             isLoading={loading}
