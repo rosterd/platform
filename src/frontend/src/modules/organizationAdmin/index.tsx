@@ -37,7 +37,6 @@ const OrganizationAdmin: React.FC = (): JSX.Element => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      // TODO once admin get api is ready we need to make request here
       console.log('Get admin have to implement');
       setLoading(false);
     })();
@@ -71,14 +70,14 @@ const OrganizationAdmin: React.FC = (): JSX.Element => {
             columns={[
               {title: 'First Name', field: 'firstName'},
               {title: 'Last Name', field: 'lastName'},
-              {title: 'Email', field: 'address'},
-              {title: 'Phone', field: 'phone'},
+              {title: 'Email', field: 'email'},
+              {title: 'Phone', field: 'mobilePhoneNumber'},
             ]}
             data={admins}
             isLoading={loading}
           />
         </Box>
-        <AddAdminModal open={showAddAdminModal} onAddAdmin={handleAddFacilityAdmin} handleClose={() => setShowAddAdminModal(false)} />
+        <AddAdminModal isOrganisationAdmin open={showAddAdminModal} onAddAdmin={handleAddFacilityAdmin} handleClose={() => setShowAddAdminModal(false)} />
       </Box>
     </AppAnimate>
   );

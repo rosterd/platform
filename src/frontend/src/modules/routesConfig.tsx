@@ -77,6 +77,7 @@ const routesConfig: NavItemProps[] = [
         messageId: 'sidebar.organizationManagement.organizations',
         type: 'item',
         url: '/organizations',
+        auth: ['RosterdAdmin'],
       },
       {
         id: 'admin',

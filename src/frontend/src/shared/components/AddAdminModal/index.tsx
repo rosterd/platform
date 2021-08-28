@@ -8,9 +8,12 @@ import {Formik, Form, Field} from 'formik';
 import {Button, LinearProgress} from '@material-ui/core';
 import {getOrganizations} from 'services';
 import useRequest from 'shared/hooks/useRequest';
-import {TextField} from 'formik-material-ui';
+import {TextField, Select} from 'formik-material-ui';
 import * as yup from 'yup';
 import {components} from 'types/models';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 type AddAdminUserRequest = components['schemas']['AddAdminUserRequest'];
 type Organization = components['schemas']['OrganizationModel'];
@@ -32,10 +35,9 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
 
   useEffect(() => {
     (async () => {
-      if (props.isOrganisationAdmin) {
+      if (isOrganisationAdmin) {
         const origanizationsResponse = await requestMaker<GetOrganizationsResponse>(getOrganizations());
         setOrganizatons(origanizationsResponse.items || []);
-        console.log(origanizations);
       }
     })();
   }, [isOrganisationAdmin]);
@@ -54,6 +56,7 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
         email: '',
         phoneNumber: '',
         auth0OrganizationId: '',
+        facilityId: '',
       }}
       validationSchema={validationSchema}
       onSubmit={async (values, {setSubmitting, resetForm}) => {
@@ -66,6 +69,41 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
           <DialogTitle id='form-dialog-title'>Invite Admin</DialogTitle>
           <DialogContent>
             <Form>
+              {isOrganisationAdmin ? (
+                <FormControl fullWidth>
+                  <InputLabel htmlFor='age-simple'>Organization</InputLabel>
+                  <Field
+                    component={Select}
+                    name='auth0OrganizationId'
+                    inputProps={{
+                      id: 'auth0OrganizationId',
+                      fullWidth: true,
+                    }}>
+                    {origanizations.map((organization) => (
+                      <MenuItem key={organization.organizationId} value={organization?.auth0OrganizationId || 0}>
+                        {organization.organizationName}
+                      </MenuItem>
+                    ))}
+                  </Field>
+                </FormControl>
+              ) : (
+                <FormControl fullWidth>
+                  <InputLabel htmlFor='age-simple'>Facility</InputLabel>
+                  <Field
+                    component={Select}
+                    name='auth0OrganizationId'
+                    inputProps={{
+                      id: 'auth0OrganizationId',
+                      fullWidth: true,
+                    }}>
+                    {origanizations.map((organization) => (
+                      <MenuItem key={organization.organizationId} value={organization?.auth0OrganizationId || 0}>
+                        {organization.organizationName}
+                      </MenuItem>
+                    ))}
+                  </Field>
+                </FormControl>
+              )}
               <Field component={TextField} name='firstName' label='First Name' fullWidth />
               <br />
               <Field component={TextField} name='lastName' label='Last Name' fullWidth />

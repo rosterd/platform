@@ -7,12 +7,14 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import {addFacilityAdmin} from 'services';
+import {addFacilityAdmin, getFacilityAdmins} from 'services';
 import {components} from 'types/models';
 import AddAdminModal from 'shared/components/AddAdminModal';
+import {AxiosRequestConfig} from 'axios';
 
 type AddAdminUserRequest = components['schemas']['AddAdminUserRequest'];
 type AdminUserModel = components['schemas']['Auth0UserModel'];
+type GetAdminsResponse = components['schemas']['Auth0UserModelPagedList'];
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -30,22 +32,33 @@ const initialState: AdminUserModel[] = [];
 const FacilityAdmin: React.FC = (): JSX.Element => {
   const classes = useStyles();
   const [admins, setAdmins] = useState(initialState);
+  const [results, setResults] = useState({} as GetAdminsResponse);
   const [showAddAdminModal, setShowAddAdminModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const {requestMaker} = useRequest();
 
+  const fetchData = async (config: AxiosRequestConfig) => {
+    setLoading(true);
+    const adminsRes = await requestMaker<GetAdminsResponse>(config);
+    setLoading(false);
+    setResults(adminsRes);
+    setAdmins(adminsRes.items || []);
+  };
+
   useEffect(() => {
     (async () => {
-      setLoading(true);
-      // TODO once admin get api is ready we need to make request here
-      console.log('Get admin have to implement');
-      setLoading(false);
+      await fetchData(getFacilityAdmins());
     })();
   }, []);
 
   const handleAddFacilityAdmin = async (values: AddAdminUserRequest) => {
     const admin = await requestMaker<AdminUserModel>(addFacilityAdmin(values));
     setAdmins([...admins, admin]);
+  };
+
+  const handlePageChange = async (page: number, pageSize: number) => {
+    const requestConfig = getFacilityAdmins();
+    await fetchData({...requestConfig, url: `${requestConfig.url}?pageNumber=${page + 1}&pageSize=${pageSize}`});
   };
 
   return (
@@ -76,6 +89,12 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
             ]}
             data={admins}
             isLoading={loading}
+            options={{
+              actionsColumnIndex: -1,
+            }}
+            onChangePage={handlePageChange}
+            page={(results?.currentPage || 1) - 1}
+            totalCount={results.totalCount}
           />
         </Box>
         <AddAdminModal open={showAddAdminModal} onAddAdmin={handleAddFacilityAdmin} handleClose={() => setShowAddAdminModal(false)} />
