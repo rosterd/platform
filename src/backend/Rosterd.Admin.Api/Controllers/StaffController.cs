@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
+using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Security.Interfaces;
@@ -34,8 +35,9 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IEventGridClient _eventGridClient;
         private readonly IAuth0UserService _auth0UserService;
         private readonly IUserContext _userContext;
+        private readonly IBelongsToValidator _belongsToValidator;
 
-        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService, IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IAuth0UserService auth0UserService, IUserContext userContext) : base(appSettings)
+        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService, IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IAuth0UserService auth0UserService, IUserContext userContext, IBelongsToValidator belongsToValidator) : base(appSettings)
         {
             _logger = logger;
             _staffService = staffService;
@@ -44,26 +46,21 @@ namespace Rosterd.Admin.Api.Controllers
             _eventGridClient = eventGridClient;
             _auth0UserService = auth0UserService;
             _userContext = userContext;
+            _belongsToValidator = belongsToValidator;
         }
 
         /// <summary>
         /// Gets all the resources
         /// </summary>
-        /// <param name="facilityId">The facility id to filter all the list of Staff by</param>
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         [HttpGet]
         [OperationOrder(1)]
-        public async Task<ActionResult<Domain.Models.PagedList<StaffModel>>> GetAllStaff([FromQuery] long? facilityId, [FromQuery] PagingQueryStringParameters pagingParameters)
+        public async Task<ActionResult<Domain.Models.PagedList<StaffModel>>> GetAllStaff([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-            Domain.Models.PagedList<StaffModel> pagedList;
 
-            if (facilityId == null)
-                pagedList = await _staffService.GetAllStaff(pagingParameters, _userContext.UsersAuth0OrganizationId);
-            else
-                pagedList = await _staffService.GetStaffForFacility(pagingParameters, facilityId.Value, _userContext.UsersAuth0OrganizationId);
-
+            var pagedList = await _staffService.GetAllStaff(pagingParameters, _userContext.UsersAuth0OrganizationId);
             return pagedList;
         }
 
@@ -88,7 +85,9 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(2)]
         public async Task<ActionResult<StaffModel>> AddNewStaffMember([FromBody] AddStaffRequest request)
         {
-            //TODO:Check for facilities, skill exist
+            //Validation checks before we create the user in Auth0
+            await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(_userContext.UsersAuth0OrganizationId);
+            await _belongsToValidator.ValidateSkillsBelongsToOrganization(request.SkillIds, _userContext.UsersAuth0OrganizationId);
 
             //1. Create the staff in auth0
             var userCreatedInAuth0 = await _auth0UserService.AddStaffToAuth0(_userContext.UsersAuth0OrganizationId, request.FirstName, request.LastName, request.Email, request.MobilePhoneNumber, _userContext.UsersAuth0OrganizationId);
@@ -112,8 +111,6 @@ namespace Rosterd.Admin.Api.Controllers
         [OperationOrderAttribute(3)]
         public async Task<ActionResult<StaffModel>> UpdateStaffMember([FromBody] UpdateStaffRequest request)
         {
-            //TODO:Check for facilities, skill exist
-
             var staff = await _staffService.UpdateStaff(UpdateStaffRequest.ToStaffModel(request), _userContext.UsersAuth0OrganizationId);
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
             return staff;
@@ -152,36 +149,6 @@ namespace Rosterd.Admin.Api.Controllers
             await _auth0UserService.RemoveUserFromAuth0(staffModel.Auth0Id);
 
             await _staffEventsService.GenerateStaffDeletedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
-            return Ok();
-        }
-
-        /// <summary>
-        /// Adds a facility to a staff member
-        /// </summary>
-        /// <param name="staffId">The Staff id</param>
-        /// /// <param name="facilityId">The facility id to add</param>
-        /// <returns></returns>
-        [HttpPost("{staffId}/facilities/{facilityId}")]
-        [OperationOrderAttribute(5)]
-        public async Task<ActionResult> AddStaffToFacility([ValidNumberRequired] long? staffId, [ValidNumberRequired] long facilityId)
-        {
-            await _staffService.AddFacilityToStaff(staffId.Value, facilityId, _userContext.UsersAuth0OrganizationId);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
-            return Ok();
-        }
-
-        /// <summary>
-        /// Remove a staff from facility
-        /// </summary>
-        /// <param name="staffId">The Staff id</param>
-        /// /// <param name="facilityId">The facility id to add</param>
-        /// <returns></returns>
-        [HttpDelete("{staffId}/facilities/{facilityId}")]
-        [OperationOrderAttribute(6)]
-        public async Task<ActionResult> RemoveStaffToFacility([ValidNumberRequired] long? staffId, [ValidNumberRequired] long facilityId)
-        {
-            await _staffService.RemoveFacilityFromStaff(staffId.Value, facilityId, _userContext.UsersAuth0OrganizationId);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
             return Ok();
         }
 

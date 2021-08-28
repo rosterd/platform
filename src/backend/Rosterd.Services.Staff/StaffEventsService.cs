@@ -35,7 +35,6 @@ namespace Rosterd.Services.Staff
         {
             //Get the latest staff info
             var staff = await _context.Staff
-                                        .Include(s => s.StaffFacilities)
                                         .Include(s => s.StaffSkills)
                                         .FirstAsync(s => s.StaffId == staffId);
 

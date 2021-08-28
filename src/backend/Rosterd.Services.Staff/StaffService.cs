@@ -34,28 +34,6 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId, string auth0OrganizationId)
-        {
-            //Check if the facility belongs to the organization of the user
-            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
-            var facility = await _context.Facilities.FindAsync(facilityId);
-
-            //The facility provided does not match the organization
-            if (facility.OrganzationId != organization.OrganizationId)
-                throw new EntityNotFoundException($"Facility {facilityId} does not belong to organization {organization.OrganizationId}");
-
-            var query = _context.Staff
-                .Where(staff => staff.StaffFacilities.Any(facility => facility.FacilityId == facilityId))
-                .Include(s => s.StaffFacilities)
-                .Include(s => s.StaffSkills);
-
-            var pagedList = await PagingList<Data.SqlServer.Models.Staff>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
-
-            var domainModels = pagedList.ToDomainModels();
-            return new PagedList<StaffModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
-        }
-
-        ///<inheritdoc/>
         public async Task<PagedList<StaffModel>> GetAllStaff(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
         {
             var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
@@ -73,7 +51,6 @@ namespace Rosterd.Services.Staff
             await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
 
             var staff = await _context.Staff
-                .Include(s => s.StaffFacilities)
                 .Include(s => s.StaffSkills)
                 .FirstOrDefaultAsync(s => s.StaffId == staffId);
 
@@ -90,21 +67,12 @@ namespace Rosterd.Services.Staff
                 throw new Auth0IdNotSetException();
 
             var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
-            await _belongsToValidator.ValidateFacilitiesBelongsToOrganization(staffModel.StaffFacilities.AlwaysList().Select(s => s.FacilityId).AlwaysList(), auth0OrganizationId);
             await _belongsToValidator.ValidateSkillsBelongsToOrganization(staffModel.StaffSkills.AlwaysList().Select(s => s.SkillId).AlwaysList(), auth0OrganizationId);
 
             //Populate staff details
             var staffToCreate = staffModel.ToNewStaff();
             staffToCreate.OrganizationId = organization.OrganizationId;
             var newStaff = await _context.Staff.AddAsync(staffToCreate);
-
-            //Populate the default staff facilities
-            var facilityIds = staffModel.StaffFacilities.Select(s => s.FacilityId).AlwaysList();
-            var facilitiesFromDb = _context.StaffFacilities.Where(s => facilityIds.Contains(s.FacilityId));
-            foreach (var facility in facilitiesFromDb.AlwaysList())
-            {
-                newStaff.Entity.StaffFacilities.Add(new StaffFacility { FacilityId = facility.FacilityId, FacilityName = facility.FacilityName, StaffId = newStaff.Entity.StaffId });
-            }
 
             //Populate the default staff skills
             var skillIds = staffModel.StaffSkills.Select(s => s.SkillId).AlwaysList();
@@ -164,40 +132,6 @@ namespace Rosterd.Services.Staff
             if (staff != null)
             {
                 staff.IsActive = true;
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task AddFacilityToStaff(long staffId, long facilityId, string auth0OrganizationId)
-        {
-            await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
-            await _belongsToValidator.ValidateFacilityBelongsToOrganization(facilityId, auth0OrganizationId);
-
-            var facility = await _context.Facilities.FindAsync(facilityId);
-            if (facility != null)
-            {
-                var existingStaffFacility = await _context.StaffFacilities.FirstOrDefaultAsync(s => s.StaffId == staffId && s.FacilityId == facilityId);
-                if (existingStaffFacility != null) //There is already this facility added for the staff no need to do anything
-                    return;
-
-                await _context.StaffFacilities.AddAsync(new StaffFacility
-                {
-                    FacilityId = facility.FacilityId, FacilityName = facility.FacilityName, StaffId = staffId
-                });
-
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task RemoveFacilityFromStaff(long staffId, long facilityId, string auth0OrganizationId)
-        {
-            await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
-            await _belongsToValidator.ValidateFacilityBelongsToOrganization(facilityId, auth0OrganizationId);
-
-            var staffFacility = await _context.StaffFacilities.FirstOrDefaultAsync(s => s.FacilityId == facilityId && s.StaffId == staffId);
-            if (staffFacility != null)
-            {
-                _context.StaffFacilities.Remove(staffFacility);
                 await _context.SaveChangesAsync();
             }
         }

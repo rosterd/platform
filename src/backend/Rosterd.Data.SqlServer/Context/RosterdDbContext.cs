@@ -29,7 +29,6 @@ namespace Rosterd.Data.SqlServer.Context
         public virtual DbSet<Organization> Organizations { get; set; }
         public virtual DbSet<Skill> Skills { get; set; }
         public virtual DbSet<Staff> Staff { get; set; }
-        public virtual DbSet<StaffFacility> StaffFacilities { get; set; }
         public virtual DbSet<StaffSkill> StaffSkills { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -120,15 +119,6 @@ namespace Rosterd.Data.SqlServer.Context
                     .HasForeignKey(d => d.OrganizationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Staff_Organization");
-            });
-
-            modelBuilder.Entity<StaffFacility>(entity =>
-            {
-                entity.HasOne(d => d.Staff)
-                    .WithMany(p => p.StaffFacilities)
-                    .HasForeignKey(d => d.StaffId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Fk_StaffFacility_Staff");
             });
 
             modelBuilder.Entity<StaffSkill>(entity =>

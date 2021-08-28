@@ -17,7 +17,6 @@ namespace Rosterd.Data.SqlServer.Context
         DbSet<JobStatusChange> JobStatusChanges { get; set; }
         DbSet<Organization> Organizations { get; set; }
         DbSet<Skill> Skills { get; set; }
-        DbSet<StaffFacility> StaffFacilities { get; set; }
         DbSet<StaffSkill> StaffSkills { get; set; }
         DbSet<Staff> Staff { get; set; }
 

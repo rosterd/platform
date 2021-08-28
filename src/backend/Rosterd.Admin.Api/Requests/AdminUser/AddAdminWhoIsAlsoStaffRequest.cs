@@ -46,13 +46,6 @@ namespace Rosterd.Admin.Api.Requests.AdminUser
         public string JobTitle { get; set; }
 
         /// <summary>
-        /// The facility this staff belongs too
-        /// Initially when creating a staff, a staff will need to belong to at least one facility, later you can add more or remove
-        /// </summary>
-        [ValidNumberRequired]
-        public long? FacilityId { get; set; }
-
-        /// <summary>
         /// The list of skills that the staff has, when creating should at least have one
         /// </summary>
         [CollectionIsRequiredAndShouldNotBeEmpty]
@@ -71,7 +64,6 @@ namespace Rosterd.Admin.Api.Requests.AdminUser
                 MobilePhoneNumber = MobilePhoneNumber,
                 Comments = Comments,
 
-                StaffFacilities = new List<FacilityModel> { new FacilityModel { FacilityId = FacilityId.Value } },
                 StaffSkills = SkillIds.AlwaysList().Select(s => new SkillModel { SkillId = s }).AlwaysList()
             };
     }

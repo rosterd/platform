@@ -54,10 +54,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[StaffFacility]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[StaffSkill]",
          "ObjectType": 0
       }
