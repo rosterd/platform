@@ -11,7 +11,6 @@ import * as yup from 'yup';
 import {getSkills} from 'services';
 import {components} from 'types/models';
 import SkillsInput from 'shared/components/Skills';
-import AddressInput from 'shared/components/Address';
 
 interface AddStaffModalProps {
   open: boolean;
@@ -20,9 +19,11 @@ interface AddStaffModalProps {
 
 interface FormValues {
   email: string;
-  name: string;
-  mobile: number;
+  firstName: string;
+  lastName: string;
+  mobilePhoneNumber: string;
   skills: number[];
+  jobTitle: string;
 }
 
 type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
@@ -41,48 +42,43 @@ const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
   }, []);
 
   const validationSchema = yup.object({
-    name: yup.string().required('Please enter name'),
+    firstName: yup.string().required('Please enter Fist name'),
+    lastName: yup.string().required('Please enter Last name'),
     email: yup.string().email().required('Please enter valid email'),
-    mobile: yup.string().required('Please enter mobile'),
+    mobilePhoneNumber: yup.string().required('Please enter mobile'),
+    jobTitle: yup.string().required('Please enter job title'),
   });
   return (
     <Formik
       initialValues={{
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
-        mobile: '',
+        jobTitle: '',
+        mobilePhoneNumber: '',
         skills: [],
       }}
       validationSchema={validationSchema}
-      validate={(values) => {
-        const errors: Partial<FormValues> = {};
-        if (!values.email) {
-          errors.email = 'Required';
-        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-          errors.email = 'Invalid email address';
-        }
-        return errors;
-      }}
-      onSubmit={(values, {setSubmitting}) => {
-        setTimeout(() => {
-          setSubmitting(false);
-          alert(JSON.stringify(values, null, 2));
-        }, 500);
+      onSubmit={(values: FormValues, {setSubmitting}) => {
+        console.log(values);
+        setSubmitting(false);
       }}>
       {({submitForm, isSubmitting}) => (
         <Dialog fullWidth maxWidth='sm' open={props.open} onClose={props.handleClose} aria-labelledby='form-dialog-title'>
           <DialogTitle id='form-dialog-title'>Add Staff</DialogTitle>
           <DialogContent>
             <Form>
-              <Field component={TextField} name='name' label='Name' fullWidth />
+              <Field component={TextField} name='firstName' label='First Name' fullWidth />
+              <br />
+              <Field component={TextField} name='lastName' label='Last Name' fullWidth />
               <br />
               <Field component={TextField} name='email' type='email' label='Email' fullWidth />
               <br />
-              <Field component={TextField} name='mobile' type='tel' label='Mobile Number' fullWidth />
+              <Field component={TextField} name='mobilePhoneNumber' type='tel' label='Mobile Number' fullWidth />
+              <br />
+              <Field component={TextField} name='jobTitle' label='Job title' fullWidth />
               <br />
               <SkillsInput skills={skills} label='Skills' name='skills' />
-              <br />
-              <AddressInput name='address' label='Address' />
               <br />
               {isSubmitting && <LinearProgress />}
             </Form>

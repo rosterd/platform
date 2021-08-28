@@ -9,11 +9,10 @@ interface Props {
   label: string;
   name: string;
   skills: Skill[];
-  selected?: Skill[];
 }
 
-const SkillsInput = ({label, name, skills, selected = []}: Props): JSX.Element => {
-  const [field, meta, helpers] = useField(name);
+const SkillsInput = ({label, name, skills}: Props): JSX.Element => {
+  const [field, meta, helpers] = useField<Skill[]>(name);
   const {setValue} = helpers;
 
   return (
@@ -22,11 +21,11 @@ const SkillsInput = ({label, name, skills, selected = []}: Props): JSX.Element =
         multiple
         id='tags-standard'
         options={skills}
-        value={selected}
+        value={field.value}
+        getOptionSelected={(option, value) => value.skillId === option.skillId}
         getOptionLabel={(option) => option?.skillName}
         onChange={(event, newValue) => {
-          const skillIds = newValue.map(({skillId}) => skillId);
-          setValue(skillIds);
+          setValue(newValue);
         }}
         renderInput={(params) => <TextField {...params} variant='standard' label={label} {...field} placeholder='Select Skills' />}
       />
