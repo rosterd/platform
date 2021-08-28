@@ -70,10 +70,12 @@ const Facilities: React.FC = (): JSX.Element => {
                 <IntlMessages id='facilities.heading' />
               </Box>
             </Grid>
-            <Grid item xs={6} className={classes.buttonContainer}>
-              <Button variant='contained' color='primary' startIcon={<AddIcon />} onClick={() => setShowAddFacility(true)}>
-                Add Facility
-              </Button>
+            <Grid item xs={6}>
+              <Box textAlign='right'>
+                <Button variant='contained' color='primary' startIcon={<AddIcon />} onClick={() => setShowAddFacility(true)}>
+                  Add Facility
+                </Button>
+              </Box>
             </Grid>
           </Grid>
         </Box>

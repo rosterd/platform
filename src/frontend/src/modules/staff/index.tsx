@@ -4,11 +4,13 @@ import Box from '@material-ui/core/Box';
 import AppAnimate from '@crema/core/AppAnimate';
 import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
-import {makeStyles} from '@material-ui/core';
+import {Button, Grid, makeStyles} from '@material-ui/core';
 import {components} from 'types/models';
 import {getStaff, deleteStaff, addStaff, updateStaff} from 'services';
 import useRequest from 'shared/hooks/useRequest';
 import {AxiosRequestConfig} from 'axios';
+import AddIcon from '@material-ui/icons/Add';
+import AddStaffModal from './components/AddStaffModal';
 
 type GetStaffResponse = components['schemas']['StaffModelPagedList'];
 type Staff = components['schemas']['StaffModel'];
@@ -29,6 +31,7 @@ const Staff: React.FC = (): JSX.Element => {
   const [staff, setStaff] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const {requestMaker} = useRequest();
+  const [showStaffModal, setShowStaffModal] = useState(false);
 
   const fetchData = async (config: AxiosRequestConfig) => {
     setLoading(true);
@@ -73,8 +76,21 @@ const Staff: React.FC = (): JSX.Element => {
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <Box>
-        <Box component='h2' color='text.primary' fontSize={16} mb={{xs: 4, sm: 4, xl: 6}} fontWeight={Fonts.BOLD}>
-          <IntlMessages id='skills.heading' />
+        <Box mb={{xs: 4, sm: 4, xl: 6}}>
+          <Grid container direction='row' justify='space-between' alignItems='center'>
+            <Grid item xs={6}>
+              <Box component='h2' color='text.primary' fontSize={16} fontWeight={Fonts.BOLD}>
+                <IntlMessages id='staff.heading' />
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box textAlign='right'>
+                <Button variant='contained' color='primary' startIcon={<AddIcon />} onClick={() => setShowStaffModal(true)}>
+                  Add Staff
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
         </Box>
         <Box className={classes.materialTable}>
           <MaterialTable
@@ -101,6 +117,7 @@ const Staff: React.FC = (): JSX.Element => {
             totalCount={results.totalCount}
           />
         </Box>
+        <AddStaffModal open={showStaffModal} handleClose={() => setShowStaffModal(false)} />
       </Box>
     </AppAnimate>
   );

@@ -29,7 +29,7 @@ type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
 type Skill = components['schemas']['SkillModel'];
 const initialState: Skill[] = [];
 
-const AddStaffModal = (props: AddStaffModalProps) => {
+const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
   const [skills, setSkills] = useState(initialState);
   const {requestMaker} = useRequest();
 
