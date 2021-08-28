@@ -9,15 +9,6 @@ namespace Rosterd.Services.Staff.Interfaces
     public interface IStaffService
     {
         /// <summary>
-        /// Gets all the Staff for a given facility
-        /// </summary>
-        /// <param name="pagingParameters"></param>
-        /// <param name="facilityId"></param>
-        /// <param name="auth0OrganizationId"></param>
-        /// <returns></returns>
-        Task<PagedList<StaffModel>> GetStaffForFacility(PagingQueryStringParameters pagingParameters, long facilityId, string auth0OrganizationId);
-
-        /// <summary>
         /// Gets all the Staff members
         /// </summary>
         /// <param name="pagingParameters"></param>
@@ -64,24 +55,6 @@ namespace Rosterd.Services.Staff.Interfaces
         /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
         Task UpdateStaffToActive(long staffId, string auth0OrganizationId);
-
-        /// <summary>
-        /// Associates the facility to the staff member
-        /// </summary>
-        /// <param name="staffId"></param>
-        /// <param name="facilityId"></param>
-        /// <param name="auth0OrganizationId"></param>
-        /// <returns></returns>
-        Task AddFacilityToStaff(long staffId, long facilityId, string auth0OrganizationId);
-
-        /// <summary>
-        /// Removes the facility association with a staff member
-        /// </summary>
-        /// <param name="staffId"></param>
-        /// <param name="facilityId"></param>
-        /// <param name="auth0OrganizationId"></param>
-        /// <returns></returns>
-        Task RemoveFacilityFromStaff(long staffId, long facilityId, string auth0OrganizationId);
 
         /// <summary>
         /// Gets the staff's preferences

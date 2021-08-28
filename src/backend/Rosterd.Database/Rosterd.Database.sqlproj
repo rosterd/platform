@@ -64,7 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Job.sql" />
-    <Build Include="dbo\Tables\StaffFacility.sql" />
     <Build Include="dbo\Tables\StaffSkill.sql" />
     <Build Include="dbo\Tables\JobSkill.sql" />
     <Build Include="dbo\Tables\JobStatusChange.sql" />

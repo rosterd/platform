@@ -11,7 +11,6 @@ using Rosterd.Admin.Api.Requests.AdminUser;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
-using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.AdminUserModels;
 using Rosterd.Domain.Models.StaffModels;
@@ -57,7 +56,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
-        [HttpGet("admins")]
+        [HttpGet()]
         public async Task<ActionResult<PagedList<Auth0UserModel>>> GetListOfOrganizationAdmins([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             var organizationAdmins = await _adminUserService.GetAdminUsers(_userContext.UsersAuth0OrganizationId, pagingParameters);
@@ -72,11 +71,7 @@ namespace Rosterd.Admin.Api.Controllers
         [HttpPost("organization-admins")]
         public async Task<ActionResult<Auth0UserModel>> AddOrganizationAdminUser([FromBody] AddAdminUserRequest request)
         {
-            if (_userContext.IsUserRosterdAdmin() && request.Auth0OrganizationId.IsNullOrEmpty())
-                return BadRequest("You are a RosterdAdmin.  Auth0OrganizationId is required");
-
-            var auth0OrganizationId = _userContext.IsUserRosterdAdmin() ? request.Auth0OrganizationId : _userContext.UsersAuth0OrganizationId;
-            var adminUserModel = await _adminUserService.AddOrganizationAdminToAuth0(auth0OrganizationId, request.ToModel());
+            var adminUserModel = await _adminUserService.AddOrganizationAdminToAuth0(request.Auth0OrganizationId, request.ToModel());
             return adminUserModel;
         }
 

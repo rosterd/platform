@@ -29,13 +29,6 @@ namespace Rosterd.Services.Mappers
                 Auth0Id = dataModel.Auth0Id
             };
 
-            staffModel.StaffFacilities = dataModel.StaffFacilities.AlwaysList().Select(s => new FacilityModel
-            {
-                FacilityId = s.FacilityId,
-                FacilityName = s.FacilityName,
-
-            }).AlwaysList();
-
             staffModel.StaffSkills = dataModel.StaffSkills.AlwaysList().Select(s => new SkillModel
             {
                 SkillId = s.SkillId,
@@ -57,13 +50,6 @@ namespace Rosterd.Services.Mappers
                 LastName = dataModel.LastName,
                 MobilePhoneNumber = dataModel.MobilePhoneNumber,
             };
-
-            var staffFacility = dataModel.StaffFacilities.FirstOrDefault();
-            if (staffFacility != null)
-            {
-                staffSearchModel.FacilityId = staffFacility.FacilityId.ToString();
-                staffSearchModel.FacilityName = staffFacility.FacilityName;
-            }
 
             var staffSkills = dataModel.StaffSkills.AlwaysList();
             if (staffSkills.IsNotNullOrEmpty())

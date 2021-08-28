@@ -36,7 +36,5 @@ namespace Rosterd.Domain.Models.StaffModels
         public string JobTitle { get; set; }
 
         public List<SkillModel> StaffSkills { get; set; }
-
-        public List<FacilityModel> StaffFacilities { get; set; }
     }
 }
