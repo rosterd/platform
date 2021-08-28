@@ -43,7 +43,7 @@ namespace Rosterd.Services.Skills
             return skill?.ToDomainModel();
         }
 
-        public async Task CreateSkill(SkillModel skillModel, string auth0OrganizationId)
+        public async Task<SkillModel> CreateSkill(SkillModel skillModel, string auth0OrganizationId)
         {
             var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
             await ThrowDuplicateExceptionIfSkillAlreadyExists(skillModel.SkillName, organization);
@@ -51,8 +51,10 @@ namespace Rosterd.Services.Skills
             var skillToCreate = skillModel.ToNewSkill();
             skillToCreate.OrganizationId = organization.OrganizationId;
 
-            await _context.Skills.AddAsync(skillToCreate);
+            var newSkill = await _context.Skills.AddAsync(skillToCreate);
             await _context.SaveChangesAsync();
+
+            return newSkill.Entity.ToDomainModel();
         }
 
         public async Task RemoveSkill(long skillId, string auth0OrganizationId)
@@ -66,7 +68,7 @@ namespace Rosterd.Services.Skills
             _context.Skills.Remove(skill);
             await _context.SaveChangesAsync();
         }
-        public async Task UpdateSkill(SkillModel skillModel, string auth0OrganizationId)
+        public async Task<SkillModel> UpdateSkill(SkillModel skillModel, string auth0OrganizationId)
         {
             var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
@@ -78,6 +80,8 @@ namespace Rosterd.Services.Skills
 
             _context.Skills.Update(skillModelToUpdate);
             await _context.SaveChangesAsync();
+
+            return skillModelToUpdate.ToDomainModel();
         }
 
         private async Task ThrowDuplicateExceptionIfSkillAlreadyExists(string skillName, Organization organization)

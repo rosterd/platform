@@ -9,12 +9,12 @@ using Rosterd.Web.Infra.ValidationAttributes;
 
 namespace Rosterd.Admin.Api.Requests.Staff
 {
-    public class AddSkillsToStaffRequest
+    public class SkillsToStaffRequest
     {
         [CollectionIsRequiredAndShouldNotBeEmpty]
-        public List<long> SkillsToAdd { get; set; }
+        public List<long> Skills { get; set; }
 
-        public static List<SkillModel> ToSkillModels(AddSkillsToStaffRequest request) =>
-            request.SkillsToAdd.AlwaysList().Select(s => new SkillModel {SkillId = s}).AlwaysList();
+        public static List<SkillModel> ToSkillModels(SkillsToStaffRequest request) =>
+            request.Skills.AlwaysList().Select(s => new SkillModel {SkillId = s}).AlwaysList();
     }
 }

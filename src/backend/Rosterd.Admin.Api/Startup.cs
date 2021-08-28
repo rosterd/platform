@@ -46,7 +46,7 @@ namespace Rosterd.Admin.Api
         {
             if (HostingEnvironment.IsDevelopment())
                 IdentityModelEventSource.ShowPII = true;
-            
+
             services
                 .AddCustomAuthenticationWithJwtBearer(Configuration) //Add auth and JWT as the first thing (This always needs to be the first thing to configure)
                 .AddApplicationInsightsTelemetry()
@@ -91,19 +91,20 @@ namespace Rosterd.Admin.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-                app.UseCustomExceptionMiddleware();
+            //if (env.IsDevelopment())
+            //{
+            //    //app.UseDeveloperExceptionPage();
+            //}
+            //else
+            //{
+            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            //    app.UseHsts();
+            //    app.UseCustomExceptionMiddleware();
+            //}
 
-                // TODO remove below (done for just checking errors)
-                app.UseDeveloperExceptionPage();
-            }
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+            app.UseCustomExceptionMiddleware();
 
             app.UseHttpsRedirection();
 

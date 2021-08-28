@@ -28,7 +28,7 @@ namespace Rosterd.Services.Skills.Interfaces
         /// <param name="skillModel"></param>
         /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task CreateSkill(SkillModel skillModel, string auth0OrganizationId);
+        Task<SkillModel> CreateSkill(SkillModel skillModel, string auth0OrganizationId);
 
         /// <summary>
         /// Updates an existing skill
@@ -36,7 +36,7 @@ namespace Rosterd.Services.Skills.Interfaces
         /// <param name="skillModel"></param>
         /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task UpdateSkill(SkillModel skillModel, string auth0OrganizationId);
+        Task<SkillModel> UpdateSkill(SkillModel skillModel, string auth0OrganizationId);
 
         /// <summary>
         /// Deletes skill
