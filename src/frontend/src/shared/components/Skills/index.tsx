@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {components} from 'types/models';
 import TextField from '@material-ui/core/TextField';
@@ -11,12 +11,23 @@ interface Props {
   skills: Skill[];
 }
 
+const initialSelectedSkills: Skill[] = [];
+
+function notEmpty<T>(value: T | null | undefined): value is T {
+  return value !== null && value !== undefined;
+}
+
 const SkillsInput = ({label, name, skills}: Props): JSX.Element => {
   const [field, meta, helpers] = useField<number[]>(name);
+  const [selectedSkills, setSelectedSkills] = useState(initialSelectedSkills);
   const {setValue} = helpers;
 
-  const selectedSkillIds = field.value || [];
-  const selectedSkills = selectedSkillIds.map((skillId) => skills.find((skill) => skill.skillId === skillId));
+  useEffect(() => {
+    const selectedSkillIds = field.value;
+    const selectedSkillsFromSkillIds = (selectedSkillIds || []).map((skillId) => skills.find((skill) => skill.skillId === skillId)).filter(notEmpty);
+    setSelectedSkills(selectedSkillsFromSkillIds);
+  }, [field.value]);
+
   return (
     <>
       <Autocomplete
@@ -30,7 +41,7 @@ const SkillsInput = ({label, name, skills}: Props): JSX.Element => {
           const skillIds = newValue.map((skill) => skill?.skillId || 0);
           setValue(skillIds);
         }}
-        renderInput={(params) => <TextField {...params} variant='standard' label={label} {...field} placeholder='Select Skills' />}
+        renderInput={(params) => <TextField {...params} variant='standard' label={label} placeholder='Select Skills' />}
       />
       {meta.touched && meta.error ? <div className='error'>{meta.error}</div> : null}
     </>

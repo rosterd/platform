@@ -60,6 +60,14 @@ const Facilities: React.FC = (): JSX.Element => {
     }
   };
 
+  const onUpdate = async (facilityToUpdate: Facility) => {
+    console.log(facilityToUpdate);
+  };
+
+  const onDelete = async (facilityToDelete: Facility) => {
+    console.log(facilityToDelete);
+  };
+
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <Box>
@@ -88,6 +96,13 @@ const Facilities: React.FC = (): JSX.Element => {
               {title: 'City', field: 'city'},
               {title: 'Phone', field: 'phoneNumber1'},
             ]}
+            editable={{
+              onRowUpdate: onUpdate,
+              onRowDelete: onDelete,
+            }}
+            options={{
+              actionsColumnIndex: -1,
+            }}
             data={facilities}
             isLoading={loading}
           />
