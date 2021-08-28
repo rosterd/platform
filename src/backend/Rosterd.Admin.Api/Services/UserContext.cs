@@ -49,6 +49,11 @@ namespace Rosterd.Admin.Api.Services
 
         public bool IsUserInRole(RosterdRoleEnum rosterdRole) => !Roles.IsNullOrEmpty() && Roles.Contains(rosterdRole.ToString());
 
+        public bool IsUserRosterdAdmin() => IsUserInRole(RosterdRoleEnum.RosterdAdmin);
+        public bool IsUserFacilityAdmin() => IsUserInRole(RosterdRoleEnum.FacilityAdmin);
+        public bool IsUserOrganizationAdmin() => IsUserInRole(RosterdRoleEnum.OrganizationAdmin);
+        public bool IsUserAStaff() => IsUserInRole(RosterdRoleEnum.Staff);
+
         public string UserEmailAddress =>
             throw new NotImplementedException(
                 "Not yet implemented, when we need this we can add it to the access token and grab it from there, for now the access token does not have this.");

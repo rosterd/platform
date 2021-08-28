@@ -50,5 +50,10 @@ namespace Rosterd.Admin.Api.Services
         string AccessToken { get; }
 
         bool IsUserInRole(RosterdRoleEnum rosterdRole);
+
+        bool IsUserRosterdAdmin();
+        bool IsUserFacilityAdmin();
+        bool IsUserOrganizationAdmin();
+        bool IsUserAStaff();
     }
 }
