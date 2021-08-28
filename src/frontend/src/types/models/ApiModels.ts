@@ -90,7 +90,7 @@ export interface paths {
     };
   };
   "/api/v{version}/adminusers/facility-admins": {
-    post: {
+    get: {
       parameters: {
         path: {
           version: string;
@@ -167,7 +167,7 @@ export interface paths {
     };
   };
   "/api/v{version}/adminusers/organization-admins": {
-    post: {
+    get: {
       parameters: {
         path: {
           version: string;
@@ -2673,7 +2673,7 @@ export interface components {
     AddJobRequest: {
       jobTitle: string;
       description: string;
-      facilityId?: number | null;
+      facilityId: number;
       jobStartDateTimeUtc: string;
       jobEndDateTimeUtc: string;
       comments?: string | null;
