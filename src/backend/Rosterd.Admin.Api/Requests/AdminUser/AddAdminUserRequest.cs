@@ -16,7 +16,6 @@ namespace Rosterd.Admin.Api.Requests.AdminUser
         /// <summary>
         /// The auth0 organization id to add this admin too
         /// </summary>
-        [Required]
         [StringLength(130, MinimumLength = 1)]
         public string Auth0OrganizationId { get; set; }
 

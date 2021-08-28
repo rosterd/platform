@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Exceptions;
+using Rosterd.Infrastructure.Extensions;
 using Rosterd.Infrastructure.Security.Interfaces;
 
 namespace Rosterd.Infrastructure.Security
@@ -42,6 +44,13 @@ namespace Rosterd.Infrastructure.Security
         }
 
         ///<inheritdoc/>
+        public async Task ValidateFacilitiesBelongsToOrganization(List<long> facilityIds, string auth0OrganizationId)
+        {
+            foreach (var facilityId in facilityIds.AlwaysList())
+                await ValidateFacilityBelongsToOrganization(facilityId, auth0OrganizationId);
+        }
+
+        ///<inheritdoc/>
         public async Task ValidateStaffBelongsToOrganization(long staffId, string auth0OrganizationId)
         {
             var organization = await ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
@@ -60,6 +69,7 @@ namespace Rosterd.Infrastructure.Security
             if (cacheEntry.ToString() != auth0OrganizationId)
                 throw new EntityNotFoundException($"Staff {staffId} does not belong to organization {organization.OrganizationId}");
         }
+
         ///<inheritdoc/>
         public async Task ValidateSkillBelongsToOrganization(long skillId, string auth0OrganizationId)
         {
@@ -78,6 +88,13 @@ namespace Rosterd.Infrastructure.Security
             //This means skill is there but does not belong to the organization
             if(cacheEntry.ToString() != auth0OrganizationId)
                 throw new EntityNotFoundException($"Skill {skillId} does not belong to organization {organization.OrganizationId}");
+        }
+
+        ///<inheritdoc/>
+        public async Task ValidateSkillsBelongsToOrganization(List<long> skillIds, string auth0OrganizationId)
+        {
+            foreach (var skillId in skillIds.AlwaysList())
+                await ValidateSkillBelongsToOrganization(skillId, auth0OrganizationId);
         }
 
         ///<inheritdoc/>

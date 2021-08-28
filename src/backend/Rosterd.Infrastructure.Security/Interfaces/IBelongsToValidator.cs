@@ -17,6 +17,15 @@ namespace Rosterd.Infrastructure.Security.Interfaces
         /// <returns></returns>
         Task ValidateFacilityBelongsToOrganization(long facilityId, string auth0OrganizationId);
 
+        // <summary>
+        /// Checks to see if the facilities belongs to the organization.
+        /// Throws an entitynotfound exception if the facility does not belong to the organization
+        /// </summary>
+        /// <param name="facilityId">the facility id</param>
+        /// <param name="auth0OrganizationId">The auth0 organization id</param>
+        /// <returns></returns>
+        Task ValidateFacilitiesBelongsToOrganization(List<long> facilityIds, string auth0OrganizationId);
+
         /// <summary>
         /// Checks to see if the staff belongs to the organization.
         /// Throws an entitynotfound exception if the staff does not belong to the organization
@@ -27,6 +36,8 @@ namespace Rosterd.Infrastructure.Security.Interfaces
         Task ValidateStaffBelongsToOrganization(long staffId, string auth0OrganizationId);
 
         Task ValidateSkillBelongsToOrganization(long skillId, string auth0OrganizationId);
+
+        Task ValidateSkillsBelongsToOrganization(List<long> skillIds, string auth0OrganizationId);
 
         Task<Organization> ValidateOrganizationExistsAndGetIfValid(string auth0OrganizationId);
     }
