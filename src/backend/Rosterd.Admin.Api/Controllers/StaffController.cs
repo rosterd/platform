@@ -55,7 +55,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         [HttpGet]
-        [OperationOrder(1)]
         public async Task<ActionResult<Domain.Models.PagedList<StaffModel>>> GetAllStaff([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
@@ -69,7 +68,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [OperationOrderAttribute(2)]
         public async Task<ActionResult<StaffModel>> GetStaffById([ValidNumberRequired] long? id)
         {
             var staffModel = await _staffService.GetStaff(id.Value, _userContext.UsersAuth0OrganizationId);
@@ -82,7 +80,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Staff member to add</param>
         /// <returns></returns>
         [HttpPost]
-        [OperationOrderAttribute(2)]
         public async Task<ActionResult<StaffModel>> AddNewStaffMember([FromBody] AddStaffRequest request)
         {
             //Validation checks before we create the user in Auth0
@@ -108,7 +105,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Staff member to update</param>
         /// <returns></returns>
         [HttpPut]
-        [OperationOrderAttribute(3)]
         public async Task<ActionResult<StaffModel>> UpdateStaffMember([FromBody] UpdateStaffRequest request)
         {
             var staff = await _staffService.UpdateStaff(UpdateStaffRequest.ToStaffModel(request), _userContext.UsersAuth0OrganizationId);
@@ -122,8 +118,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="staffId">The staff id to update</param>
         /// <returns></returns>
         [HttpPatch("{staffId}/reactivate")]
-
-        [OperationOrderAttribute(3)]
         public async Task<ActionResult> ReactivateStaffMember([ValidNumberRequired] long? staffId)
         {
             await _staffService.UpdateStaffToActive(staffId.Value, _userContext.UsersAuth0OrganizationId);
@@ -137,7 +131,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="staffId">The Staff member to mark as inactive</param>
         /// <returns></returns>
         [HttpDelete("{staffId}")]
-        [OperationOrderAttribute(4)]
         public async Task<ActionResult> RemoveStaffMember([ValidNumberRequired] long? staffId)
         {
             //1. Mark as not active in our db
@@ -159,7 +152,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The skills to add</param>
         /// <returns></returns>
         [HttpPut("{staffId}/skills")]
-        [OperationOrderAttribute(7)]
         public async Task<ActionResult> AddSkillToStaff([ValidNumberRequired] long? staffId, [FromBody] SkillsToStaffRequest request)
         {
             await _staffSkillsService.UpdateAllSkillsForStaff(staffId.Value, SkillsToStaffRequest.ToSkillModels(request), _userContext.UsersAuth0OrganizationId);
@@ -174,7 +166,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The skills to delete</param>
         /// <returns></returns>
         [HttpDelete("{staffId}/skills")]
-        [OperationOrderAttribute(8)]
         public async Task<ActionResult> DeleteSkillsForStaff([ValidNumberRequired] long? staffId, [FromBody] SkillsToStaffRequest request)
         {
             await _staffSkillsService.DeleteSkillsForStaff(staffId.Value, SkillsToStaffRequest.ToSkillModels(request), _userContext.UsersAuth0OrganizationId);

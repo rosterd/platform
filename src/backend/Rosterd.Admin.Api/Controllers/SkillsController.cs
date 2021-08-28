@@ -40,7 +40,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         [HttpGet]
-        [OperationOrder(1)]
         public async Task<ActionResult<Domain.Models.PagedList<SkillModel>>> GetAllSkills([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
@@ -54,7 +53,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("{skillId}")]
-        [OperationOrderAttribute(2)]
         public async Task<ActionResult<SkillModel>> GetSkillById([ValidNumberRequired] long? skillId)
         {
             var skillModel = await _skillService.GetSkill(skillId.Value, _userContext.UsersAuth0OrganizationId);
@@ -67,7 +65,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Skill to add</param>
         /// <returns></returns>
         [HttpPost]
-        [OperationOrderAttribute(3)]
         public async Task<ActionResult<SkillModel>> AddNewSkill([FromBody] AddSkillRequest request)
         {
             var skillModel = await _skillService.CreateSkill(request.ToSkillModel(), _userContext.UsersAuth0OrganizationId);
@@ -80,7 +77,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Skill to update</param>
         /// <returns></returns>
         [HttpPut]
-        [OperationOrderAttribute(4)]
         public async Task<ActionResult<SkillModel>> UpdateSkill([FromBody] UpdateSkillRequest request)
         {
             var skillModel = await _skillService.UpdateSkill(request.ToSkillModel(), _userContext.UsersAuth0OrganizationId);
@@ -93,7 +89,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="skillId">The Skill to be deleted</param>
         /// <returns></returns>
         [HttpDelete("{skillId}")]
-        [OperationOrderAttribute(5)]
         public async Task<ActionResult> RemoveSkill([ValidNumberRequired] long? skillId)
         {
             await _skillService.RemoveSkill(skillId.Value, _userContext.UsersAuth0OrganizationId);

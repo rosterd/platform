@@ -22,7 +22,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [OperationOrder(1)]
         public ActionResult Get() => Ok("OK");
     }
 }

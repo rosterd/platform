@@ -47,7 +47,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         [HttpGet]
-        [OperationOrder(1)]
         public async Task<ActionResult<Domain.Models.PagedList<JobModel>>> GetAllJobs([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
@@ -61,7 +60,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("{jobId}")]
-        [OperationOrderAttribute(2)]
         public async Task<ActionResult<JobModel>> GetJobById([ValidNumberRequired] long? jobId)
         {
             var jobModel = await _jobService.GetJob(jobId.Value, _userContext.UsersAuth0OrganizationId);
@@ -79,7 +77,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Job to add</param>
         /// <returns></returns>
         [HttpPost]
-        [OperationOrderAttribute(3)]
         public async Task<ActionResult> AddNewJob([FromBody] AddJobRequest request)
         {
             //Create Job
@@ -98,7 +95,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="jobCancellationReason">The reason for the job cancellation</param>
         /// <returns></returns>
         [HttpDelete("{jobId}")]
-        [OperationOrderAttribute(4)]
         public async Task<ActionResult> RemoveJob([ValidNumberRequired] long? jobId, [Required][FromBody] string jobCancellationReason)
         {
             await _jobService.RemoveJob(jobId.Value, jobCancellationReason, _userContext.UsersAuth0OrganizationId);

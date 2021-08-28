@@ -45,7 +45,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [OperationOrder(1)]
         public async Task<ActionResult<List<RosterdRole>>> GetAllRoles() => await _rolesService.GetAllRoles();
 
         /// <summary>
@@ -53,7 +52,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("{roleId}")]
-        [OperationOrderAttribute(2)]
         public async Task<ActionResult<RosterdRole>> GetRoleById([Required(AllowEmptyStrings = false)] string roleId)
         {
             var role = await _rolesService.GetRole(roleId);
@@ -69,7 +67,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The role to add</param>
         /// <returns></returns>
         [HttpPost]
-        [OperationOrderAttribute(3)]
         public async Task<ActionResult> AddNewRole([FromBody] AddRoleRequest request)
         {
             await _rolesService.AddRole(new RosterdRole
@@ -87,7 +84,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="roleId">The role to be deleted</param>
         /// <returns></returns>
         [HttpDelete("{roleId}")]
-        [OperationOrderAttribute(4)]
         public async Task<ActionResult> RemoveRole([Required(AllowEmptyStrings = false)] string roleId)
         {
             await _rolesService.DeleteRole(roleId);

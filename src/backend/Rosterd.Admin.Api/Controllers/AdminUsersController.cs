@@ -76,6 +76,21 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
+        /// Update a organization admin user
+        /// </summary>
+        /// <param name="request">The organization admin member to update</param>
+        /// <returns></returns>
+        [HttpPut("organization-admins")]
+        public async Task<ActionResult<StaffModel>> UpdateOrganizationAdminUser([FromBody] UpdateStaffRequest request)
+        {
+            //TODO:
+            return null;
+            //var staff = await _staffService.UpdateStaff(UpdateStaffRequest.ToStaffModel(request), _userContext.UsersAuth0OrganizationId);
+            //await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
+            //return staff;
+        }
+
+        /// <summary>
         /// Adds a new facility admin user
         /// </summary>
         /// <param name="request">The admin to add for the facility</param>
@@ -92,6 +107,21 @@ namespace Rosterd.Admin.Api.Controllers
             var staffCreated = await _staffService.CreateStaff(staffToCreate, _userContext.UsersAuth0OrganizationId);
 
             return staffCreated;
+        }
+
+        /// <summary>
+        /// Update a facility admin user
+        /// </summary>
+        /// <param name="request">The facility admin member to update</param>
+        /// <returns></returns>
+        [HttpPut("facility-admins")]
+        public async Task<ActionResult<StaffModel>> UpdateFacilityAdminUser([FromBody] UpdateStaffRequest request)
+        {
+            //TODO:
+            return null;
+            //var staff = await _staffService.UpdateStaff(UpdateStaffRequest.ToStaffModel(request), _userContext.UsersAuth0OrganizationId);
+            //await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
+            //return staff;
         }
     }
 }

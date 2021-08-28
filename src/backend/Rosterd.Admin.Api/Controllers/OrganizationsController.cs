@@ -40,7 +40,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// The default is true</param>
         /// <returns></returns>
         [HttpGet]
-        [OperationOrder(1)]
         public async Task<ActionResult<PagedList<OrganizationModel>>> GetAllOrganizations([FromQuery] PagingQueryStringParameters pagingParameters, [FromQuery] bool activeOrganizationsOnly = true)
         {
             pagingParameters ??= new PagingQueryStringParameters();
@@ -54,7 +53,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("{organizationId}")]
-        [OperationOrderAttribute(2)]
         public async Task<ActionResult<OrganizationModel>> GetOrganization([ValidNumberRequired] long? organizationId)
         {
             var organizationModel = await _organizationService.GetOrganization(organizationId.Value);
@@ -67,7 +65,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Organization to add</param>
         /// <returns></returns>
         [HttpPost]
-        [OperationOrderAttribute(3)]
         public async Task<ActionResult<OrganizationModel>> CreateNewOrganization([Required] [FromBody] AddOrganizationRequest request)
         {
             var organization = await _organizationService.CreateOrganization(request.ToOrganizationModel());
@@ -81,7 +78,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Organization to update</param>
         /// <returns></returns>
         [HttpPut]
-        [OperationOrderAttribute(4)]
         public async Task<ActionResult<OrganizationModel>> UpdateOrganization([Required] [FromBody] UpdateOrganizationRequest request) => throw new NotImplementedException("Not Implemented");
 
 
@@ -91,7 +87,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="organizationId">The Organization to be deleted</param>
         /// <returns></returns>
         [HttpDelete("{organizationId}")]
-        [OperationOrderAttribute(5)]
         public async Task<ActionResult> RemoveOrganization([ValidNumberRequired] long? organizationId)
         {
             await _organizationService.RemoveOrganization(organizationId.Value);

@@ -41,7 +41,6 @@ namespace Rosterd.Client.Api.Controllers
         /// <param name="jobId">The job id</param>
         /// <returns></returns>
         [HttpPut("{jobId}/confirmation")]
-        [OperationOrder(1)]
         public async Task<ActionResult> AcceptAndConfirmJob(long jobId)
         {
             //Validate start time
@@ -56,7 +55,7 @@ namespace Rosterd.Client.Api.Controllers
 
             //Raise a job status change event (job is set to accepted status)
             await _jobEventsService.GenerateJobStatusChangedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobId, JobStatus.Accepted);
-            
+
             return Ok();
         }
 
@@ -66,7 +65,6 @@ namespace Rosterd.Client.Api.Controllers
         /// <param name="jobId">The job id</param>
         /// <returns></returns>
         [HttpDelete("{jobId}/cancellations")]
-        [OperationOrder(2)]
         public async Task<ActionResult> CancelJob(long jobId)
         {
             //TODO: When auth is ready pass in a proper staff id

@@ -41,7 +41,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         [HttpGet]
-        [OperationOrder(1)]
         public async Task<ActionResult<Domain.Models.PagedList<FacilityModel>>> GetAllFacilities([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
@@ -55,7 +54,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("{facilityId}")]
-        [OperationOrderAttribute(2)]
         public async Task<ActionResult<FacilityModel>> GetFacilityById([ValidNumberRequired] long? facilityId)
         {
             var facilityModel = await _facilitiesService.GetFacility(facilityId.Value, _userContext.UsersAuth0OrganizationId);
@@ -68,7 +66,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Facility to add</param>
         /// <returns></returns>
         [HttpPost]
-        [OperationOrderAttribute(3)]
         public async Task<ActionResult<FacilityModel>> AddNewFacility([Required][FromBody] AddFacilityRequest request)
         {
             var facilityModelToAdd = request.ToFacilityModel();
@@ -92,7 +89,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="request">The Facility to update</param>
         /// <returns></returns>
         [HttpPut]
-        [OperationOrderAttribute(4)]
         public async Task<ActionResult<FacilityModel>> UpdateFacility([Required] UpdateFacilityRequest request)
         {
             var facilityToUpdate = request.ToFacilityModel();
@@ -119,7 +115,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="facilityId">The facility id to update</param>
         /// <returns></returns>
         [HttpPatch("{facilityId}/reactivate")]
-        [OperationOrderAttribute(3)]
         public async Task<ActionResult> ReactivateFacility([ValidNumberRequired] long? facilityId)
         {
             await _facilitiesService.ReactivateFacility(facilityId.Value, _userContext.UsersAuth0OrganizationId);
@@ -132,7 +127,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="facilityId">The Facility to be deleted</param>
         /// <returns></returns>
         [HttpDelete("{facilityId}")]
-        [OperationOrderAttribute(5)]
         public async Task<ActionResult> RemoveFacility([ValidNumberRequired] long? facilityId)
         {
             await _facilitiesService.RemoveFacility(facilityId.Value, _userContext.UsersAuth0OrganizationId);

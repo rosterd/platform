@@ -36,7 +36,6 @@ namespace Rosterd.Client.Api.Controllers
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         [HttpGet("my/relevant")]
-        [OperationOrder(1)]
         public async Task<ActionResult<PagedList<JobModel>>> GetAllRelevantJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             //TODO: Once auth is done, get the right staff id to check
@@ -52,7 +51,6 @@ namespace Rosterd.Client.Api.Controllers
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         [HttpGet("my/current")]
-        [OperationOrder(2)]
         public async Task<ActionResult<PagedList<JobModel>>> GetAllCurrentJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             //TODO: Once auth is done, get the right staff id to check
@@ -68,7 +66,6 @@ namespace Rosterd.Client.Api.Controllers
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         [HttpGet("my/history/completed")]
-        [OperationOrder(3)]
         public async Task<ActionResult<PagedList<JobModel>>> GetAllHistoricalCompletedJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             //TODO: Once auth is done, get the right staff id to check
@@ -84,7 +81,6 @@ namespace Rosterd.Client.Api.Controllers
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         [HttpGet("my/history/cancelled")]
-        [OperationOrder(4)]
         public async Task<ActionResult<PagedList<JobModel>>> GetAllHistoricalCancelledJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             //TODO: Once auth is done, get the right staff id to check

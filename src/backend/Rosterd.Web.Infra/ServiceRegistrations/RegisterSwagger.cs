@@ -25,7 +25,7 @@ namespace Rosterd.Web.Infra.ServiceRegistrations
             options.DescribeAllParametersInCamelCase();
             options.DocInclusionPredicate((name, api) => true);
             options.TagActionsBy(api => new[] {api.GroupName});
-            
+
             try
             {
                 options.IncludeXmlComments(XmlCommentsFilePath);
@@ -41,7 +41,6 @@ namespace Rosterd.Web.Infra.ServiceRegistrations
             //Document Filters
             options.DocumentFilter<LowercaseDocumentFilter>();
             options.DocumentFilter<SwaggerCustomControllerOrderingFilter>();
-            options.DocumentFilter<OperationsOrderingFilter>();
 
             //Security
             options.AddSecurityDefinition("Bearer",
