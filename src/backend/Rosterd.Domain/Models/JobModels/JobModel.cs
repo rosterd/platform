@@ -52,8 +52,6 @@ namespace Rosterd.Domain.Models.JobModels
         [StringLength(2000)]
         public string Experience { get; set; }
 
-        public bool IsDayShift { get; set; }
-
         public bool IsNightShift { get; set; }
 
         public virtual List<JobSkillModel> JobSkills { get; set; }

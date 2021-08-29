@@ -43,8 +43,6 @@ namespace Rosterd.Admin.Api.Requests.Jobs
         [StringLength(2000)]
         public string Experience { get; set; }
 
-        public bool IsDayShift { get; set; }
-
         public bool IsNightShift { get; set; }
 
         [CollectionIsRequiredAndShouldNotBeEmpty]
@@ -64,7 +62,6 @@ namespace Rosterd.Admin.Api.Requests.Jobs
                 NoGracePeriod = NoGracePeriod,
                 Responsibilities = Responsibilities,
                 Experience = Experience,
-                IsDayShift = IsDayShift,
                 IsNightShift = IsNightShift,
                 JobSkills = SkillsRequiredForJob.AlwaysList().Select(s => new JobSkillModel
                 {
@@ -86,17 +83,6 @@ namespace Rosterd.Admin.Api.Requests.Jobs
 
                 if(noGracePeriod == null && gracePeriodToCancelMinutes == null)
                     context.AddFailure("Either no-grace-period' or 'grace-period-to-cancel-minutes' must be specified");
-            });
-
-            //Day or night shift validation
-            RuleFor(x => x.IsDayShift).Custom((isDayShift, context) => {
-                var isNightShift = ((AddJobRequest)context.InstanceToValidate).IsNightShift;
-
-                if(isDayShift && isNightShift)
-                    context.AddFailure("Job cant both night and day shift");
-
-                if(!isDayShift && !isNightShift)
-                    context.AddFailure("Job has to be either a day or night shift");
             });
 
             //To date should be greater than from date

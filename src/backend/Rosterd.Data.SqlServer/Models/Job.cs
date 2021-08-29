@@ -47,7 +47,6 @@ namespace Rosterd.Data.SqlServer.Models
         public DateTime LastJobStatusChangeDateTimeUtc { get; set; }
         public string Responsibilities { get; set; }
         public string Experience { get; set; }
-        public bool? IsDayShift { get; set; }
         public bool? IsNightShift { get; set; }
 
         [ForeignKey(nameof(FacilityId))]

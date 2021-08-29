@@ -49,9 +49,6 @@ namespace Rosterd.Domain.Search
         public string Experience { get; set; }
 
         [SearchableField]
-        public bool IsDayShift { get; set; }
-
-        [SearchableField]
         public bool IsNightShift { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]

@@ -71,8 +71,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// Validation:
         /// -------------------
         /// 1. "Either no-grace-period' or 'grace-period-to-cancel-minutes' must be specified"
-        /// 2. Job has to be either a day or night shift, but cant be both at the same time
-        /// 3. Job end date time must be greater than start date time
+        /// 2. Job end date time must be greater than start date time
         /// </summary>
         /// <param name="request">The Job to add</param>
         /// <returns></returns>

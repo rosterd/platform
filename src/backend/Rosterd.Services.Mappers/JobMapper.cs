@@ -29,7 +29,6 @@ namespace Rosterd.Services.Mappers
                 Facility = dataModel.Facility?.ToDomainModel(),
                 Responsibilities = dataModel.Responsibilities,
                 Experience = dataModel.Experience,
-                IsDayShift = dataModel.IsDayShift ?? false,
                 IsNightShift = dataModel.IsNightShift ?? false,
                 JobPostedDateTimeUtc = dataModel.JobPostedDateTimeUtc,
                 JobStatus = (JobStatus?)dataModel.JobStatusId,
@@ -62,7 +61,6 @@ namespace Rosterd.Services.Mappers
                 NoGracePeriod = dataModel.NoGracePeriod,
                 Responsibilities = dataModel.Responsibilities,
                 Experience = dataModel.Experience,
-                IsDayShift = dataModel.IsDayShift ?? false,
                 IsNightShift = dataModel.IsNightShift ?? false,
                 JobPostedDateTimeUtc = dataModel.JobPostedDateTimeUtc,
                 JobStatusName = ((JobStatus?)dataModel.JobStatusId).ToString()
@@ -119,7 +117,6 @@ namespace Rosterd.Services.Mappers
                         Suburb = job.Document.FacilitySuburb
                     },
                     GracePeriodToCancelMinutes = job.Document.GracePeriodToCancelMinutes,
-                    IsDayShift = job.Document.IsDayShift,
                     IsNightShift = job.Document.IsNightShift,
                     JobEndDateTimeUtc = job.Document.JobEndDateTimeUtc,
                     JobPostedDateTimeUtc = job.Document.JobPostedDateTimeUtc,
@@ -150,7 +147,6 @@ namespace Rosterd.Services.Mappers
                 GracePeriodToCancelMinutes = domainModel.GracePeriodToCancelMinutes,
                 NoGracePeriod = domainModel.NoGracePeriod,
                 Experience = domainModel.Experience,
-                IsDayShift = domainModel.IsDayShift,
                 IsNightShift = domainModel.IsNightShift,
                 Responsibilities = domainModel.Responsibilities
             };
