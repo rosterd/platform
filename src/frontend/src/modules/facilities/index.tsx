@@ -46,13 +46,14 @@ const Facilities: React.FC = (): JSX.Element => {
     })();
   }, []);
 
-  const handleAddFacility = async (values: AddFacilityFormValues) => {
+  const handleAddFacility = async ({address, ...values}: AddFacilityFormValues) => {
     setLoading(true);
+
     const requestBody: AddFacilityRequest = {
       ...values,
-      latitude: 0,
-      longitude: 0,
+      ...address,
     };
+
     const facilityRes = await requestMaker<Facility>(addFacility(requestBody));
     setLoading(false);
     if (facilityRes) {

@@ -5,6 +5,7 @@ import AddressInput from './AddressInput';
 export type AddressInputType = {
   label: string;
   name: string;
+  isRequired?: boolean;
 };
 
 const index = (props: AddressInputType): JSX.Element => {

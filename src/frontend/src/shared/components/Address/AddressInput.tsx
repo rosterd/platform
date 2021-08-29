@@ -17,19 +17,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-type FieldType = {
-  prediction: google.maps.places.AutocompletePrediction | null;
-  lat: number;
-  lng: number;
-} | null;
+export type AddressFieldType = {
+  address: string;
+  country: string;
+  city: string;
+  suburb: string;
+  latitude: number;
+  longitude: number;
+};
 
-export const AddressInput = ({name, label}: AddressInputType): JSX.Element => {
-  const [{value}, meta, {setValue, setTouched}] = useField<FieldType>(name);
+export const addressInitialValue: AddressFieldType = {
+  latitude: 0,
+  longitude: 0,
+  suburb: '',
+  city: '',
+  country: '',
+  address: '',
+};
+
+export const AddressInput = ({name, label, isRequired = false}: AddressInputType): JSX.Element => {
+  const [{value}, meta, {setValue, setTouched}] = useField<AddressFieldType>({
+    name,
+    validate: (inputValue) => {
+      let error;
+      if (isRequired && !inputValue.address) {
+        error = `${label} is required`;
+      }
+      return error;
+    },
+  });
   const autocompleteService = new window.google.maps.places.AutocompleteService();
+
   const geoCoderService = new window.google.maps.Geocoder();
   const classes = useStyles();
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState<google.maps.places.AutocompletePrediction[]>([]);
+
+  const [prediction, setPrediction] = React.useState<google.maps.places.AutocompletePrediction | null>(null);
 
   const fetch = React.useMemo(
     () =>
@@ -39,17 +63,25 @@ export const AddressInput = ({name, label}: AddressInputType): JSX.Element => {
     [],
   );
 
+  // Reset form
+  React.useEffect(() => {
+    if (!value.address) {
+      setInputValue('');
+    }
+  }, [value]);
+
   React.useEffect(() => {
     if (inputValue === '') {
-      setOptions(value?.prediction ? [value.prediction] : []);
-      setValue(null);
+      setOptions([]);
+      setPrediction(null);
+      setValue(addressInitialValue);
       return;
     }
     fetch({input: inputValue}, (results: google.maps.places.AutocompletePrediction[]) => {
       let newOptions: google.maps.places.AutocompletePrediction[] = [];
 
-      if (value?.prediction) {
-        newOptions = [value.prediction];
+      if (prediction) {
+        newOptions = [prediction];
       }
 
       if (results) {
@@ -71,15 +103,23 @@ export const AddressInput = ({name, label}: AddressInputType): JSX.Element => {
         autoComplete
         includeInputInList
         filterSelectedOptions
-        value={value?.prediction || null}
-        onChange={(event, prediction: google.maps.places.AutocompletePrediction | null) => {
-          setOptions(prediction ? [prediction, ...options] : options);
-          geoCoderService?.geocode({placeId: prediction?.place_id}, (result) => {
+        value={prediction}
+        onChange={(_, selectedPrediction: google.maps.places.AutocompletePrediction | null) => {
+          setOptions(selectedPrediction ? [selectedPrediction, ...options] : options);
+          geoCoderService?.geocode({placeId: selectedPrediction?.place_id}, (result) => {
             if (result?.length) {
+              const country = result[0].address_components.find((address) => address.types.includes('country'))?.long_name || '';
+              const city = result[0].address_components.find((address) => address.types.includes('administrative_area_level_1'))?.long_name || '';
+              const suburb = result[0].address_components.find((address) => address.types.includes('sublocality'))?.long_name || '';
+              const address = result[0].formatted_address || '';
+              setPrediction(selectedPrediction);
               setValue({
-                prediction,
-                lat: result[0].geometry.location.lat(),
-                lng: result[0].geometry.location.lng(),
+                address,
+                country,
+                city,
+                suburb,
+                latitude: result[0].geometry.location.lat(),
+                longitude: result[0].geometry.location.lng(),
               });
             }
           });
