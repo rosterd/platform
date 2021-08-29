@@ -37,10 +37,11 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IEventGridClient _eventGridClient;
         private readonly IUserContext _userContext;
         private readonly IStaffService _staffService;
+        private readonly IAuth0UserService _auth0UserService;
 
         public AdminUsersController(ILogger<StaffController> logger, IAuth0UserService adminUserService,
             IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IUserContext userContext,
-            IStaffService staffService) : base(appSettings)
+            IStaffService staffService, IAuth0UserService auth0UserService) : base(appSettings)
         {
             _logger = logger;
             _adminUserService = adminUserService;
@@ -48,6 +49,7 @@ namespace Rosterd.Admin.Api.Controllers
             _eventGridClient = eventGridClient;
             _userContext = userContext;
             _staffService = staffService;
+            _auth0UserService = auth0UserService;
         }
 
         /// <summary>
@@ -92,6 +94,19 @@ namespace Rosterd.Admin.Api.Controllers
             var auth0OrganizationId = _userContext.IsUserRosterdAdmin() ? request.Auth0OrganizationId : _userContext.UsersAuth0OrganizationId;
             var adminUserModel = await _adminUserService.UpdateOrganizationAdminInAuth0(auth0OrganizationId, request.ToAuth0UserModel());
             return adminUserModel;
+        }
+
+        /// <summary>
+        /// Removes the organization admin from aoth-0
+        /// </summary>
+        /// <param name="auth0UserId">The admin to remove from auth0</param>
+        /// <returns></returns>
+        [HttpDelete("organization-admins/{auth0UserId}")]
+        public async Task<ActionResult> RemoveStaffMember([Required] string auth0UserId)
+        {
+            //Remove from auth0
+            await _auth0UserService.RemoveUserFromAuth0(auth0UserId);
+            return Ok();
         }
 
         /// <summary>
