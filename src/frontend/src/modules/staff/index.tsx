@@ -47,11 +47,14 @@ const Staff: React.FC = (): JSX.Element => {
     })();
   }, []);
 
-  const onAdd = async (staffToAdd: Staff) => {
+  const handleAddStaff = async (values: Staff) => {
     setLoading(true);
-    const addedStaff = await requestMaker<Staff>(addStaff(staffToAdd));
+    setLoading(true);
+    const addedStaff = await requestMaker<Staff>(addStaff(values));
     setLoading(false);
-    setStaff([addedStaff, ...staff]);
+    if (addedStaff) {
+      setStaff([addedStaff, ...staff]);
+    }
   };
 
   const onUpdate = async (staffToUpdate: Staff) => {
@@ -105,7 +108,6 @@ const Staff: React.FC = (): JSX.Element => {
             data={staff}
             isLoading={loading}
             editable={{
-              onRowAdd: onAdd,
               onRowUpdate: onUpdate,
               onRowDelete: onDelete,
             }}
@@ -117,7 +119,7 @@ const Staff: React.FC = (): JSX.Element => {
             totalCount={results.totalCount}
           />
         </Box>
-        <AddStaffModal open={showStaffModal} handleClose={() => setShowStaffModal(false)} />
+        <AddStaffModal open={showStaffModal} onAddStaff={handleAddStaff} handleClose={() => setShowStaffModal(false)} />
       </Box>
     </AppAnimate>
   );

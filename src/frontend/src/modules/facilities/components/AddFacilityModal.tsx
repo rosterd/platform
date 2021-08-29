@@ -50,11 +50,6 @@ const AddFacilityModal: React.FC<AddFacilityModalProps> = (props): JSX.Element =
         phoneNumber2: '',
       }}
       validationSchema={validationSchema}
-      validate={(values: AddFacilityFormValues) => {
-        const errors: Partial<AddFacilityFormValues> = {};
-        console.log(values);
-        return errors;
-      }}
       onSubmit={async (values, {setSubmitting, resetForm}) => {
         setSubmitting(true);
         await props.onAddFacility(values);

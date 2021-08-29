@@ -12,11 +12,6 @@ import {getSkills} from 'services';
 import {components} from 'types/models';
 import SkillsInput from 'shared/components/Skills';
 
-interface AddStaffModalProps {
-  open: boolean;
-  handleClose: () => void;
-}
-
 interface FormValues {
   email: string;
   firstName: string;
@@ -24,6 +19,12 @@ interface FormValues {
   mobilePhoneNumber: string;
   skills: number[];
   jobTitle: string;
+}
+
+interface AddStaffModalProps {
+  open: boolean;
+  handleClose: () => void;
+  onAddStaff: (values: FormValues) => void;
 }
 
 type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
@@ -59,8 +60,10 @@ const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
         skills: [],
       }}
       validationSchema={validationSchema}
-      onSubmit={(values: FormValues, {setSubmitting}) => {
-        console.log(values);
+      onSubmit={async (values: FormValues, {setSubmitting, resetForm}) => {
+        setSubmitting(true);
+        await props.onAddStaff(values);
+        resetForm();
         setSubmitting(false);
       }}>
       {({submitForm, isSubmitting}) => (
