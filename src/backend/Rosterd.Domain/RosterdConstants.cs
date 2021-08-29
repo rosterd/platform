@@ -81,5 +81,10 @@ namespace Rosterd.Domain
             public const string AccessToken = "access_token";
             public const string Roles = "https://rosterd.com/roles";
         }
+
+        public static class Users
+        {
+            public const string UserRemovedFromAuth0 = "UserRemovedFromAuth0";
+        }
     }
 }

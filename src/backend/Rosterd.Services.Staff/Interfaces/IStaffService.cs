@@ -52,9 +52,10 @@ namespace Rosterd.Services.Staff.Interfaces
         /// Updates the status of a given staff member to active
         /// </summary>
         /// <param name="staffId"></param>
+        /// <param name="userAuth0Id"></param>
         /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task UpdateStaffToActive(long staffId, string auth0OrganizationId);
+        Task UpdateStaffToActive(long staffId, string userAuth0Id, string auth0OrganizationId);
 
         /// <summary>
         /// Gets the staff's preferences

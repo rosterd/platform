@@ -8,6 +8,7 @@ using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Data.TableStorage.Context;
 using Rosterd.Data.TableStorage.Models;
+using Rosterd.Domain;
 using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
@@ -114,8 +115,9 @@ namespace Rosterd.Services.Staff
             if (staff != null)
             {
                 staff.IsActive = false;
-                await _context.SaveChangesAsync();
+                staff.Auth0Id = RosterdConstants.Users.UserRemovedFromAuth0;
 
+                await _context.SaveChangesAsync();
                 return staff.ToDomainModel();
             }
 
@@ -123,7 +125,7 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task UpdateStaffToActive(long staffId, string auth0OrganizationId)
+        public async Task UpdateStaffToActive(long staffId, string userAuth0Id, string auth0OrganizationId)
         {
             await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
 
@@ -132,6 +134,8 @@ namespace Rosterd.Services.Staff
             if (staff != null)
             {
                 staff.IsActive = true;
+                staff.Auth0Id = userAuth0Id;
+
                 await _context.SaveChangesAsync();
             }
         }

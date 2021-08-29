@@ -120,7 +120,13 @@ namespace Rosterd.Admin.Api.Controllers
         [HttpPatch("{staffId}/reactivate")]
         public async Task<ActionResult> ReactivateStaffMember([ValidNumberRequired] long? staffId)
         {
-            await _staffService.UpdateStaffToActive(staffId.Value, _userContext.UsersAuth0OrganizationId);
+            //1. Gets the existing staff
+            var existingInactiveStaff = await _staffService.GetStaff(staffId.Value, _userContext.UsersAuth0OrganizationId);
+
+            //2. Re-create the user in Auth0
+            var userCreatedInAuth0 = await _auth0UserService.AddStaffToAuth0(_userContext.UsersAuth0OrganizationId, existingInactiveStaff.FirstName, existingInactiveStaff.LastName, existingInactiveStaff.Email, existingInactiveStaff.MobilePhoneNumber, _userContext.UsersAuth0OrganizationId);
+
+            await _staffService.UpdateStaffToActive(staffId.Value, userCreatedInAuth0.UserAuth0Id, _userContext.UsersAuth0OrganizationId);
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
             return Ok();
         }
