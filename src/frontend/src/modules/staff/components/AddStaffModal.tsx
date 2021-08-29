@@ -17,7 +17,7 @@ interface FormValues {
   firstName: string;
   lastName: string;
   mobilePhoneNumber: string;
-  skills: number[];
+  skillIds: number[];
   jobTitle: string;
 }
 
@@ -57,7 +57,7 @@ const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
         email: '',
         jobTitle: '',
         mobilePhoneNumber: '',
-        skills: [],
+        skillIds: [],
       }}
       validationSchema={validationSchema}
       onSubmit={async (values: FormValues, {setSubmitting, resetForm}) => {
@@ -81,14 +81,14 @@ const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
               <br />
               <Field component={TextField} name='jobTitle' label='Job title' fullWidth />
               <br />
-              <SkillsInput skills={skills} label='Skills' name='skills' />
+              <SkillsInput skills={skills} label='Skills' name='skillIds' />
               <br />
               {isSubmitting && <LinearProgress />}
             </Form>
           </DialogContent>
           <DialogActions>
             <Button onClick={props.handleClose} color='primary'>
-              Cancel
+              Close
             </Button>
             <Button onClick={submitForm} color='primary' disabled={isSubmitting} variant='contained'>
               Add
