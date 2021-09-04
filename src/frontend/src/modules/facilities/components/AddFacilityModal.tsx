@@ -10,34 +10,60 @@ import {TextField} from 'formik-material-ui';
 import * as yup from 'yup';
 import AddressInput from 'shared/components/Address';
 import {AddressFieldType, addressInitialValue} from 'shared/components/Address/AddressInput';
+import {Facility} from '..';
 
 export interface AddFacilityFormValues {
   facilityName: string;
   address: AddressFieldType;
   phoneNumber1: string;
-  phoneNumber2: string;
+  phoneNumber2?: string | null;
 }
 
 interface AddFacilityModalProps {
+  facility?: Facility;
   open: boolean;
   onAddFacility: (values: AddFacilityFormValues) => void;
   handleClose: () => void;
 }
 
-const AddFacilityModal: React.FC<AddFacilityModalProps> = (props): JSX.Element => {
+const defaultInitialValue = {
+  facilityName: '',
+  address: addressInitialValue,
+  phoneNumber1: '',
+  phoneNumber2: '',
+};
+
+const AddFacilityModal: React.FC<AddFacilityModalProps> = ({facility, ...props}): JSX.Element => {
   const validationSchema = yup.object({
     facilityName: yup.string().required('Please enter Facility Name'),
     phoneNumber1: yup.string().required('Phone number is required'),
   });
 
+  const [initialValues, setInitialValues] = React.useState<AddFacilityFormValues>(defaultInitialValue);
+
+  React.useEffect(() => {
+    if (facility) {
+      const {suburb, city, address, country, latitude, longitude, ...rest} = facility;
+      setInitialValues({
+        address: {
+          address,
+          suburb,
+          city,
+          country,
+          latitude,
+          longitude,
+        },
+        ...rest,
+      });
+    } else {
+      setInitialValues(defaultInitialValue);
+    }
+  }, [facility]);
+
   return (
     <Formik
-      initialValues={{
-        facilityName: '',
-        address: addressInitialValue,
-        phoneNumber1: '',
-        phoneNumber2: '',
-      }}
+      enableReinitialize
+      initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={async (values, {setSubmitting, resetForm}) => {
         setSubmitting(true);
@@ -45,8 +71,16 @@ const AddFacilityModal: React.FC<AddFacilityModalProps> = (props): JSX.Element =
         resetForm();
         setSubmitting(false);
       }}>
-      {({submitForm, isSubmitting}) => (
-        <Dialog fullWidth maxWidth='sm' open={props.open} onClose={props.handleClose} aria-labelledby='form-dialog-title'>
+      {({submitForm, isSubmitting, resetForm}) => (
+        <Dialog
+          fullWidth
+          maxWidth='sm'
+          open={props.open}
+          onClose={() => {
+            props.handleClose();
+            resetForm();
+          }}
+          aria-labelledby='form-dialog-title'>
           <DialogTitle id='form-dialog-title'>Add Staff</DialogTitle>
           <DialogContent>
             <Form>
@@ -63,11 +97,16 @@ const AddFacilityModal: React.FC<AddFacilityModalProps> = (props): JSX.Element =
             </Form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={props.handleClose} color='primary'>
+            <Button
+              onClick={() => {
+                props.handleClose();
+                resetForm();
+              }}
+              color='primary'>
               Close
             </Button>
             <Button onClick={submitForm} color='primary' disabled={isSubmitting} variant='contained'>
-              Add Facility
+              {initialValues.facilityName ? 'Update Facility' : 'Add Facility'}
             </Button>
           </DialogActions>
         </Dialog>

@@ -21,7 +21,7 @@ export type AddressFieldType = {
   address: string;
   country: string;
   city: string;
-  suburb: string;
+  suburb: string | null | undefined;
   latitude: number;
   longitude: number;
 };
@@ -65,16 +65,13 @@ export const AddressInput = ({name, label, isRequired = false}: AddressInputType
 
   // Reset form
   React.useEffect(() => {
-    if (!value.address) {
-      setInputValue('');
-    }
+    setInputValue(value.address);
   }, [value]);
 
   React.useEffect(() => {
     if (inputValue === '') {
       setOptions([]);
       setPrediction(null);
-      setValue(addressInitialValue);
       return;
     }
     fetch({input: inputValue}, (results: google.maps.places.AutocompletePrediction[]) => {
@@ -89,7 +86,7 @@ export const AddressInput = ({name, label, isRequired = false}: AddressInputType
       }
       setOptions(newOptions);
     });
-  }, [value, inputValue, fetch]);
+  }, [inputValue, fetch]);
 
   return (
     <>
@@ -104,6 +101,7 @@ export const AddressInput = ({name, label, isRequired = false}: AddressInputType
         includeInputInList
         filterSelectedOptions
         value={prediction}
+        inputValue={inputValue}
         onChange={(_, selectedPrediction: google.maps.places.AutocompletePrediction | null) => {
           setOptions(selectedPrediction ? [selectedPrediction, ...options] : options);
           geoCoderService?.geocode({placeId: selectedPrediction?.place_id}, (result) => {
@@ -127,17 +125,21 @@ export const AddressInput = ({name, label, isRequired = false}: AddressInputType
         onInputChange={(_, newInputValue) => {
           setInputValue(newInputValue);
         }}
-        renderInput={(params) => (
-          <TextField
-            onBlur={() => setTouched(true)}
-            error={meta.touched && !!meta.error}
-            helperText={meta.touched && meta.error}
-            {...params}
-            label={label}
-            variant='standard'
-            fullWidth
-          />
-        )}
+        renderInput={(params) => {
+          console.log(params);
+          console.log('input', inputValue);
+          return (
+            <TextField
+              onBlur={() => setTouched(true)}
+              error={meta.touched && !!meta.error}
+              helperText={meta.touched && meta.error}
+              {...params}
+              label={label}
+              variant='standard'
+              fullWidth
+            />
+          );
+        }}
         renderOption={(option) => {
           const matches = option.structured_formatting.main_text_matched_substrings;
           const parts = parse(

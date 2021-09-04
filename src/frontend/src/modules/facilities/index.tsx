@@ -13,7 +13,7 @@ import AddFacilityModal, {AddFacilityFormValues} from './components/AddFacilityM
 
 type GetFacilitiesResponse = components['schemas']['FacilityModelPagedList'];
 type AddFacilityRequest = components['schemas']['AddFacilityRequest'];
-type Facility = components['schemas']['FacilityModel'];
+export type Facility = components['schemas']['FacilityModel'];
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -33,6 +33,7 @@ const Facilities: React.FC = (): JSX.Element => {
   const [facilities, setFacilities] = useState(initialState);
   const [showAddFacility, setShowAddFacility] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [facility, setFacility] = useState<Facility>();
   const {requestMaker} = useRequest();
 
   useEffect(() => {
@@ -61,16 +62,21 @@ const Facilities: React.FC = (): JSX.Element => {
     }
   };
 
-  const onUpdate = async (facilityToUpdate: Facility) => {
+  const onUpdate = async (_: any, rowData?: Facility) => {
     setShowAddFacility(true);
-    console.log(facilityToUpdate);
+    setFacility(rowData);
   };
 
   const onDelete = async (facilityToDelete: Facility) => {
     setLoading(true);
     await requestMaker(deleteFacility(facilityToDelete.facilityId || 0));
     setLoading(false);
-    setFacilities(facilities.filter((facility) => facility.facilityId !== facilityToDelete.facilityId));
+    setFacilities(facilities.filter((f) => f.facilityId !== facilityToDelete.facilityId));
+  };
+
+  const handleClose = () => {
+    setShowAddFacility(false);
+    setFacility(undefined);
   };
 
   return (
@@ -94,6 +100,7 @@ const Facilities: React.FC = (): JSX.Element => {
         </Box>
         <Box className={classes.materialTable}>
           <MaterialTable
+            onRowClick={onUpdate}
             title=''
             columns={[
               {title: 'Name', field: 'facilityName'},
@@ -102,7 +109,6 @@ const Facilities: React.FC = (): JSX.Element => {
               {title: 'Phone', field: 'phoneNumber1'},
             ]}
             editable={{
-              onRowUpdate: onUpdate,
               onRowDelete: onDelete,
             }}
             options={{
@@ -112,7 +118,7 @@ const Facilities: React.FC = (): JSX.Element => {
             isLoading={loading}
           />
         </Box>
-        <AddFacilityModal open={showAddFacility} onAddFacility={handleAddFacility} handleClose={() => setShowAddFacility(false)} />
+        <AddFacilityModal facility={facility} open={showAddFacility} onAddFacility={handleAddFacility} handleClose={handleClose} />
       </Box>
     </AppAnimate>
   );
