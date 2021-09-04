@@ -83,7 +83,7 @@ namespace Rosterd.Services.Jobs
             await CreateJobsStatusChangeRecord(jobCreated.Entity.JobId, JobStatus.Published, "New job created", utcNow);
             await _context.SaveChangesAsync();
 
-            return jobCreated.Entity.ToDomainModel();
+            return jobCreated.Entity.ToDomainModelWithNoFacilityDetails();
         }
 
         ///<inheritdoc/>

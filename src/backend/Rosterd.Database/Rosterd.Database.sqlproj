@@ -76,6 +76,7 @@
     <Build Include="dbo\Tables\JobStaff.sql" />
     <Build Include="dbo\Stored Procedures\sp_MSforeachtable.sql" />
     <Build Include="dbo\Stored Procedures\sp_MSforeach_worker.sql" />
+    <Build Include="dbo\Tables\StaffFacility.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LocalDbToProjectCompare.scmp" />
