@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {AxiosRequestConfig} from 'axios';
 import Box from '@material-ui/core/Box';
 import AppAnimate from '@crema/core/AppAnimate';
 import {AppBar, Tabs, Tab, makeStyles, Typography, Button, Grid} from '@material-ui/core';
@@ -6,7 +7,16 @@ import MaterialTable from 'material-table';
 import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import AddIcon from '@material-ui/icons/Add';
+import {components} from 'types/models';
+import {deleteJob, getJobs, publishJob} from 'services';
+import useRequest from 'shared/hooks/useRequest';
+import {isPast, isFuture, parseISO} from 'date-fns';
 import PublishJobModal from './components/PublishJobModal';
+import JobModal from './components/JobModal';
+
+type GetJobsResponse = components['schemas']['JobModelPagedList'];
+type AddJobRequest = components['schemas']['AddJobRequest'];
+type Job = components['schemas']['JobModel'];
 
 interface TabPanelProps {
   // eslint-disable-next-line react/require-default-props
@@ -39,14 +49,64 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
+const initialState: Job[] = [];
+
 const Jobs = (): JSX.Element => {
   const classes = useStyles();
   const [tabIndex, setTabIndex] = useState(0);
   const [showJobModal, setShowJobModal] = useState(false);
+  const [jobDetails, setJobDetails] = useState({} as Job);
+  const [results, setResults] = useState({} as GetJobsResponse);
+  const [activeJobs, setActiveJobs] = useState(initialState);
+  const [jobs, setJobs] = useState(initialState);
+  const [loading, setLoading] = useState(false);
+  const [showAddJobModal, setShowAddJobModal] = useState(false);
+  const {requestMaker} = useRequest();
 
   const handleTabChange = (_: any, newValue: number) => {
     setTabIndex(newValue);
   };
+
+  const getActiveJobs = (allJobs: Job[]) => allJobs.filter((job) => isFuture(parseISO(job.jobEndDateTimeUtc)) || job.jobStatus === 'Published');
+  const getCompletedJobs = (allJobs: Job[]) =>
+    allJobs.filter((job) => isPast(parseISO(job.jobEndDateTimeUtc)) || job.jobStatus !== 'Published' || job.jobStatus !== 'Published');
+
+  const fetchData = async (config: AxiosRequestConfig) => {
+    setLoading(true);
+    const jobsResponse = await requestMaker<GetJobsResponse>(config);
+    setLoading(false);
+    setResults(jobsResponse);
+    const allJobs = jobsResponse.items || [];
+    setActiveJobs(getActiveJobs(allJobs));
+    setJobs(getCompletedJobs(allJobs));
+  };
+
+  useEffect(() => {
+    (async () => {
+      await fetchData(getJobs());
+    })();
+  }, []);
+
+  const handlePublishJob = async (values: AddJobRequest) => {
+    const jobRes = await requestMaker<Job>(publishJob(values));
+    setLoading(false);
+    if (jobRes) {
+      setJobs([jobRes, ...jobs]);
+    }
+  };
+
+  const handleRowClick = (_: any, rowData?: Job) => {
+    setJobDetails(rowData || ({} as Job));
+    setShowJobModal(true);
+  };
+
+  const onDeleteJob = async (deletedJob: Job) => {
+    setLoading(true);
+    await requestMaker(deleteJob(deletedJob?.jobId));
+    setLoading(false);
+    setJobs(jobs.filter((job) => job.jobId !== deletedJob.jobId));
+  };
+
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <Box>
@@ -58,7 +118,7 @@ const Jobs = (): JSX.Element => {
               </Box>
             </Grid>
             <Grid item xs={6} className={classes.buttonContainer}>
-              <Button variant='contained' color='primary' startIcon={<AddIcon />} onClick={() => setShowJobModal(true)}>
+              <Button variant='contained' color='primary' startIcon={<AddIcon />} onClick={() => setShowAddJobModal(true)}>
                 Publish Job
               </Button>
             </Grid>
@@ -67,70 +127,52 @@ const Jobs = (): JSX.Element => {
         <Box>
           <div className={classes.root}>
             <AppBar position='static'>
-              <Tabs value={tabIndex} onChange={handleTabChange} aria-label='simple tabs example'>
+              <Tabs value={tabIndex} onChange={handleTabChange} aria-label='Jobs'>
                 <Tab label='Active' />
-                <Tab label='Fulfilled' />
+                <Tab label='Completed' />
               </Tabs>
             </AppBar>
             <TabPanel value={tabIndex} index={0}>
               <MaterialTable
+                onRowClick={handleRowClick}
                 title=''
                 columns={[
-                  {title: 'Title', field: 'title'},
-                  {title: 'From', field: 'from', type: 'date'},
-                  {title: 'To', field: 'to', type: 'date'},
-                  {title: 'Status', field: 'status'},
-                  {title: 'Facility', field: 'facility'},
+                  {title: 'Title', field: 'jobTitle'},
+                  {title: 'From', field: 'jobStartDateTimeUtc', type: 'datetime'},
+                  {title: 'To', field: 'jobEndDateTimeUtc', type: 'datetime'},
+                  {title: 'Status', field: 'jobStatus'},
                 ]}
-                data={[
-                  {
-                    title: 'Staff Nurse',
-                    from: '12/04/2021 11:00AM',
-                    to: '13/04/2021 11:00AM',
-                    status: 'Accepted',
-                    facility: 'Mt Roskill',
-                  },
-                  {
-                    title: 'Staff Nurse',
-                    from: '11/04/2021 10:00PM',
-                    to: '12/04/2021 06:00AM',
-                    status: 'Pending',
-                    facility: 'Mt Roskill',
-                  },
-                ]}
+                editable={{
+                  onRowDelete: onDeleteJob,
+                }}
+                options={{
+                  actionsColumnIndex: -1,
+                }}
+                isLoading={loading}
+                data={activeJobs}
+                page={(results?.currentPage || 1) - 1}
+                totalCount={results.totalCount}
               />
             </TabPanel>
             <TabPanel value={tabIndex} index={1}>
               <MaterialTable
                 title=''
+                isLoading={loading}
                 columns={[
-                  {title: 'Title', field: 'title'},
-                  {title: 'From', field: 'from', type: 'date'},
-                  {title: 'To', field: 'to', type: 'date'},
-                  {title: 'Status', field: 'status'},
-                  {title: 'Facility', field: 'facility'},
+                  {title: 'Title', field: 'jobTitle'},
+                  {title: 'From', field: 'jobStartDateTimeUtc', type: 'datetime'},
+                  {title: 'To', field: 'jobEndDateTimeUtc', type: 'datetime'},
+                  {title: 'Status', field: 'jobStatus'},
                 ]}
-                data={[
-                  {
-                    title: 'Healthcare Assistant Level 2',
-                    from: '12/03/2021 11:00AM',
-                    to: '13/03/2021 05:00PM',
-                    status: 'Completed',
-                    facility: 'Mt Roskill',
-                  },
-                  {
-                    title: 'Chef',
-                    from: '02/02/2021 11:00AM',
-                    to: '03/02/2021 12:00AM',
-                    status: 'Completed',
-                    facility: 'Mt Roskill',
-                  },
-                ]}
+                data={jobs}
+                page={(results?.currentPage || 1) - 1}
+                totalCount={results.totalCount}
               />
             </TabPanel>
           </div>
         </Box>
-        <PublishJobModal open={showJobModal} handleClose={() => setShowJobModal(false)} />
+        <PublishJobModal open={showAddJobModal} handleClose={() => setShowAddJobModal(false)} onPublishJob={handlePublishJob} />
+        <JobModal open={showJobModal} handleClose={() => setShowJobModal(false)} details={jobDetails} />
       </Box>
     </AppAnimate>
   );

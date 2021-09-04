@@ -167,6 +167,81 @@ export interface paths {
     };
   };
   "/api/v{version}/adminusers/organization-admins": {
+    put: {
+      parameters: {
+        path: {
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["Auth0UserModel"];
+            "application/json": components["schemas"]["Auth0UserModel"];
+            "text/json": components["schemas"]["Auth0UserModel"];
+          };
+        };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+      /** The organization admin member to update */
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["UpdateAdminUserRequest"];
+          "text/json": components["schemas"]["UpdateAdminUserRequest"];
+          "application/*+json": components["schemas"]["UpdateAdminUserRequest"];
+        };
+      };
+    };
     post: {
       parameters: {
         path: {
@@ -240,6 +315,71 @@ export interface paths {
           "text/json": components["schemas"]["AddAdminUserRequest"];
           "application/*+json": components["schemas"]["AddAdminUserRequest"];
         };
+      };
+    };
+  };
+  "/api/v{version}/adminusers/organization-admins/{auth0userid}": {
+    delete: {
+      parameters: {
+        path: {
+          /** The admin to remove from auth0 */
+          auth0UserId: string;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
       };
     };
   };
@@ -2551,7 +2691,6 @@ export interface components {
       noGracePeriod?: boolean | null;
       responsibilities?: string | null;
       experience?: string | null;
-      isDayShift?: boolean;
       isNightShift?: boolean;
       skillsRequiredForJob?: number[] | null;
     };
@@ -2639,7 +2778,6 @@ export interface components {
       jobStatusName?: string | null;
       responsibilities?: string | null;
       experience?: string | null;
-      isDayShift?: boolean;
       isNightShift?: boolean;
       jobSkills?: components["schemas"]["JobSkillModel"][] | null;
     };
@@ -2739,6 +2877,15 @@ export interface components {
       hasPrevious?: boolean;
       hasNext?: boolean;
       items?: components["schemas"]["StaffModel"][] | null;
+    };
+    UpdateAdminUserRequest: {
+      /** The auth0 organization id to add this admin too */
+      auth0OrganizationId?: string | null;
+      /** The users auth0 id */
+      auth0UserId: string;
+      firstName: string;
+      lastName: string;
+      phoneNumber?: string | null;
     };
     UpdateFacilityRequest: {
       facilityId?: number;
