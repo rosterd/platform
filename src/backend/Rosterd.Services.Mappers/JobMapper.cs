@@ -47,6 +47,39 @@ namespace Rosterd.Services.Mappers
             return jobModel;
         }
 
+        public static JobModel ToDomainModelWithNoFacilityDetails(this Job dataModel)
+        {
+            var jobModel = new JobModel
+            {
+                JobId = dataModel.JobId,
+                JobTitle = dataModel.JobTitle,
+                Description = dataModel.Description,
+                JobStartDateTimeUtc = dataModel.JobStartDateTimeUtc,
+                JobEndDateTimeUtc = dataModel.JobEndDateTimeUtc,
+                Comments = dataModel.Comments,
+                GracePeriodToCancelMinutes = dataModel.GracePeriodToCancelMinutes,
+                NoGracePeriod = dataModel.NoGracePeriod,
+                Facility = new FacilityModel{FacilityId = dataModel.FacilityId},
+                Responsibilities = dataModel.Responsibilities,
+                Experience = dataModel.Experience,
+                IsNightShift = dataModel.IsNightShift ?? false,
+                JobPostedDateTimeUtc = dataModel.JobPostedDateTimeUtc,
+                JobStatus = (JobStatus?)dataModel.JobStatusId,
+                JobStatusName = ((JobStatus?)dataModel.JobStatusId).ToString(),
+                JobSkills = new List<JobSkillModel>(),
+            };
+
+            if (dataModel.JobSkills.IsNotNullOrEmpty())
+            {
+                foreach (var jobModelJobSkill in jobModel.JobSkills)
+                {
+                    jobModel.JobSkills.Add(new JobSkillModel { JobSkillId = jobModelJobSkill.JobSkillId, SkillId = jobModelJobSkill.SkillId, SkillName = jobModelJobSkill.SkillName});
+                }
+            }
+
+            return jobModel;
+        }
+
         public static JobSearchModel ToSearchModel(this Job dataModel)
         {
             var jobSearchModel = new JobSearchModel
