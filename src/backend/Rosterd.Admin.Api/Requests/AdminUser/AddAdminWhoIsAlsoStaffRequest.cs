@@ -51,6 +51,12 @@ namespace Rosterd.Admin.Api.Requests.AdminUser
         [CollectionIsRequiredAndShouldNotBeEmpty]
         public List<long> SkillIds { get; set; }
 
+        /// <summary>
+        /// Facilities this user has access too, when creating should at least have one
+        /// </summary>
+        [CollectionIsRequiredAndShouldNotBeEmpty]
+        public List<long> FacilityIds { get; set; }
+
         public Auth0UserModel ToAdminUserModel() => new Auth0UserModel {FirstName = FirstName, LastName = LastName, Email = Email, MobilePhoneNumber = PhoneNumber};
 
         public StaffModel ToStaffModel() =>
@@ -64,7 +70,8 @@ namespace Rosterd.Admin.Api.Requests.AdminUser
                 MobilePhoneNumber = MobilePhoneNumber,
                 Comments = Comments,
 
-                StaffSkills = SkillIds.AlwaysList().Select(s => new SkillModel { SkillId = s }).AlwaysList()
+                StaffSkills = SkillIds.AlwaysList().Select(s => new SkillModel { SkillId = s }).AlwaysList(),
+                StaffFacilities = FacilityIds.AlwaysList().Select(s => new FacilityModel { FacilityId = s }).AlwaysList()
             };
     }
 }

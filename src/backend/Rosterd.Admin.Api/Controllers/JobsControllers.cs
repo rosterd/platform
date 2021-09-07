@@ -9,6 +9,7 @@ using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Settings;
+using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
@@ -31,14 +32,16 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IJobEventsService _jobEventsService;
         private readonly IEventGridClient _eventGridClient;
         private readonly IUserContext _userContext;
+        private readonly IBelongsToValidator _belongsToValidator;
 
-        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobEventsService jobEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IUserContext userContext) : base(appSettings)
+        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobEventsService jobEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IUserContext userContext, IBelongsToValidator belongsToValidator) : base(appSettings)
         {
             _logger = logger;
             _jobService = jobsService;
             _jobEventsService = jobEventsService;
             _eventGridClient = eventGridClient;
             _userContext = userContext;
+            _belongsToValidator = belongsToValidator;
         }
 
         /// <summary>
@@ -78,6 +81,14 @@ namespace Rosterd.Admin.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> AddNewJob([FromBody] AddJobRequest request)
         {
+            //If user is a facility admin we need to validate the user can create for this facility
+            if (_userContext.IsUserFacilityAdmin())
+            {
+                var doesFacilityAdminHaveAccess = await _belongsToValidator.DoesFacilityAdminHaveAccessToFacility(request.FacilityId.Value, _userContext.UserAuth0Id);
+                if(!doesFacilityAdminHaveAccess)
+                    return Unauthorized("You do not have access to create a job for this facility.");
+            }
+
             //Create Job
             var domainModelToSave = request.ToDomainModel();
             var newJob = await _jobService.CreateJob(domainModelToSave, _userContext.UsersAuth0OrganizationId);

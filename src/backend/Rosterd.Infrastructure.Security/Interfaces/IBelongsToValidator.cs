@@ -21,7 +21,7 @@ namespace Rosterd.Infrastructure.Security.Interfaces
         /// Checks to see if the facilities belongs to the organization.
         /// Throws an entitynotfound exception if the facility does not belong to the organization
         /// </summary>
-        /// <param name="facilityId">the facility id</param>
+        /// <param name="facilityIds"></param>
         /// <param name="auth0OrganizationId">The auth0 organization id</param>
         /// <returns></returns>
         Task ValidateFacilitiesBelongsToOrganization(List<long> facilityIds, string auth0OrganizationId);
@@ -40,5 +40,7 @@ namespace Rosterd.Infrastructure.Security.Interfaces
         Task ValidateSkillsBelongsToOrganization(List<long> skillIds, string auth0OrganizationId);
 
         Task<Organization> ValidateOrganizationExistsAndGetIfValid(string auth0OrganizationId);
+
+        Task<bool> DoesFacilityAdminHaveAccessToFacility(long facilityId, string auth0IdForStaff);
     }
 }

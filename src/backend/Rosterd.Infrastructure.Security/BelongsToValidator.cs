@@ -111,5 +111,15 @@ namespace Rosterd.Infrastructure.Security
 
             return cacheEntry as Organization;
         }
+
+        public async Task<bool> DoesFacilityAdminHaveAccessToFacility(long facilityId, string auth0IdForStaff)
+        {
+            var staff = await _context.Staff.FirstOrDefaultAsync(s => s.Auth0Id == auth0IdForStaff);
+            if (staff == null)
+                throw new EntityNotFoundException($"Staff with auth0 id {auth0IdForStaff} not found");
+
+            var staffFacility = await _context.StaffFacilities.FirstOrDefaultAsync(s => s.StaffId == staff.StaffId && s.FacilityId == facilityId);
+            return staffFacility != null;
+        }
     }
 }

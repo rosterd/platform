@@ -70,6 +70,9 @@ namespace Rosterd.Services.Staff
             var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
             await _belongsToValidator.ValidateSkillsBelongsToOrganization(staffModel.StaffSkills.AlwaysList().Select(s => s.SkillId).AlwaysList(), auth0OrganizationId);
 
+            if (staffModel.StaffFacilities.IsNotNullOrEmpty())
+                await _belongsToValidator.ValidateFacilitiesBelongsToOrganization(staffModel.StaffFacilities.Select(s => s.FacilityId).ToList(), auth0OrganizationId);
+
             //Populate staff details
             var staffToCreate = staffModel.ToNewStaff();
             staffToCreate.OrganizationId = organization.OrganizationId;
@@ -81,6 +84,12 @@ namespace Rosterd.Services.Staff
             foreach (var skill in skillsFromDb.AlwaysList())
             {
                 newStaff.Entity.StaffSkills.Add(new StaffSkill { SkillId = skill.SkillId, SkillName = skill.SkillName, StaffId = newStaff.Entity.StaffId });
+            }
+
+            //Populate any facilities for the staff (for a facility admin they need to be associated with a facility)
+            foreach (var staffFacility in staffModel.StaffFacilities.AlwaysList())
+            {
+                newStaff.Entity.StaffFacilities.Add(new StaffFacility { FacilityId = staffFacility.FacilityId, StaffId = newStaff.Entity.StaffId });
             }
 
             await _context.SaveChangesAsync();
@@ -156,6 +165,23 @@ namespace Rosterd.Services.Staff
             var rosterdAppUser = staffAppUserPreferencesModel.ToDataModel();
 
             await _azureTableStorage.AddOrUpdateAsync(RosterdAppUser.TableName, rosterdAppUser);
+        }
+
+        public async Task<List<FacilityLiteModel>> GetFacilitiesForStaff(string auth0IdForStaff, string auth0OrganizationId)
+        {
+            var staff = await _context.Staff.Include(s => s.StaffFacilities).FirstOrDefaultAsync(s => s.Auth0Id == auth0IdForStaff);
+            if (staff == null)
+                throw new EntityNotFoundException($"Staff member with auth0 Id {auth0IdForStaff} was not found");
+
+            await _belongsToValidator.ValidateStaffBelongsToOrganization(staff.StaffId, auth0OrganizationId);
+
+            if (staff.StaffFacilities.IsNullOrEmpty())
+                return new List<FacilityLiteModel>();
+
+            var facilityIds = staff.StaffFacilities.Select(s => s.FacilityId).ToList();
+            var facilities = _context.Facilities.Where(s => facilityIds.Contains(s.FacilityId));
+
+            return (await facilities.Select(s => new FacilityLiteModel { FacilityId = s.FacilityId, FacilityName = s.FacilityName }).ToListAsync());
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
 using Rosterd.Domain.Models;
+using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Security.Interfaces;
@@ -177,6 +179,17 @@ namespace Rosterd.Admin.Api.Controllers
             await _staffSkillsService.DeleteSkillsForStaff(staffId.Value, SkillsToStaffRequest.ToSkillModels(request), _userContext.UsersAuth0OrganizationId);
             await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
             return Ok();
+        }
+
+        /// <summary>
+        /// Gets a list of facilities that a facility admin has access too
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("facilities")]
+        public async Task<ActionResult<List<FacilityLiteModel>>> GetFacilitiesForFacilityAdmin()
+        {
+            var facilities = await _staffService.GetFacilitiesForStaff(_userContext.UserAuth0Id, _userContext.UsersAuth0OrganizationId);
+            return facilities;
         }
     }
 }
