@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -39,7 +40,7 @@ namespace Rosterd.Services.Staff
         {
             var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
-            var query = _context.Staff.Include(s => s.StaffSkills).Where(s => s.OrganizationId == organization.OrganizationId);
+            var query = _context.Staff.Include(s => s.StaffSkills).Where(s => s.OrganizationId == organization.OrganizationId && s.IsActive == true);
             var pagedList = await PagingList<Data.SqlServer.Models.Staff>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
@@ -131,19 +132,27 @@ namespace Rosterd.Services.Staff
         public async Task<StaffModel> UpdateStaffToInactive(long staffId, string auth0OrganizationId)
         {
             await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
-
             var staff = await _context.Staff.FindAsync(staffId);
 
-            if (staff != null)
-            {
-                staff.IsActive = false;
-                staff.Auth0Id = RosterdConstants.Users.UserRemovedFromAuth0;
+            if (staff == null)
+                throw new EntityNotFoundException($"staff with staff id {staffId} for auth0-organizationId {auth0OrganizationId}");
 
-                await _context.SaveChangesAsync();
-                return staff.ToDomainModel();
-            }
+            staff.IsActive = false;
+            staff.Auth0Id = $"{RosterdConstants.Users.UserRemovedFromAuth0}_{Guid.NewGuid()}";
 
-            return null;
+            await _context.SaveChangesAsync();
+            return staff.ToDomainModel();
+        }
+
+        ///<inheritdoc/>
+        public async Task<StaffModel> UpdateStaffToInactive(string auth0Userid, string auth0OrganizationId)
+        {
+            var staff = await _context.Staff.FirstOrDefaultAsync(s => s.Auth0Id == auth0Userid);
+            if(staff == null)
+                throw new EntityNotFoundException($"staff with auth0userid {auth0Userid} for auth0-organizationId {auth0OrganizationId}");
+
+            //Its ok to call this method because we already fetched this record in memory and when this method calls it will get it from memory
+            return await UpdateStaffToInactive(staff.StaffId, auth0OrganizationId);
         }
 
         ///<inheritdoc/>

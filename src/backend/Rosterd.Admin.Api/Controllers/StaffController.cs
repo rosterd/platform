@@ -142,8 +142,6 @@ namespace Rosterd.Admin.Api.Controllers
         {
             //1. Mark as not active in our db
             var staffModel = await _staffService.UpdateStaffToInactive(staffId.Value, _userContext.UsersAuth0OrganizationId);
-            if (staffModel == null)
-                return Ok();
 
             //2. Remove from auth0
             await _auth0UserService.RemoveUserFromAuth0(staffModel.Auth0Id);

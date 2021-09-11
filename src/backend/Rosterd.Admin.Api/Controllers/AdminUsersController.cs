@@ -97,12 +97,12 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
-        /// Removes the organization admin from aoth-0
+        /// Removes the organization admin from auth-0
         /// </summary>
         /// <param name="auth0UserId">The admin to remove from auth0</param>
         /// <returns></returns>
         [HttpDelete("organization-admins/{auth0UserId}")]
-        public async Task<ActionResult> RemoveStaffMember([Required] string auth0UserId)
+        public async Task<ActionResult> RemoveOrganizationAdmin([Required] string auth0UserId)
         {
             //Remove from auth0
             await _auth0UserService.RemoveUserFromAuth0(auth0UserId);
@@ -126,6 +126,24 @@ namespace Rosterd.Admin.Api.Controllers
             var staffCreated = await _staffService.CreateStaff(staffToCreate, _userContext.UsersAuth0OrganizationId);
 
             return staffCreated;
+        }
+
+        /// <summary>
+        /// Removes the facility admin from auth-0 and marks staff as inactive in our db
+        /// </summary>
+        /// <param name="auth0UserId">The admin to remove from auth0</param>
+        /// <returns></returns>
+        [HttpDelete("facility-admins/{auth0UserId}")]
+        public async Task<ActionResult<StaffModel>> RemoveFacilityAdmin([Required] string auth0UserId)
+        {
+            //1. Mark as not active in our db
+            var staffModel = await _staffService.UpdateStaffToInactive(auth0UserId, _userContext.UsersAuth0OrganizationId);
+
+            //2. Remove from auth0
+            await _auth0UserService.RemoveUserFromAuth0(staffModel.Auth0Id);
+
+            await _staffEventsService.GenerateStaffDeletedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffModel.StaffId.Value);
+            return Ok();
         }
     }
 }
