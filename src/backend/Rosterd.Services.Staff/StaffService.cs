@@ -96,6 +96,19 @@ namespace Rosterd.Services.Staff
             return newStaff.Entity.ToDomainModel();
         }
 
+        public async Task<long> GetFacilityForStaffWhoIsFacilityAdmin(string auth0IdForStaff)
+        {
+            var staff = await _context.Staff.FirstOrDefaultAsync(s => s.Auth0Id == auth0IdForStaff);
+            if (staff == null)
+                throw new EntityNotFoundException($"Staff with auth0id {auth0IdForStaff} not found");
+
+            var staffFacility = await _context.StaffFacilities.FirstOrDefaultAsync(s => s.StaffId == staff.StaffId);
+            if (staffFacility == null)
+                throw new EntityNotFoundException($"No staff facilities found for staff-id {staff.StaffId}, auth0id {staff.Auth0Id}");
+
+            return staffFacility.FacilityId;
+        }
+
         ///<inheritdoc/>
         public async Task<StaffModel> UpdateStaff(StaffModel staffModel, string auth0OrganizationId)
         {
