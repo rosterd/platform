@@ -18,7 +18,6 @@ using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 using Rosterd.Web.Infra.Security;
 using Rosterd.Web.Infra.ValidationAttributes;
-using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 
 namespace Rosterd.Admin.Api.Controllers
 {
