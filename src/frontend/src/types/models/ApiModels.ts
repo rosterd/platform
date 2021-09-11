@@ -2643,6 +2643,75 @@ export interface paths {
       };
     };
   };
+  "/api/v{version}/Staff/facilities": {
+    get: {
+      parameters: {
+        path: {
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["FacilityLiteModel"][];
+            "application/json": components["schemas"]["FacilityLiteModel"][];
+            "text/json": components["schemas"]["FacilityLiteModel"][];
+          };
+        };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+  };
 }
 
 export interface components {
@@ -2668,6 +2737,8 @@ export interface components {
       jobTitle?: string | null;
       /** The list of skills that the staff has, when creating should at least have one */
       skillIds?: number[] | null;
+      /** Facilities this user has access too, when creating should at least have one */
+      facilityIds?: number[] | null;
     };
     AddFacilityRequest: {
       facilityName: string;
@@ -2736,6 +2807,10 @@ export interface components {
       items?: components["schemas"]["Auth0UserModel"][] | null;
     };
     FacilityCapabilityModel: { [key: string]: unknown };
+    FacilityLiteModel: {
+      facilityId?: number;
+      facilityName: string;
+    };
     FacilityModel: {
       facilityId?: number;
       facilityName: string;
@@ -2868,6 +2943,7 @@ export interface components {
       comments?: string | null;
       jobTitle?: string | null;
       staffSkills?: components["schemas"]["SkillModel"][] | null;
+      staffFacilities?: components["schemas"]["FacilityModel"][] | null;
     };
     StaffModelPagedList: {
       currentPage?: number;
