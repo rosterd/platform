@@ -12,27 +12,25 @@ import {getSkills} from 'services';
 import {components} from 'types/models';
 import SkillsInput from 'shared/components/Skills';
 
-interface FormValues {
-  email: string;
-  firstName: string;
-  lastName: string;
-  mobilePhoneNumber: string;
-  skillIds: number[];
-  jobTitle: string;
-}
-
+type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
+type AddStaffRequest = components['schemas']['AddStaffRequest'];
+type Skill = components['schemas']['SkillModel'];
+type Staff = components['schemas']['StaffModel'];
 interface AddStaffModalProps {
   open: boolean;
   handleClose: () => void;
-  onAddStaff: (values: FormValues) => void;
+  staffMember?: Staff;
+  onAddStaff: (values: AddStaffRequest) => void;
+  onUpdateStaff: (values: AddStaffRequest) => void;
 }
 
-type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
-type Skill = components['schemas']['SkillModel'];
 const initialState: Skill[] = [];
-
+const defaultInitialValue = {firstName: '', lastName: '', email: '', jobTitle: '', comments: '', mobilePhoneNumber: '', skillIds: []};
 const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
   const [skills, setSkills] = useState(initialState);
+  const [initialValues, setInitialValues] = React.useState<AddStaffRequest>(defaultInitialValue);
+  const {staffMember} = props;
+
   const {requestMaker} = useRequest();
 
   useEffect(() => {
@@ -42,6 +40,23 @@ const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
     })();
   }, []);
 
+  useEffect(() => {
+    if (staffMember) {
+      const {firstName = '', lastName = '', email = '', jobTitle = '', comments = '', mobilePhoneNumber = '', staffSkills = []} = staffMember;
+      setInitialValues({
+        firstName,
+        lastName,
+        email,
+        jobTitle,
+        comments,
+        mobilePhoneNumber,
+        skillIds: staffSkills?.map((skill) => skill.skillId || 0),
+      });
+    } else {
+      setInitialValues(defaultInitialValue);
+    }
+  }, [staffMember]);
+
   const validationSchema = yup.object({
     firstName: yup.string().required('Please enter Fist name'),
     lastName: yup.string().required('Please enter Last name'),
@@ -49,26 +64,26 @@ const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
     mobilePhoneNumber: yup.string().required('Please enter mobile'),
     jobTitle: yup.string().required('Please enter job title'),
   });
+
   return (
     <Formik
-      initialValues={{
-        firstName: '',
-        lastName: '',
-        email: '',
-        jobTitle: '',
-        mobilePhoneNumber: '',
-        skillIds: [],
-      }}
+      enableReinitialize
+      initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={async (values: FormValues, {setSubmitting, resetForm}) => {
+      onSubmit={async (values: AddStaffRequest, {setSubmitting, resetForm}) => {
         setSubmitting(true);
-        await props.onAddStaff(values);
-        resetForm();
+        try {
+          const response = staffMember ? await props.onAddStaff(values) : await props.onUpdateStaff(values);
+          console.log(response);
+          resetForm();
+        } catch (err) {
+          console.log(err);
+        }
         setSubmitting(false);
       }}>
       {({submitForm, isSubmitting}) => (
         <Dialog fullWidth maxWidth='sm' open={props.open} onClose={props.handleClose} aria-labelledby='form-dialog-title'>
-          <DialogTitle id='form-dialog-title'>Add Staff</DialogTitle>
+          <DialogTitle id='form-dialog-title'>{staffMember ? 'Update Staff' : 'Add Staff'}</DialogTitle>
           <DialogContent>
             <Form>
               <Field component={TextField} name='firstName' label='First Name' fullWidth />
@@ -83,6 +98,8 @@ const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
               <br />
               <SkillsInput skills={skills} label='Skills' name='skillIds' />
               <br />
+              <Field component={TextField} name='comments' label='Comments' fullWidth multiline />
+              <br />
               {isSubmitting && <LinearProgress />}
             </Form>
           </DialogContent>
@@ -91,7 +108,7 @@ const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
               Close
             </Button>
             <Button onClick={submitForm} color='primary' disabled={isSubmitting} variant='contained'>
-              Add
+              {staffMember ? 'Update ' : 'Add '}
             </Button>
           </DialogActions>
         </Dialog>

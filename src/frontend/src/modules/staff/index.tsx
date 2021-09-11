@@ -29,6 +29,7 @@ const Staff: React.FC = (): JSX.Element => {
   const classes = useStyles();
   const [results, setResults] = useState({} as GetStaffResponse);
   const [staff, setStaff] = useState(initialState);
+  const [staffMember, setStaffMember] = useState<Staff | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const {requestMaker} = useRequest();
   const [showStaffModal, setShowStaffModal] = useState(false);
@@ -49,7 +50,6 @@ const Staff: React.FC = (): JSX.Element => {
 
   const handleAddStaff = async (values: Staff) => {
     setLoading(true);
-    setLoading(true);
     const addedStaff = await requestMaker<Staff>(addStaff(values));
     setLoading(false);
     if (addedStaff) {
@@ -57,9 +57,20 @@ const Staff: React.FC = (): JSX.Element => {
     }
   };
 
-  const onUpdate = async (staffToUpdate: Staff) => {
+  const onRowClick = async (_: any, staffToUpdate?: Staff) => {
+    setShowStaffModal(true);
+    setStaffMember(staffToUpdate);
+    // await requestMaker<Staff>(updateStaff(staffToUpdate));
+  };
+
+  const handleUpdateStaff = async (values: Staff) => {
     setLoading(true);
-    await requestMaker<Staff>(updateStaff(staffToUpdate));
+    try {
+      const updatedStaff = await requestMaker<Staff>(updateStaff(values));
+      setStaff(staff.map((member) => (member.staffId === updatedStaff.staffId ? updatedStaff : member)));
+    } catch (e) {
+      console.log(e);
+    }
     setLoading(false);
   };
 
@@ -68,7 +79,7 @@ const Staff: React.FC = (): JSX.Element => {
     setLoading(true);
     await requestMaker<GetStaffResponse>(deleteStaff(deletedStaff?.staffId));
     setLoading(false);
-    setStaff(staff.filter((staffMember) => staffMember.staffId !== deletedStaff.staffId));
+    setStaff(staff.filter((member) => member.staffId !== deletedStaff.staffId));
   };
 
   const handlePageChange = async (page: number, pageSize: number) => {
@@ -107,8 +118,8 @@ const Staff: React.FC = (): JSX.Element => {
             ]}
             data={staff}
             isLoading={loading}
+            onRowClick={onRowClick}
             editable={{
-              onRowUpdate: onUpdate,
               onRowDelete: onDelete,
             }}
             options={{
@@ -119,7 +130,13 @@ const Staff: React.FC = (): JSX.Element => {
             totalCount={results.totalCount}
           />
         </Box>
-        <AddStaffModal open={showStaffModal} onAddStaff={handleAddStaff} handleClose={() => setShowStaffModal(false)} />
+        <AddStaffModal
+          staffMember={staffMember}
+          open={showStaffModal}
+          onAddStaff={handleAddStaff}
+          onUpdateStaff={handleUpdateStaff}
+          handleClose={() => setShowStaffModal(false)}
+        />
       </Box>
     </AppAnimate>
   );
