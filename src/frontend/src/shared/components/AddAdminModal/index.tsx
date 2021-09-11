@@ -4,11 +4,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Formik, Form, Field} from 'formik';
-import {Button, LinearProgress} from '@material-ui/core';
+import {Formik, Form, Field, FieldProps} from 'formik';
+import {Button, LinearProgress, Select} from '@material-ui/core';
 import {getOrganizations, getFacilities, getSkills} from 'services';
 import useRequest from 'shared/hooks/useRequest';
-import {TextField, Select} from 'formik-material-ui';
+import {TextField} from 'formik-material-ui';
 import * as yup from 'yup';
 import {components} from 'types/models';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -71,7 +71,7 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
         email: '',
         phoneNumber: '',
         auth0OrganizationId: '',
-        facilityId: '',
+        facilityIds: [''],
       }}
       validationSchema={validationSchema}
       onSubmit={async (values, {setSubmitting, resetForm}) => {
@@ -103,17 +103,22 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
               ) : (
                 <FormControl fullWidth>
                   <InputLabel htmlFor='age-simple'>Facility</InputLabel>
-                  <Field
-                    component={Select}
-                    name='facilityId'
-                    inputProps={{
-                      id: 'facilityId',
-                    }}>
-                    {facilities.map((facility) => (
-                      <MenuItem key={facility.facilityId} value={facility?.facilityId || 0}>
-                        {facility.facilityName}
-                      </MenuItem>
-                    ))}
+                  <Field name='facilityIds'>
+                    {({field: {value, ...field}, form}: FieldProps) => (
+                      <Select
+                        id='facilityIds'
+                        value={value[0]}
+                        {...field}
+                        onChange={(event: React.ChangeEvent<{name?: string; value: unknown}>) => {
+                          form.setFieldValue(field.name, [event.target.value]);
+                        }}>
+                        {facilities.map((facility) => (
+                          <MenuItem key={facility.facilityId} value={facility?.facilityId || 0}>
+                            {facility.facilityName}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    )}
                   </Field>
                 </FormControl>
               )}

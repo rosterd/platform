@@ -12,7 +12,7 @@ import {components} from 'types/models';
 import AddAdminModal from 'shared/components/AddAdminModal';
 import {AxiosRequestConfig} from 'axios';
 
-type AddAdminUserRequest = components['schemas']['AddAdminUserRequest'];
+type AddAdminWhoIsAlsoStaffRequest = components['schemas']['AddAdminWhoIsAlsoStaffRequest'];
 type AdminUserModel = components['schemas']['Auth0UserModel'];
 type GetAdminsResponse = components['schemas']['Auth0UserModelPagedList'];
 
@@ -53,7 +53,7 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
     })();
   }, []);
 
-  const handleAddFacilityAdmin = async (values: AddAdminUserRequest) => {
+  const handleAddFacilityAdmin = async (values: AddAdminWhoIsAlsoStaffRequest) => {
     const admin = await requestMaker<AdminUserModel>(addFacilityAdmin(values));
     setAdmins([...admins, admin]);
   };
