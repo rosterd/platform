@@ -1,6 +1,6 @@
 import React from 'react';
 import {Wrapper} from '@googlemaps/react-wrapper';
-import AddressInput from './AddressInput';
+import {AddressInput} from './AddressInput';
 
 export type AddressInputType = {
   label: string;

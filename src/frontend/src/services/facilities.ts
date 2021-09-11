@@ -1,7 +1,8 @@
 import {AxiosRequestConfig} from 'axios';
 import {components} from 'types/models';
 
-type AddFacilityRequest = components['schemas']['AddFacilityRequest'];
+export type AddFacilityRequest = components['schemas']['AddFacilityRequest'];
+export type UpdateFacilityRequest = components['schemas']['UpdateFacilityRequest'];
 
 const url = 'facilities';
 
@@ -13,6 +14,6 @@ export const addFacility = (data: AddFacilityRequest): AxiosRequestConfig & {sco
   data,
 });
 
-export const updateFacility = (): AxiosRequestConfig & {scope?: string} => ({method: 'PUT', url, scope: 'create:facility'});
+export const updateFacility = (data: UpdateFacilityRequest): AxiosRequestConfig & {scope?: string} => ({method: 'PUT', url, data});
 
 export const deleteFacility = (facilityId: number): AxiosRequestConfig & {scope?: string} => ({method: 'DELETE', url: `${url}/${facilityId}`});

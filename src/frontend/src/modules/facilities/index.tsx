@@ -7,12 +7,13 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import {getFacilities, addFacility, deleteFacility} from 'services';
+import {getFacilities, addFacility, deleteFacility, updateFacility, AddFacilityRequest, UpdateFacilityRequest} from 'services';
 import {components} from 'types/models';
-import AddFacilityModal, {AddFacilityFormValues} from './components/AddFacilityModal';
+import AddFacilityModal from './components/AddFacilityModal';
+import UpdateFacilityModal from './components/UpdateFacilityModal';
+import {FacilityFormValues} from './components/FacilityForm';
 
 type GetFacilitiesResponse = components['schemas']['FacilityModelPagedList'];
-type AddFacilityRequest = components['schemas']['AddFacilityRequest'];
 export type Facility = components['schemas']['FacilityModel'];
 
 const useStyles = makeStyles(() => ({
@@ -32,6 +33,7 @@ const Facilities: React.FC = (): JSX.Element => {
   const classes = useStyles();
   const [facilities, setFacilities] = useState(initialState);
   const [showAddFacility, setShowAddFacility] = useState(false);
+  const [showUpdateFacility, setShowUpdateFacility] = useState(false);
   const [loading, setLoading] = useState(false);
   const [facility, setFacility] = useState<Facility>();
   const {requestMaker} = useRequest();
@@ -47,7 +49,7 @@ const Facilities: React.FC = (): JSX.Element => {
     })();
   }, []);
 
-  const handleAddFacility = async ({address, ...values}: AddFacilityFormValues) => {
+  const handleAddFacility = async ({address, ...values}: FacilityFormValues) => {
     setLoading(true);
 
     const requestBody: AddFacilityRequest = {
@@ -62,8 +64,23 @@ const Facilities: React.FC = (): JSX.Element => {
     }
   };
 
-  const onUpdate = async (_: any, rowData?: Facility) => {
-    setShowAddFacility(true);
+  const handleUpdateFacility = async ({address, ...values}: FacilityFormValues) => {
+    setLoading(true);
+
+    const requestBody: UpdateFacilityRequest = {
+      ...values,
+      ...address,
+    };
+
+    const facilityRes = await requestMaker<Facility>(updateFacility(requestBody));
+    setLoading(false);
+    if (facilityRes) {
+      setFacilities([facilityRes, ...facilities]);
+    }
+  };
+
+  const onUpdate = async (_: unknown, rowData?: Facility) => {
+    setShowUpdateFacility(true);
     setFacility(rowData);
   };
 
@@ -76,6 +93,7 @@ const Facilities: React.FC = (): JSX.Element => {
 
   const handleClose = () => {
     setShowAddFacility(false);
+    setShowUpdateFacility(false);
     setFacility(undefined);
   };
 
@@ -118,7 +136,8 @@ const Facilities: React.FC = (): JSX.Element => {
             isLoading={loading}
           />
         </Box>
-        <AddFacilityModal facility={facility} open={showAddFacility} onAddFacility={handleAddFacility} handleClose={handleClose} />
+        <AddFacilityModal open={showAddFacility} onAddFacility={handleAddFacility} handleClose={handleClose} />
+        <UpdateFacilityModal facility={facility} open={showUpdateFacility} onUpdateFacility={handleUpdateFacility} handleClose={handleClose} />
       </Box>
     </AppAnimate>
   );

@@ -125,21 +125,17 @@ export const AddressInput = ({name, label, isRequired = false}: AddressInputType
         onInputChange={(_, newInputValue) => {
           setInputValue(newInputValue);
         }}
-        renderInput={(params) => {
-          console.log(params);
-          console.log('input', inputValue);
-          return (
-            <TextField
-              onBlur={() => setTouched(true)}
-              error={meta.touched && !!meta.error}
-              helperText={meta.touched && meta.error}
-              {...params}
-              label={label}
-              variant='standard'
-              fullWidth
-            />
-          );
-        }}
+        renderInput={(params) => (
+          <TextField
+            onBlur={() => setTouched(true)}
+            error={meta.touched && !!meta.error}
+            helperText={meta.touched && meta.error}
+            {...params}
+            label={label}
+            variant='standard'
+            fullWidth
+          />
+        )}
         renderOption={(option) => {
           const matches = option.structured_formatting.main_text_matched_substrings;
           const parts = parse(
@@ -169,5 +165,3 @@ export const AddressInput = ({name, label, isRequired = false}: AddressInputType
     </>
   );
 };
-
-export default AddressInput;
