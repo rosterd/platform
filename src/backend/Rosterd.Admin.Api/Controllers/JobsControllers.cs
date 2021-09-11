@@ -33,8 +33,9 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IEventGridClient _eventGridClient;
         private readonly IUserContext _userContext;
         private readonly IBelongsToValidator _belongsToValidator;
+        private readonly IStaffService _staffService;
 
-        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobEventsService jobEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IUserContext userContext, IBelongsToValidator belongsToValidator) : base(appSettings)
+        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobEventsService jobEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IUserContext userContext, IBelongsToValidator belongsToValidator, IStaffService staffService) : base(appSettings)
         {
             _logger = logger;
             _jobService = jobsService;
@@ -42,6 +43,7 @@ namespace Rosterd.Admin.Api.Controllers
             _eventGridClient = eventGridClient;
             _userContext = userContext;
             _belongsToValidator = belongsToValidator;
+            _staffService = staffService;
         }
 
         /// <summary>
@@ -84,10 +86,14 @@ namespace Rosterd.Admin.Api.Controllers
             //If user is a facility admin we need to validate the user can create for this facility
             if (_userContext.IsUserFacilityAdmin())
             {
-                var doesFacilityAdminHaveAccess = await _belongsToValidator.DoesFacilityAdminHaveAccessToFacility(request.FacilityId.Value, _userContext.UserAuth0Id);
-                if(!doesFacilityAdminHaveAccess)
-                    return Unauthorized("You do not have access to create a job for this facility.");
+                if(request.FacilityId.HasValue)
+                    return BadRequest("As a facility admin you don't need to specify the facility");
+
+                request.FacilityId = await _staffService.GetFacilityForStaffWhoIsFacilityAdmin(_userContext.UserAuth0Id);
             }
+
+            if(request.FacilityId == null || request.FacilityId < 0)
+                return BadRequest("Facility Id needs to be specified.");
 
             //Create Job
             var domainModelToSave = request.ToDomainModel();

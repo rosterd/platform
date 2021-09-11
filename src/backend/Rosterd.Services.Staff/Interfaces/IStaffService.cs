@@ -78,5 +78,12 @@ namespace Rosterd.Services.Staff.Interfaces
         /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
         Task<List<FacilityLiteModel>> GetFacilitiesForStaff(string auth0IdForStaff, string auth0OrganizationId);
+
+        /// <summary>
+        /// Gets the first facility for the staff member
+        /// </summary>
+        /// <param name="auth0IdForStaff"></param>
+        /// <returns></returns>
+        Task<long> GetFacilityForStaffWhoIsFacilityAdmin(string auth0IdForStaff);
     }
 }

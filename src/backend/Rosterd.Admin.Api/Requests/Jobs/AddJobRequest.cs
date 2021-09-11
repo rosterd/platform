@@ -20,8 +20,6 @@ namespace Rosterd.Admin.Api.Requests.Jobs
         [StringLength(8000)]
         public string Description { get; set; }
 
-        [ValidNumberRequired]
-        [Required]
         public long? FacilityId { get; set; }
 
         [Required]
