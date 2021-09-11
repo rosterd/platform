@@ -5,3 +5,5 @@ build
 public
 ApiModels.ts
 package.json
+package-lock.json
+tsconfig.json

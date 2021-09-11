@@ -1,14 +1,5 @@
 import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
-import {
-  FooterType,
-  HeaderType,
-  LayoutType,
-  NavStyle,
-  RouteTransition,
-  ThemeMode,
-  ThemeStyle,
-  ThemeStyleRadius,
-} from '../../../shared/constants/AppEnums';
+import {FooterType, HeaderType, LayoutType, NavStyle, RouteTransition, ThemeMode, ThemeStyle, ThemeStyleRadius} from '../../../shared/constants/AppEnums';
 
 const breakpoints = createBreakpoints({});
 const cardRadius = ThemeStyleRadius.STANDARD;
@@ -23,7 +14,7 @@ const defaultConfig: any = {
         default: '#F4F7FE',
       },
       primary: {
-        main: '#0A8FDC',
+        main: '#0D2273',
         contrastText: '#fff',
       },
       secondary: {
@@ -104,10 +95,7 @@ const defaultConfig: any = {
       },
       MuiCardLg: {
         root: {
-          borderRadius:
-            cardRadius === ThemeStyleRadius.STANDARD
-              ? ThemeStyleRadius.STANDARD
-              : ThemeStyleRadius.MODERN + 20,
+          borderRadius: cardRadius === ThemeStyleRadius.STANDARD ? ThemeStyleRadius.STANDARD : ThemeStyleRadius.MODERN + 20,
         },
       },
       MuiCard: {
