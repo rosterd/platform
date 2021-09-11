@@ -62,7 +62,7 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "P:\\penteractnz\\rosterd\\src\\backend\\Rosterd.Database\\Rosterd.Database.sqlproj",
+   "UiHint": "Rosterd.Database\\Rosterd.Database.sqlproj",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
@@ -71,6 +71,7 @@
    "UseInflector": true,
    "UseLegacyPluralizer": false,
    "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
    "UseNoNavigations": false,
    "UseNoObjectFilter": false,
    "UseNodaTime": false,

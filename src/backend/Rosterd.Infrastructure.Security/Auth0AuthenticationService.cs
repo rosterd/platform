@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Auth0.AuthenticationApi;
 using Auth0.AuthenticationApi.Models;
+using Auth0.Core.Exceptions;
 using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Security.Interfaces;
 
@@ -67,26 +70,37 @@ namespace Rosterd.Infrastructure.Security
 
         public async Task<User> CreateUserAndAddToOrganization(string auth0OrganizationId, string email, string firstName, string lastName, string phoneNumber)
         {
-            var auth0ApiManagementClient = await GetAuth0ApiManagementClient();
-
-            //Create the user in auth0 with a random password
-            var userCreatedInAuth0 = await auth0ApiManagementClient.Users.CreateAsync(new UserCreateRequest
+            try
             {
-                Email = email,
-                FirstName = firstName,
-                LastName = lastName,
-                //MobilePhoneNumber = phoneNumber,
-                FullName = $"{firstName} {lastName}",
-                Password = Guid.NewGuid().ToString(),
-                Connection = _auth0Settings.ConnectionName,
-                VerifyEmail = false //setting this to true will send a verify your email to the user, we don't want to do that at this stage
-            });
+                var auth0ApiManagementClient = await GetAuth0ApiManagementClient();
 
-            //Add this user to the organization
-            await auth0ApiManagementClient.Organizations.AddMembersAsync(auth0OrganizationId,
-                new OrganizationAddMembersRequest { Members = new List<string> { userCreatedInAuth0.UserId } });
+                //Create the user in auth0 with a random password
+                var userCreatedInAuth0 = await auth0ApiManagementClient.Users.CreateAsync(new UserCreateRequest
+                {
+                    Email = email,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    //MobilePhoneNumber = phoneNumber,
+                    FullName = $"{firstName} {lastName}",
+                    Password = Guid.NewGuid().ToString(),
+                    Connection = _auth0Settings.ConnectionName,
+                    VerifyEmail = false //setting this to true will send a verify your email to the user, we don't want to do that at this stage
+                });
 
-            return userCreatedInAuth0;
+                //Add this user to the organization
+                await auth0ApiManagementClient.Organizations.AddMembersAsync(auth0OrganizationId,
+                    new OrganizationAddMembersRequest { Members = new List<string> { userCreatedInAuth0.UserId } });
+
+                return userCreatedInAuth0;
+
+            }
+            catch (ErrorApiException ex)
+            {
+                if (ex.StatusCode == HttpStatusCode.Conflict || ex.Message.ToLower().Contains("already exists"))
+                    throw new EntityAlreadyExistsException($"User with email {email} already exists");
+
+                throw;
+            }
         }
     }
 }

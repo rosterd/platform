@@ -124,8 +124,6 @@ namespace Rosterd.Data.SqlServer.Context
 
             modelBuilder.Entity<StaffFacility>(entity =>
             {
-                entity.Property(e => e.StaffFacilityId).ValueGeneratedNever();
-
                 entity.HasOne(d => d.Staff)
                     .WithMany(p => p.StaffFacilities)
                     .HasForeignKey(d => d.StaffId)
