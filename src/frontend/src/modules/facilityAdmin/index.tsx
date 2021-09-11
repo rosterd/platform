@@ -63,6 +63,10 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
     await fetchData({...requestConfig, url: `${requestConfig.url}?pageNumber=${page + 1}&pageSize=${pageSize}`});
   };
 
+  const onDelete = async (adminToDelete: AdminUserModel) => {
+    console.log(adminToDelete);
+  };
+
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <Box>
@@ -97,6 +101,9 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
             onChangePage={handlePageChange}
             page={(results?.currentPage || 1) - 1}
             totalCount={results.totalCount}
+            editable={{
+              onRowDelete: onDelete,
+            }}
           />
         </Box>
         <AddAdminModal open={showAddAdminModal} onAddAdmin={handleAddFacilityAdmin} handleClose={() => setShowAddAdminModal(false)} />

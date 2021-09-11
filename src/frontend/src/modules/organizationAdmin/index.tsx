@@ -7,7 +7,7 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import {addOrganizationAdmin, getAdmins} from 'services';
+import {addOrganizationAdmin, deleteOrganizationAdmin, getAdmins} from 'services';
 import {components} from 'types/models';
 import AddAdminModal from 'shared/components/AddAdminModal';
 import {AxiosRequestConfig} from 'axios';
@@ -63,6 +63,13 @@ const OrganizationAdmin: React.FC = (): JSX.Element => {
     await fetchData({...requestConfig, url: `${requestConfig.url}?pageNumber=${page + 1}&pageSize=${pageSize}`});
   };
 
+  const onDelete = async (adminToDelete: AdminUserModel) => {
+    setLoading(true);
+    await requestMaker(deleteOrganizationAdmin(adminToDelete.userAuth0Id));
+    setLoading(false);
+    setAdmins(admins.filter((admin) => admin.userAuth0Id !== adminToDelete.userAuth0Id));
+  };
+
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <Box>
@@ -97,6 +104,9 @@ const OrganizationAdmin: React.FC = (): JSX.Element => {
             onChangePage={handlePageChange}
             page={(results?.currentPage || 1) - 1}
             totalCount={results.totalCount}
+            editable={{
+              onRowDelete: onDelete,
+            }}
           />
         </Box>
         <AddAdminModal isOrganisationAdmin open={showAddAdminModal} onAddAdmin={handleAddFacilityAdmin} handleClose={() => setShowAddAdminModal(false)} />

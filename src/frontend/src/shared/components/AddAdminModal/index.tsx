@@ -92,7 +92,6 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
                     name='auth0OrganizationId'
                     inputProps={{
                       id: 'auth0OrganizationId',
-                      fullWidth: true,
                     }}>
                     {origanizations.map((organization) => (
                       <MenuItem key={organization.organizationId} value={organization?.auth0OrganizationId || 0}>
@@ -109,7 +108,6 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
                     name='facilityId'
                     inputProps={{
                       id: 'facilityId',
-                      fullWidth: true,
                     }}>
                     {facilities.map((facility) => (
                       <MenuItem key={facility.facilityId} value={facility?.facilityId || 0}>
