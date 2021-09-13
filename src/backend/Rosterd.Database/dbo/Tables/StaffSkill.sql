@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[StaffSkill] (
+CREATE TABLE [dbo].[StaffSkill] (
     [StaffSkillId] BIGINT          IDENTITY (1, 1) NOT NULL,
     [StaffId]      BIGINT          NOT NULL,
     [SkillId]      BIGINT          NOT NULL,
@@ -10,7 +10,9 @@
 
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IX_Fk_StaffSkill_Staff]
-    ON [dbo].[StaffSkill]([StaffId] ASC);
+CREATE NONCLUSTERED INDEX [IX_Fk_StaffSkill_StaffId_SkillId]
+    ON [dbo].[StaffSkill]([StaffId] ASC, [SkillId] ASC);
 

@@ -8,3 +8,10 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_StaffFacility_StaffId_FacilityId]
+    ON [dbo].[StaffFacility]([StaffId] ASC, [FacilityId] ASC);
+
