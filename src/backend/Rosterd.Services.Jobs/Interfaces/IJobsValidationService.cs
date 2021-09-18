@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Azure.EventGrid;
-using Microsoft.Azure.EventGrid.Models;
 
 namespace Rosterd.Services.Jobs.Interfaces
 {

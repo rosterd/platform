@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Models;
-using Microsoft.Azure.EventGrid;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;

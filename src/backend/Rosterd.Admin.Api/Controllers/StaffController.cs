@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Staff;
@@ -33,18 +33,16 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IStaffService _staffService;
         private readonly IStaffSkillsService _staffSkillsService;
         private readonly IStaffEventsService _staffEventsService;
-        private readonly IEventGridClient _eventGridClient;
         private readonly IAuth0UserService _auth0UserService;
         private readonly IUserContext _userContext;
         private readonly IBelongsToValidator _belongsToValidator;
 
-        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService, IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IAuth0UserService auth0UserService, IUserContext userContext, IBelongsToValidator belongsToValidator) : base(appSettings)
+        public StaffController(ILogger<StaffController> logger, IStaffService staffService, IStaffSkillsService staffSkillsService, IStaffEventsService staffEventsService, IOptions<AppSettings> appSettings, IAuth0UserService auth0UserService, IUserContext userContext, IBelongsToValidator belongsToValidator) : base(appSettings)
         {
             _logger = logger;
             _staffService = staffService;
             _staffSkillsService = staffSkillsService;
             _staffEventsService = staffEventsService;
-            _eventGridClient = eventGridClient;
             _auth0UserService = auth0UserService;
             _userContext = userContext;
             _belongsToValidator = belongsToValidator;
@@ -96,7 +94,7 @@ namespace Rosterd.Admin.Api.Controllers
             var staff = await _staffService.CreateStaff(staffToCreateInDb, _userContext.UsersAuth0OrganizationId);
 
             //Generate a new staff created event
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staff.StaffId.Value);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(staff.StaffId.Value);
             return staff;
         }
 
@@ -109,7 +107,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<StaffModel>> UpdateStaffMember([FromBody] UpdateStaffRequest request)
         {
             var staff = await _staffService.UpdateStaff(UpdateStaffRequest.ToStaffModel(request), _userContext.UsersAuth0OrganizationId);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, request.StaffId.Value);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(request.StaffId.Value);
             return staff;
         }
 
@@ -128,7 +126,7 @@ namespace Rosterd.Admin.Api.Controllers
             var userCreatedInAuth0 = await _auth0UserService.AddStaffToAuth0(_userContext.UsersAuth0OrganizationId, existingInactiveStaff.FirstName, existingInactiveStaff.LastName, existingInactiveStaff.Email, existingInactiveStaff.MobilePhoneNumber, _userContext.UsersAuth0OrganizationId);
 
             await _staffService.UpdateStaffToActive(staffId.Value, userCreatedInAuth0.UserAuth0Id, _userContext.UsersAuth0OrganizationId);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(staffId.Value);
             return Ok();
         }
 
@@ -146,7 +144,7 @@ namespace Rosterd.Admin.Api.Controllers
             //2. Remove from auth0
             await _auth0UserService.RemoveUserFromAuth0(staffModel.Auth0Id);
 
-            await _staffEventsService.GenerateStaffDeletedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
+            await _staffEventsService.GenerateStaffDeletedEvent(staffId.Value);
             return Ok();
         }
 
@@ -160,7 +158,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult> AddSkillToStaff([ValidNumberRequired] long? staffId, [FromBody] SkillsToStaffRequest request)
         {
             await _staffSkillsService.UpdateAllSkillsForStaff(staffId.Value, SkillsToStaffRequest.ToSkillModels(request), _userContext.UsersAuth0OrganizationId);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(staffId.Value);
             return Ok();
         }
 
@@ -174,7 +172,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult> DeleteSkillsForStaff([ValidNumberRequired] long? staffId, [FromBody] SkillsToStaffRequest request)
         {
             await _staffSkillsService.DeleteSkillsForStaff(staffId.Value, SkillsToStaffRequest.ToSkillModels(request), _userContext.UsersAuth0OrganizationId);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffId.Value);
+            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(staffId.Value);
             return Ok();
         }
 

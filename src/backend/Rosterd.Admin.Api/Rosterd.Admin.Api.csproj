@@ -30,12 +30,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.1.4" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
     <PackageReference Include="Z.ExtensionMethods" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Azure.EventGrid" Version="3.2.0" />
-    <PackageReference Include="RestSharp" Version="106.12.0" />
+    <PackageReference Include="Azure.Storage.Queues" Version="12.8.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj" />
     <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
+    <ProjectReference Include="..\Rosterd.Infrastructure.Messaging\Rosterd.Infrastructure.Messaging.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Facilities\Rosterd.Services.Facilities.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Jobs\Rosterd.Services.Jobs.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Skills\Rosterd.Services.Skills.csproj" />

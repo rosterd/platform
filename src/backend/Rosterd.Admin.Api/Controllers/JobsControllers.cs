@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Jobs;
@@ -30,17 +29,15 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly ILogger<JobsController> _logger;
         private readonly IJobsService _jobService;
         private readonly IJobEventsService _jobEventsService;
-        private readonly IEventGridClient _eventGridClient;
         private readonly IUserContext _userContext;
         private readonly IBelongsToValidator _belongsToValidator;
         private readonly IStaffService _staffService;
 
-        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobEventsService jobEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IUserContext userContext, IBelongsToValidator belongsToValidator, IStaffService staffService) : base(appSettings)
+        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobEventsService jobEventsService, IOptions<AppSettings> appSettings, IUserContext userContext, IBelongsToValidator belongsToValidator, IStaffService staffService) : base(appSettings)
         {
             _logger = logger;
             _jobService = jobsService;
             _jobEventsService = jobEventsService;
-            _eventGridClient = eventGridClient;
             _userContext = userContext;
             _belongsToValidator = belongsToValidator;
             _staffService = staffService;
@@ -100,7 +97,7 @@ namespace Rosterd.Admin.Api.Controllers
             var newJob = await _jobService.CreateJob(domainModelToSave, _userContext.UsersAuth0OrganizationId);
 
             //Generate a new job created event
-            await _jobEventsService.GenerateNewJobCreatedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, newJob.JobId);
+            await _jobEventsService.GenerateNewJobCreatedEvent(newJob.JobId);
             return Ok(newJob);
         }
 
@@ -116,7 +113,7 @@ namespace Rosterd.Admin.Api.Controllers
             await _jobService.RemoveJob(jobId.Value, jobCancellationReason, _userContext.UsersAuth0OrganizationId);
 
             //Generate a new job deleted event
-            await _jobEventsService.GenerateJobCancelledEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobId.Value);
+            await _jobEventsService.GenerateJobCancelledEvent(jobId.Value);
             return Ok();
         }
 

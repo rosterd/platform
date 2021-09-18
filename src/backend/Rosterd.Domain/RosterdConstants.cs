@@ -41,18 +41,19 @@ namespace Rosterd.Domain
             public static string TenantIdToAuth0Id(string auth0Id) => $"TenantId_{auth0Id}";
         }
 
-        public static class Events
+        public static class Messaging
         {
-            public static string Version1 => "v1";
+            public static string JobQueueName = "job-queue";
+            public static string StaffQueueName = "staff-queue";
 
-            public const string StaffCreatedOrUpdatedEvent = "{0}.Rosterd.Staff.CreatedOrUpdated";
-            public const string StaffDeletedEvent = "{0}.Rosterd.Staff.Deleted";
+            public const string StaffCreatedOrUpdatedMessage = "Staff.CreatedOrUpdated";
+            public const string StaffDeletedMessage = "Staff.Deleted";
 
-            public const string NewJobCreatedEvent = "{0}.Rosterd.Job.Created";
-            public const string JobCancelledEvent = "{0}.Rosterd.Job.Cancelled";
-            public const string JobStatusChangedEvent = "{0}.Rosterd.Job.StatusChanged";
+            public const string NewJobCreatedMessage = "Job.Created";
+            public const string JobCancelledMessage = "Job.Cancelled";
+            public const string JobStatusChangedMessage = "Job.StatusChanged";
 
-            public const string NewPushNotificationCreatedEvent = "{0}.Rosterd.NewPushNotification";
+            public const string NewPushNotificationCreatedMessage = "PushNotification.New";
         }
 
         public static class Search

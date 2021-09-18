@@ -8,8 +8,6 @@ using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Indexes.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
-using Microsoft.Azure.EventGrid.Models;
-using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Rosterd.AzureFunctions.Config;
@@ -35,51 +33,52 @@ namespace Rosterd.AzureFunctions
             _jobEventsService = jobEventsService;
         }
 
-        [FunctionName(nameof(ProcessEvent))]
-        public async Task ProcessEvent([EventGridTrigger] EventGridEvent eventGridEvent)
-        {
-            _logger.LogInformation($"{nameof(ProcessEvent)} - triggered on UTC Time {DateTime.UtcNow} - {eventGridEvent.Data.ToString()}");
+        //[FunctionName(nameof(ProcessEvent))]
+        //public async Task ProcessEvent([EventGridTrigger] EventGridEvent eventGridEvent)
+        //{
+        //    _logger.LogInformation($"{nameof(ProcessEvent)} - triggered on UTC Time {DateTime.UtcNow} - {eventGridEvent.Data.ToString()}");
 
-            switch (eventGridEvent)
-            {
-                //New staff created or updated
-                case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.StaffCreatedOrUpdatedEvent):
-                {
-                    await _staffEventsService.HandleStaffCreatedOrUpdatedEvent(eventGridEvent);
-                    break;
-                }
+        //    //TODO:
+        //    //switch (eventGridEvent)
+        //    //{
+        //    //    //New staff created or updated
+        //    //    case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.StaffCreatedOrUpdatedMessage):
+        //    //    {
+        //    //        await _staffEventsService.HandleStaffCreatedOrUpdatedEvent(eventGridEvent);
+        //    //        break;
+        //    //    }
 
-                //Staff deleted
-                case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.StaffDeletedEvent):
-                {
-                    await _staffEventsService.HandleStaffDeletedEvent(eventGridEvent);
-                    break;
-                }
+        //    //    //Staff deleted
+        //    //    case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.StaffDeletedEvent):
+        //    //    {
+        //    //        await _staffEventsService.HandleStaffDeletedEvent(eventGridEvent);
+        //    //        break;
+        //    //    }
 
-                //Job created
-                case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.NewJobCreatedEvent):
-                {
-                    await _jobEventsService.HandleNewJobCreatedEvent(eventGridEvent);
-                    break;
-                }
+        //    //    //Job created
+        //    //    case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.NewJobCreatedEvent):
+        //    //    {
+        //    //        await _jobEventsService.HandleNewJobCreatedEvent(eventGridEvent);
+        //    //        break;
+        //    //    }
 
-                //Job cancelled
-                case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.JobCancelledEvent):
-                {
-                    await _jobEventsService.HandleJobCancelledEvent(eventGridEvent);
-                    break;
-                }
+        //    //    //Job cancelled
+        //    //    case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.JobCancelledMessage):
+        //    //    {
+        //    //        await _jobEventsService.HandleJobCancelledEvent(eventGridEvent);
+        //    //        break;
+        //    //    }
 
-                //Job status changed
-                case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.JobStatusChangedEvent):
-                {
-                    await _jobEventsService.HandleJobStatusChangedEvent(eventGridEvent);
-                    break;
-                }
+        //    //    //Job status changed
+        //    //    case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.JobStatusChangedEvent):
+        //    //    {
+        //    //        await _jobEventsService.HandleJobStatusChangedEvent(eventGridEvent);
+        //    //        break;
+        //    //    }
 
-                default:
-                    throw new NotSupportedException($"EventType : {eventGridEvent.EventType} not supported");
-            }
-        }
+        //    //    default:
+        //    //        throw new NotSupportedException($"EventType : {eventGridEvent.EventType} not supported");
+        //    //}
+        //}
     }
 }

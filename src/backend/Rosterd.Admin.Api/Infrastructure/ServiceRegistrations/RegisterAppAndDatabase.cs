@@ -3,8 +3,6 @@ using Auth0.AuthenticationApi;
 using Auth0.ManagementApi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.EventGrid;
-using Microsoft.Azure.EventGrid.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +13,7 @@ using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.TableStorage.Context;
 using Rosterd.Domain;
 using Rosterd.Domain.Settings;
+using Rosterd.Infrastructure.Messaging;
 using Rosterd.Infrastructure.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
 using Rosterd.Infrastructure.Security;
@@ -67,7 +66,6 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 
             //Orchestrators
 
-
             //User context
             services.AddScoped<IUserContext, UserContext>();
 
@@ -75,8 +73,15 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             services.AddScoped<IRosterdDbContext, RosterdDbContext>();
             services.AddScoped<IAzureTableStorage>(s => new AzureTableStorage(config.GetConnectionString("TableStorageConnectionString")));
 
-            //Event grids
-            services.AddScoped<IEventGridClient>(provider => new EventGridClient(new TopicCredentials(config.GetValue<string>("AppSettings:EventGridTopicKey"))));
+            //Storage Queues
+            var staffQueueClient = new StaffQueueClient(config.GetConnectionString("TableStorageConnectionString"), RosterdConstants.Messaging.StaffQueueName);
+            staffQueueClient.QueueClient.CreateIfNotExists();
+
+            var jobsQueueClient = new JobsQueueClient(config.GetConnectionString("TableStorageConnectionString"), RosterdConstants.Messaging.JobQueueName);
+            jobsQueueClient.QueueClient.CreateIfNotExists();
+
+            services.AddSingleton<IQueueClient<StaffQueueClient>>(s => staffQueueClient);
+            services.AddSingleton<IQueueClient<JobsQueueClient>>(s => jobsQueueClient);
 
             //Auth0, auth, roles
             var domain = $"{config["Auth0:Domain"]}/";

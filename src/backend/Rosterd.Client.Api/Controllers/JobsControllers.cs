@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Rosterd.Domain;
@@ -24,15 +23,13 @@ namespace Rosterd.Client.Api.Controllers
         private readonly IJobsService _jobService;
         private readonly IJobsValidationService _jobsValidationService;
         private readonly IJobEventsService _jobEventsService;
-        private readonly IEventGridClient _eventGridClient;
 
-        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobsValidationService jobsValidationService, IJobEventsService jobEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings) : base(appSettings)
+        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobsValidationService jobsValidationService, IJobEventsService jobEventsService, IOptions<AppSettings> appSettings) : base(appSettings)
         {
             _logger = logger;
             _jobService = jobsService;
             _jobsValidationService = jobsValidationService;
             _jobEventsService = jobEventsService;
-            _eventGridClient = eventGridClient;
         }
 
         /// <summary>
@@ -54,7 +51,7 @@ namespace Rosterd.Client.Api.Controllers
                 return UnprocessableEntity(RosterdConstants.ErrorMessages.GenericError);
 
             //Raise a job status change event (job is set to accepted status)
-            await _jobEventsService.GenerateJobStatusChangedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobId, JobStatus.Accepted);
+            await _jobEventsService.GenerateJobStatusChangedEvent(jobId, JobStatus.Accepted);
 
             return Ok();
         }
@@ -78,7 +75,7 @@ namespace Rosterd.Client.Api.Controllers
                 return UnprocessableEntity(RosterdConstants.ErrorMessages.GenericError);
 
             //Raise a job status change event (job is set back to published status)
-            await _jobEventsService.GenerateJobStatusChangedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobId, JobStatus.Published);
+            await _jobEventsService.GenerateJobStatusChangedEvent(jobId, JobStatus.Published);
 
             return Ok();
         }

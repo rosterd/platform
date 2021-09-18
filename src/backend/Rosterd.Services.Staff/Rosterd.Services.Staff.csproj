@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="Z.ExtensionMethods" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Azure.EventGrid" Version="3.2.0" />
     <PackageReference Include="Azure.Search.Documents" Version="11.2.1" />
   </ItemGroup>
 
@@ -14,6 +13,7 @@
     <ProjectReference Include="..\Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj" />
     <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
     <ProjectReference Include="..\Rosterd.Infrastructure.Extensions\Rosterd.Infrastructure.Extensions.csproj" />
+    <ProjectReference Include="..\Rosterd.Infrastructure.Messaging\Rosterd.Infrastructure.Messaging.csproj" />
     <ProjectReference Include="..\Rosterd.Infrastructure.Search\Rosterd.Infrastructure.Search.csproj" />
     <ProjectReference Include="..\Rosterd.Infrastructure.Security\Rosterd.Infrastructure.Security.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Mappers\Rosterd.Services.Mappers.csproj" />
