@@ -43,8 +43,8 @@ namespace Rosterd.Domain
 
         public static class Messaging
         {
-            public static string JobQueueName = "JobQueue";
-            public static string StaffQueueName = "StaffQueue";
+            public static string JobQueueName = "job-queue";
+            public static string StaffQueueName = "staff-queue";
 
             public const string StaffCreatedOrUpdatedMessage = "Staff.CreatedOrUpdated";
             public const string StaffDeletedMessage = "Staff.Deleted";

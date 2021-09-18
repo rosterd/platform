@@ -74,18 +74,14 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             services.AddScoped<IAzureTableStorage>(s => new AzureTableStorage(config.GetConnectionString("TableStorageConnectionString")));
 
             //Storage Queues
-            services.AddSingleton<IQueueClient<StaffQueueClient>>(s =>
-            {
-                var staffQueueClient = new StaffQueueClient(config.GetConnectionString("TableStorageConnectionString"), RosterdConstants.Messaging.StaffQueueName);
-                staffQueueClient.QueueClient.CreateIfNotExists();
-                return staffQueueClient;
-            });
-            services.AddSingleton<IQueueClient<JobsQueueClient>>(s =>
-            {
-                var jobsQueueClient = new JobsQueueClient(config.GetConnectionString("TableStorageConnectionString"), RosterdConstants.Messaging.JobQueueName);
-                jobsQueueClient.QueueClient.CreateIfNotExists();
-                return jobsQueueClient;
-            });
+            var staffQueueClient = new StaffQueueClient(config.GetConnectionString("TableStorageConnectionString"), RosterdConstants.Messaging.StaffQueueName);
+            staffQueueClient.QueueClient.CreateIfNotExists();
+
+            var jobsQueueClient = new JobsQueueClient(config.GetConnectionString("TableStorageConnectionString"), RosterdConstants.Messaging.JobQueueName);
+            jobsQueueClient.QueueClient.CreateIfNotExists();
+
+            services.AddSingleton<IQueueClient<StaffQueueClient>>(s => staffQueueClient);
+            services.AddSingleton<IQueueClient<JobsQueueClient>>(s => jobsQueueClient);
 
             //Auth0, auth, roles
             var domain = $"{config["Auth0:Domain"]}/";
