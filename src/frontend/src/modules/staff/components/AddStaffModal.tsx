@@ -63,6 +63,7 @@ const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
     email: yup.string().email().required('Please enter valid email'),
     mobilePhoneNumber: yup.string().required('Please enter mobile'),
     jobTitle: yup.string().required('Please enter job title'),
+    skillIds: yup.array().min(1, 'At least one skill is required'),
   });
 
   return (

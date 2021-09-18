@@ -54,7 +54,12 @@ const OrganizationAdmin: React.FC = (): JSX.Element => {
   }, []);
 
   const handleAddFacilityAdmin = async (values: AddAdminUserRequest) => {
-    const admin = await requestMaker<AdminUserModel>(addOrganizationAdmin(values));
+    const data = {...values};
+    // TODO: split create admin modal to organization admin and facility admin modals. This is not a good fix
+    if (!values.auth0OrganizationId) {
+      delete data.auth0OrganizationId;
+    }
+    const admin = await requestMaker<AdminUserModel>(addOrganizationAdmin(data));
     setAdmins([...admins, admin]);
   };
 

@@ -24,4 +24,9 @@ export const deleteOrganizationAdmin = (auth0UserId: string): AxiosRequestConfig
   url: `${organizationUrl}/${auth0UserId}`,
 });
 
+export const deleteFacilityAdmin = (auth0UserId: string): AxiosRequestConfig & {scope?: string} => ({
+  method: 'DELETE',
+  url: `${facilityUrl}/${auth0UserId}`,
+});
+
 export const getAdmins = (): AxiosRequestConfig & {scope?: string} => ({url});

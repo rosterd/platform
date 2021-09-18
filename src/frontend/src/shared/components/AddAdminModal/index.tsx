@@ -84,7 +84,7 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
           <DialogTitle id='form-dialog-title'>Invite Admin</DialogTitle>
           <DialogContent>
             <Form>
-              {isOrganisationAdmin ? (
+              {isOrganisationAdmin && !!origanizations.length && (
                 <FormControl fullWidth>
                   <InputLabel htmlFor='age-simple'>Organization</InputLabel>
                   <Field
@@ -100,7 +100,8 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
                     ))}
                   </Field>
                 </FormControl>
-              ) : (
+              )}
+              {!isOrganisationAdmin && (
                 <FormControl fullWidth>
                   <InputLabel htmlFor='age-simple'>Facility</InputLabel>
                   <Field name='facilityIds'>
@@ -137,7 +138,7 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
           </DialogContent>
           <DialogActions>
             <Button onClick={props.handleClose} color='primary'>
-              Cancel
+              Close
             </Button>
             <Button onClick={submitForm} color='primary' disabled={isSubmitting} variant='contained'>
               Invite
