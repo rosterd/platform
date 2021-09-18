@@ -7,7 +7,7 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import {addFacilityAdmin, getAdmins} from 'services';
+import {addFacilityAdmin, deleteFacilityAdmin, getAdmins} from 'services';
 import {components} from 'types/models';
 import AddAdminModal from 'shared/components/AddAdminModal';
 import {AxiosRequestConfig} from 'axios';
@@ -64,7 +64,13 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
   };
 
   const onDelete = async (adminToDelete: AdminUserModel) => {
-    console.log(adminToDelete);
+    setLoading(true);
+    try {
+      await requestMaker(deleteFacilityAdmin(adminToDelete.userAuth0Id));
+      setAdmins(admins.filter((admin) => admin.userAuth0Id !== adminToDelete.userAuth0Id));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
