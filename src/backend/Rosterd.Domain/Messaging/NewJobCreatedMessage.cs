@@ -9,7 +9,7 @@ namespace Rosterd.Domain.Messaging
         {
             MessageType = RosterdConstants.Messaging.NewJobCreatedMessage;
             SubjectId = jobId;
-            MessageBody = BinaryData.FromString(jobId);
+            MessageBody = jobId;
         }
 
         /// <summary>

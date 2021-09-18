@@ -9,11 +9,6 @@ namespace Rosterd.Domain.Messaging
     public abstract class BaseMessage
     {
         /// <summary>
-        /// The unique id of this message
-        /// </summary>
-        public string Id => new Guid().ToString();
-
-        /// <summary>
         /// The date time (in utc) this message was created
         /// </summary>
         public DateTime MessageCreatedDateTimeUtc => DateTime.UtcNow;
@@ -33,6 +28,6 @@ namespace Rosterd.Domain.Messaging
         public virtual string SubjectId { get; set; }
 
         //The body of the actual message
-        public virtual BinaryData MessageBody { get; set; }
+        public virtual string MessageBody { get; set; }
     }
 }

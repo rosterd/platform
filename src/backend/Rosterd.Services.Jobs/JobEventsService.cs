@@ -34,7 +34,7 @@ namespace Rosterd.Services.Jobs
         {
             //Send to storage queue
             var newJobCreatedMessage = new NewJobCreatedMessage(jobId.ToString());
-            await _jobsQueueClient.QueueClient.SendMessageAsync(BinaryData.FromObjectAsJson(newJobCreatedMessage));
+            await _jobsQueueClient.SendMessageWithNoExpiry(BinaryData.FromObjectAsJson(newJobCreatedMessage));
         }
 
         ///<inheritdoc/>
@@ -43,7 +43,7 @@ namespace Rosterd.Services.Jobs
             var jobStatusChangeEvent = new JobStatusChangedMessage(jobId, newJobsStatus);
 
             //Send to storage queue
-            await _jobsQueueClient.QueueClient.SendMessageAsync(BinaryData.FromObjectAsJson(jobStatusChangeEvent));
+            await _jobsQueueClient.SendMessageWithNoExpiry(BinaryData.FromObjectAsJson(jobStatusChangeEvent));
         }
 
         ///<inheritdoc/>
@@ -64,7 +64,7 @@ namespace Rosterd.Services.Jobs
             var jobCancelledEvent = new JobCancelledMessage(jobId);
 
             //Send to storage queue
-            await _jobsQueueClient.QueueClient.SendMessageAsync(BinaryData.FromObjectAsJson(jobCancelledEvent));
+            await _jobsQueueClient.SendMessageWithNoExpiry(BinaryData.FromObjectAsJson(jobCancelledEvent));
         }
 
         ///<inheritdoc/>

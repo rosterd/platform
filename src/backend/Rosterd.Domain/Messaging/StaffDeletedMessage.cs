@@ -8,7 +8,7 @@ namespace Rosterd.Domain.Messaging
         {
             MessageType = RosterdConstants.Messaging.StaffDeletedMessage;
             SubjectId = staffId;
-            MessageBody = BinaryData.FromString(staffId);
+            MessageBody = staffId;
         }
 
         // <summary>

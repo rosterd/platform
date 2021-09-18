@@ -36,7 +36,7 @@ namespace Rosterd.Services.Staff
         public async Task GenerateStaffCreatedOrUpdatedEvent(long staffId)
         {
             var staffCreatedOrUpdatedMessage = new StaffCreatedOrUpdatedMessage(staffId.ToString());
-            await _staffQueueClient.QueueClient.SendMessageAsync(BinaryData.FromObjectAsJson(staffCreatedOrUpdatedMessage));
+            await _staffQueueClient.SendMessageWithNoExpiry(staffCreatedOrUpdatedMessage);
         }
 
         ///<inheritdoc/>
@@ -45,7 +45,7 @@ namespace Rosterd.Services.Staff
             var staffDeletedMessage = new StaffDeletedMessage(staffId.ToString());
 
             //Send to storage queue
-            await _staffQueueClient.QueueClient.SendMessageAsync(BinaryData.FromObjectAsJson(staffDeletedMessage));
+            await _staffQueueClient.SendMessageWithNoExpiry(BinaryData.FromObjectAsJson(staffDeletedMessage));
         }
 
         ///<inheritdoc/>

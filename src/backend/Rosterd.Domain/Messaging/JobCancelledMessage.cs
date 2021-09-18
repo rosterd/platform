@@ -9,7 +9,7 @@ namespace Rosterd.Domain.Messaging
         {
             MessageType = RosterdConstants.Messaging.JobCancelledMessage;
             SubjectId = jobId.ToString();
-            MessageBody = BinaryData.FromString(jobId.ToString());
+            MessageBody = jobId.ToString();
         }
 
         /// <summary>
