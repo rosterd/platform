@@ -30,7 +30,7 @@ namespace Rosterd.Services.Facilities
         {
             var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
-            var query = _context.Facilities.Where(s => s.OrganzationId == organization.OrganizationId);
+            var query = _context.Facilities.Where(s => s.OrganzationId == organization.OrganizationId && s.IsActive == true);
             var pagedList = await PagingList<Data.SqlServer.Models.Facility>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
