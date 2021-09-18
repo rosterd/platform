@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Domain;
 using Rosterd.Domain.Enums;
-using Rosterd.Domain.Events;
+using Rosterd.Domain.Messaging;
 using Rosterd.Domain.Search;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Infrastructure.Search.Interfaces;
@@ -65,7 +65,7 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task GenerateJobCancelledEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, long jobId)
         {
-            var jobCancelledEvent = new JobCancelledEvent(environmentThisEventIsBeingGenerateFrom, jobId);
+            var jobCancelledEvent = new JobCancelledMessage(environmentThisEventIsBeingGenerateFrom, jobId);
 
             //Sent the event to event grid
             await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> { jobCancelledEvent });

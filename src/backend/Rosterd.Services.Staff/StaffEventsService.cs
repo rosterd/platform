@@ -8,7 +8,7 @@ using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
 using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain;
-using Rosterd.Domain.Events;
+using Rosterd.Domain.Messaging;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Domain.Search;

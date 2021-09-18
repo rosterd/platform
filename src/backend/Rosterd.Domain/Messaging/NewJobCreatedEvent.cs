@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Rosterd.Domain.Models.JobModels;
-using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Domain.Search;
 
-namespace Rosterd.Domain.Events
+namespace Rosterd.Domain.Messaging
 {
     public class NewJobCreatedEvent : Microsoft.Azure.EventGrid.Models.EventGridEvent
     {
