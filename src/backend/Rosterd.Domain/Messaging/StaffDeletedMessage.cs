@@ -4,11 +4,16 @@ namespace Rosterd.Domain.Messaging
 {
     public sealed class StaffDeletedMessage : BaseMessage
     {
-        public StaffDeletedMessage(long staffId)
+        public StaffDeletedMessage(string staffId)
         {
             MessageType = RosterdConstants.Messaging.StaffDeletedMessage;
-            SubjectId = staffId.ToString();
-            MessageBody = BinaryData.FromString(staffId.ToString());
+            SubjectId = staffId;
+            MessageBody = BinaryData.FromString(staffId);
         }
+
+        // <summary>
+        /// Handy name method to get the staff id
+        /// </summary>
+        public string StaffId => SubjectId;
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30803.129
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31710.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{4A70353B-1B5B-4B38-9200-2D91E301472B}"
 EndProject
@@ -67,6 +67,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Infrastructure.Search", "Rosterd.Infrastructure.Search\Rosterd.Infrastructure.Search.csproj", "{CA656106-0AB4-4703-80BB-B4E00AF8B2ED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Organizations", "Rosterd.Services.Organizations\Rosterd.Services.Organizations.csproj", "{32CFF422-C4A4-41CA-875D-051E3E2A28B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Infrastructure.Messaging", "Rosterd.Infrastructure.Messaging\Rosterd.Infrastructure.Messaging.csproj", "{7F05AD10-AC7A-4433-8884-C805C47E445C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -155,6 +157,10 @@ Global
 		{32CFF422-C4A4-41CA-875D-051E3E2A28B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32CFF422-C4A4-41CA-875D-051E3E2A28B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32CFF422-C4A4-41CA-875D-051E3E2A28B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F05AD10-AC7A-4433-8884-C805C47E445C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F05AD10-AC7A-4433-8884-C805C47E445C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F05AD10-AC7A-4433-8884-C805C47E445C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F05AD10-AC7A-4433-8884-C805C47E445C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -182,6 +188,7 @@ Global
 		{0A156225-BED5-4CC9-8ECE-18B2D035B878} = {9D54CBC3-F894-415E-A94C-885229B7EE36}
 		{CA656106-0AB4-4703-80BB-B4E00AF8B2ED} = {49EB7B71-D49C-48A9-B929-B4FCC1D0DFC6}
 		{32CFF422-C4A4-41CA-875D-051E3E2A28B9} = {C16B881C-491C-4B94-92DA-ACE6A9D489BF}
+		{7F05AD10-AC7A-4433-8884-C805C47E445C} = {49EB7B71-D49C-48A9-B929-B4FCC1D0DFC6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2DA4ED17-3CA8-499E-A97F-35DAF7C0E6C3}

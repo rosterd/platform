@@ -5,11 +5,16 @@ namespace Rosterd.Domain.Messaging
 {
     public sealed class NewJobCreatedMessage : BaseMessage
     {
-        public NewJobCreatedMessage(JobSearchModel jobModel)
+        public NewJobCreatedMessage(string jobId)
         {
             MessageType = RosterdConstants.Messaging.NewJobCreatedMessage;
-            SubjectId = jobModel.JobId;
-            MessageBody = BinaryData.FromObjectAsJson(jobModel);
+            SubjectId = jobId;
+            MessageBody = BinaryData.FromString(jobId);
         }
+
+        /// <summary>
+        /// Handy name method to get the job id
+        /// </summary>
+        public string JobId => SubjectId;
     }
 }

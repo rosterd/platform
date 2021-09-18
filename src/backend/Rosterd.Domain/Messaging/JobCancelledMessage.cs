@@ -1,4 +1,5 @@
 using System;
+using Azure.Storage.Queues;
 
 namespace Rosterd.Domain.Messaging
 {
@@ -10,5 +11,10 @@ namespace Rosterd.Domain.Messaging
             SubjectId = jobId.ToString();
             MessageBody = BinaryData.FromString(jobId.ToString());
         }
+
+        /// <summary>
+        /// Handy name method to get the job id
+        /// </summary>
+        public string JobId => SubjectId;
     }
 }

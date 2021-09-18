@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RestSharp;
 using Rosterd.Admin.Api.Requests.AdminUser;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Admin.Api.Services;

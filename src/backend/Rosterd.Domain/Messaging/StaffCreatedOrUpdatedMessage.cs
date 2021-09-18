@@ -5,11 +5,16 @@ namespace Rosterd.Domain.Messaging
 {
     public sealed class StaffCreatedOrUpdatedMessage : BaseMessage
     {
-        public StaffCreatedOrUpdatedMessage(StaffSearchModel staffSearchModel)
+        public StaffCreatedOrUpdatedMessage(string staffId)
         {
             MessageType = RosterdConstants.Messaging.StaffCreatedOrUpdatedMessage;
-            SubjectId = staffSearchModel.StaffId.ToString();
-            MessageBody = BinaryData.FromObjectAsJson(staffSearchModel);
+            SubjectId = staffId;
+            MessageBody = BinaryData.FromObjectAsJson(staffId);
         }
+
+        /// <summary>
+        /// Handy name method to get the staff id
+        /// </summary>
+        public string StaffId => SubjectId;
     }
 }

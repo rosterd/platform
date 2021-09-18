@@ -13,6 +13,7 @@ using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.TableStorage.Context;
 using Rosterd.Domain;
 using Rosterd.Domain.Settings;
+using Rosterd.Infrastructure.Messaging;
 using Rosterd.Infrastructure.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
 using Rosterd.Infrastructure.Security;
@@ -65,7 +66,6 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
 
             //Orchestrators
 
-
             //User context
             services.AddScoped<IUserContext, UserContext>();
 
@@ -73,9 +73,19 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             services.AddScoped<IRosterdDbContext, RosterdDbContext>();
             services.AddScoped<IAzureTableStorage>(s => new AzureTableStorage(config.GetConnectionString("TableStorageConnectionString")));
 
-            //Event grids
             //Storage Queues
-            //services.AddScoped<IEventGridClient>(provider => new EventGridClient(new TopicCredentials(config.GetValue<string>("AppSettings:EventGridTopicKey"))));
+            services.AddSingleton<IQueueClient<StaffQueueClient>>(s =>
+            {
+                var staffQueueClient = new StaffQueueClient(config.GetConnectionString("TableStorageConnectionString"), RosterdConstants.Messaging.StaffQueueName);
+                staffQueueClient.QueueClient.CreateIfNotExists();
+                return staffQueueClient;
+            });
+            services.AddSingleton<IQueueClient<JobsQueueClient>>(s =>
+            {
+                var jobsQueueClient = new JobsQueueClient(config.GetConnectionString("TableStorageConnectionString"), RosterdConstants.Messaging.JobQueueName);
+                jobsQueueClient.QueueClient.CreateIfNotExists();
+                return jobsQueueClient;
+            });
 
             //Auth0, auth, roles
             var domain = $"{config["Auth0:Domain"]}/";
