@@ -73,7 +73,7 @@ const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
       onSubmit={async (values: AddStaffRequest, {setSubmitting, resetForm}) => {
         setSubmitting(true);
         try {
-          const response = staffMember ? await props.onAddStaff(values) : await props.onUpdateStaff(values);
+          const response = staffMember ? await props.onUpdateStaff(values) : await props.onAddStaff(values);
           console.log(response);
           resetForm();
         } catch (err) {
