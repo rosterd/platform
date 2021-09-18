@@ -23,7 +23,6 @@ interface PublishJobModalProps {
   onPublishJob: (values: any) => void;
 }
 
-type AddJobRequest = components['schemas']['AddJobRequest'];
 type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
 type GetFacilitiesResponse = components['schemas']['FacilityModelPagedList'];
 type Skill = components['schemas']['SkillModel'];
@@ -59,6 +58,7 @@ const PublishJobModal = (props: PublishJobModalProps): JSX.Element => {
     jobStartDateTimeUtc: yup.date().required('Please select the start time'),
     jobEndDateTimeUtc: yup.date().required('Please select the end time'),
     gracePeriodToCancelMinutes: yup.number().typeError('Grace period must be a number in minutes'),
+    skillsRequiredForJob: yup.array().min(1, 'At least one skill is required'),
   });
 
   useEffect(() => {
@@ -82,13 +82,6 @@ const PublishJobModal = (props: PublishJobModalProps): JSX.Element => {
       <Formik
         initialValues={initialFormValues}
         validationSchema={validationSchema}
-        validate={(values: AddJobRequest) => {
-          const errors: {[key: string]: string} = {};
-          if (values?.skillsRequiredForJob?.length === 0) {
-            errors.skillsRequiredForJob = 'Need atleast one skill';
-          }
-          return errors;
-        }}
         onSubmit={async (values, {setSubmitting, resetForm}) => {
           setSubmitting(true);
           await props.onPublishJob(values);
