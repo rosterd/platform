@@ -3,6 +3,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import {components} from 'types/models';
 import TextField from '@material-ui/core/TextField';
 import {useField} from 'formik';
+import {FormHelperText} from '@material-ui/core';
 
 type Skill = components['schemas']['SkillModel'];
 interface Props {
@@ -41,9 +42,9 @@ const SkillsInput = ({label, name, skills}: Props): JSX.Element => {
           const skillIds = newValue.map((skill) => skill?.skillId || 0);
           setValue(skillIds);
         }}
-        renderInput={(params) => <TextField {...params} variant='standard' label={label} placeholder='Select Skills' />}
+        renderInput={(params) => <TextField error={!!(meta.touched && meta.error)} {...params} variant='standard' label={label} placeholder='Select Skills' />}
       />
-      {meta.touched && meta.error ? <div className='error'>{meta.error}</div> : null}
+      {meta.touched && meta.error ? <FormHelperText error>{meta.error}</FormHelperText> : null}
     </>
   );
 };
