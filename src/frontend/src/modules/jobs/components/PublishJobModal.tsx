@@ -31,6 +31,18 @@ type Facility = components['schemas']['FacilityModel'];
 
 const initialState: Skill[] = [];
 const initialFacilitiesState: Facility[] = [];
+const formValues = {
+  jobTitle: '',
+  description: '',
+  jobStartDateTimeUtc: '',
+  jobEndDateTimeUtc: '',
+  comments: '',
+  gracePeriodToCancelMinutes: 0,
+  responsibilities: '',
+  experience: '',
+  isNightShift: false,
+  skillsRequiredForJob: [],
+};
 
 const PublishJobModal = (props: PublishJobModalProps): JSX.Element => {
   const [skills, setSkills] = useState(initialState);
@@ -39,6 +51,7 @@ const PublishJobModal = (props: PublishJobModalProps): JSX.Element => {
   const [facilities, setFacilities] = useState(initialFacilitiesState);
 
   const isOrganisationAdmin = useMemo(() => (authuser!.role || []).indexOf('OrganizationAdmin') !== -1, [authuser]);
+  const initialFormValues = isOrganisationAdmin ? {...formValues, facilityId: 0} : formValues;
 
   const validationSchema = yup.object({
     jobTitle: yup.string().required('Please enter Job Title'),
@@ -67,19 +80,7 @@ const PublishJobModal = (props: PublishJobModalProps): JSX.Element => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Formik
-        initialValues={{
-          facilityId: 0,
-          jobTitle: '',
-          description: '',
-          jobStartDateTimeUtc: '',
-          jobEndDateTimeUtc: '',
-          comments: '',
-          gracePeriodToCancelMinutes: 0,
-          responsibilities: '',
-          experience: '',
-          isNightShift: false,
-          skillsRequiredForJob: [],
-        }}
+        initialValues={initialFormValues}
         validationSchema={validationSchema}
         validate={(values: AddJobRequest) => {
           const errors: {[key: string]: string} = {};
