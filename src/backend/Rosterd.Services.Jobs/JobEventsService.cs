@@ -38,7 +38,7 @@ namespace Rosterd.Services.Jobs
             var jobCreatedEvent = new NewJobCreatedEvent(environmentThisEventIsBeingGenerateFrom, jobModel);
 
             //Sent the event to event grid
-            await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> { jobCreatedEvent });
+            //await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> { jobCreatedEvent });
         }
 
         ///<inheritdoc/>
@@ -47,7 +47,7 @@ namespace Rosterd.Services.Jobs
             var jobStatusChangeEvent = new JobStatusChangedEvent(environmentThisEventIsBeingGenerateFrom, jobId, newJobsStatus);
 
             //Sent the event to event grid
-            await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> { jobStatusChangeEvent });
+            //await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> { jobStatusChangeEvent });
         }
 
         ///<inheritdoc/>
@@ -68,7 +68,7 @@ namespace Rosterd.Services.Jobs
             var jobCancelledEvent = new JobCancelledEvent(environmentThisEventIsBeingGenerateFrom, jobId);
 
             //Sent the event to event grid
-            await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> { jobCancelledEvent });
+            //await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> { jobCancelledEvent });
         }
 
         ///<inheritdoc/>

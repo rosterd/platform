@@ -43,7 +43,7 @@ namespace Rosterd.Services.Staff
             var staffCreatedOrUpdatedEvent = new StaffCreatedOrUpdatedEvent(environmentThisEventIsBeingGenerateFrom, staffSearchModel);
 
             //Sent the event to event grid
-            await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> {staffCreatedOrUpdatedEvent});
+            //await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> {staffCreatedOrUpdatedEvent});
         }
 
         ///<inheritdoc/>
@@ -52,7 +52,7 @@ namespace Rosterd.Services.Staff
             var staffDeletedEvent = new StaffDeletedEvent(environmentThisEventIsBeingGenerateFrom, staffId);
 
             //Sent the event to event grid
-            await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> {staffDeletedEvent});
+            //await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> {staffDeletedEvent});
         }
 
         ///<inheritdoc/>
