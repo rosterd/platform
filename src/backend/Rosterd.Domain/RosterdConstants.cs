@@ -46,14 +46,14 @@ namespace Rosterd.Domain
             public static string JobQueueName = "JobQueue";
             public static string StaffQueueName = "StaffQueue";
 
-            public const string StaffCreatedOrUpdatedMessage = "Rosterd.Staff.CreatedOrUpdated";
-            public const string StaffDeletedMessage = "Rosterd.Staff.Deleted";
+            public const string StaffCreatedOrUpdatedMessage = "Staff.CreatedOrUpdated";
+            public const string StaffDeletedMessage = "Staff.Deleted";
 
-            public const string NewJobCreatedMessage = "Rosterd.Job.Created";
-            public const string JobCancelledMessage = "Rosterd.Job.Cancelled";
-            public const string JobStatusChangedMessage = "Rosterd.Job.StatusChanged";
+            public const string NewJobCreatedMessage = "Job.Created";
+            public const string JobCancelledMessage = "Job.Cancelled";
+            public const string JobStatusChangedMessage = "Job.StatusChanged";
 
-            public const string NewPushNotificationCreatedMessage = "Rosterd.NewPushNotification";
+            public const string NewPushNotificationCreatedMessage = "PushNotification.New";
         }
 
         public static class Search

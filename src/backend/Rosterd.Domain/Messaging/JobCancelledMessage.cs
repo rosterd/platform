@@ -2,17 +2,13 @@ using System;
 
 namespace Rosterd.Domain.Messaging
 {
-    public class JobCancelledEvent : Microsoft.Azure.EventGrid.Models.EventGridEvent
+    public sealed class JobCancelledMessage : BaseMessage
     {
-        public JobCancelledEvent(string environmentThisEventIsBeingGenerateFrom, long jobId)
+        public JobCancelledMessage(long jobId)
         {
-            Id = new Guid().ToString();
-            EventTime = DateTime.UtcNow;
-            EventType = RosterdConstants.Events.JobCancelledEvent.Format(environmentThisEventIsBeingGenerateFrom);
-            DataVersion = RosterdConstants.Events.Version1;
-            Subject = jobId.ToString();
-            Data = jobId.ToString();
+            MessageType = RosterdConstants.Messaging.JobCancelledMessage;
+            SubjectId = jobId.ToString();
+            MessageBody = BinaryData.FromString(jobId.ToString());
         }
-
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.EventGrid;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RestSharp;
@@ -34,19 +33,17 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly ILogger<StaffController> _logger;
         private readonly IAuth0UserService _adminUserService;
         private readonly IStaffEventsService _staffEventsService;
-        private readonly IEventGridClient _eventGridClient;
         private readonly IUserContext _userContext;
         private readonly IStaffService _staffService;
         private readonly IAuth0UserService _auth0UserService;
 
         public AdminUsersController(ILogger<StaffController> logger, IAuth0UserService adminUserService,
-            IStaffEventsService staffEventsService, IEventGridClient eventGridClient, IOptions<AppSettings> appSettings, IUserContext userContext,
+            IStaffEventsService staffEventsService, IOptions<AppSettings> appSettings, IUserContext userContext,
             IStaffService staffService, IAuth0UserService auth0UserService) : base(appSettings)
         {
             _logger = logger;
             _adminUserService = adminUserService;
             _staffEventsService = staffEventsService;
-            _eventGridClient = eventGridClient;
             _userContext = userContext;
             _staffService = staffService;
             _auth0UserService = auth0UserService;
@@ -73,7 +70,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<Auth0UserModel>> AddOrganizationAdminUser([FromBody] AddAdminUserRequest request)
         {
             if (_userContext.IsUserRosterdAdmin() && request.Auth0OrganizationId.IsNullOrEmpty())
-                return BadRequest("You are a RosterdAdmin.  Auth0OrganizationId is required");
+                return BadRequest("You are a RosterdAdmin. Auth0OrganizationId is required");
 
             var auth0OrganizationId = _userContext.IsUserRosterdAdmin() ? request.Auth0OrganizationId : _userContext.UsersAuth0OrganizationId;
             var adminUserModel = await _adminUserService.AddOrganizationAdminToAuth0(auth0OrganizationId, request.ToModel());
@@ -142,7 +139,7 @@ namespace Rosterd.Admin.Api.Controllers
             //2. Remove from auth0
             await _auth0UserService.RemoveUserFromAuth0(staffModel.Auth0Id);
 
-            await _staffEventsService.GenerateStaffDeletedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, staffModel.StaffId.Value);
+            await _staffEventsService.GenerateStaffDeletedEvent(staffModel.StaffId.Value);
             return Ok();
         }
     }

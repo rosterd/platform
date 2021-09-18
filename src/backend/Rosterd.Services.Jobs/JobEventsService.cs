@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Azure.EventGrid;
-using Microsoft.Azure.EventGrid.Models;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Domain;
@@ -28,75 +26,77 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task GenerateNewJobCreatedEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, long jobId)
+        public async Task GenerateNewJobCreatedEvent(long jobId)
         {
             //Get the latest job info
             var job = await _context.Jobs.Include(s => s.JobSkills).FirstAsync(s => s.JobId == jobId);
 
             //Translate to domain model and create event
             var jobModel = job.ToSearchModel();
-            var jobCreatedEvent = new NewJobCreatedEvent(environmentThisEventIsBeingGenerateFrom, jobModel);
+            var jobCreatedEvent = new NewJobCreatedMessage(jobModel);
 
             //Sent the event to event grid
             //await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> { jobCreatedEvent });
         }
 
         ///<inheritdoc/>
-        public async Task GenerateJobStatusChangedEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, long jobId, JobStatus newJobsStatus)
+        public async Task GenerateJobStatusChangedEvent(long jobId, JobStatus newJobsStatus)
         {
-            var jobStatusChangeEvent = new JobStatusChangedEvent(environmentThisEventIsBeingGenerateFrom, jobId, newJobsStatus);
+            var jobStatusChangeEvent = new JobStatusChangedMessage(jobId, newJobsStatus);
 
             //Sent the event to event grid
             //await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> { jobStatusChangeEvent });
         }
 
         ///<inheritdoc/>
-        public async Task GenerateJobStatusChangedEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, List<long> jobIds, JobStatus newJobsStatus)
+        public async Task GenerateJobStatusChangedEvent(List<long> jobIds, JobStatus newJobsStatus)
         {
             if (jobIds.IsNullOrEmpty())
                 return;
 
             foreach (var jobId in jobIds)
             {
-                await GenerateJobStatusChangedEvent(eventGridClient, topicHostName, environmentThisEventIsBeingGenerateFrom, jobId, newJobsStatus);
+                await GenerateJobStatusChangedEvent(jobId, newJobsStatus);
             }
         }
 
         ///<inheritdoc/>
-        public async Task GenerateJobCancelledEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, long jobId)
+        public async Task GenerateJobCancelledEvent(long jobId)
         {
-            var jobCancelledEvent = new JobCancelledMessage(environmentThisEventIsBeingGenerateFrom, jobId);
+            var jobCancelledEvent = new JobCancelledMessage(jobId);
 
             //Sent the event to event grid
             //await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> { jobCancelledEvent });
         }
 
         ///<inheritdoc/>
-        public async Task HandleNewJobCreatedEvent(EventGridEvent jobCreatedEvent)
+        public async Task HandleNewJobCreatedEvent(NewJobCreatedMessage jobCreatedMessage)
         {
-            var jobModel = jobCreatedEvent.Data as JobSearchModel;
-            await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, new List<JobSearchModel> {jobModel});
+            //var jobModel = jobCreatedEvent.Data as JobSearchModel;
+            //await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, new List<JobSearchModel> {jobModel});
+        }
+
+        public Task HandleJobCancelledEvent(JobCancelledMessage jobCancelledMessage) => throw new System.NotImplementedException();
+
+        ///<inheritdoc/>
+        public async Task HandleJobStatusChangedEvent(JobStatusChangedMessage jobStatusChangedMessage)
+        {
+            //var jobId = jobCancelledEvent.Data as string;
+            //await _searchIndexProvider.DeleteDocumentsFromIndex(RosterdConstants.Search.JobsIndex, JobSearchModel.Key(), new List<string>() {jobId});
         }
 
         ///<inheritdoc/>
-        public async Task HandleJobCancelledEvent(EventGridEvent jobCancelledEvent)
-        {
-            var jobId = jobCancelledEvent.Data as string;
-            await _searchIndexProvider.DeleteDocumentsFromIndex(RosterdConstants.Search.JobsIndex, JobSearchModel.Key(), new List<string>() {jobId});
-        }
+        //public async Task HandleJobStatusChangedEvent(EventGridEvent jobStatusChangedEvent)
+        //{
+        //    var jobId = (jobStatusChangedEvent.Data as JobStatusChangedMessage)?.JobId;
 
-        ///<inheritdoc/>
-        public async Task HandleJobStatusChangedEvent(EventGridEvent jobStatusChangedEvent)
-        {
-            var jobId = (jobStatusChangedEvent.Data as JobStatusChangedEvent)?.JobId;
+        //    //Get the existing job from db (source of truth)
+        //    var currentJob = await _context.Jobs.FindAsync(jobId.ToInt64());
+        //    var searchModelToUpdate = currentJob.ToSearchModel();
 
-            //Get the existing job from db (source of truth)
-            var currentJob = await _context.Jobs.FindAsync(jobId.ToInt64());
-            var searchModelToUpdate = currentJob.ToSearchModel();
-
-            //Update the existing job document with the new status changes
-            await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, new List<JobSearchModel>{searchModelToUpdate});
-        }
+        //    //Update the existing job document with the new status changes
+        //    await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, new List<JobSearchModel>{searchModelToUpdate});
+        //}
 
         ///<inheritdoc/>
         public async Task RemoveFinishedJobsFromSearch(List<long> jobsIdsToRemoveFromSearch)

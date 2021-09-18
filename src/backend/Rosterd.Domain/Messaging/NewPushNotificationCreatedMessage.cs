@@ -1,6 +1,6 @@
 namespace Rosterd.Domain.Messaging
 {
-    public class NewPushNotificationCreatedEvent
+    public class NewPushNotificationCreatedMessage
     {
     }
 }

@@ -40,7 +40,7 @@ namespace Rosterd.Services.Staff
 
             //Translate to domain model and create event
             var staffSearchModel = staff.ToSearchModel();
-            var staffCreatedOrUpdatedEvent = new StaffCreatedOrUpdatedEvent(environmentThisEventIsBeingGenerateFrom, staffSearchModel);
+            var staffCreatedOrUpdatedEvent = new StaffCreatedOrUpdatedMessage(staffSearchModel);
 
             //Sent the event to event grid
             //await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> {staffCreatedOrUpdatedEvent});
@@ -49,7 +49,7 @@ namespace Rosterd.Services.Staff
         ///<inheritdoc/>
         public async Task GenerateStaffDeletedEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, long staffId)
         {
-            var staffDeletedEvent = new StaffDeletedEvent(environmentThisEventIsBeingGenerateFrom, staffId);
+            var staffDeletedEvent = new StaffDeletedMessage(staffId);
 
             //Sent the event to event grid
             //await eventGridClient.PublishEventsAsync(topicHostName, new List<EventGridEvent> {staffDeletedEvent});

@@ -29,21 +29,17 @@ namespace Rosterd.AzureFunctions
         private readonly IOptions<FunctionSettings> _settings;
         private readonly IJobsService _jobsService;
         private readonly IJobEventsService _jobEventsService;
-        private readonly IEventGridClient _eventGridClient;
 
         private string RosterdEventGridTopicHost { get; }
-        private string CurrentEnvironment { get; set; }
 
-        public JobStatusChangeFunctions(ILogger<EventConsumerFunctions> logger, IOptions<FunctionSettings> settings, IJobsService jobsService, IJobEventsService jobEventsService, IEventGridClient eventGridClient)
+        public JobStatusChangeFunctions(ILogger<EventConsumerFunctions> logger, IOptions<FunctionSettings> settings, IJobsService jobsService, IJobEventsService jobEventsService)
         {
             _logger = logger;
             _settings = settings;
             _jobsService = jobsService;
             _jobEventsService = jobEventsService;
-            _eventGridClient = eventGridClient;
 
             RosterdEventGridTopicHost = new Uri(settings.Value.EventGridTopicEndpoint).Host;
-            CurrentEnvironment = settings.Value.Environment;
         }
 
         [FunctionName(nameof(MovedJobsPastTimeLimitToExpiredState))]
@@ -54,8 +50,7 @@ namespace Rosterd.AzureFunctions
             //Get all the jobs that need to be expired
             var jobIdsThatNeedExpiring = (await _jobsService.GetAllJobsThatAreExpiredButStatusStillNotSetToExpired()).AlwaysList();
 
-            await _jobEventsService.GenerateJobStatusChangedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobIdsThatNeedExpiring,
-                JobStatus.Expired);
+            await _jobEventsService.GenerateJobStatusChangedEvent(jobIdsThatNeedExpiring, JobStatus.Expired);
         }
 
         [FunctionName(nameof(MoveJobsPastEndDateToFeedbackState))]
@@ -66,8 +61,7 @@ namespace Rosterd.AzureFunctions
             //Get all the jobs that need to be moved to feedback pending
             var jobIdsThatNeedFeedbackPending = (await _jobsService.GetAllJobsThatArePastEndDateButStatusStillNotSetToFeedback()).AlwaysList();
 
-            await _jobEventsService.GenerateJobStatusChangedEvent(_eventGridClient, RosterdEventGridTopicHost, CurrentEnvironment, jobIdsThatNeedFeedbackPending,
-                JobStatus.FeedbackPending);
+            await _jobEventsService.GenerateJobStatusChangedEvent(jobIdsThatNeedFeedbackPending, JobStatus.FeedbackPending);
         }
 
         [FunctionName(nameof(MoveFinishedJobsFromSearch))]

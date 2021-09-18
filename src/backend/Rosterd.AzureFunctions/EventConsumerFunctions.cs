@@ -44,7 +44,7 @@ namespace Rosterd.AzureFunctions
             //switch (eventGridEvent)
             //{
             //    //New staff created or updated
-            //    case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.StaffCreatedOrUpdatedEvent):
+            //    case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.StaffCreatedOrUpdatedMessage):
             //    {
             //        await _staffEventsService.HandleStaffCreatedOrUpdatedEvent(eventGridEvent);
             //        break;
@@ -65,7 +65,7 @@ namespace Rosterd.AzureFunctions
             //    }
 
             //    //Job cancelled
-            //    case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.JobCancelledEvent):
+            //    case { EventType: var eventType } when eventType.Contains(RosterdConstants.Events.JobCancelledMessage):
             //    {
             //        await _jobEventsService.HandleJobCancelledEvent(eventGridEvent);
             //        break;

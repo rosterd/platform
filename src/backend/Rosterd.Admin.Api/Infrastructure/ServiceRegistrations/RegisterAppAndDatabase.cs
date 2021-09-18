@@ -3,8 +3,6 @@ using Auth0.AuthenticationApi;
 using Auth0.ManagementApi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.EventGrid;
-using Microsoft.Azure.EventGrid.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -76,7 +74,8 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             services.AddScoped<IAzureTableStorage>(s => new AzureTableStorage(config.GetConnectionString("TableStorageConnectionString")));
 
             //Event grids
-            services.AddScoped<IEventGridClient>(provider => new EventGridClient(new TopicCredentials(config.GetValue<string>("AppSettings:EventGridTopicKey"))));
+            //Storage Queues
+            //services.AddScoped<IEventGridClient>(provider => new EventGridClient(new TopicCredentials(config.GetValue<string>("AppSettings:EventGridTopicKey"))));
 
             //Auth0, auth, roles
             var domain = $"{config["Auth0:Domain"]}/";
