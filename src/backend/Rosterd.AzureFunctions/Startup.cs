@@ -1,6 +1,4 @@
 using System;
-using Microsoft.Azure.EventGrid;
-using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -54,7 +52,7 @@ namespace Rosterd.AzureFunctions
                         errorNumbersToAdd: null)))
 
                 //Event Grid
-                .AddScoped<IEventGridClient>(provider => new EventGridClient(new TopicCredentials(eventGridTopicKey)))
+                //.AddScoped<IEventGridClient>(provider => new EventGridClient(new TopicCredentials(eventGridTopicKey)))
 
                 .AddOptions<FunctionSettings>()
                 .Configure<IConfiguration>((settings, configuration) => configuration.GetSection("FunctionSettings").Bind(settings));

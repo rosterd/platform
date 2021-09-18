@@ -31,8 +31,8 @@ namespace Rosterd.Services.Staff.Interfaces
         /// <summary>
         /// Handles the staff deleted event
         /// </summary>
-        /// <param name="staffDeletedEvent"></param>
+        /// <param name="staffDeletedMessage"></param>
         /// <returns></returns>
-        Task HandleStaffDeletedEvent(EventGridEvent staffDeletedEvent);
+        Task HandleStaffDeletedEvent(StaffDeletedMessage staffDeletedMessage);
     }
 }

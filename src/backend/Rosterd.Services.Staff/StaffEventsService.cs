@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Azure.EventGrid;
-using Microsoft.Azure.EventGrid.Models;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.SqlServer.Helpers;
@@ -31,7 +29,7 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task GenerateStaffCreatedOrUpdatedEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, long staffId)
+        public async Task GenerateStaffCreatedOrUpdatedEvent(long staffId)
         {
             //Get the latest staff info
             var staff = await _context.Staff
@@ -47,7 +45,7 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task GenerateStaffDeletedEvent(IEventGridClient eventGridClient, string topicHostName, string environmentThisEventIsBeingGenerateFrom, long staffId)
+        public async Task GenerateStaffDeletedEvent(long staffId)
         {
             var staffDeletedEvent = new StaffDeletedMessage(staffId);
 
@@ -56,17 +54,17 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task HandleStaffCreatedOrUpdatedEvent(EventGridEvent staffCreatedOrUpdatedEvent)
+        public async Task HandleStaffCreatedOrUpdatedEvent(StaffCreatedOrUpdatedMessage staffCreatedOrUpdatedMessage)
         {
-            var staffModel = staffCreatedOrUpdatedEvent.Data as StaffSearchModel;
-            await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.StaffIndex, new List<StaffSearchModel> {staffModel});
+            //var staffModel = staffCreatedOrUpdatedEvent.Data as StaffSearchModel;
+            //await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.StaffIndex, new List<StaffSearchModel> {staffModel});
         }
 
         ///<inheritdoc/>
-        public async Task HandleStaffDeletedEvent(EventGridEvent staffDeletedEvent)
+        public async Task HandleStaffDeletedEvent(StaffDeletedMessage staffDeletedMessage)
         {
-            var staffId = staffDeletedEvent.Data as string;
-            await _searchIndexProvider.DeleteDocumentsFromIndex(RosterdConstants.Search.StaffIndex, StaffSearchModel.Key(), new List<string>() {staffId});
+            //var staffId = staffDeletedEvent.Data as string;
+            //await _searchIndexProvider.DeleteDocumentsFromIndex(RosterdConstants.Search.StaffIndex, StaffSearchModel.Key(), new List<string>() {staffId});
         }
     }
 }
