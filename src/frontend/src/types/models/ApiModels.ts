@@ -166,6 +166,77 @@ export interface paths {
       };
     };
   };
+  "/api/v{version}/adminusers/facility-admins/{auth0userid}": {
+    delete: {
+      parameters: {
+        path: {
+          /** The admin to remove from auth0 */
+          auth0UserId: string;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["StaffModel"];
+            "application/json": components["schemas"]["StaffModel"];
+            "text/json": components["schemas"]["StaffModel"];
+          };
+        };
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+  };
   "/api/v{version}/adminusers/organization-admins": {
     put: {
       parameters: {
@@ -2754,7 +2825,7 @@ export interface components {
     AddJobRequest: {
       jobTitle: string;
       description: string;
-      facilityId: number;
+      facilityId?: number | null;
       jobStartDateTimeUtc: string;
       jobEndDateTimeUtc: string;
       comments?: string | null;
