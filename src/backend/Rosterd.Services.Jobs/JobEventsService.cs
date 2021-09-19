@@ -47,18 +47,6 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task GenerateJobStatusChangedEvent(List<long> jobIds, JobStatus newJobsStatus, string auth0OrganizationId)
-        {
-            if (jobIds.IsNullOrEmpty())
-                return;
-
-            foreach (var jobId in jobIds)
-            {
-                await GenerateJobStatusChangedEvent(jobId, newJobsStatus, auth0OrganizationId);
-            }
-        }
-
-        ///<inheritdoc/>
         public async Task GenerateJobCancelledEvent(long jobId, string auth0OrganizationId)
         {
             var jobCancelledEvent = new JobCancelledMessage(jobId, auth0OrganizationId);

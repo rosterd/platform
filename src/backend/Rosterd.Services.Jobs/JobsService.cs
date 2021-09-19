@@ -243,32 +243,32 @@ namespace Rosterd.Services.Jobs
             });
 
         ///<inheritdoc/>
-        public async Task<IEnumerable<long>> GetAllJobsThatAreExpiredButStatusStillNotSetToExpired()
+        public async Task<List<KeyValuePair<long, string>>> GetAllJobsThatAreExpiredButStatusStillNotSetToExpired()
         {
-            //TODO:Org Check
-
             var publishedStatus = (int) JobStatus.Published;
-            var currentDateTime = DateTime.UtcNow;
+            var currentDateTimeUtc = DateTime.UtcNow;
 
             var jobsThatNeedToBeExpired =
-                await _context.Jobs.Where(s => s.JobStatusId == publishedStatus && currentDateTime >= s.JobStartDateTimeUtc)
-                    .Select(s => s.JobId)
+                await _context.Jobs
+                    .Include(s => s.Facility).ThenInclude(s => s.Organzation)
+                    .Where(s => s.JobStatusId == publishedStatus && currentDateTimeUtc > s.JobStartDateTimeUtc && currentDateTimeUtc < s.JobEndDateTimeUtc)
+                    .Select(s => new KeyValuePair<long, string>(s.JobId, s.Facility.Organzation.Auth0OrganizationId))
                     .ToListAsync();
 
             return jobsThatNeedToBeExpired;
         }
 
         ///<inheritdoc/>
-        public async Task<IEnumerable<long>> GetAllJobsThatArePastEndDateButStatusStillNotSetToFeedback()
+        public async Task<List<KeyValuePair<long, string>>> GetAllJobsThatArePastEndDateButStatusStillNotSetToFeedback()
         {
-            //TODO:Org Check
-
             var inProgressStatus = (int) JobStatus.InProgress;
-            var currentDateTime = DateTime.UtcNow;
+            var currentDateTimeUtc = DateTime.UtcNow;
 
             var jobsThatAreFinished =
-                await _context.Jobs.Where(s => s.JobStatusId == inProgressStatus && currentDateTime >= s.JobEndDateTimeUtc)
-                    .Select(s => s.JobId)
+                await _context.Jobs
+                    .Include(s => s.Facility).ThenInclude(s => s.Organzation)
+                    .Where(s => s.JobStatusId == inProgressStatus && currentDateTimeUtc > s.JobEndDateTimeUtc)
+                    .Select(s => new KeyValuePair<long, string>(s.JobId, s.Facility.Organzation.Auth0OrganizationId))
                     .ToListAsync();
 
             return jobsThatAreFinished;

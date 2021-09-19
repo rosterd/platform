@@ -26,15 +26,6 @@ namespace Rosterd.Services.Jobs.Interfaces
             JobStatus newJobsStatus, string auth0OrganizationId);
 
         /// <summary>
-        /// Generates a job status change event for each given job in the list of jobs
-        /// </summary>
-        /// <param name="jobIds"></param>
-        /// <param name="newJobsStatus"></param>
-        /// <param name="auth0OrganizationId"></param>
-        /// <returns></returns>
-        Task GenerateJobStatusChangedEvent(List<long> jobIds, JobStatus newJobsStatus, string auth0OrganizationId);
-
-        /// <summary>
         /// Generates a new job cancelled event and send the event to the event grid
         /// </summary>
         /// <param name="jobId"></param>
