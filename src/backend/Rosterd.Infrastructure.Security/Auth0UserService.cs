@@ -88,27 +88,27 @@ namespace Rosterd.Infrastructure.Security
             return adminUserModel;
         }
 
-        public async Task<Domain.Models.PagedList<Auth0UserModel>> GetAdminUsers(string auth0OrganizationId, PagingQueryStringParameters pagingParams)
+        public async Task<List<Auth0UserModel>> GetAdminUsers(string auth0OrganizationId, PagingQueryStringParameters pagingParams)
         {
+            //TODO: REFACTOR THIS SO WE DONT NEED TO CALL AUTH0 AT A LATER TIME AND RECORD ALL THE ADMINS FOR AN ORGANIZATION IN OUR DB
             var auth0ApiManagementClient = await _auth0AuthenticationService.GetAuth0ApiManagementClient();
 
             var allOrganizationMembers = await auth0ApiManagementClient.Organizations.GetAllMembersAsync(auth0OrganizationId,
                 new PaginationInfo(pagingParams.PageNumber - 1, pagingParams.PageSize, true));
 
             if (allOrganizationMembers == null || allOrganizationMembers.IsNullOrEmpty())
-                return Domain.Models.PagedList<Auth0UserModel>.EmptyPagedList();
+                return new List<Auth0UserModel>();
 
             var auth0UserModels = new List<Auth0UserModel>();
             foreach (var organizationMember in allOrganizationMembers)
             {
-                var userRoles = await auth0ApiManagementClient.Organizations.GetAllMemberRolesAsync(auth0OrganizationId, organizationMember.UserId,
-                    new PaginationInfo());
+                var userRoles = await auth0ApiManagementClient.Organizations.GetAllMemberRolesAsync(auth0OrganizationId, organizationMember.UserId, new PaginationInfo());
 
                 //Only admin users
                 if (userRoles.IsNullOrEmpty())
                     continue;
 
-                //If use ris staff role then not an admin
+                //If user is staff role then not an admin
                 var isStaff = userRoles.FirstOrDefault(s => s.Name == RosterdRoleEnum.Staff.ToString());
                 if (isStaff != null)
                     continue;
@@ -124,8 +124,7 @@ namespace Rosterd.Infrastructure.Security
                 });
             }
 
-            return new Domain.Models.PagedList<Auth0UserModel>(auth0UserModels, auth0UserModels.Count, pagingParams.PageNumber,
-                pagingParams.PageSize);
+            return auth0UserModels;
         }
     }
 }

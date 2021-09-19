@@ -47,6 +47,6 @@ namespace Rosterd.Infrastructure.Security.Interfaces
 
         Task RemoveUserFromAuth0(string auth0Id);
 
-        Task<PagedList<Auth0UserModel>> GetAdminUsers(string auth0OrganizationId, PagingQueryStringParameters pagingParams);
+        Task<List<Auth0UserModel>> GetAdminUsers(string auth0OrganizationId, PagingQueryStringParameters pagingParams);
     }
 }
