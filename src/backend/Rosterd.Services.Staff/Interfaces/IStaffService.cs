@@ -45,8 +45,8 @@ namespace Rosterd.Services.Staff.Interfaces
         /// </summary>
         /// <param name="staffId"></param>
         /// <param name="auth0OrganizationId"></param>
-        /// <returns></returns>
-        Task<StaffModel> UpdateStaffToInactive(long staffId, string auth0OrganizationId);
+        /// <returns>Returns the old auth0 id of the staff member</returns>
+        Task<string> UpdateStaffToInactive(long staffId, string auth0OrganizationId);
 
         Task<StaffModel> UpdateStaffToInactive(string auth0Userid, string auth0OrganizationId);
 

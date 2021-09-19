@@ -98,7 +98,6 @@ namespace Rosterd.Infrastructure.Security
             if (allOrganizationMembers == null || allOrganizationMembers.IsNullOrEmpty())
                 return Domain.Models.PagedList<Auth0UserModel>.EmptyPagedList();
 
-
             var auth0UserModels = new List<Auth0UserModel>();
             foreach (var organizationMember in allOrganizationMembers)
             {

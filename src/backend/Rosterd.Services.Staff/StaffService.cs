@@ -129,10 +129,11 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task<StaffModel> UpdateStaffToInactive(long staffId, string auth0OrganizationId)
+        public async Task<string> UpdateStaffToInactive(long staffId, string auth0OrganizationId)
         {
             await _belongsToValidator.ValidateStaffBelongsToOrganization(staffId, auth0OrganizationId);
             var staff = await _context.Staff.FindAsync(staffId);
+            var oldAuth0Id = staff.Auth0Id;
 
             if (staff == null)
                 throw new EntityNotFoundException($"staff with staff id {staffId} for auth0-organizationId {auth0OrganizationId}");
@@ -141,7 +142,7 @@ namespace Rosterd.Services.Staff
             staff.Auth0Id = $"{RosterdConstants.Users.UserRemovedFromAuth0}_{Guid.NewGuid()}";
 
             await _context.SaveChangesAsync();
-            return staff.ToDomainModel();
+            return oldAuth0Id;
         }
 
         ///<inheritdoc/>
@@ -152,7 +153,9 @@ namespace Rosterd.Services.Staff
                 throw new EntityNotFoundException($"staff with auth0userid {auth0Userid} for auth0-organizationId {auth0OrganizationId}");
 
             //Its ok to call this method because we already fetched this record in memory and when this method calls it will get it from memory
-            return await UpdateStaffToInactive(staff.StaffId, auth0OrganizationId);
+            await UpdateStaffToInactive(staff.StaffId, auth0OrganizationId);
+
+            return staff.ToDomainModel();
         }
 
         ///<inheritdoc/>

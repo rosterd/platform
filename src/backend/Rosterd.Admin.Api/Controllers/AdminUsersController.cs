@@ -136,7 +136,7 @@ namespace Rosterd.Admin.Api.Controllers
             var staffModel = await _staffService.UpdateStaffToInactive(auth0UserId, _userContext.UsersAuth0OrganizationId);
 
             //2. Remove from auth0
-            await _auth0UserService.RemoveUserFromAuth0(staffModel.Auth0Id);
+            await _auth0UserService.RemoveUserFromAuth0(auth0UserId);
 
             await _staffEventsService.GenerateStaffDeletedEvent(staffModel.StaffId.Value);
             return Ok();

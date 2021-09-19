@@ -139,10 +139,10 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult> RemoveStaffMember([ValidNumberRequired] long? staffId)
         {
             //1. Mark as not active in our db
-            var staffModel = await _staffService.UpdateStaffToInactive(staffId.Value, _userContext.UsersAuth0OrganizationId);
+            var staffAuth0Id = await _staffService.UpdateStaffToInactive(staffId.Value, _userContext.UsersAuth0OrganizationId);
 
             //2. Remove from auth0
-            await _auth0UserService.RemoveUserFromAuth0(staffModel.Auth0Id);
+            await _auth0UserService.RemoveUserFromAuth0(staffAuth0Id);
 
             await _staffEventsService.GenerateStaffDeletedEvent(staffId.Value);
             return Ok();
