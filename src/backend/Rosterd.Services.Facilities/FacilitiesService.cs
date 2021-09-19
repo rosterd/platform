@@ -112,7 +112,9 @@ namespace Rosterd.Services.Facilities
 
             var matchingFacilities =
                 await (from facility in _context.Facilities
-                where facility.OrganzationId == organization.OrganizationId && EF.Functions.Like(facility.FacilityName, facilityModel.FacilityName)
+                where facility.OrganzationId == organization.OrganizationId &&
+                      facility.IsActive == true &&
+                      EF.Functions.Like(facility.FacilityName, facilityModel.FacilityName)
                 select facility).FirstOrDefaultAsync();
 
             if (allowedName != null && matchingFacilities != null)
