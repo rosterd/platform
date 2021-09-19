@@ -27,6 +27,12 @@ namespace Rosterd.Domain.Messaging
         /// </summary>
         public virtual string SubjectId { get; set; }
 
+        /// <summary>
+        /// The auth0 organization id this message belongs to
+        /// ie: the tenant
+        /// </summary>
+        public virtual string Auth0OrganizationId { get; set; }
+
         //The body of the actual message
         public virtual string MessageBody { get; set; }
     }

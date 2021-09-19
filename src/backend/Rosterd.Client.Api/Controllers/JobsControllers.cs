@@ -50,8 +50,9 @@ namespace Rosterd.Client.Api.Controllers
             if (!isAcceptSuccessful)
                 return UnprocessableEntity(RosterdConstants.ErrorMessages.GenericError);
 
+            //TODO
             //Raise a job status change event (job is set to accepted status)
-            await _jobEventsService.GenerateJobStatusChangedEvent(jobId, JobStatus.Accepted);
+            //await _jobEventsService.GenerateJobStatusChangedEvent(jobId, JobStatus.Accepted, _userContext.UsersAuth0OrganizationId);
 
             return Ok();
         }
@@ -74,8 +75,9 @@ namespace Rosterd.Client.Api.Controllers
             if (!isAcceptSuccessful)
                 return UnprocessableEntity(RosterdConstants.ErrorMessages.GenericError);
 
+            //TODO
             //Raise a job status change event (job is set back to published status)
-            await _jobEventsService.GenerateJobStatusChangedEvent(jobId, JobStatus.Published);
+            //await _jobEventsService.GenerateJobStatusChangedEvent(jobId, JobStatus.Published, TODO);
 
             return Ok();
         }

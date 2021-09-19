@@ -11,32 +11,36 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// Generates a new job created event and sends the event to event grid
         /// </summary>
         /// <param name="jobId"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task GenerateNewJobCreatedEvent(long jobId);
+        Task GenerateNewJobCreatedEvent(long jobId, string auth0OrganizationId);
 
         /// <summary>
         /// Generates a job status change event
         /// </summary>
         /// <param name="jobId"></param>
         /// <param name="newJobsStatus"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
         Task GenerateJobStatusChangedEvent(long jobId,
-            JobStatus newJobsStatus);
+            JobStatus newJobsStatus, string auth0OrganizationId);
 
         /// <summary>
         /// Generates a job status change event for each given job in the list of jobs
         /// </summary>
         /// <param name="jobIds"></param>
         /// <param name="newJobsStatus"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task GenerateJobStatusChangedEvent(List<long> jobIds, JobStatus newJobsStatus);
+        Task GenerateJobStatusChangedEvent(List<long> jobIds, JobStatus newJobsStatus, string auth0OrganizationId);
 
         /// <summary>
         /// Generates a new job cancelled event and send the event to the event grid
         /// </summary>
         /// <param name="jobId"></param>
+        /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
-        Task GenerateJobCancelledEvent( long jobId);
+        Task GenerateJobCancelledEvent(long jobId, string auth0OrganizationId);
 
         Task HandleNewJobCreatedEvent(NewJobCreatedMessage jobCreatedMessage);
 

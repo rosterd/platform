@@ -97,7 +97,7 @@ namespace Rosterd.Admin.Api.Controllers
             var newJob = await _jobService.CreateJob(domainModelToSave, _userContext.UsersAuth0OrganizationId);
 
             //Generate a new job created event
-            await _jobEventsService.GenerateNewJobCreatedEvent(newJob.JobId);
+            await _jobEventsService.GenerateNewJobCreatedEvent(newJob.JobId, _userContext.UsersAuth0OrganizationId);
             return Ok(newJob);
         }
 
@@ -113,7 +113,7 @@ namespace Rosterd.Admin.Api.Controllers
             await _jobService.RemoveJob(jobId.Value, jobCancellationReason, _userContext.UsersAuth0OrganizationId);
 
             //Generate a new job deleted event
-            await _jobEventsService.GenerateJobCancelledEvent(jobId.Value);
+            await _jobEventsService.GenerateJobCancelledEvent(jobId.Value, _userContext.UsersAuth0OrganizationId);
             return Ok();
         }
 

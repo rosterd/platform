@@ -138,7 +138,7 @@ namespace Rosterd.Admin.Api.Controllers
             //2. Remove from auth0
             await _auth0UserService.RemoveUserFromAuth0(auth0UserId);
 
-            await _staffEventsService.GenerateStaffDeletedEvent(staffModel.StaffId.Value);
+            await _staffEventsService.GenerateStaffDeletedEvent(staffModel.StaffId.Value, _userContext.UsersAuth0OrganizationId);
             return Ok();
         }
     }

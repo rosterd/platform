@@ -5,11 +5,12 @@ namespace Rosterd.Domain.Messaging
 {
     public sealed class NewJobCreatedMessage : BaseMessage
     {
-        public NewJobCreatedMessage(string jobId)
+        public NewJobCreatedMessage(string jobId, string auth0OrganizationId)
         {
             MessageType = RosterdConstants.Messaging.NewJobCreatedMessage;
             SubjectId = jobId;
             MessageBody = jobId;
+            Auth0OrganizationId = auth0OrganizationId;
         }
 
         /// <summary>

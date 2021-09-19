@@ -67,6 +67,8 @@ namespace Rosterd.Admin.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<OrganizationModel>> CreateNewOrganization([Required] [FromBody] AddOrganizationRequest request)
         {
+            //TODO: send a message to create index
+
             var organization = await _organizationService.CreateOrganization(request.ToOrganizationModel());
             return organization;
         }

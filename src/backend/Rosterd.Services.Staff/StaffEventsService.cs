@@ -33,16 +33,16 @@ namespace Rosterd.Services.Staff
         }
 
         ///<inheritdoc/>
-        public async Task GenerateStaffCreatedOrUpdatedEvent(long staffId)
+        public async Task GenerateStaffCreatedOrUpdatedEvent(long staffId, string auth0OrganizationId)
         {
-            var staffCreatedOrUpdatedMessage = new StaffCreatedOrUpdatedMessage(staffId.ToString());
+            var staffCreatedOrUpdatedMessage = new StaffCreatedOrUpdatedMessage(staffId.ToString(), auth0OrganizationId);
             await _staffQueueClient.SendMessageWithNoExpiry(staffCreatedOrUpdatedMessage);
         }
 
         ///<inheritdoc/>
-        public async Task GenerateStaffDeletedEvent(long staffId)
+        public async Task GenerateStaffDeletedEvent(long staffId, string auth0OrganizationId)
         {
-            var staffDeletedMessage = new StaffDeletedMessage(staffId.ToString());
+            var staffDeletedMessage = new StaffDeletedMessage(staffId.ToString(), auth0OrganizationId);
 
             //Send to storage queue
             await _staffQueueClient.SendMessageWithNoExpiry(BinaryData.FromObjectAsJson(staffDeletedMessage));

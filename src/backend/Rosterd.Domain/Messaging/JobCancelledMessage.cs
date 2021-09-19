@@ -5,11 +5,12 @@ namespace Rosterd.Domain.Messaging
 {
     public sealed class JobCancelledMessage : BaseMessage
     {
-        public JobCancelledMessage(long jobId)
+        public JobCancelledMessage(long jobId, string auth0OrganizationId)
         {
             MessageType = RosterdConstants.Messaging.JobCancelledMessage;
             SubjectId = jobId.ToString();
             MessageBody = jobId.ToString();
+            Auth0OrganizationId = auth0OrganizationId;
         }
 
         /// <summary>

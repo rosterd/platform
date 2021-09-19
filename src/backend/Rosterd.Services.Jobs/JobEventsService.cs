@@ -30,38 +30,38 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task GenerateNewJobCreatedEvent(long jobId)
+        public async Task GenerateNewJobCreatedEvent(long jobId, string auth0OrganizationId)
         {
             //Send to storage queue
-            var newJobCreatedMessage = new NewJobCreatedMessage(jobId.ToString());
+            var newJobCreatedMessage = new NewJobCreatedMessage(jobId.ToString(), auth0OrganizationId);
             await _jobsQueueClient.SendMessageWithNoExpiry(BinaryData.FromObjectAsJson(newJobCreatedMessage));
         }
 
         ///<inheritdoc/>
-        public async Task GenerateJobStatusChangedEvent(long jobId, JobStatus newJobsStatus)
+        public async Task GenerateJobStatusChangedEvent(long jobId, JobStatus newJobsStatus, string auth0OrganizationId)
         {
-            var jobStatusChangeEvent = new JobStatusChangedMessage(jobId, newJobsStatus);
+            var jobStatusChangeEvent = new JobStatusChangedMessage(jobId, newJobsStatus, auth0OrganizationId);
 
             //Send to storage queue
             await _jobsQueueClient.SendMessageWithNoExpiry(BinaryData.FromObjectAsJson(jobStatusChangeEvent));
         }
 
         ///<inheritdoc/>
-        public async Task GenerateJobStatusChangedEvent(List<long> jobIds, JobStatus newJobsStatus)
+        public async Task GenerateJobStatusChangedEvent(List<long> jobIds, JobStatus newJobsStatus, string auth0OrganizationId)
         {
             if (jobIds.IsNullOrEmpty())
                 return;
 
             foreach (var jobId in jobIds)
             {
-                await GenerateJobStatusChangedEvent(jobId, newJobsStatus);
+                await GenerateJobStatusChangedEvent(jobId, newJobsStatus, auth0OrganizationId);
             }
         }
 
         ///<inheritdoc/>
-        public async Task GenerateJobCancelledEvent(long jobId)
+        public async Task GenerateJobCancelledEvent(long jobId, string auth0OrganizationId)
         {
-            var jobCancelledEvent = new JobCancelledMessage(jobId);
+            var jobCancelledEvent = new JobCancelledMessage(jobId, auth0OrganizationId);
 
             //Send to storage queue
             await _jobsQueueClient.SendMessageWithNoExpiry(BinaryData.FromObjectAsJson(jobCancelledEvent));
