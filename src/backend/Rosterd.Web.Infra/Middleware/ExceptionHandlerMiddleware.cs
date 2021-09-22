@@ -34,10 +34,15 @@ namespace Rosterd.Web.Infra.Middleware
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
+            var errorMessages = new List<string>();
+            if (exception is BaseRosterdException rosterdException)
+                errorMessages = rosterdException.Messages;
+
             var errorDetails = exception switch
             {
-                EntityAlreadyExistsException entityAlreadyExistsException => ErrorDetails.GenerateEntityAlreadyExistsError(),
-                EntityNotFoundException entityNotFoundException => ErrorDetails.Generate404Error(),
+                EntityAlreadyExistsException entityAlreadyExistsException => ErrorDetails.GenerateEntityAlreadyExistsError(errorMessages),
+                EntityNotFoundException entityNotFoundException => ErrorDetails.Generate404Error(errorMessages),
+                BadRequestException badRequestException => ErrorDetails.Generate400Error(errorMessages),
                 _ => ErrorDetails.Generate500Error()
             };
 
@@ -51,25 +56,31 @@ namespace Rosterd.Web.Infra.Middleware
     public class ErrorDetails
     {
         public int StatusCode { get; set; }
-        public string Message { get; set; }
+        public List<string> Messages { get; set; }
         public override string ToString() => JsonSerializer.Serialize(this);
 
         public static ErrorDetails Generate500Error() => new ErrorDetails()
         {
             StatusCode = (int)HttpStatusCode.InternalServerError,
-            Message = "An unexpected error has occurred, please contact support."
+            Messages = new List<string> { "An unexpected error has occurred, please contact support."}
         };
 
-        public static ErrorDetails Generate404Error() => new ErrorDetails()
+        public static ErrorDetails Generate404Error(List<string> messages) => new ErrorDetails()
         {
             StatusCode = (int)HttpStatusCode.NotFound,
-            Message = "Sorry that resource is not found, please contact support."
+            Messages = messages ?? new List<string> {"The resource was not found."}
         };
 
-        public static ErrorDetails GenerateEntityAlreadyExistsError() => new ErrorDetails()
+        public static ErrorDetails Generate400Error(List<string> messages) => new ErrorDetails()
+        {
+            StatusCode = (int)HttpStatusCode.BadRequest,
+            Messages = messages ?? new List<string> {"The information provider is not valid."}
+        };
+
+        public static ErrorDetails GenerateEntityAlreadyExistsError(List<string> messages) => new ErrorDetails()
         {
             StatusCode = (int)HttpStatusCode.UnprocessableEntity,
-            Message = "Sorry that already exists, please try a different one."
+            Messages = messages ?? new List<string>{"That item with the same name already exists."}
         };
     }
 }

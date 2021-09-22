@@ -57,7 +57,7 @@ namespace Rosterd.Services.Staff
                 .FirstOrDefaultAsync(s => s.StaffId == staffId);
 
             if(staff == null)
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException("The staff member does not exist");
 
             return staff.ToDomainModel();
         }
@@ -66,7 +66,7 @@ namespace Rosterd.Services.Staff
         public async Task<StaffModel> CreateStaff(StaffModel staffModel, string auth0OrganizationId)
         {
             if (staffModel.Auth0Id.IsNullOrEmpty())
-                throw new Auth0IdNotSetException();
+                throw new Auth0IdNotSetException("Staff member is not created with the identity provider");
 
             var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
             await _belongsToValidator.ValidateSkillsBelongsToOrganization(staffModel.StaffSkills.AlwaysList().Select(s => s.SkillId).AlwaysList(), auth0OrganizationId);
@@ -118,7 +118,7 @@ namespace Rosterd.Services.Staff
             //Get the existing staff
             var staffFromDb = await _context.Staff.FindAsync(staffModel.StaffId.Value);
             if (staffFromDb == null)
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException("The staff member does not exist");
 
             //Update the db entry with the latest updates from the domain model
             var staffModelToUpdate = staffModel.ToDataModel(staffFromDb);

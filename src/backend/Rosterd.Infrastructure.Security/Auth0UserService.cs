@@ -75,7 +75,7 @@ namespace Rosterd.Infrastructure.Security
             //3. Add the organization admin role to this user
             var roleToAdd = await _rolesService.GetRole(roleToAddForUser);
             if (roleToAdd == null)
-                throw new RoleDoesNotExistException();
+                throw new RoleDoesNotExistException("The organization admin role does not exist");
 
             await auth0ApiManagementClient.Organizations.AddMemberRolesAsync(auth0OrganizationId, userCreatedInAuth0.UserId,
                 new OrganizationAddMemberRolesRequest { Roles = new List<string> { roleToAdd.RoleId } });

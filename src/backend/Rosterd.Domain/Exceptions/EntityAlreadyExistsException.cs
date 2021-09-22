@@ -1,20 +1,15 @@
 using System;
+using System.Collections.Generic;
 
 namespace Rosterd.Domain.Exceptions
 {
-    public class EntityAlreadyExistsException : Exception
+    public class EntityAlreadyExistsException : BaseRosterdException
     {
-        public EntityAlreadyExistsException()
+        public EntityAlreadyExistsException(List<string> messages) : base(messages)
         {
         }
 
-        public EntityAlreadyExistsException(string message)
-            : base(message)
-        {
-        }
-
-        public EntityAlreadyExistsException(string message, Exception inner)
-            : base(message, inner)
+        public EntityAlreadyExistsException(string message) : base(new List<string> { message })
         {
         }
     }

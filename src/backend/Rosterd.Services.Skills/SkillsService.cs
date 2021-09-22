@@ -63,7 +63,7 @@ namespace Rosterd.Services.Skills
 
             var skill = await _context.Skills.FirstOrDefaultAsync(s => s.OrganizationId == organization.OrganizationId && s.SkillId == skillId);
             if(skill == null)
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException("The skill does not exist");
 
             _context.Skills.Remove(skill);
             await _context.SaveChangesAsync();
@@ -74,7 +74,7 @@ namespace Rosterd.Services.Skills
 
             var skillFromDb = await _context.Skills.FirstOrDefaultAsync(s => s.OrganizationId == organization.OrganizationId && s.SkillId == skillModel.SkillId);
             if (skillFromDb == null)
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException("The skill does not exist");
 
             var skillModelToUpdate = skillModel.ToDataModel(skillFromDb);
 
@@ -88,7 +88,7 @@ namespace Rosterd.Services.Skills
         {
             var existingSkillsWithSameName = await _context.Skills.AnyAsync(s => s.SkillName == skillName.ToLower() && s.OrganizationId == organization.OrganizationId);
             if(existingSkillsWithSameName)
-                throw new EntityAlreadyExistsException();
+                throw new EntityAlreadyExistsException("The skill with the same name already exists");
         }
     }
 }

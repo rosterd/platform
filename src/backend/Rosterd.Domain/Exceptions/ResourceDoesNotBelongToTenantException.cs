@@ -1,20 +1,15 @@
 using System;
+using System.Collections.Generic;
 
 namespace Rosterd.Domain.Exceptions
 {
-    public class ResourceDoesNotBelongToTenantException : Exception
+    public class ResourceDoesNotBelongToTenantException : BaseRosterdException
     {
-        public ResourceDoesNotBelongToTenantException()
+        public ResourceDoesNotBelongToTenantException(List<string> messages) : base(messages)
         {
         }
 
-        public ResourceDoesNotBelongToTenantException(string message)
-            : base(message)
-        {
-        }
-
-        public ResourceDoesNotBelongToTenantException(string message, Exception inner)
-            : base(message, inner)
+        public ResourceDoesNotBelongToTenantException(string message) : base(new List<string> { message })
         {
         }
     }

@@ -1,20 +1,15 @@
 using System;
+using System.Collections.Generic;
 
 namespace Rosterd.Domain.Exceptions
 {
-    public class NoTenantFoundException : Exception
+    public class NoTenantFoundException : BaseRosterdException
     {
-        public NoTenantFoundException()
+        public NoTenantFoundException(List<string> messages) : base(messages)
         {
         }
 
-        public NoTenantFoundException(string message)
-            : base(message)
-        {
-        }
-
-        public NoTenantFoundException(string message, Exception inner)
-            : base(message, inner)
+        public NoTenantFoundException(string message) : base(new List<string> { message })
         {
         }
     }

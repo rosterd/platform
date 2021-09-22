@@ -1,9 +1,9 @@
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Azure.Storage.Queues;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +13,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Rosterd.Admin.Api.Infrastructure.Extensions;
-using Rosterd.Domain;
+using Rosterd.Domain.Exceptions;
+using Rosterd.Infrastructure.Extensions;
 using Rosterd.Web.Infra;
 using Rosterd.Web.Infra.Extensions;
 using Rosterd.Web.Infra.Middleware;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Rosterd.Admin.Api
 {
@@ -49,7 +48,8 @@ namespace Rosterd.Admin.Api
                 IdentityModelEventSource.ShowPII = true;
 
             services
-                .AddCustomAuthenticationWithJwtBearer(Configuration) //Add auth and JWT as the first thing (This always needs to be the first thing to configure)
+                .AddCustomAuthenticationWithJwtBearer(
+                    Configuration) //Add auth and JWT as the first thing (This always needs to be the first thing to configure)
                 .AddApplicationInsightsTelemetry()
                 .AddAppAndDatabaseDependencies(Configuration, HostingEnvironment)
                 .AddCustomSwagger("Rosterd Admin Api", "v1")
@@ -61,6 +61,18 @@ namespace Rosterd.Admin.Api
                 .AddCustomCaching()
                 .AddCorsWithAllowAll()
                 .AddControllers()
+                .ConfigureApiBehaviorOptions(options => options.InvalidModelStateResponseFactory = context =>
+                {
+                    //For all model failures, throw an exception and let our exception handler midleware handle it
+                    var errorMessages = (from modelState in context.ModelState
+                        let key = modelState.Key
+                        select modelState.Value.Errors
+                        into errors
+                        from error in errors
+                        select error).Select(error => error.ErrorMessage).AlwaysList();
+
+                    throw new BadRequestException(errorMessages);
+                })
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.WriteIndented = HostingEnvironment.IsDevelopment();

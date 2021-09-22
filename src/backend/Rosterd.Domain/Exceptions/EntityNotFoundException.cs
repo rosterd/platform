@@ -1,20 +1,15 @@
 using System;
+using System.Collections.Generic;
 
 namespace Rosterd.Domain.Exceptions
 {
-    public class EntityNotFoundException : Exception
+    public class EntityNotFoundException : BaseRosterdException
     {
-        public EntityNotFoundException()
+        public EntityNotFoundException(List<string> messages) : base(messages)
         {
         }
 
-        public EntityNotFoundException(string message)
-            : base(message)
-        {
-        }
-
-        public EntityNotFoundException(string message, Exception inner)
-            : base(message, inner)
+        public EntityNotFoundException(string message) : base(new List<string> { message })
         {
         }
     }

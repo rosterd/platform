@@ -48,6 +48,18 @@ namespace Rosterd.Admin.Api.Controllers
             _belongsToValidator = belongsToValidator;
         }
 
+        // <summary>
+        /// Adds a new Staff member
+        /// </summary>
+        /// <param name="request">The Staff member to add</param>
+        /// <returns></returns>
+        [HttpPost("test")]
+        [AllowAnonymous]
+        public async Task<ActionResult<StaffModel>> test([FromBody] AddStaffRequest request)
+        {
+            return Ok();
+        }
+
         /// <summary>
         /// Gets all the resources
         /// </summary>

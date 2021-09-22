@@ -1,20 +1,15 @@
 using System;
+using System.Collections.Generic;
 
 namespace Rosterd.Domain.Exceptions
 {
-    public class RoleDoesNotExistException : Exception
+    public class RoleDoesNotExistException : BaseRosterdException
     {
-        public RoleDoesNotExistException()
+        public RoleDoesNotExistException(List<string> messages) : base(messages)
         {
         }
 
-        public RoleDoesNotExistException(string message)
-            : base(message)
-        {
-        }
-
-        public RoleDoesNotExistException(string message, Exception inner)
-            : base(message, inner)
+        public RoleDoesNotExistException(string message) : base(new List<string> { message })
         {
         }
     }
