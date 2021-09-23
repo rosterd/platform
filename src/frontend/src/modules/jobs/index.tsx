@@ -8,11 +8,12 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import AddIcon from '@material-ui/icons/Add';
 import {components} from 'types/models';
-import {deleteJob, getJobs, publishJob} from 'services';
+import {deleteJob, DeleteJobRequest, getJobs, publishJob} from 'services';
 import useRequest from 'shared/hooks/useRequest';
 import {isPast, isFuture, parseISO} from 'date-fns';
 import PublishJobModal from './components/PublishJobModal';
 import JobModal from './components/JobModal';
+import DeleteJobModal from './components/DeleteJobModal';
 
 type GetJobsResponse = components['schemas']['JobModelPagedList'];
 type AddJobRequest = components['schemas']['AddJobRequest'];
@@ -60,7 +61,10 @@ const Jobs = (): JSX.Element => {
   const [activeJobs, setActiveJobs] = useState(initialState);
   const [jobs, setJobs] = useState(initialState);
   const [loading, setLoading] = useState(false);
+  const [deleteJobId, setDeleteJobId] = useState<undefined | number>(undefined);
   const [showAddJobModal, setShowAddJobModal] = useState(false);
+  const [showDeleteJobModal, setShowDeleteJobModal] = useState(false);
+
   const {requestMaker} = useRequest();
 
   const handleTabChange = (_: any, newValue: number) => {
@@ -87,6 +91,13 @@ const Jobs = (): JSX.Element => {
     })();
   }, []);
 
+  const handleClose = () => {
+    setShowAddJobModal(false);
+    setShowJobModal(false);
+    setShowDeleteJobModal(false);
+    setLoading(false);
+  };
+
   const handlePublishJob = async (values: AddJobRequest) => {
     const jobRes = await requestMaker<Job>(publishJob(values));
     setLoading(false);
@@ -100,11 +111,17 @@ const Jobs = (): JSX.Element => {
     setShowJobModal(true);
   };
 
-  const onDeleteJob = async (deletedJob: Job) => {
+  const handleDeleteJob = async (value: DeleteJobRequest) => {
     setLoading(true);
-    await requestMaker(deleteJob(deletedJob?.jobId));
+    await requestMaker(deleteJob(deleteJobId, value));
+    setDeleteJobId(undefined);
     setLoading(false);
-    setJobs(jobs.filter((job) => job.jobId !== deletedJob.jobId));
+    setJobs(jobs.filter((job) => job.jobId !== deleteJobId));
+  };
+
+  const onDeleteJob = (_: any, deletedJob) => {
+    setDeleteJobId(deletedJob?.jobId);
+    setShowDeleteJobModal(true);
   };
 
   return (
@@ -142,9 +159,13 @@ const Jobs = (): JSX.Element => {
                   {title: 'To', field: 'jobEndDateTimeUtc', type: 'datetime'},
                   {title: 'Status', field: 'jobStatus'},
                 ]}
-                editable={{
-                  onRowDelete: onDeleteJob,
-                }}
+                actions={[
+                  {
+                    icon: 'delete',
+                    tooltip: 'delete job',
+                    onClick: onDeleteJob,
+                  },
+                ]}
                 options={{
                   actionsColumnIndex: -1,
                 }}
@@ -171,8 +192,9 @@ const Jobs = (): JSX.Element => {
             </TabPanel>
           </div>
         </Box>
-        <PublishJobModal open={showAddJobModal} handleClose={() => setShowAddJobModal(false)} onPublishJob={handlePublishJob} />
-        <JobModal open={showJobModal} handleClose={() => setShowJobModal(false)} details={jobDetails} />
+        <PublishJobModal open={showAddJobModal} handleClose={handleClose} onPublishJob={handlePublishJob} />
+        <JobModal open={showJobModal} handleClose={handleClose} details={jobDetails} />
+        <DeleteJobModal open={showDeleteJobModal} handleClose={handleClose} onDeleteJob={handleDeleteJob} />
       </Box>
     </AppAnimate>
   );
