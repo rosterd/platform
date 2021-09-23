@@ -49,6 +49,13 @@ const Facilities: React.FC = (): JSX.Element => {
     })();
   }, []);
 
+  const handleClose = () => {
+    setFacility(undefined);
+    setShowAddFacility(false);
+    setShowUpdateFacility(false);
+    setLoading(false);
+  };
+
   const handleAddFacility = async ({address, ...values}: FacilityFormValues) => {
     setLoading(true);
 
@@ -73,7 +80,6 @@ const Facilities: React.FC = (): JSX.Element => {
     };
 
     const facilityRes = await requestMaker<Facility>(updateFacility(requestBody));
-    setLoading(false);
     if (facilityRes) {
       setFacilities([facilityRes, ...facilities]);
     }
@@ -89,12 +95,6 @@ const Facilities: React.FC = (): JSX.Element => {
     await requestMaker(deleteFacility(facilityToDelete.facilityId || 0));
     setLoading(false);
     setFacilities(facilities.filter((f) => f.facilityId !== facilityToDelete.facilityId));
-  };
-
-  const handleClose = () => {
-    setShowAddFacility(false);
-    setShowUpdateFacility(false);
-    setFacility(undefined);
   };
 
   return (

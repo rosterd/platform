@@ -36,12 +36,7 @@ export const useRequest = (): HookResponse => {
       })
         .then((res: AxiosResponse) => res.data)
         .catch((error: AxiosError) => {
-          if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          }
-          return error;
+          throw error?.response?.data;
         });
     },
     [isAuthenticated, getAccessTokenSilently],

@@ -31,9 +31,9 @@ export interface paths {
         /** Success */
         200: {
           content: {
-            "text/plain": components["schemas"]["Auth0UserModelPagedList"];
-            "application/json": components["schemas"]["Auth0UserModelPagedList"];
-            "text/json": components["schemas"]["Auth0UserModelPagedList"];
+            "text/plain": components["schemas"]["Auth0UserModel"][];
+            "application/json": components["schemas"]["Auth0UserModel"][];
+            "text/json": components["schemas"]["Auth0UserModel"][];
           };
         };
         /** Bad Request */
@@ -2867,15 +2867,6 @@ export interface components {
       email: string;
       mobilePhoneNumber?: string | null;
       rosterdRolesForUser?: components["schemas"]["RosterdRoleEnum"][] | null;
-    };
-    Auth0UserModelPagedList: {
-      currentPage?: number;
-      totalPages?: number;
-      pageSize?: number;
-      totalCount?: number;
-      hasPrevious?: boolean;
-      hasNext?: boolean;
-      items?: components["schemas"]["Auth0UserModel"][] | null;
     };
     FacilityCapabilityModel: { [key: string]: unknown };
     FacilityLiteModel: {

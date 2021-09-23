@@ -6,19 +6,27 @@ import {components} from 'types/models';
 import SkillsInput from 'shared/components/Skills';
 import FormModal, {FormProps, ModalProps} from 'shared/components/FormModal';
 
-type AddStaffRequest = components['schemas']['AddStaffRequest'];
+type AddStaffRequest = components['schemas']['UpdateStaffRequest'];
 type Skill = components['schemas']['SkillModel'];
+type Staff = components['schemas']['StaffModel'];
 
 interface AddStaffModalProps {
   open: boolean;
   handleClose: () => void;
-  onAddStaff: (values: AddStaffRequest) => void;
+  staffMember?: Staff;
+  onUpdateStaff: (values: Staff) => void;
   skills: Skill[];
 }
 
-const initialValues = {firstName: '', lastName: '', email: '', jobTitle: '', comments: '', mobilePhoneNumber: '', skillIds: []};
-const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
-  const {onAddStaff, handleClose, open, skills} = props;
+const defaultInitialValue = {firstName: '', lastName: '', email: '', jobTitle: '', comments: '', mobilePhoneNumber: '', skillIds: []};
+const UpdateStaffModal = (props: AddStaffModalProps): JSX.Element => {
+  const {staffMember, handleClose, open, onUpdateStaff, skills} = props;
+
+  const initialValues = {
+    ...defaultInitialValue,
+    ...staffMember,
+    skillIds: staffMember?.staffSkills?.map((skill) => skill.skillId || 0),
+  };
 
   const validationSchema = yup.object({
     firstName: yup.string().required('Please enter Fist name'),
@@ -32,14 +40,15 @@ const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
   const formProps: FormProps<AddStaffRequest> = {
     initialValues,
     validationSchema,
-    onSubmit: onAddStaff,
+    onSubmit: onUpdateStaff,
   };
 
   const modalProps: ModalProps = {
     open,
     onClose: handleClose,
-    submitButtonLabel: 'Add Staff',
-    title: 'Add Staff',
+    submitButtonLabel: 'Update',
+    title: 'Update Staff',
+    closeAfter: true,
   };
 
   return (
@@ -62,4 +71,4 @@ const AddStaffModal = (props: AddStaffModalProps): JSX.Element => {
   );
 };
 
-export default AddStaffModal;
+export default UpdateStaffModal;

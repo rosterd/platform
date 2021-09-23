@@ -1,4 +1,3 @@
-import {LinearProgress} from '@material-ui/core';
 import {Field, Form} from 'formik';
 import {TextField} from 'formik-material-ui';
 import React from 'react';
@@ -6,11 +5,7 @@ import {AddressFieldType, addressInitialValue} from 'shared/components/Address/A
 import AddressInput from 'shared/components/Address';
 import * as yup from 'yup';
 
-type FacililyFormProps = {
-  isSubmitting: boolean;
-};
-
-const FacililyForm = ({isSubmitting}: FacililyFormProps): JSX.Element => (
+const FacililyForm = (): JSX.Element => (
   <Form>
     <Field component={TextField} name='facilityName' label='Facility Name' fullWidth />
     <br />
@@ -20,8 +15,6 @@ const FacililyForm = ({isSubmitting}: FacililyFormProps): JSX.Element => (
     <br />
     <Field component={TextField} name='phoneNumber2' label='Phone Number 2' fullWidth />
     <br />
-
-    {isSubmitting && <LinearProgress />}
   </Form>
 );
 

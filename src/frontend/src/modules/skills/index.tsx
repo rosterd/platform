@@ -6,7 +6,7 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core';
 import {components} from 'types/models';
-import {getSkills, deleteSkill, addSkill, updateSkill} from 'services';
+import {getSkills, addSkill, updateSkill} from 'services';
 import useRequest from 'shared/hooks/useRequest';
 import {AxiosRequestConfig} from 'axios';
 
@@ -59,13 +59,6 @@ const Skills: React.FC = (): JSX.Element => {
     setSkills(skills.map((skill) => (skill.skillId === skillToUpdate.skillId ? updatedSkill : skill)));
   };
 
-  const onDelete = async (deletedSkill: Skill) => {
-    setLoading(true);
-    await requestMaker<GetSkillsResponse>(deleteSkill(deletedSkill?.skillId));
-    setLoading(false);
-    setSkills(skills.filter((skill) => skill.skillId !== deletedSkill.skillId));
-  };
-
   const handlePageChange = async (page: number, pageSize: number) => {
     const requestConfig = getSkills();
     await fetchData({...requestConfig, url: `${requestConfig.url}?pageNumber=${page + 1}&pageSize=${pageSize}`});
@@ -89,7 +82,6 @@ const Skills: React.FC = (): JSX.Element => {
             editable={{
               onRowAdd: onAdd,
               onRowUpdate: onUpdate,
-              onRowDelete: onDelete,
             }}
             options={{
               actionsColumnIndex: -1,

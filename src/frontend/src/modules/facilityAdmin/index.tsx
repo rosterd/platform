@@ -14,7 +14,6 @@ import {AxiosRequestConfig} from 'axios';
 
 type AddAdminWhoIsAlsoStaffRequest = components['schemas']['AddAdminWhoIsAlsoStaffRequest'];
 type AdminUserModel = components['schemas']['Auth0UserModel'];
-type GetAdminsResponse = components['schemas']['Auth0UserModelPagedList'];
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -32,16 +31,13 @@ const initialState: AdminUserModel[] = [];
 const FacilityAdmin: React.FC = (): JSX.Element => {
   const classes = useStyles();
   const [admins, setAdmins] = useState(initialState);
-  const [results, setResults] = useState({} as GetAdminsResponse);
   const [showAddAdminModal, setShowAddAdminModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const {requestMaker} = useRequest();
 
   const fetchData = async (config: AxiosRequestConfig) => {
     setLoading(true);
-    const adminsRes = await requestMaker<GetAdminsResponse>(config);
-    setResults(adminsRes);
-    const allAdmins = adminsRes.items || [];
+    const allAdmins = await requestMaker<AdminUserModel[]>(config);
     const facilityAdmins = allAdmins.filter((admin) => admin.rosterdRolesForUser?.indexOf('FacilityAdmin') !== -1);
     setAdmins(facilityAdmins);
     setLoading(false);
@@ -56,11 +52,6 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
   const handleAddFacilityAdmin = async (values: AddAdminWhoIsAlsoStaffRequest) => {
     const admin = await requestMaker<AdminUserModel>(addFacilityAdmin(values));
     setAdmins([...admins, admin]);
-  };
-
-  const handlePageChange = async (page: number, pageSize: number) => {
-    const requestConfig = getAdmins();
-    await fetchData({...requestConfig, url: `${requestConfig.url}?pageNumber=${page + 1}&pageSize=${pageSize}`});
   };
 
   const onDelete = async (adminToDelete: AdminUserModel) => {
@@ -103,10 +94,8 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
             isLoading={loading}
             options={{
               actionsColumnIndex: -1,
+              paging: false,
             }}
-            onChangePage={handlePageChange}
-            page={(results?.currentPage || 1) - 1}
-            totalCount={results.totalCount}
             editable={{
               onRowDelete: onDelete,
             }}

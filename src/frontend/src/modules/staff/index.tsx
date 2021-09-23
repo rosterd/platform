@@ -6,14 +6,17 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import {components} from 'types/models';
-import {getStaff, deleteStaff, addStaff, updateStaff} from 'services';
+import {getStaff, deleteStaff, addStaff, updateStaff, getSkills} from 'services';
 import useRequest from 'shared/hooks/useRequest';
 import {AxiosRequestConfig} from 'axios';
 import AddIcon from '@material-ui/icons/Add';
 import AddStaffModal from './components/AddStaffModal';
+import UpdateStaffModal from './components/UpdateStaffModal';
 
 type GetStaffResponse = components['schemas']['StaffModelPagedList'];
+type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
 type Staff = components['schemas']['StaffModel'];
+type Skill = components['schemas']['SkillModel'];
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -24,11 +27,13 @@ const useStyles = makeStyles(() => ({
 }));
 
 const initialState: Staff[] = [];
+const initialSkillsState: Skill[] = [];
 
 const Staff: React.FC = (): JSX.Element => {
   const classes = useStyles();
   const [results, setResults] = useState({} as GetStaffResponse);
   const [staff, setStaff] = useState(initialState);
+  const [skills, setSkills] = useState(initialSkillsState);
   const [staffMember, setStaffMember] = useState<Staff | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const {requestMaker} = useRequest();
@@ -48,6 +53,20 @@ const Staff: React.FC = (): JSX.Element => {
     })();
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const {url} = getSkills();
+      const skillsResponse = await requestMaker<GetSkillsResponse>({url: `${url}?pageSize=100`});
+      setSkills(skillsResponse.items || []);
+    })();
+  }, []);
+
+  const handleClose = () => {
+    setLoading(false);
+    setStaffMember(undefined);
+    setShowStaffModal(false);
+  };
+
   const handleAddStaff = async (values: Staff) => {
     setLoading(true);
     const addedStaff = await requestMaker<Staff>(addStaff(values));
@@ -57,20 +76,22 @@ const Staff: React.FC = (): JSX.Element => {
     }
   };
 
+  const onAddButtonClick = () => {
+    setStaffMember(undefined);
+    setShowStaffModal(true);
+  };
+
   const onRowClick = async (_: any, staffToUpdate?: Staff) => {
     setShowStaffModal(true);
     setStaffMember(staffToUpdate);
-    // await requestMaker<Staff>(updateStaff(staffToUpdate));
   };
 
   const handleUpdateStaff = async (values: Staff) => {
     setLoading(true);
-    try {
-      const updatedStaff = await requestMaker<Staff>(updateStaff(values));
-      setStaff(staff.map((member) => (member.staffId === updatedStaff.staffId ? updatedStaff : member)));
-    } catch (e) {
-      console.log(e);
-    }
+    const updatedStaff = await requestMaker<Staff>(updateStaff(values));
+    setStaff(staff.map((member) => (member.staffId === updatedStaff.staffId ? updatedStaff : member)));
+    setStaffMember(undefined);
+    setShowStaffModal(false);
     setLoading(false);
   };
 
@@ -99,7 +120,7 @@ const Staff: React.FC = (): JSX.Element => {
             </Grid>
             <Grid item xs={6}>
               <Box textAlign='right'>
-                <Button variant='contained' color='primary' startIcon={<AddIcon />} onClick={() => setShowStaffModal(true)}>
+                <Button variant='contained' color='primary' startIcon={<AddIcon />} onClick={onAddButtonClick}>
                   Add Staff
                 </Button>
               </Box>
@@ -130,13 +151,11 @@ const Staff: React.FC = (): JSX.Element => {
             totalCount={results.totalCount}
           />
         </Box>
-        <AddStaffModal
-          staffMember={staffMember}
-          open={showStaffModal}
-          onAddStaff={handleAddStaff}
-          onUpdateStaff={handleUpdateStaff}
-          handleClose={() => setShowStaffModal(false)}
-        />
+        {staffMember ? (
+          <UpdateStaffModal skills={skills} staffMember={staffMember} open={showStaffModal} onUpdateStaff={handleUpdateStaff} handleClose={handleClose} />
+        ) : (
+          <AddStaffModal skills={skills} open={showStaffModal} onAddStaff={handleAddStaff} handleClose={handleClose} />
+        )}
       </Box>
     </AppAnimate>
   );

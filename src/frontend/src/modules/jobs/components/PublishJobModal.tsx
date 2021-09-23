@@ -1,10 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import {Formik, Form, Field} from 'formik';
-import {Button, FormControl, FormControlLabel, InputLabel, LinearProgress, MenuItem} from '@material-ui/core';
+import {Form, Field} from 'formik';
+import {FormControl, FormControlLabel, InputLabel, MenuItem} from '@material-ui/core';
 import {Select, Switch, TextField} from 'formik-material-ui';
 import {DateTimePicker} from 'formik-material-ui-pickers';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
@@ -16,6 +12,7 @@ import SkillsInput from 'shared/components/Skills';
 import * as yup from 'yup';
 import {useAuthUser} from '@crema/utility/AppHooks';
 import {AuthUser} from 'types/models/AuthUser';
+import FormModal, {FormProps, ModalProps} from 'shared/components/FormModal';
 
 interface PublishJobModalProps {
   open: boolean;
@@ -48,9 +45,9 @@ const PublishJobModal = (props: PublishJobModalProps): JSX.Element => {
   const {requestMaker} = useRequest();
   const authuser: AuthUser | null = useAuthUser();
   const [facilities, setFacilities] = useState(initialFacilitiesState);
-
+  const {open, handleClose, onPublishJob} = props;
   const isOrganisationAdmin = useMemo(() => (authuser!.role || []).indexOf('OrganizationAdmin') !== -1, [authuser]);
-  const initialFormValues = isOrganisationAdmin ? {...formValues, facilityId: 0} : formValues;
+  const initialValues = isOrganisationAdmin ? {...formValues, facilityId: 0} : formValues;
 
   const validationSchema = yup.object({
     jobTitle: yup.string().required('Please enter Job Title'),
@@ -77,75 +74,64 @@ const PublishJobModal = (props: PublishJobModalProps): JSX.Element => {
     })();
   }, []);
 
+  const formProps: FormProps<any> = {
+    onSubmit: onPublishJob,
+    initialValues,
+    validationSchema,
+  };
+
+  const modalProps: ModalProps = {
+    open,
+    onClose: handleClose,
+    title: 'Publish Job',
+    submitButtonLabel: 'Publish',
+  };
+
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Formik
-        initialValues={initialFormValues}
-        validationSchema={validationSchema}
-        onSubmit={async (values, {setSubmitting, resetForm}) => {
-          setSubmitting(true);
-          await props.onPublishJob(values);
-          resetForm();
-          setSubmitting(false);
-        }}>
-        {({submitForm, isSubmitting}) => (
-          <Dialog fullWidth maxWidth='sm' open={props.open} onClose={props.handleClose} aria-labelledby='form-dialog-title'>
-            <DialogTitle id='form-dialog-title'>Publish Job</DialogTitle>
-            <DialogContent>
-              <Form>
-                {isOrganisationAdmin && (
-                  <FormControl fullWidth>
-                    <InputLabel htmlFor='age-simple'>Facility</InputLabel>
-                    <Field
-                      component={Select}
-                      name='facilityId'
-                      inputProps={{
-                        id: 'facilityId',
-                        fullWidth: true,
-                      }}>
-                      {facilities.map((facility) => (
-                        <MenuItem key={facility.facilityId} value={facility?.facilityId || 0}>
-                          {facility.facilityName}
-                        </MenuItem>
-                      ))}
-                    </Field>
-                  </FormControl>
-                )}
-                <Field component={TextField} name='jobTitle' label='Title' fullWidth />
-                <br />
-                <Field component={TextField} name='description' label='Description' fullWidth multiline />
-                <br />
-                <Field component={DateTimePicker} name='jobStartDateTimeUtc' label='Start Time' fullWidth />
-                <br />
-                <Field component={DateTimePicker} name='jobEndDateTimeUtc' label='End Time' fullWidth />
-                <br />
-                <Field component={TextField} name='gracePeriodToCancelMinutes' label='Grace Period(in mins)' fullWidth />
-                <br />
-                <br />
-                <FormControlLabel control={<Field name='isNightShift' type='checkbox' component={Switch} />} label='Night Shift' />
-                <br />
-                <SkillsInput skills={skills} label='Skills' name='skillsRequiredForJob' />
-                <br />
-                <Field component={TextField} name='experience' label='Experience' fullWidth multiline />
-                <br />
-                <Field component={TextField} name='comments' label='Comments' fullWidth multiline />
-                <br />
-                <Field component={TextField} name='responsibilities' label='Responsibilities' fullWidth multiline />
-                {isSubmitting && <LinearProgress />}
-              </Form>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={props.handleClose} color='primary'>
-                Cancel
-              </Button>
-              <Button onClick={submitForm} color='primary' disabled={isSubmitting} variant='contained'>
-                Publish
-              </Button>
-            </DialogActions>
-          </Dialog>
-        )}
-      </Formik>
-    </MuiPickersUtilsProvider>
+    <FormModal formProps={formProps} modalProps={modalProps}>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Form>
+          {isOrganisationAdmin && (
+            <FormControl fullWidth>
+              <InputLabel htmlFor='age-simple'>Facility</InputLabel>
+              <Field
+                component={Select}
+                name='facilityId'
+                inputProps={{
+                  id: 'facilityId',
+                  fullWidth: true,
+                }}>
+                {facilities.map((facility) => (
+                  <MenuItem key={facility.facilityId} value={facility?.facilityId || 0}>
+                    {facility.facilityName}
+                  </MenuItem>
+                ))}
+              </Field>
+            </FormControl>
+          )}
+          <Field component={TextField} name='jobTitle' label='Title' fullWidth />
+          <br />
+          <Field component={TextField} name='description' label='Description' fullWidth multiline />
+          <br />
+          <Field component={DateTimePicker} name='jobStartDateTimeUtc' label='Start Time' fullWidth />
+          <br />
+          <Field component={DateTimePicker} name='jobEndDateTimeUtc' label='End Time' fullWidth />
+          <br />
+          <Field component={TextField} name='gracePeriodToCancelMinutes' label='Grace Period(in mins)' fullWidth />
+          <br />
+          <br />
+          <FormControlLabel control={<Field name='isNightShift' type='checkbox' component={Switch} />} label='Night Shift' />
+          <br />
+          <SkillsInput skills={skills} label='Skills' name='skillsRequiredForJob' />
+          <br />
+          <Field component={TextField} name='experience' label='Experience' fullWidth multiline />
+          <br />
+          <Field component={TextField} name='comments' label='Comments' fullWidth multiline />
+          <br />
+          <Field component={TextField} name='responsibilities' label='Responsibilities' fullWidth multiline />
+        </Form>
+      </MuiPickersUtilsProvider>
+    </FormModal>
   );
 };
 
