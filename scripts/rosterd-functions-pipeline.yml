@@ -55,7 +55,7 @@ stages:
 
 - stage: DeployToDev
   variables:
-    - group: Rosterd-functions
+    - group: event-function-vars
   displayName: Deploy To Dev
   jobs:
   - deployment: deploy
@@ -83,7 +83,6 @@ stages:
               deploymentMethod: 'auto'
               appSettings: 
                           '
-                            -AppSettings:EventGridTopicKey "$(AppSettings.EventGridTopicKey)"
-                            -AppSettings:SearchServiceEndpoint "$(AppSettings.SearchServiceEndpoint)"
-                            -AppSettings:SearchServiceApiKey "$(AppSettings.SearchServiceApiKey)"
+                            -SearchServiceEndpoint "$(AppSettings.SearchServiceEndpoint)"
+                            -SearchServiceApiKey "$(AppSettings.SearchServiceApiKey)"
                           '
