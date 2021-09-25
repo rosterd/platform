@@ -106,12 +106,12 @@ namespace Rosterd.Admin.Api.Controllers
         /// Sets the job status to 'Cancelled'
         /// </summary>
         /// <param name="jobId">The Job to be removed</param>
-        /// <param name="jobCancellationReason">The reason for the job cancellation</param>
+        /// <param name="jobCancellationRequest">The reason for the job cancellation</param>
         /// <returns></returns>
         [HttpDelete("{jobId}")]
-        public async Task<ActionResult> RemoveJob([ValidNumberRequired] long? jobId, [Required][FromBody] string jobCancellationReason)
+        public async Task<ActionResult> RemoveJob([ValidNumberRequired] long? jobId, [Required][FromBody] DeleteJobRequest jobCancellationRequest)
         {
-            await _jobService.RemoveJob(jobId.Value, jobCancellationReason, _userContext.UsersAuth0OrganizationId);
+            await _jobService.RemoveJob(jobId.Value, jobCancellationRequest.JobCancellationReason, _userContext.UsersAuth0OrganizationId);
 
             //Generate a new job deleted event
             await _jobEventsService.GenerateJobCancelledEvent(jobId.Value, _userContext.UsersAuth0OrganizationId);
