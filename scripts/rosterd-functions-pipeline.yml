@@ -83,6 +83,12 @@ stages:
               deploymentMethod: 'auto'
               appSettings: 
                           '
-                            -SearchServiceEndpoint "$(AppSettings.SearchServiceEndpoint)"
-                            -SearchServiceApiKey "$(AppSettings.SearchServiceApiKey)"
+                            -FunctionSettings:Environment "Dev"
+                            -FunctionSettings:RosterdDbConnectionString "$(RosterdDbConnectionStrin)"
+                            -FunctionSettings:StorageConnectionString "$(StorageConnectionString)"
+                            -FunctionSettings:SearchServiceEndpoint "$(SearchServiceEndpoint)"
+                            -FunctionSettings:SearchServiceApiKey "$(SearchServiceApiKey)"
+                            -FunctionSettings:MovedJobsPastTimeLimitToExpiredStateSchedule "0 */30 * * * *"
+                            -FunctionSettings:MoveJobsPastEndDateToFeedbackStateSchedule "0 0 */6 * * *"
+                            -FunctionSettings:MoveFinishedJobsFromSearchSchedule "0 0 0 * * *"
                           '
