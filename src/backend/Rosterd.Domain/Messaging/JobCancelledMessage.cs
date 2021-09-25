@@ -3,7 +3,7 @@ using Azure.Storage.Queues;
 
 namespace Rosterd.Domain.Messaging
 {
-    public sealed class JobCancelledMessage : BaseMessage
+    public sealed class JobCancelledMessage : BaseRosterdMessage
     {
         public JobCancelledMessage(long jobId, string auth0OrganizationId)
         {

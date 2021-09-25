@@ -6,7 +6,7 @@ namespace Rosterd.Domain.Messaging
     /// Base messages
     /// AzureStorageQueueMessage - MAX size 64KB, but recommended to be 1KB (max throughput for storage queues  is 2000 messages of 1KB a second for one queue)
     /// </summary>
-    public abstract class BaseMessage
+    public class BaseRosterdMessage
     {
         /// <summary>
         /// The date time (in utc) this message was created

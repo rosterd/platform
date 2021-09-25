@@ -3,7 +3,7 @@ using Rosterd.Domain.Search;
 
 namespace Rosterd.Domain.Messaging
 {
-    public sealed class NewJobCreatedMessage : BaseMessage
+    public sealed class NewJobCreatedMessage : BaseRosterdMessage
     {
         public NewJobCreatedMessage(string jobId, string auth0OrganizationId)
         {

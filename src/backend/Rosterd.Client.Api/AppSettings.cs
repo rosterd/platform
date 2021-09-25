@@ -6,9 +6,7 @@ namespace Rosterd.Client.Api
 
         public string Environment { get; set; }
 
-        public string EventGridTopicEndpoint { get; set; }
-
-        public string EventGridTopicKey { get; set; }
+        public string StorageAccount { get; set; }
 
         public string SearchServiceEndpoint { get; set; }
 

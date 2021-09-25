@@ -2,7 +2,7 @@ using System;
 
 namespace Rosterd.Domain.Messaging
 {
-    public sealed class StaffDeletedMessage : BaseMessage
+    public sealed class StaffDeletedMessage : BaseRosterdMessage
     {
         public StaffDeletedMessage(string staffId, string auth0OrganizationId)
         {

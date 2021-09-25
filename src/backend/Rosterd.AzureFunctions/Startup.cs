@@ -1,13 +1,14 @@
 using System;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rosterd.AzureFunctions;
 using Rosterd.AzureFunctions.Config;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.TableStorage.Context;
+using Rosterd.Domain;
+using Rosterd.Infrastructure.Messaging;
 using Rosterd.Infrastructure.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
 using Rosterd.Services.Jobs;
@@ -31,6 +32,13 @@ namespace Rosterd.AzureFunctions
             var rosterdDbConnectionString = builder.GetContext().Configuration.GetValue<string>("FunctionSettings:RosterdDbConnectionString");
             var tableStorageConnectionString = builder.GetContext().Configuration.GetValue<string>("FunctionSettings:TableStorageConnectionString");
 
+            //Storage Queues
+            var staffQueueClient = new StaffQueueClient(tableStorageConnectionString, RosterdConstants.Messaging.StaffQueueName);
+            staffQueueClient.QueueClient.CreateIfNotExists();
+
+            var jobsQueueClient = new JobsQueueClient(tableStorageConnectionString, RosterdConstants.Messaging.JobQueueName);
+            jobsQueueClient.QueueClient.CreateIfNotExists();
+
             builder.Services
                 .AddLogging()
 
@@ -38,11 +46,13 @@ namespace Rosterd.AzureFunctions
                 .AddScoped<IStaffEventsService, StaffEventsService>()
                 .AddScoped<IJobEventsService, JobEventsService>()
 
+                .AddSingleton<IQueueClient<StaffQueueClient>>(s => staffQueueClient)
+                .AddSingleton<IQueueClient<JobsQueueClient>>(s => jobsQueueClient)
+
+                .AddScoped<IAzureTableStorage>(s => new AzureTableStorage(tableStorageConnectionString))
+
                 //Azure Search
                 .AddScoped<ISearchIndexProvider>(s => new SearchIndexProvider(searchServiceEndpoint, searchServiceApiKey))
-
-                //Table Storage
-                .AddScoped<IAzureTableStorage>(s => new AzureTableStorage(tableStorageConnectionString))
 
                 //DB
                 .AddDbContextPool<RosterdDbContext>((sp, op) => op.UseSqlServer(rosterdDbConnectionString,
@@ -51,8 +61,6 @@ namespace Rosterd.AzureFunctions
                         maxRetryDelay: TimeSpan.FromSeconds(5),
                         errorNumbersToAdd: null)))
 
-                //Event Grid
-                //.AddScoped<IEventGridClient>(provider => new EventGridClient(new TopicCredentials(eventGridTopicKey)))
 
                 .AddOptions<FunctionSettings>()
                 .Configure<IConfiguration>((settings, configuration) => configuration.GetSection("FunctionSettings").Bind(settings));

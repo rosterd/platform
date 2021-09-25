@@ -73,6 +73,20 @@ namespace Rosterd.Admin.Api.Controllers
             return staffModel;
         }
 
+        ///// <summary>
+        ///// Adds a new Staff member
+        ///// </summary>
+        ///// <param name="request">The Staff member to add</param>
+        ///// <returns></returns>
+        //[HttpPost("Test")]
+        //[AllowAnonymous]
+        //public async Task<ActionResult<StaffModel>> Test([FromBody] AddStaffRequest request)
+        //{
+        //    //Generate a new staff created event
+        //    await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(10, "test");
+        //    return Ok();
+        //}
+
         /// <summary>
         /// Adds a new Staff member
         /// </summary>

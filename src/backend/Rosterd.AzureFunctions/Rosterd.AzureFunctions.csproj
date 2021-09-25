@@ -5,15 +5,16 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Search.Documents" Version="11.2.1" />
-    <!--<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.17.0" />-->
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.12" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj" />
     <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
     <ProjectReference Include="..\Rosterd.Infrastructure.Search\Rosterd.Infrastructure.Search.csproj" />
-    <ProjectReference Include="..\Rosterd.Services.Staff\Rosterd.Services.Staff.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Jobs\Rosterd.Services.Jobs.csproj" />
+    <ProjectReference Include="..\Rosterd.Services.Staff\Rosterd.Services.Staff.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

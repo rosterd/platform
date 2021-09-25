@@ -18,26 +18,26 @@ namespace Rosterd.Domain.Search
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string Description { get; set; }
 
-        [SearchableField]
-        public DateTime JobStartDateTimeUtc { get; set; }
+        [SimpleField(IsFilterable = true, IsSortable = true, IsFacetable = true)]
+        public DateTimeOffset JobStartDateTimeUtc { get; set; }
 
-        [SearchableField]
-        public DateTime JobEndDateTimeUtc { get; set; }
+        [SimpleField(IsFilterable = true, IsSortable = true, IsFacetable = true)]
+        public DateTimeOffset JobEndDateTimeUtc { get; set; }
 
-        [SearchableField]
-        public DateTime JobPostedDateTimeUtc { get; set; }
+        [SimpleField(IsFilterable = true, IsSortable = true, IsFacetable = true)]
+        public DateTimeOffset JobPostedDateTimeUtc { get; set; }
 
         [SearchableField]
         public string Comments { get; set; }
 
         [SearchableField]
-        public long? GracePeriodToCancelMinutes { get; set; }
+        public string GracePeriodToCancelMinutes { get; set; }
 
         [SearchableField]
-        public bool? NoGracePeriod { get; set; }
+        public string NoGracePeriod { get; set; }
 
-        [SearchableField]
-        public DateTime? JobGracePeriodEndDateTimeUtc { get; set; }
+        [SimpleField(IsFilterable = true, IsSortable = true, IsFacetable = true)]
+        public DateTimeOffset? JobGracePeriodEndDateTimeUtc { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string JobStatusName { get; set; }
@@ -49,7 +49,7 @@ namespace Rosterd.Domain.Search
         public string Experience { get; set; }
 
         [SearchableField]
-        public bool IsNightShift { get; set; }
+        public string IsNightShift { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string[] Skills { get; set; }

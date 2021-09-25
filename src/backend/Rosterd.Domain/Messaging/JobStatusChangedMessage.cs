@@ -3,7 +3,7 @@ using Rosterd.Domain.Enums;
 
 namespace Rosterd.Domain.Messaging
 {
-    public sealed class JobStatusChangedMessage : BaseMessage
+    public sealed class JobStatusChangedMessage : BaseRosterdMessage
     {
         public JobStatusChangedMessage(long jobId, JobStatus newStatus, string auth0OrganizationId)
         {

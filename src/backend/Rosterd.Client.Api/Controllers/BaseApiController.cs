@@ -20,11 +20,8 @@ namespace Rosterd.Client.Api.Controllers
     {
         protected BaseApiController(IOptions<AppSettings> appSettings)
         {
-            RosterdEventGridTopicHost = new Uri(appSettings.Value.EventGridTopicEndpoint).Host;
             CurrentEnvironment = appSettings.Value.Environment;
         }
-
-        protected string RosterdEventGridTopicHost { get; }
 
         protected string CurrentEnvironment { get; set; }
 

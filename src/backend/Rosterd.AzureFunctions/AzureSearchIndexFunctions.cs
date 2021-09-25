@@ -47,7 +47,7 @@ namespace Rosterd.AzureFunctions
             var searchIndexClient = new SearchIndexClient(serviceEndpoint, credential);
 
             //Create all the required indexes
-            
+
             //Staff Index
             var (staffIndexExists, _) = await _searchIndexProvider.GetIndexStatus(RosterdConstants.Search.StaffIndex);
             if (!staffIndexExists)

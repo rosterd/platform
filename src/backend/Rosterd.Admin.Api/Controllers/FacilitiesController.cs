@@ -75,6 +75,7 @@ namespace Rosterd.Admin.Api.Controllers
             var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(facilityModelToAdd, _userContext.UsersAuth0OrganizationId);
             if (duplicatesExist)
             {
+                //TODO: Throw the new bad request
                 ModelState.TryAddModelError("FacilityToAdd.FacilityName", $"Facility with name {facilityModelToAdd.FacilityName} already exits");
                 return BadRequest(ModelState);
             }
@@ -101,6 +102,7 @@ namespace Rosterd.Admin.Api.Controllers
             var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(facilityToUpdate, _userContext.UsersAuth0OrganizationId, existingFacility.FacilityName);
             if (duplicatesExist)
             {
+                //TODO: Throw the new bad request
                 ModelState.TryAddModelError("FacilityToUpdate.FacilityName", $"Facility with name {facilityToUpdate.FacilityName} already exits");
                 return BadRequest(ModelState);
             }

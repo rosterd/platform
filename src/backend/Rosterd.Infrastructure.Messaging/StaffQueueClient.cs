@@ -7,6 +7,9 @@ namespace Rosterd.Infrastructure.Messaging
     {
         public QueueClient QueueClient { get; }
 
-        public StaffQueueClient(string storageConnectionString, string queueName) => QueueClient = new QueueClient(storageConnectionString, queueName);
+        public StaffQueueClient(string storageConnectionString, string queueName) => QueueClient = new QueueClient(storageConnectionString, queueName, new QueueClientOptions
+        {
+            MessageEncoding = QueueMessageEncoding.Base64
+        });
     }
 }
