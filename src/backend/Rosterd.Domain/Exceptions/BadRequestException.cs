@@ -8,5 +8,9 @@ namespace Rosterd.Domain.Exceptions
         public BadRequestException(List<string> messages) : base(messages)
         {
         }
+
+        public BadRequestException(string message) : base(new List<string> { message })
+        {
+        }
     }
 }

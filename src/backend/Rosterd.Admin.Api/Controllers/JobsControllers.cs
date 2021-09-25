@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Jobs;
 using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
+using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Security.Interfaces;
@@ -84,13 +85,13 @@ namespace Rosterd.Admin.Api.Controllers
             if (_userContext.IsUserFacilityAdmin())
             {
                 if(request.FacilityId.HasValue)
-                    return BadRequest("As a facility admin you don't need to specify the facility");
+                    throw new BadRequestException($"As a facility admin you don't need to specify the facility");
 
                 request.FacilityId = await _staffService.GetFacilityForStaffWhoIsFacilityAdmin(_userContext.UserAuth0Id);
             }
 
             if(request.FacilityId == null || request.FacilityId < 0)
-                return BadRequest("Facility Id needs to be specified.");
+                throw new BadRequestException($"Facility Id needs to be specified");
 
             //Create Job
             var domainModelToSave = request.ToDomainModel();

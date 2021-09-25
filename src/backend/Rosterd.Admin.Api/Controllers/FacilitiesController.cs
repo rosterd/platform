@@ -14,6 +14,7 @@ using Rosterd.Web.Infra.ValidationAttributes;
 using PagingQueryStringParameters = Rosterd.Domain.Models.PagingQueryStringParameters;
 using Microsoft.AspNetCore.Authorization;
 using Rosterd.Admin.Api.Services;
+using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Settings;
 using Rosterd.Web.Infra.Security;
 
@@ -74,11 +75,7 @@ namespace Rosterd.Admin.Api.Controllers
             //Validate duplicates
             var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(facilityModelToAdd, _userContext.UsersAuth0OrganizationId);
             if (duplicatesExist)
-            {
-                //TODO: Throw the new bad request
-                ModelState.TryAddModelError("FacilityToAdd.FacilityName", $"Facility with name {facilityModelToAdd.FacilityName} already exits");
-                return BadRequest(ModelState);
-            }
+                throw new BadRequestException($"Facility with name {facilityModelToAdd.FacilityName} already exits");
 
             var facilityAdded = await _facilitiesService.CreateFacility(facilityModelToAdd, _userContext.UsersAuth0OrganizationId);
             return facilityAdded;
@@ -101,11 +98,7 @@ namespace Rosterd.Admin.Api.Controllers
             //Validate duplicates
             var duplicatesExist = await _facilitiesService.DoesFacilityWithSameNameExistForOrganization(facilityToUpdate, _userContext.UsersAuth0OrganizationId, existingFacility.FacilityName);
             if (duplicatesExist)
-            {
-                //TODO: Throw the new bad request
-                ModelState.TryAddModelError("FacilityToUpdate.FacilityName", $"Facility with name {facilityToUpdate.FacilityName} already exits");
-                return BadRequest(ModelState);
-            }
+                throw new BadRequestException($"Facility with name {facilityToUpdate.FacilityName} already exits");
 
             var updatedFacility = await _facilitiesService.UpdateFacility(facilityToUpdate, _userContext.UsersAuth0OrganizationId);
             return updatedFacility;

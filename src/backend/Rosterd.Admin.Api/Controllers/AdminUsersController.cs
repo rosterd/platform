@@ -9,6 +9,7 @@ using Rosterd.Admin.Api.Requests.AdminUser;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
+using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.AdminUserModels;
 using Rosterd.Domain.Models.StaffModels;
@@ -69,7 +70,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<Auth0UserModel>> AddOrganizationAdminUser([FromBody] AddAdminUserRequest request)
         {
             if (_userContext.IsUserRosterdAdmin() && request.Auth0OrganizationId.IsNullOrEmpty())
-                return BadRequest("You are a RosterdAdmin. Auth0OrganizationId is required");
+                throw new BadRequestException($"You are a RosterdAdmin. Auth0OrganizationId is required");
 
             var auth0OrganizationId = _userContext.IsUserRosterdAdmin() ? request.Auth0OrganizationId : _userContext.UsersAuth0OrganizationId;
             var adminUserModel = await _adminUserService.AddOrganizationAdminToAuth0(auth0OrganizationId, request.ToModel());
@@ -85,7 +86,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<Auth0UserModel>> UpdateOrganizationAdminUser([FromBody] UpdateAdminUserRequest request)
         {
             if (_userContext.IsUserRosterdAdmin() && request.Auth0OrganizationId.IsNullOrEmpty())
-                return BadRequest("You are a RosterdAdmin.  Auth0OrganizationId is required");
+                throw new BadRequestException($"You are a RosterdAdmin.  Auth0OrganizationId is required");
 
             var auth0OrganizationId = _userContext.IsUserRosterdAdmin() ? request.Auth0OrganizationId : _userContext.UsersAuth0OrganizationId;
             var adminUserModel = await _adminUserService.UpdateOrganizationAdminInAuth0(auth0OrganizationId, request.ToAuth0UserModel());
