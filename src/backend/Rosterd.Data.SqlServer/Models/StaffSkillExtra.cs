@@ -9,17 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rosterd.Data.SqlServer.Models
 {
-    [Table("StaffSkill")]
-    [Index(nameof(StaffId), nameof(SkillId), Name = "IX_Fk_StaffSkill_StaffId_SkillId")]
     public partial class StaffSkill
     {
-        [Key]
-        public long StaffSkillId { get; set; }
-        public long StaffId { get; set; }
-        public long SkillId { get; set; }
-
-        [ForeignKey(nameof(StaffId))]
-        [InverseProperty("StaffSkills")]
-        public virtual Staff Staff { get; set; }
+        [NotMapped]
+        public string SkillName { get; set; }
     }
 }

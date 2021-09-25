@@ -30,10 +30,16 @@ namespace Rosterd.Domain.Search
         public string JobTitle { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string[] Skills { get; set; }
+        public string[] SkillsIds { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string SkillsCsvString => Skills.IsNullOrEmpty() ? string.Empty : string.Join(',', Skills);
+        public string[] SkillNames { get; set; }
+
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+        public string SkillsNamesCsvString => SkillNames.IsNullOrEmpty() ? string.Empty : string.Join(',', SkillNames);
+
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+        public string SkillIdsCsvString => SkillsIds.IsNullOrEmpty() ? string.Empty : string.Join(',', SkillsIds);
 
         [SearchableField]
         public string FacilityId { get; set; }

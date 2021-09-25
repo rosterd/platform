@@ -80,7 +80,7 @@ namespace Rosterd.Services.Mappers
             return jobModel;
         }
 
-        public static JobSearchModel ToSearchModel(this Job dataModel)
+        public static JobSearchModel ToSearchModel(this Job dataModel, List<Skill> skillsForJob)
         {
             var jobSearchModel = new JobSearchModel
             {
@@ -99,8 +99,11 @@ namespace Rosterd.Services.Mappers
                 JobStatusName = ((JobStatus?)dataModel.JobStatusId).ToString()
             };
 
-            if (dataModel.JobSkills.IsNotNullOrEmpty())
-                jobSearchModel.Skills = dataModel.JobSkills.Select(s => s.SkillName).ToArray();
+            if (skillsForJob.IsNotNullOrEmpty())
+            {
+                jobSearchModel.SkillsIds = skillsForJob.Select(s => s.SkillId.ToString()).ToArray();
+                jobSearchModel.SkillNames = skillsForJob.Select(s => s.SkillName).ToArray();
+            }
 
             if (dataModel.Facility != null)
             {
@@ -159,7 +162,7 @@ namespace Rosterd.Services.Mappers
                     NoGracePeriod = job.Document.NoGracePeriod.ToBooleanOrDefault(),
                     JobStatusName = job.Document.JobStatusName,
                     Responsibilities = job.Document.Responsibilities,
-                    JobSkills = job.Document.Skills.AlwaysList().Select(s => new JobSkillModel
+                    JobSkills = job.Document.SkillNames.AlwaysList().Select(s => new JobSkillModel
                     {
                         SkillName = s
                     }).ToList()
@@ -193,8 +196,7 @@ namespace Rosterd.Services.Mappers
                 var skill = new JobSkill
                 {
                     JobSkillId = jobSkillModel.JobSkillId,
-                    SkillId = jobSkillModel.SkillId,
-                    SkillName = jobSkillModel.SkillName
+                    SkillId = jobSkillModel.SkillId
                 };
                 jobToSave.JobSkills.Add(skill);
             }

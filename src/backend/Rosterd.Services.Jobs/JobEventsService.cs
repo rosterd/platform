@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rosterd.Data.SqlServer.Context;
+using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain;
 using Rosterd.Domain.Enums;
 using Rosterd.Domain.Messaging;
@@ -59,10 +60,12 @@ namespace Rosterd.Services.Jobs
         public async Task HandleNewJobCreatedEvent(NewJobCreatedMessage jobCreatedMessage)
         {
             //Get the latest job info
-            var job = await _context.Jobs.Include(s => s.JobSkills).FirstAsync(s => s.JobId == jobCreatedMessage.ToLong());
+            var jobId = jobCreatedMessage.JobId.ToLong();
+            var job = await _context.Jobs.Include(s => s.JobSkills).FirstAsync(s => s.JobId == jobId);
 
             //Translate to domain model to search model and save to search
-            var jobModel = job.ToSearchModel();
+            var jobsSkills = await GetSkills(job.JobSkills.AlwaysList());
+            var jobModel = job.ToSearchModel(jobsSkills);
             await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, new List<JobSearchModel> { jobModel });
         }
 
@@ -75,11 +78,13 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task HandleJobStatusChangedEvent(JobStatusChangedMessage jobStatusChangedMessage)
         {
-            var jobId = jobStatusChangedMessage.JobId;
+            var jobId = jobStatusChangedMessage.JobId.ToLong();
 
             //Get the existing job from db (source of truth)
-            var currentJob = await _context.Jobs.FindAsync(jobId.ToLong());
-            var searchModelToUpdate = currentJob.ToSearchModel();
+            var currentJob = await _context.Jobs.Include(s => s.JobSkills).FirstAsync(s => s.JobId == jobId);
+
+            var jobsSkills = await GetSkills(currentJob.JobSkills.AlwaysList());
+            var searchModelToUpdate = currentJob.ToSearchModel(jobsSkills);
 
             //Update the existing job document with the new status changes
             await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, new List<JobSearchModel> { searchModelToUpdate });
@@ -93,6 +98,17 @@ namespace Rosterd.Services.Jobs
 
             var jobsToRemove = jobsIdsToRemoveFromSearch.Select(s => s.ToString()).AlwaysList();
             await _searchIndexProvider.DeleteDocumentsFromIndex(RosterdConstants.Search.JobsIndex, JobSearchModel.Key(), jobsToRemove);
+        }
+
+        private async Task<List<Skill>> GetSkills(List<JobSkill> jobSkills)
+        {
+            if (jobSkills.IsNullOrEmpty())
+                return new List<Skill>();
+
+            var staffSkillIds = jobSkills.Select(s => s.SkillId).ToList();
+            var skills = await _context.Skills.Where(s => staffSkillIds.Contains(s.SkillId)).ToListAsync();
+
+            return skills;
         }
     }
 }

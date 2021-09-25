@@ -8,3 +8,15 @@
     CONSTRAINT [Pk_JobStatusChange_JobStatusChangeId] PRIMARY KEY CLUSTERED ([JobStatusChangeId] ASC)
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_JobStatusChangeId]
+    ON [dbo].[JobStatusChange]([JobStatusId] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_JobId]
+    ON [dbo].[JobStatusChange]([JobId] ASC);
+

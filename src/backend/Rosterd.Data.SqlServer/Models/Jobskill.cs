@@ -10,15 +10,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Rosterd.Data.SqlServer.Models
 {
     [Table("JobSkill")]
-    [Index(nameof(JobId), Name = "IX_Fk_Jobskill_Job")]
+    [Index(nameof(JobId), nameof(SkillId), Name = "IX_Fk_Jobskill_Job")]
     public partial class JobSkill
     {
         [Key]
         public long JobSkillId { get; set; }
         public long JobId { get; set; }
         public long SkillId { get; set; }
-        [StringLength(1000)]
-        public string SkillName { get; set; }
 
         [ForeignKey(nameof(JobId))]
         [InverseProperty("JobSkills")]

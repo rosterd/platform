@@ -57,8 +57,12 @@ namespace Rosterd.Services.Staff
                 .Include(s => s.StaffSkills)
                 .FirstAsync(s => s.StaffId == staffId);
 
+            //We need the skills names
+            var staffSkillIds = staff.StaffSkills.Select(s => s.SkillId).ToList();
+            var skills = await _context.Skills.Where(s => staffSkillIds.Contains(s.SkillId)).ToListAsync();
+
             //Convert to search model and store in search
-            var staffSearchModel = staff.ToSearchModel();
+            var staffSearchModel = staff.ToSearchModel(skills);
             await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.StaffIndex, new List<StaffSearchModel> { staffSearchModel });
         }
 

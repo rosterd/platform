@@ -13,7 +13,7 @@ namespace Rosterd.Services.Mappers
 {
     public static class StaffMapper
     {
-        public static StaffModel ToDomainModel(this Data.SqlServer.Models.Staff dataModel)
+        public static StaffModel ToDomainModel(this Data.SqlServer.Models.Staff dataModel, List<Skill> skills = null)
         {
             // ReSharper disable once UseObjectOrCollectionInitializer
             var staffModel = new StaffModel
@@ -32,13 +32,13 @@ namespace Rosterd.Services.Mappers
             staffModel.StaffSkills = dataModel.StaffSkills.AlwaysList().Select(s => new SkillModel
             {
                 SkillId = s.SkillId,
-                SkillName = s.SkillName
+                SkillName = skills.AlwaysList().FirstOrDefault(t => s.SkillId == t.SkillId)?.SkillName ?? string.Empty
             }).AlwaysList();
 
             return staffModel;
         }
 
-        public static StaffSearchModel ToSearchModel(this Data.SqlServer.Models.Staff dataModel)
+        public static StaffSearchModel ToSearchModel(this Data.SqlServer.Models.Staff dataModel, List<Skill> skillsForStaff)
         {
             var staffSearchModel = new StaffSearchModel()
             {
@@ -51,9 +51,11 @@ namespace Rosterd.Services.Mappers
                 MobilePhoneNumber = dataModel.MobilePhoneNumber,
             };
 
-            var staffSkills = dataModel.StaffSkills.AlwaysList();
-            if (staffSkills.IsNotNullOrEmpty())
-                staffSearchModel.Skills = staffSkills.Select(s => s.SkillName).ToArray();
+            if (skillsForStaff.IsNotNullOrEmpty())
+            {
+                staffSearchModel.SkillsIds = skillsForStaff.Select(s => s.SkillId.ToString()).ToArray();
+                staffSearchModel.SkillNames = skillsForStaff.Select(s => s.SkillName).ToArray();
+            }
 
             return staffSearchModel;
         }

@@ -7,6 +7,7 @@ using Rosterd.Admin.Api.Requests.Jobs;
 using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
 using Rosterd.Domain.Exceptions;
+using Rosterd.Domain.Messaging;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Security.Interfaces;
@@ -97,8 +98,9 @@ namespace Rosterd.Admin.Api.Controllers
             var domainModelToSave = request.ToDomainModel();
             var newJob = await _jobService.CreateJob(domainModelToSave, _userContext.UsersAuth0OrganizationId);
 
-            //Generate a new job created event
-            await _jobEventsService.GenerateNewJobCreatedEvent(newJob.JobId, _userContext.UsersAuth0OrganizationId);
+            //Update the Azure Search
+            //At a later time we can raise an event for this (not needed for this MPV)
+            await _jobEventsService.HandleNewJobCreatedEvent(new NewJobCreatedMessage(newJob.JobId.ToString(), _userContext.UsersAuth0OrganizationId));
             return Ok(newJob);
         }
 
@@ -113,8 +115,9 @@ namespace Rosterd.Admin.Api.Controllers
         {
             await _jobService.RemoveJob(jobId.Value, jobCancellationRequest.JobCancellationReason, _userContext.UsersAuth0OrganizationId);
 
-            //Generate a new job deleted event
-            await _jobEventsService.GenerateJobCancelledEvent(jobId.Value, _userContext.UsersAuth0OrganizationId);
+            //Update the Azure Search
+            //At a later time we can raise an event for this (not needed for this MPV)
+            await _jobEventsService.HandleJobCancelledEvent(new JobCancelledMessage(jobId.Value, _userContext.UsersAuth0OrganizationId));
             return Ok();
         }
 

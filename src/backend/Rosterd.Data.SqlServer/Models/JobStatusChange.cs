@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Rosterd.Data.SqlServer.Models
 {
     [Table("JobStatusChange")]
+    [Index(nameof(JobId), Name = "IX_JobId")]
+    [Index(nameof(JobStatusId), Name = "IX_JobStatusChangeId")]
     public partial class JobStatusChange
     {
         [Key]

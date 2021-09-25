@@ -33,6 +33,7 @@ namespace Rosterd.Data.SqlServer.Models
         public string LastName { get; set; }
         [StringLength(1000)]
         public string JobTitle { get; set; }
+        [Required]
         public bool? IsActive { get; set; }
         [StringLength(1000)]
         public string Email { get; set; }

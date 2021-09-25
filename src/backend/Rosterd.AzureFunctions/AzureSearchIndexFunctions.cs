@@ -46,6 +46,9 @@ namespace Rosterd.AzureFunctions
             var credential = new AzureKeyCredential(_settings.Value.SearchServiceApiKey);
             var searchIndexClient = new SearchIndexClient(serviceEndpoint, credential);
 
+            //await _searchIndexProvider.DeleteIndex(RosterdConstants.Search.StaffIndex);
+            //await _searchIndexProvider.DeleteIndex(RosterdConstants.Search.JobsIndex);
+
             //Create all the required indexes
 
             //Staff Index

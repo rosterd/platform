@@ -67,6 +67,8 @@ namespace Rosterd.Services.Jobs
             var jobToCreate = jobModel.ToNewJob();
             var utcNow = DateTime.UtcNow;
 
+            //_context.Skills.
+
             //New job specific properties
             jobToCreate.JobStatusId = (int)JobStatus.Published;
             jobToCreate.JobsStatusName = JobStatus.Published.ToString();
@@ -126,7 +128,7 @@ namespace Rosterd.Services.Jobs
                     IncludeTotalCount = true,
 
                     //At least one skill that the staff has must match whats in the job
-                    Filter = $"search.in(SkillsSpaceSeperatedString, '{staff.Value.SkillsCsvString}', ',')",
+                    Filter = $"search.in(SkillsSpaceSeperatedString, '{staff.Value.SkillsNamesCsvString}', ',')",
                     Size = pagingParameters.PageSize,
                     Skip = (pagingParameters.PageNumber - 1) * pagingParameters.PageSize
                 };

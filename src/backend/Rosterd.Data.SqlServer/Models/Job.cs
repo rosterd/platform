@@ -11,7 +11,6 @@ namespace Rosterd.Data.SqlServer.Models
 {
     [Table("Job")]
     [Index(nameof(FacilityId), Name = "IX_Fk_Job_Facility")]
-    [Index(nameof(JobId), Name = "Unq_Job_JobId", IsUnique = true)]
     public partial class Job
     {
         public Job()

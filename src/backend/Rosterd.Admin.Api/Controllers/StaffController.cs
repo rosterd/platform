@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
+using Rosterd.Domain.Messaging;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.StaffModels;
@@ -107,8 +108,9 @@ namespace Rosterd.Admin.Api.Controllers
             staffToCreateInDb.Auth0Id = userCreatedInAuth0.UserAuth0Id;
             var staff = await _staffService.CreateStaff(staffToCreateInDb, _userContext.UsersAuth0OrganizationId);
 
-            //Generate a new staff created event
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(staff.StaffId.Value, _userContext.UsersAuth0OrganizationId);
+            //A new staff added, update the Azure Search
+            //At a later time we can raise an event for this (not needed for this MPV)
+            await _staffEventsService.HandleStaffCreatedOrUpdatedEvent(new StaffCreatedOrUpdatedMessage(staff.StaffId.Value.ToString(), _userContext.UsersAuth0OrganizationId));
             return staff;
         }
 
@@ -121,7 +123,10 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<StaffModel>> UpdateStaffMember([FromBody] UpdateStaffRequest request)
         {
             var staff = await _staffService.UpdateStaff(UpdateStaffRequest.ToStaffModel(request), _userContext.UsersAuth0OrganizationId);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(request.StaffId.Value, _userContext.UsersAuth0OrganizationId);
+
+            //A new staff added, update the Azure Search
+            //At a later time we can raise an event for this (not needed for this MPV)
+            await _staffEventsService.HandleStaffCreatedOrUpdatedEvent(new StaffCreatedOrUpdatedMessage(staff.StaffId.Value.ToString(), _userContext.UsersAuth0OrganizationId));
             return staff;
         }
 
@@ -158,7 +163,9 @@ namespace Rosterd.Admin.Api.Controllers
             //2. Remove from auth0
             await _auth0UserService.RemoveUserFromAuth0(staffAuth0Id);
 
-            await _staffEventsService.GenerateStaffDeletedEvent(staffId.Value, _userContext.UsersAuth0OrganizationId);
+            //A new staff added, update the Azure Search
+            //At a later time we can raise an event for this (not needed for this MPV)
+            await _staffEventsService.HandleStaffDeletedEvent(new StaffDeletedMessage(staffId.ToString(), _userContext.UsersAuth0OrganizationId));
             return Ok();
         }
 
@@ -172,7 +179,10 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult> AddSkillToStaff([ValidNumberRequired] long? staffId, [FromBody] SkillsToStaffRequest request)
         {
             await _staffSkillsService.UpdateAllSkillsForStaff(staffId.Value, SkillsToStaffRequest.ToSkillModels(request), _userContext.UsersAuth0OrganizationId);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(staffId.Value, _userContext.UsersAuth0OrganizationId);
+
+            //A new staff added, update the Azure Search
+            //At a later time we can raise an event for this (not needed for this MPV)
+            await _staffEventsService.HandleStaffCreatedOrUpdatedEvent(new StaffCreatedOrUpdatedMessage(staffId.ToString(), _userContext.UsersAuth0OrganizationId));
             return Ok();
         }
 
@@ -186,7 +196,10 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult> DeleteSkillsForStaff([ValidNumberRequired] long? staffId, [FromBody] SkillsToStaffRequest request)
         {
             await _staffSkillsService.DeleteSkillsForStaff(staffId.Value, SkillsToStaffRequest.ToSkillModels(request), _userContext.UsersAuth0OrganizationId);
-            await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(staffId.Value, _userContext.UsersAuth0OrganizationId);
+
+            //A new staff added, update the Azure Search
+            //At a later time we can raise an event for this (not needed for this MPV)
+            await _staffEventsService.HandleStaffCreatedOrUpdatedEvent(new StaffCreatedOrUpdatedMessage(staffId.ToString(), _userContext.UsersAuth0OrganizationId));
             return Ok();
         }
 

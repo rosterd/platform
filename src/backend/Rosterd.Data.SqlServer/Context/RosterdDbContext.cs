@@ -34,6 +34,8 @@ namespace Rosterd.Data.SqlServer.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasAnnotation("Scaffolding:ConnectionString", "Data Source=(local);Initial Catalog=Rosterd.Database;Integrated Security=true");
+
             modelBuilder.Entity<Facility>(entity =>
             {
                 entity.HasOne(d => d.Organzation)

@@ -59,7 +59,11 @@ namespace Rosterd.Services.Staff
             if(staff == null)
                 throw new EntityNotFoundException("The staff member does not exist");
 
-            return staff.ToDomainModel();
+            //We need the skills names
+            var staffSkillIds = staff.StaffSkills.Select(s => s.SkillId).ToList();
+            var skills = await _context.Skills.Where(s => staffSkillIds.Contains(s.SkillId)).ToListAsync();
+
+            return staff.ToDomainModel(skills);
         }
 
         ///<inheritdoc/>
@@ -79,18 +83,15 @@ namespace Rosterd.Services.Staff
             staffToCreate.OrganizationId = organization.OrganizationId;
             var newStaff = await _context.Staff.AddAsync(staffToCreate);
 
-            //Populate the default staff skills
-            var skillIds = staffModel.StaffSkills.Select(s => s.SkillId).AlwaysList();
-            var skillsFromDb = _context.Skills.Where(s => skillIds.Contains(s.SkillId));
-            foreach (var skill in skillsFromDb.AlwaysList())
-            {
-                newStaff.Entity.StaffSkills.Add(new StaffSkill { SkillId = skill.SkillId, SkillName = skill.SkillName, StaffId = newStaff.Entity.StaffId });
-            }
+            //Populate the staff skills
+            var staffSkills = staffModel.StaffSkills.Select(s => new StaffSkill {SkillId = s.SkillId, StaffId = newStaff.Entity.StaffId}).AlwaysList();
+            newStaff.Entity.StaffSkills.AddRange(staffSkills.ToArray());
 
             //Populate any facilities for the staff (for a facility admin they need to be associated with a facility)
-            foreach (var staffFacility in staffModel.StaffFacilities.AlwaysList())
+            if (staffModel.StaffFacilities.IsNotNullOrEmpty())
             {
-                newStaff.Entity.StaffFacilities.Add(new StaffFacility { FacilityId = staffFacility.FacilityId, StaffId = newStaff.Entity.StaffId });
+                var staffFacilities = staffModel.StaffFacilities.Select(s => new StaffFacility { FacilityId = s.FacilityId, StaffId = newStaff.Entity.StaffId }).AlwaysList();
+                newStaff.Entity.StaffFacilities.AddRange(staffFacilities.ToArray());
             }
 
             await _context.SaveChangesAsync();

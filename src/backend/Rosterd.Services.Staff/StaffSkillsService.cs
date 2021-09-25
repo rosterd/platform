@@ -34,18 +34,12 @@ namespace Rosterd.Services.Staff
 
             foreach (var skillModel in skillModels)
             {
-                //Only bother adding this skill if its a valid skill in our db
-                var existingSkill = await _context.Skills.FindAsync(skillModel.SkillId);
-                if (existingSkill != null)
-                {
-                    //If the Staff member already has this skill associated then don't need to do anything
-                    var alreadyExists = await _context.StaffSkills.AnyAsync(s => s.StaffId == staffId && s.SkillId == skillModel.SkillId);
-                    if (alreadyExists)
-                        continue;
+                //If the Staff member already has this skill associated then don't need to do anything
+                var alreadyExists = await _context.StaffSkills.AnyAsync(s => s.StaffId == staffId && s.SkillId == skillModel.SkillId);
+                if (alreadyExists)
+                    continue;
 
-                    await _context.StaffSkills.AddAsync(
-                        new StaffSkill {SkillId = existingSkill.SkillId, SkillName = existingSkill.SkillName, StaffId = staffId});
-                }
+                await _context.StaffSkills.AddAsync(new StaffSkill {SkillId = skillModel.SkillId, StaffId = staffId});
             }
 
             await _context.SaveChangesAsync();
