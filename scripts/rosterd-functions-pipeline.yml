@@ -1,0 +1,89 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - scripts/rosterd-functions-pipeline.yml
+      - src/backend/Rosterd.AzureFunctions
+
+pool:
+  vmImage: 'windows-latest'
+
+########### BUILD ###############################################################################################################################
+
+stages:
+- stage: Build
+  jobs:
+  - job: build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore Packages
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+
+    - script: |
+        dotnet build --configuration Release
+      workingDirectory: 'src/backend/Rosterd.AzureFunctions'
+      displayName: "Build"
+
+    - task: DotNetCoreCLI@2
+      displayName: "Publish"
+      inputs:
+        command: publish
+        arguments: '--configuration Release --output publish_output'
+        projects: 'src/backend/Rosterd.AzureFunctions'
+        publishWebProjects: false
+        modifyOutputPath: false
+        zipAfterPublish: false
+
+    - task: ArchiveFiles@2
+      displayName: "Archive files"
+      inputs:
+        rootFolderOrFile: "$(System.DefaultWorkingDirectory)/publish_output"
+        includeRootFolder: false
+        archiveFile: "$(System.DefaultWorkingDirectory)/build.zip"
+
+    - task: PublishBuildArtifacts@1
+      displayName: "Publish Artifacts"
+      inputs:
+        PathtoPublish: '$(System.DefaultWorkingDirectory)/build.zip'
+        artifactName: 'drop'
+
+- stage: DeployToDev
+  variables:
+    - group: Rosterd-functions
+  displayName: Deploy To Dev
+  jobs:
+  - deployment: deploy
+    pool:
+      vmImage: 'windows-latest'
+    environment: 'functions-dev'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: drop
+              downloadPath: '$(System.ArtifactsDirectory)'
+          
+          - task: AzureFunctionApp@1
+            inputs:
+              azureSubscription: 'rosterd-service-connection'
+              appType: 'functionApp'
+              appName: 'func-event-processor-dev'
+              package: '$(System.ArtifactsDirectory)/**/*.zip'
+              configurationStrings: '-configs "settings"'
+              deploymentMethod: 'auto'
+              appSettings: 
+                          '
+                            -AppSettings:EventGridTopicKey "$(AppSettings.EventGridTopicKey)"
+                            -AppSettings:SearchServiceEndpoint "$(AppSettings.SearchServiceEndpoint)"
+                            -AppSettings:SearchServiceApiKey "$(AppSettings.SearchServiceApiKey)"
+                          '
