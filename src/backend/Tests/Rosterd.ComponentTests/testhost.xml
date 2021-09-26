@@ -127,7 +127,7 @@
             <summary>
             Gets all the resources 
             </summary>
-            <param name="facilityId">The facility auth0OrganizationId to filter all the list of Staff by</param>
+            <param name="facilityId">The facility jobStatus to filter all the list of Staff by</param>
             <param name="pagingParameters"></param>
             <returns></returns>
         </member>
@@ -162,15 +162,15 @@
             <summary>
             Moves a Staff member from their existing facility to another facility
             </summary>
-            <param name="facilityId">The facility auth0OrganizationId to move</param>
-            <param name="staffId">The Staff auth0OrganizationId</param>
+            <param name="facilityId">The facility jobStatus to move</param>
+            <param name="staffId">The Staff jobStatus</param>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.StaffController.AddSkillToStaff(System.Nullable{System.Int64},Rosterd.Admin.Api.Requests.Staff.AddSkillsToStaffRequest)">
             <summary>
             Adds a collection of skills to the Staff member
             </summary>
-            <param name="staffId">The Staff auth0OrganizationId</param>
+            <param name="staffId">The Staff jobStatus</param>
             <param name="request">The skills to add</param>
             <returns></returns>
         </member>
@@ -178,7 +178,7 @@
             <summary>
             Removes all skills from a Staff member
             </summary>
-            <param name="staffId">The Staff auth0OrganizationId</param>
+            <param name="staffId">The Staff jobStatus</param>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddAppAndDatabaseDependencies(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">

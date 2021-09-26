@@ -6,8 +6,10 @@ using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Jobs;
 using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Messaging;
+using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Security.Interfaces;
@@ -49,12 +51,15 @@ namespace Rosterd.Admin.Api.Controllers
         /// Gets all the jobs
         /// </summary>
         /// <param name="pagingParameters"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<Domain.Models.PagedList<JobModel>>> GetAllJobs([FromQuery] PagingQueryStringParameters pagingParameters)
+        public async Task<ActionResult<Domain.Models.PagedList<JobModel>>> GetAllJobs([FromQuery] PagingQueryStringParameters pagingParameters, [FromQuery] string status)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetAllJobs(pagingParameters, _userContext.UsersAuth0OrganizationId);
+            var jobStatus = status.IsNullOrEmpty() ? null : JobStatusFinder.GetJobStatus(status);
+
+            var pagedList = await _jobService.GetAllJobs(pagingParameters, _userContext.UsersAuth0OrganizationId, jobStatus);
 
             return pagedList;
         }

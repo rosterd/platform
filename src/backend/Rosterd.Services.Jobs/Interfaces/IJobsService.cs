@@ -13,9 +13,10 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// Gets all the jobs
         /// </summary>
         /// <param name="pagingParameters"></param>
-        /// <param name="auth0OrganizationId"></param>
+        /// <param name="userContextUsersAuth0OrganizationId"></param>
+        /// <param name="jobStatus"></param>
         /// <returns></returns>
-        Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters, string auth0OrganizationId);
+        Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters, string userContextUsersAuth0OrganizationId, JobStatus? jobStatus = null);
 
         /// <summary>
         /// Gets a specific job
