@@ -4,7 +4,7 @@ import {components} from 'types/models';
 type AddStaffRequest = components['schemas']['AddStaffRequest'];
 type UpdateStaffRequest = components['schemas']['UpdateStaffRequest'];
 
-const url = 'staff';
+export const url = 'staff';
 
 export const getStaff = (): AxiosRequestConfig & {scope?: string} => ({url});
 

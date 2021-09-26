@@ -23,6 +23,7 @@ export interface ModalProps {
   title: string;
   submitButtonLabel: string;
   closeAfter?: boolean;
+  successMessage?: string;
 }
 
 interface Props<T> {
@@ -35,7 +36,7 @@ type PropsWithChildren<P> = P & {children?: ReactNode};
 const FormModal = (props: PropsWithChildren<Props<Record<string, any>>>): JSX.Element => {
   const classes = useStyles();
   const {modalProps, formProps, children} = props;
-  const {open, onClose, submitButtonLabel = 'Submit', title, closeAfter = false} = modalProps;
+  const {open, onClose, submitButtonLabel = 'Submit', title, closeAfter = false, successMessage = 'Succefully created'} = modalProps;
   const {onSubmit, initialValues, validationSchema} = formProps;
   const [showSuccess, setShowSuccess] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -62,7 +63,7 @@ const FormModal = (props: PropsWithChildren<Props<Record<string, any>>>): JSX.El
           }, 2000);
           resetForm();
         } catch (e) {
-          setErrors(e.Messages || []);
+          setErrors(e?.Messages || []);
           setSubmitting(false);
         }
       }}>
@@ -81,7 +82,7 @@ const FormModal = (props: PropsWithChildren<Props<Record<string, any>>>): JSX.El
           <DialogContent>
             {showSuccess ? (
               <Alert severity='success' className={classes.alert}>
-                Succefully created
+                {successMessage}
               </Alert>
             ) : null}
             {!!errors.length && (

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import MaterialTable from 'material-table';
 import Box from '@material-ui/core/Box';
 import AppAnimate from '@crema/core/AppAnimate';
@@ -6,13 +6,11 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core';
 import {components} from 'types/models';
-import {getSkills, addSkill, updateSkill} from 'services';
-import useRequest from 'shared/hooks/useRequest';
-import {AxiosRequestConfig} from 'axios';
+
+import usePaging from 'shared/hooks/usePaging';
 
 type GetSkillsResponse = components['schemas']['SkillModelPagedList'];
 type Skill = components['schemas']['SkillModel'];
-type UpdateSkillRequest = components['schemas']['UpdateSkillRequest'];
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -22,47 +20,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const initialState: Skill[] = [];
-
 const Skills: React.FC = (): JSX.Element => {
   const classes = useStyles();
-  const [results, setResults] = useState({} as GetSkillsResponse);
-  const [skills, setSkills] = useState(initialState);
-  const [loading, setLoading] = useState(false);
-  const {requestMaker} = useRequest();
-
-  const fetchData = async (config: AxiosRequestConfig) => {
-    setLoading(true);
-    const skillsResponse = await requestMaker<GetSkillsResponse>(config);
-    setLoading(false);
-    setResults(skillsResponse);
-    setSkills(skillsResponse.items || []);
-  };
-
-  useEffect(() => {
-    (async () => {
-      await fetchData(getSkills());
-    })();
-  }, []);
-
-  const onAdd = async (skillToAdd: Skill) => {
-    setLoading(true);
-    const addedSkill = await requestMaker<Skill>(addSkill(skillToAdd));
-    setLoading(false);
-    setSkills([addedSkill, ...skills]);
-  };
-
-  const onUpdate = async (skillToUpdate: Skill) => {
-    setLoading(true);
-    const updatedSkill = await requestMaker<Skill>(updateSkill(skillToUpdate as UpdateSkillRequest));
-    setLoading(false);
-    setSkills(skills.map((skill) => (skill.skillId === skillToUpdate.skillId ? updatedSkill : skill)));
-  };
-
-  const handlePageChange = async (page: number, pageSize: number) => {
-    const requestConfig = getSkills();
-    await fetchData({...requestConfig, url: `${requestConfig.url}?pageNumber=${page + 1}&pageSize=${pageSize}`});
-  };
+  const {handlePageChange, currentPage, totalCount, items, loading, addData, updateData} = usePaging<Skill, GetSkillsResponse>('skills', 'skillId');
 
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
@@ -74,21 +34,21 @@ const Skills: React.FC = (): JSX.Element => {
           <MaterialTable
             title=''
             columns={[
-              {title: 'Name', field: 'skillName'},
+              {title: 'Name', field: 'skillName', validate: (rowData) => (rowData.skillName ? true : 'Name can not be empty')},
               {title: 'Description', field: 'description'},
             ]}
-            data={skills}
+            data={items}
             isLoading={loading}
             editable={{
-              onRowAdd: onAdd,
-              onRowUpdate: onUpdate,
+              onRowAdd: addData,
+              onRowUpdate: updateData,
             }}
             options={{
               actionsColumnIndex: -1,
             }}
             onChangePage={handlePageChange}
-            page={(results?.currentPage || 1) - 1}
-            totalCount={results.totalCount}
+            page={currentPage}
+            totalCount={totalCount}
           />
         </Box>
       </Box>

@@ -1,6 +1,7 @@
 import {useAuth0, GetTokenSilentlyOptions} from '@auth0/auth0-react';
 import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
 import {useCallback} from 'react';
+import {useHistory} from 'react-router-dom';
 
 interface HookResponse {
   requestMaker: <T>(request: AxiosRequestConfig & {scope?: string}) => Promise<T>;
@@ -8,6 +9,7 @@ interface HookResponse {
 
 export const useRequest = (): HookResponse => {
   const {getAccessTokenSilently, isAuthenticated} = useAuth0();
+  const history = useHistory();
 
   const memoizedFn = useCallback(
     async (requestConfig) => {
@@ -35,8 +37,12 @@ export const useRequest = (): HookResponse => {
         },
       })
         .then((res: AxiosResponse) => res.data)
-        .catch((error: AxiosError) => {
-          throw error?.response?.data;
+        .catch((axiosError: AxiosError) => {
+          const error = axiosError?.response?.data;
+          if (error?.StatusCode === 500 || !error?.StatusCode) {
+            history.push('/error-pages/error-500');
+          }
+          throw error;
         });
     },
     [isAuthenticated, getAccessTokenSilently],

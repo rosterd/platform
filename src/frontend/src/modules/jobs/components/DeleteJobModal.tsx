@@ -31,6 +31,7 @@ const DeleteJobModal = (props: DeleteJobModalProps): JSX.Element => {
     onClose: handleClose,
     title: 'Delete Job',
     submitButtonLabel: 'Delete',
+    successMessage: 'Successfully deleted',
   };
 
   return (

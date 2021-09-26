@@ -6,9 +6,9 @@ import IntlMessages from '@crema/utility/IntlMessages';
 import {Fonts} from 'shared/constants/AppEnums';
 import {Button, Grid, makeStyles} from '@material-ui/core';
 import {components} from 'types/models';
-import {getStaff, deleteStaff, addStaff, updateStaff, getSkills} from 'services';
+import {getSkills} from 'services';
 import useRequest from 'shared/hooks/useRequest';
-import {AxiosRequestConfig} from 'axios';
+import usePaging from 'shared/hooks/usePaging';
 import AddIcon from '@material-ui/icons/Add';
 import AddStaffModal from './components/AddStaffModal';
 import UpdateStaffModal from './components/UpdateStaffModal';
@@ -26,32 +26,18 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const initialState: Staff[] = [];
 const initialSkillsState: Skill[] = [];
 
 const Staff: React.FC = (): JSX.Element => {
   const classes = useStyles();
-  const [results, setResults] = useState({} as GetStaffResponse);
-  const [staff, setStaff] = useState(initialState);
   const [skills, setSkills] = useState(initialSkillsState);
   const [staffMember, setStaffMember] = useState<Staff | undefined>(undefined);
-  const [loading, setLoading] = useState(false);
   const {requestMaker} = useRequest();
   const [showStaffModal, setShowStaffModal] = useState(false);
-
-  const fetchData = async (config: AxiosRequestConfig) => {
-    setLoading(true);
-    const staffResponse = await requestMaker<GetStaffResponse>(config);
-    setLoading(false);
-    setResults(staffResponse);
-    setStaff(staffResponse.items || []);
-  };
-
-  useEffect(() => {
-    (async () => {
-      await fetchData(getStaff());
-    })();
-  }, []);
+  const {handlePageChange, currentPage, totalCount, items, loading, setLoading, addData, updateData, deleteData} = usePaging<Staff, GetStaffResponse>(
+    'staff',
+    'staffId',
+  );
 
   useEffect(() => {
     (async () => {
@@ -67,15 +53,6 @@ const Staff: React.FC = (): JSX.Element => {
     setShowStaffModal(false);
   };
 
-  const handleAddStaff = async (values: Staff) => {
-    setLoading(true);
-    const addedStaff = await requestMaker<Staff>(addStaff(values));
-    setLoading(false);
-    if (addedStaff) {
-      setStaff([addedStaff, ...staff]);
-    }
-  };
-
   const onAddButtonClick = () => {
     setStaffMember(undefined);
     setShowStaffModal(true);
@@ -86,27 +63,7 @@ const Staff: React.FC = (): JSX.Element => {
     setStaffMember(staffToUpdate);
   };
 
-  const handleUpdateStaff = async (values: Staff) => {
-    setLoading(true);
-    const updatedStaff = await requestMaker<Staff>(updateStaff(values));
-    setStaff(staff.map((member) => (member.staffId === updatedStaff.staffId ? updatedStaff : member)));
-    setStaffMember(undefined);
-    setShowStaffModal(false);
-    setLoading(false);
-  };
-
-  const onDelete = async (deletedStaff: Staff) => {
-    if (!deletedStaff?.staffId) return;
-    setLoading(true);
-    await requestMaker<GetStaffResponse>(deleteStaff(deletedStaff?.staffId));
-    setLoading(false);
-    setStaff(staff.filter((member) => member.staffId !== deletedStaff.staffId));
-  };
-
-  const handlePageChange = async (page: number, pageSize: number) => {
-    const requestConfig = getStaff();
-    await fetchData({...requestConfig, url: `${requestConfig.url}?pageNumber=${page + 1}&pageSize=${pageSize}`});
-  };
+  const onDelete = async (deletedStaff: Staff) => deletedStaff?.staffId && deleteData(deletedStaff.staffId);
 
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
@@ -137,7 +94,7 @@ const Staff: React.FC = (): JSX.Element => {
               {title: 'Mobile', field: 'mobilePhoneNumber'},
               {title: 'Job Title', field: 'jobTitle'},
             ]}
-            data={staff}
+            data={items}
             isLoading={loading}
             onRowClick={onRowClick}
             editable={{
@@ -147,14 +104,14 @@ const Staff: React.FC = (): JSX.Element => {
               actionsColumnIndex: -1,
             }}
             onChangePage={handlePageChange}
-            page={(results?.currentPage || 1) - 1}
-            totalCount={results.totalCount}
+            page={currentPage}
+            totalCount={totalCount}
           />
         </Box>
         {staffMember ? (
-          <UpdateStaffModal skills={skills} staffMember={staffMember} open={showStaffModal} onUpdateStaff={handleUpdateStaff} handleClose={handleClose} />
+          <UpdateStaffModal skills={skills} staffMember={staffMember} open={showStaffModal} onUpdateStaff={updateData} handleClose={handleClose} />
         ) : (
-          <AddStaffModal skills={skills} open={showStaffModal} onAddStaff={handleAddStaff} handleClose={handleClose} />
+          <AddStaffModal skills={skills} open={showStaffModal} onAddStaff={addData} handleClose={handleClose} />
         )}
       </Box>
     </AppAnimate>
