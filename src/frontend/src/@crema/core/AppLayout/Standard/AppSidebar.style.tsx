@@ -11,22 +11,18 @@ const useStyles = makeStyles((theme: CremaTheme) => {
       position: 'relative',
       top: 0,
       left: 0,
-      width: '19rem',
+      width: '17rem',
       maxHeight: '100vh',
       [theme.breakpoints.up('lg')]: {
         position: 'fixed',
       },
       [theme.breakpoints.up('xl')]: {
-        width: '21.6rem',
+        width: '19.6rem',
       },
     },
     sidebarBg: {
       backgroundColor: (props: {themeMode: ThemeMode}) =>
-        props.themeMode === ThemeMode.SEMI_DARK
-          ? theme.palette.sidebar.bgColor
-          : props.themeMode === ThemeMode.LIGHT
-          ? 'white'
-          : '#313541',
+        props.themeMode === ThemeMode.SEMI_DARK ? theme.palette.sidebar.bgColor : props.themeMode === ThemeMode.LIGHT ? 'white' : '#313541',
     },
     scrollAppSidebar: {
       paddingTop: 8,

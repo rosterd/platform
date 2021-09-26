@@ -2,9 +2,7 @@ import {makeStyles} from '@material-ui/core';
 import {useContext} from 'react';
 import AppContext from '../../../utility/AppContext';
 import {ThemeStyle} from '../../../../shared/constants/AppEnums';
-import AppContextPropsType, {
-  CremaTheme,
-} from '../../../../types/AppContextPropsType';
+import AppContextPropsType, {CremaTheme} from '../../../../types/AppContextPropsType';
 
 const useStyles = makeStyles((theme: CremaTheme) => {
   const {themeStyle, footer} = useContext<AppContextPropsType>(AppContext);
@@ -25,15 +23,9 @@ const useStyles = makeStyles((theme: CremaTheme) => {
           paddingBottom: 58,
         },
         '& .scrollAppSidebar': {
-          height:
-            themeStyle === ThemeStyle.MODERN
-              ? 'calc(100vh - 260px) !important'
-              : 'calc(100vh - 198px) !important',
+          height: themeStyle === ThemeStyle.MODERN ? 'calc(100vh - 260px) !important' : 'calc(100vh - 198px) !important',
           [theme.breakpoints.up('xl')]: {
-            height:
-              themeStyle === ThemeStyle.MODERN
-                ? 'calc(100vh - 300px) !important'
-                : 'calc(100vh - 236px) !important',
+            height: themeStyle === ThemeStyle.MODERN ? 'calc(100vh - 300px) !important' : 'calc(100vh - 236px) !important',
           },
         },
         '& $mainContainer': {
@@ -45,20 +37,20 @@ const useStyles = makeStyles((theme: CremaTheme) => {
       flex: 1,
       display: 'flex',
       [theme.breakpoints.up('lg')]: {
-        marginLeft: '19rem',
+        marginLeft: '17rem',
       },
       [theme.breakpoints.up('xl')]: {
-        marginLeft: '21.6rem',
+        marginLeft: '19.6rem',
       },
     },
     mainContainer: {
       paddingBottom: footer ? 0 : 10,
       width: '100%',
       [theme.breakpoints.up('lg')]: {
-        width: `calc(100vw - 19rem)`,
+        width: `calc(100vw - 17rem)`,
       },
       [theme.breakpoints.up('xl')]: {
-        width: `calc(100vw - 21.6rem)`,
+        width: `calc(100vw - 19.6rem)`,
       },
 
       '& > .scrollbar-container': {
