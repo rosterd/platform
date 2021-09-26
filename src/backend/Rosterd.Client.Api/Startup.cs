@@ -44,10 +44,8 @@ namespace Rosterd.Client.Api
             if (HostingEnvironment.IsDevelopment())
                 IdentityModelEventSource.ShowPII = true;
 
-            //Add auth and JWT as the first thing (This always needs to be the first thing to configure)
-            //services.AddCustomAuthenticationWithJwtBearer(Configuration);
-
             services
+                .AddCustomAuthenticationWithJwtBearer(Configuration) //Add auth and JWT as the first thing (This always needs to be the first thing to configure)
                 .AddApplicationInsightsTelemetry()
                 .AddAppAndDatabaseDependencies(Configuration, HostingEnvironment)
                 .AddCustomSwagger("Rosterd Client Api", "v1")
@@ -87,16 +85,20 @@ namespace Rosterd.Client.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-                app.UseCustomExceptionMiddleware();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            //else
+            //{
+            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            //    app.UseHsts();
+            //    app.UseCustomExceptionMiddleware();
+            //}
+
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+            app.UseCustomExceptionMiddleware();
 
             app.UseHttpsRedirection();
 
@@ -105,15 +107,15 @@ namespace Rosterd.Client.Api
 
             //Adds authentication middleware to the pipeline so authentication will be performed automatically on each request to host
             //Adds authorization middleware to the pipeline to make sure the Api endpoint cannot be accessed by anonymous clients
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             //Enable Swagger and SwaggerUI (for swagger we have our own basic auth so its not available to everyone)
             app.UseSwaggerAuthenticationCheck();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rosterd.Client.Api v1"));
 
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseEndpoints(endpoints => endpoints.MapControllers().RequireAuthorization());
         }
     }
 }

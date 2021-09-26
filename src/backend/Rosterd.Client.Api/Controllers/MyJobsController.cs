@@ -10,6 +10,7 @@ using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using Rosterd.Web.Infra.Security;
 
 namespace Rosterd.Client.Api.Controllers
 {
@@ -19,6 +20,7 @@ namespace Rosterd.Client.Api.Controllers
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/jobs")]
     [ApiExplorerSettings(GroupName = "My Jobs")]
+    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.Staff)]
     public class MyJobsController : BaseApiController
     {
         private readonly ILogger<MyJobsController> _logger;

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Rosterd.Admin.Api.Infrastructure.ServiceRegistrations;
 using Rosterd.Client.Api.Infrastructure.ServiceRegistrations;
 
 namespace Rosterd.Client.Api.Infrastructure.Extensions
@@ -30,7 +31,7 @@ namespace Rosterd.Client.Api.Infrastructure.Extensions
         /// <returns></returns>
         public static IServiceCollection AddCustomAuthenticationWithJwtBearer(this IServiceCollection services, IConfiguration config)
         {
-            //services.RegisterAuthenticationDependencies(config);
+            services.RegisterAuthenticationDependencies(config);
             return services;
         }
     }

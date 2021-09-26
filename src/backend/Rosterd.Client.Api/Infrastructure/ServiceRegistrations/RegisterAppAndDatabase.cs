@@ -6,12 +6,20 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Rosterd.Client.Api.Services;
 using Rosterd.Data.SqlServer.Context;
 using Rosterd.Data.TableStorage.Context;
+using Rosterd.Domain;
+using Rosterd.Domain.Settings;
+using Rosterd.Infrastructure.Messaging;
 using Rosterd.Infrastructure.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
+using Rosterd.Infrastructure.Security;
+using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Jobs;
 using Rosterd.Services.Jobs.Interfaces;
+using Rosterd.Services.Staff;
+using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.Client.Api.Infrastructure.ServiceRegistrations
 {
@@ -21,6 +29,7 @@ namespace Rosterd.Client.Api.Infrastructure.ServiceRegistrations
         {
             //Register all the settings
             services.Configure<AppSettings>(config.GetSection(nameof(AppSettings)));
+            services.Configure<Auth0Settings>(config.GetSection(nameof(Auth0Settings)));
 
             // Add useful interface for accessing the ActionContext && HttpContext && IUrlHelper outside a controller (ie: in the middleware)
             services.AddHttpContextAccessor();
@@ -28,19 +37,40 @@ namespace Rosterd.Client.Api.Infrastructure.ServiceRegistrations
 
             //Services
             services.AddScoped<IJobsService, JobsService>();
+            services.AddScoped<IJobsValidationService, JobsValidationService>();
+            services.AddScoped<IBelongsToValidator, BelongsToValidator>();
 
             //User context
+            services.AddScoped<IUserContext, UserContext>();
 
             //Search
             services.AddScoped<ISearchIndexProvider>(s => new SearchIndexProvider(config.GetValue<string>("AppSettings:SearchServiceEndpoint"),
                 config.GetValue<string>("AppSettings:SearchServiceApiKey")));
 
+            //Storage Queues
+            var staffQueueClient = new StaffQueueClient(config.GetConnectionString("TableStorageConnectionString"), RosterdConstants.Messaging.StaffQueueName);
+            staffQueueClient.QueueClient.CreateIfNotExists();
+
+            var jobsQueueClient = new JobsQueueClient(config.GetConnectionString("TableStorageConnectionString"), RosterdConstants.Messaging.JobQueueName);
+            jobsQueueClient.QueueClient.CreateIfNotExists();
+
+            services.AddSingleton<IQueueClient<StaffQueueClient>>(s => staffQueueClient);
+            services.AddSingleton<IQueueClient<JobsQueueClient>>(s => jobsQueueClient);
+
             //Eventing
             services.AddScoped<IJobEventsService, JobEventsService>();
+            services.AddScoped<IStaffEventsService, StaffEventsService>();
 
             //Db contexts
             services.AddScoped<IRosterdDbContext, RosterdDbContext>();
             services.AddScoped<IAzureTableStorage>(s => new AzureTableStorage(config.GetConnectionString("TableStorageConnectionString")));
+
+            //Auth0, auth, roles (not required for client api for now)
+            //If we have the use case of user changing their email then we can start adding these in
+            var domain = $"{config["Auth0:Domain"]}/";
+            //services.AddScoped<IAuth0AuthenticationService, Auth0AuthenticationService>();
+            //services.AddScoped<IRolesService, RolesService>();
+            //services.AddScoped<IAuth0UserService, Auth0UserService>();
         }
 
         public static void RegisterDatabaseDependencies(this IServiceCollection services, IConfiguration config, IWebHostEnvironment hostingEnvironment)

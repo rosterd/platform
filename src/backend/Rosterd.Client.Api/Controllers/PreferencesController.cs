@@ -11,6 +11,7 @@ using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
+using Rosterd.Web.Infra.Security;
 
 namespace Rosterd.Client.Api.Controllers
 {
@@ -19,6 +20,7 @@ namespace Rosterd.Client.Api.Controllers
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Preferences")]
+    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.Staff)]
     public class PreferencesController : BaseApiController
     {
         private readonly ILogger<JobsController> _logger;

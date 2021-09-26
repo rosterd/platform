@@ -48,8 +48,7 @@ namespace Rosterd.Admin.Api
                 IdentityModelEventSource.ShowPII = true;
 
             services
-                .AddCustomAuthenticationWithJwtBearer(
-                    Configuration) //Add auth and JWT as the first thing (This always needs to be the first thing to configure)
+                .AddCustomAuthenticationWithJwtBearer(Configuration) //Add auth and JWT as the first thing (This always needs to be the first thing to configure)
                 .AddApplicationInsightsTelemetry()
                 .AddAppAndDatabaseDependencies(Configuration, HostingEnvironment)
                 .AddCustomSwagger("Rosterd Admin Api", "v1")
