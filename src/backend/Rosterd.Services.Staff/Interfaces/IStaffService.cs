@@ -62,16 +62,17 @@ namespace Rosterd.Services.Staff.Interfaces
         /// <summary>
         /// Gets the staff's preferences
         /// </summary>
-        /// <param name="userEmail"></param>
+        /// <param name="userAuth0Id"></param>
         /// <returns></returns>
-        Task<StaffAppUserPreferencesModel> GetStaffAppUserPreferences(string userEmail);
+        Task<StaffAppUserPreferencesModel> GetStaffAppUserPreferences(string userAuth0Id);
 
         /// <summary>
         /// Updates the staff preferences
         /// </summary>
         /// <param name="staffAppUserPreferencesModel"></param>
+        /// <param name="userAuth0Id"></param>
         /// <returns></returns>
-        Task UpdateStaffAppUserPreferences(StaffAppUserPreferencesModel staffAppUserPreferencesModel);
+        Task UpdateStaffAppUserPreferences(StaffAppUserPreferencesModel staffAppUserPreferencesModel, string userAuth0Id);
 
         /// <summary>
         /// Gets a list of facilities this staff member has access too manage

@@ -13,11 +13,9 @@ namespace Rosterd.Services.Mappers
         public static StaffAppUserPreferencesModel ToDomainModel(this RosterdAppUser dataModel) =>
             new StaffAppUserPreferencesModel
             {
-                Email = dataModel.Email,
                 DeviceId = dataModel.DeviceId,
                 FirstName = dataModel.FirstName,
                 MiddleName = dataModel.MiddleName,
-                IdmUserName = dataModel.IdmUserName,
                 TurnAllNotificationsOff = dataModel.TurnAllNotificationsOff,
                 AvailableDays = new AvailableDays
                 {
@@ -32,14 +30,12 @@ namespace Rosterd.Services.Mappers
                 Shift = new Shift {DayShift = dataModel.DayShiftOk, NightShift = dataModel.NightShiftOk}
             };
 
-        public static RosterdAppUser ToDataModel(this StaffAppUserPreferencesModel domainModel) =>
-            new RosterdAppUser(domainModel.Email)
+        public static RosterdAppUser ToDataModel(this StaffAppUserPreferencesModel domainModel, string userAuth0Id) =>
+            new RosterdAppUser(userAuth0Id)
             {
-                Email = domainModel.Email,
                 DeviceId = domainModel.DeviceId,
                 FirstName = domainModel.FirstName,
                 MiddleName = domainModel.MiddleName,
-                IdmUserName = domainModel.IdmUserName,
                 TurnAllNotificationsOff = domainModel.TurnAllNotificationsOff,
                 MondayAvailable = domainModel.AvailableDays.Monday,
                 TuesdayAvailable = domainModel.AvailableDays.Tuesday,

@@ -37,6 +37,7 @@ namespace Rosterd.Client.Api.Infrastructure.ServiceRegistrations
 
             //Services
             services.AddScoped<IJobsService, JobsService>();
+            services.AddScoped<IStaffService, StaffService>();
             services.AddScoped<IJobsValidationService, JobsValidationService>();
             services.AddScoped<IBelongsToValidator, BelongsToValidator>();
 

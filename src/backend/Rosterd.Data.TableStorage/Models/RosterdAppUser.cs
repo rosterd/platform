@@ -9,23 +9,23 @@ namespace Rosterd.Data.TableStorage.Models
 {
     public class RosterdAppUser : TableEntity
     {
-        public const string UsersPartitionKey = "userEmail";
+        public const string UsersPartitionKey = "userAuth0Id";
         public const string TableName = "RosterdAppUserTable";
 
         public RosterdAppUser(){}
 
-        public RosterdAppUser(string userEmail)
+        public RosterdAppUser(string userAuth0Id)
         {
             PartitionKey = UsersPartitionKey;
-            RowKey = userEmail;
-            Email = userEmail; //this just makes things a wee bit easier to read and understand in the tools etc.
+            RowKey = userAuth0Id;
+            Auth0Id = userAuth0Id; //this just makes things a wee bit easier to read and understand in the tools etc.
         }
 
         public string GetTableName() => TableName;
 
         public string DeviceId { get; set; }
 
-        public string Email { get; set; }
+        public string Auth0Id { get; set; }
 
         public string IdmUserName { get; set; }
 

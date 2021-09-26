@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Rosterd.Client.Api.Services;
 using Rosterd.Domain;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
@@ -25,11 +26,13 @@ namespace Rosterd.Client.Api.Controllers
     {
         private readonly ILogger<JobsController> _logger;
         private readonly IStaffService _staffService;
+        private readonly IUserContext _userContext;
 
-        public PreferencesController(ILogger<JobsController> logger, IStaffService staffService, IOptions<AppSettings> appSettings) : base(appSettings)
+        public PreferencesController(ILogger<JobsController> logger, IStaffService staffService, IOptions<AppSettings> appSettings, IUserContext userContext) : base(appSettings)
         {
             _logger = logger;
             _staffService = staffService;
+            _userContext = userContext;
         }
 
         /// <summary>
@@ -37,7 +40,7 @@ namespace Rosterd.Client.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("my")]
-        public async Task<ActionResult<StaffAppUserPreferencesModel>> GetUserPreferences([FromQuery] string userEmail) => await _staffService.GetStaffAppUserPreferences(userEmail);
+        public async Task<ActionResult<StaffAppUserPreferencesModel>> GetUserPreferences() => await _staffService.GetStaffAppUserPreferences(_userContext.UserAuth0Id);
 
         /// <summary>
         /// Updates all user profile information for the current user
@@ -46,7 +49,7 @@ namespace Rosterd.Client.Api.Controllers
         [HttpPut("my")]
         public async Task<ActionResult<StaffAppUserPreferencesModel>> UpdateUserPreferences([FromBody] StaffAppUserPreferencesModel staffAppUserPreferencesModel)
         {
-            await _staffService.UpdateStaffAppUserPreferences(staffAppUserPreferencesModel);
+            await _staffService.UpdateStaffAppUserPreferences(staffAppUserPreferencesModel, _userContext.UserAuth0Id);
             return Ok();
         }
     }

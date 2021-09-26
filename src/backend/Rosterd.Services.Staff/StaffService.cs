@@ -175,21 +175,17 @@ namespace Rosterd.Services.Staff
             }
         }
 
-        public async Task<StaffAppUserPreferencesModel> GetStaffAppUserPreferences(string userEmail)
+        public async Task<StaffAppUserPreferencesModel> GetStaffAppUserPreferences(string userAuth0Id)
         {
-            var rosterdAppUser = await _azureTableStorage.GetAsync<RosterdAppUser>(RosterdAppUser.TableName, RosterdAppUser.UsersPartitionKey, userEmail);
+            var rosterdAppUser = await _azureTableStorage.GetAsync<RosterdAppUser>(RosterdAppUser.TableName, RosterdAppUser.UsersPartitionKey, userAuth0Id);
 
             //We don't have the user in our db, so default the preferences which is true for every thing
-            if (rosterdAppUser == null)
-                return StaffAppUserMapper.ToNew();
-
-            return rosterdAppUser?.ToDomainModel();
+            return rosterdAppUser == null ? StaffAppUserMapper.ToNew() : rosterdAppUser?.ToDomainModel();
         }
 
-        public async Task UpdateStaffAppUserPreferences(StaffAppUserPreferencesModel staffAppUserPreferencesModel)
+        public async Task UpdateStaffAppUserPreferences(StaffAppUserPreferencesModel staffAppUserPreferencesModel, string userAuth0Id)
         {
-            var rosterdAppUser = staffAppUserPreferencesModel.ToDataModel();
-
+            var rosterdAppUser = staffAppUserPreferencesModel.ToDataModel(userAuth0Id);
             await _azureTableStorage.AddOrUpdateAsync(RosterdAppUser.TableName, rosterdAppUser);
         }
 
