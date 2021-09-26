@@ -27,7 +27,7 @@ const jobStatus: JobStatusWithLabel[] = [
 
 const useStyles = makeStyles(() => ({
   root: {
-    minWidth: '200px',
+    marginLeft: '20px',
   },
 }));
 

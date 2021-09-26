@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
     '&:hover': {
       backgroundColor: orange[700],
     },
+    display: 'none',
     '& button': {
       borderRadius: '30px 0 0 30px',
 
