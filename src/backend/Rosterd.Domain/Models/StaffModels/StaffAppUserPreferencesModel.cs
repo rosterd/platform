@@ -10,8 +10,14 @@ namespace Rosterd.Domain.Models.StaffModels
 
         public string DeviceId { get; set; }
 
+        /// <summary>
+        /// The city which the user prefers to see the jobs for
+        /// </summary>
         public string City { get; set; }
 
+        /// <summary>
+        /// The region which the user prefers to see the jobs for
+        /// </summary>
         public string Region { get; set; }
 
         public AvailableDays AvailableDays { get; set; }
