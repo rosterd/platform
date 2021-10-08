@@ -10,6 +10,10 @@ namespace Rosterd.Domain.Models.StaffModels
 
         public string DeviceId { get; set; }
 
+        public string City { get; set; }
+
+        public string Region { get; set; }
+
         public AvailableDays AvailableDays { get; set; }
 
         public Shift Shift { get; set; }
