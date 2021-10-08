@@ -6,10 +6,6 @@ namespace Rosterd.AzureFunctions.Config
 {
     public class FunctionSettings
     {
-        public string EventGridTopicEndpoint { get; set; }
-
-        public string EventGridTopicKey { get; set; }
-
         public string RosterdDbConnectionString { get; set; }
 
         public string TableStorageConnectionString { get; set; }

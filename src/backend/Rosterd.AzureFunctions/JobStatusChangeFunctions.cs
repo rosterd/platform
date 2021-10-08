@@ -1,5 +1,3 @@
-// Default URL for triggering event grid function in the local environment.
-// http://localhost:7071/runtime/webhooks/EventGrid?functionName={functionname}
 using System;
 using System.Threading.Tasks;
 using Azure;
@@ -27,16 +25,12 @@ namespace Rosterd.AzureFunctions
         private readonly IJobsService _jobsService;
         private readonly IJobEventsService _jobEventsService;
 
-        private string RosterdEventGridTopicHost { get; }
-
         public JobStatusChangeFunctions(ILogger<EventConsumerFunctions> logger, IOptions<FunctionSettings> settings, IJobsService jobsService, IJobEventsService jobEventsService)
         {
             _logger = logger;
             _settings = settings;
             _jobsService = jobsService;
             _jobEventsService = jobEventsService;
-
-            RosterdEventGridTopicHost = new Uri(settings.Value.EventGridTopicEndpoint).Host;
         }
 
         [FunctionName(nameof(MovedJobsPastTimeLimitToExpiredState))]
@@ -44,12 +38,13 @@ namespace Rosterd.AzureFunctions
         {
             _logger.LogInformation($"{nameof(MovedJobsPastTimeLimitToExpiredState)} - triggered on UTC Time {DateTime.UtcNow}");
 
-            //Get all the jobs that need to be expired
-            var jobIdsThatNeedExpiring = (await _jobsService.GetAllJobsThatAreExpiredButStatusStillNotSetToExpired()).AlwaysList();
-            foreach (var job in jobIdsThatNeedExpiring)
-            {
-                await _jobEventsService.GenerateJobStatusChangedEvent(job.Key, JobStatus.Expired, job.Value);
-            }
+            //TODO: for mvp rather than eventing, just call one method in the service calls that will do this
+            ////Get all the jobs that need to be expired
+            //var jobIdsThatNeedExpiring = (await _jobsService.GetAllJobsThatAreExpiredButStatusStillNotSetToExpired()).AlwaysList();
+            //foreach (var job in jobIdsThatNeedExpiring)
+            //{
+            //    await _jobEventsService.GenerateJobStatusChangedEvent(job.Key, JobStatus.Expired, job.Value);
+            //}
         }
 
         [FunctionName(nameof(MoveJobsPastEndDateToFeedbackState))]
@@ -57,12 +52,13 @@ namespace Rosterd.AzureFunctions
         {
             _logger.LogInformation($"{nameof(MoveJobsPastEndDateToFeedbackState)} - triggered on UTC Time {DateTime.UtcNow}");
 
-            //Get all the jobs that need to be moved to feedback pending
-            var jobIdsThatNeedFeedbackPending = (await _jobsService.GetAllJobsThatArePastEndDateButStatusStillNotSetToFeedback()).AlwaysList();
-            foreach (var job in jobIdsThatNeedFeedbackPending)
-            {
-                await _jobEventsService.GenerateJobStatusChangedEvent(job.Key, JobStatus.Expired, job.Value);
-            }
+            //TODO: for mvp rather than eventing, just call one method in the service calls that will do this
+            ////Get all the jobs that need to be moved to feedback pending
+            //var jobIdsThatNeedFeedbackPending = (await _jobsService.GetAllJobsThatArePastEndDateButStatusStillNotSetToFeedback()).AlwaysList();
+            //foreach (var job in jobIdsThatNeedFeedbackPending)
+            //{
+            //    await _jobEventsService.GenerateJobStatusChangedEvent(job.Key, JobStatus.Expired, job.Value);
+            //}
         }
 
         [FunctionName(nameof(MoveFinishedJobsFromSearch))]
@@ -70,9 +66,10 @@ namespace Rosterd.AzureFunctions
         {
             _logger.LogInformation($"{nameof(MoveFinishedJobsFromSearch)} - triggered on UTC Time {DateTime.UtcNow}");
 
-            //Get all the jobs that are finished and remove them from Azure Search
-            var JobsThatHaveFinished = (await _jobsService.GetAllJobsThatAreFinished()).AlwaysList();
-            await _jobEventsService.RemoveFinishedJobsFromSearch(JobsThatHaveFinished);
+            //TODO: for mvp rather than eventing, just call one method in the service calls that will do this
+            ////Get all the jobs that are finished and remove them from Azure Search
+            //var JobsThatHaveFinished = (await _jobsService.GetAllJobsThatAreFinished()).AlwaysList();
+            //await _jobEventsService.RemoveFinishedJobsFromSearch(JobsThatHaveFinished);
         }
     }
 }

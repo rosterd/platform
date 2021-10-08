@@ -105,6 +105,11 @@ namespace Rosterd.Admin.Api.Controllers
 
             //Update the Azure Search
             //At a later time we can raise an event for this (not needed for this MPV)
+
+            //Raise an event so the function app can send push notifications to the right people
+            await _jobEventsService.GenerateNewJobCreatedEvent(newJob.JobId, _userContext.UsersAuth0OrganizationId);
+
+            //Add the new job to search
             await _jobEventsService.HandleNewJobCreatedEvent(new NewJobCreatedMessage(newJob.JobId.ToString(), _userContext.UsersAuth0OrganizationId));
             return Ok(newJob);
         }
