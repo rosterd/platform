@@ -40,29 +40,5 @@ namespace Rosterd.Domain.Search
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string SkillIdsCsvString => SkillsIds.IsNullOrEmpty() ? string.Empty : string.Join(',', SkillsIds);
-
-        [SearchableField]
-        public string FacilityId { get; set; }
-
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string FacilityName { get; set; }
-
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string FacilityAddress { get; set; }
-
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string FacilitySuburb { get; set; }
-
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string FacilityCity { get; set; }
-
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string FacilityCountry { get; set; }
-
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string FacilityPhoneNumber1 { get; set; }
-
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string FacilityPhoneNumber2 { get; set; }
     }
 }

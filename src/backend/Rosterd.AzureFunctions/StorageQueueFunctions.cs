@@ -17,19 +17,21 @@ using Rosterd.Domain.Messaging;
 
 using Rosterd.Domain;
 using Rosterd.Domain.Search;
+using Rosterd.Infrastructure.Extensions;
+
 //using Rosterd.Services.Jobs.Interfaces;
 //using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.AzureFunctions
 {
-    public class EventConsumerFunctions
+    public class StorageQueueFunctions
     {
-        private readonly ILogger<EventConsumerFunctions> _logger;
+        private readonly ILogger<StorageQueueFunctions> _logger;
         private readonly IOptions<FunctionSettings> _settings;
         //private readonly IStaffEventsService _staffEventsService;
         //private readonly IJobEventsService _jobEventsService;
 
-        public EventConsumerFunctions(ILogger<EventConsumerFunctions> logger, IOptions<FunctionSettings> settings)//, IStaffEventsService staffEventsService, IJobEventsService jobEventsService)
+        public StorageQueueFunctions(ILogger<StorageQueueFunctions> logger, IOptions<FunctionSettings> settings)//, IStaffEventsService staffEventsService, IJobEventsService jobEventsService)
         {
             _logger = logger;
             _settings = settings;
@@ -40,7 +42,7 @@ namespace Rosterd.AzureFunctions
         [FunctionName(nameof(ProcessEvent))]
         public async Task ProcessEvent([QueueTrigger("staff-queue", Connection = "FunctionSettings:StorageAccount")] string queueItem, ILogger log)
         {
-            _logger.LogInformation($"{nameof(ProcessEvent)} - triggered on UTC Time {DateTime.UtcNow}");
+            _logger.LogInformation($"{nameof(ProcessEvent)} - triggered on NZ Time {DateTime.UtcNow.ToNzstFromUtc()}");
 
             var rosterdMessage = JsonSerializer.Deserialize<BaseRosterdMessage>(queueItem);
             if (rosterdMessage == null || rosterdMessage.MessageType.IsNullOrEmpty())
@@ -49,16 +51,12 @@ namespace Rosterd.AzureFunctions
                 return;
             }
 
+            //We currently only process the new job created message
+            if (rosterdMessage.MessageType != RosterdConstants.Messaging.NewJobCreatedMessage)
+                throw new Exception($"Message type {rosterdMessage.MessageType} can not be processed.");
+
             _logger.LogInformation(
                 $"{nameof(ProcessEvent)} - processing message type {rosterdMessage.MessageType} for organization {rosterdMessage.Auth0OrganizationId} with subject {rosterdMessage.SubjectId}");
-
-            //switch (rosterdMessage.MessageType)
-            //{
-            //    case
-
-            //    default:
-            //        throw new NotSupportedException($" message type {rosterdMessage.MessageType} for organization {rosterdMessage.Auth0OrganizationId} with subject {rosterdMessage.SubjectId} not supported");
-            //}
         }
 
         //TODO:

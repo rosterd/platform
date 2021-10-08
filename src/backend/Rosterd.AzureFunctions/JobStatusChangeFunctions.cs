@@ -20,12 +20,12 @@ namespace Rosterd.AzureFunctions
 {
     public class JobStatusChangeFunctions
     {
-        private readonly ILogger<EventConsumerFunctions> _logger;
+        private readonly ILogger<StorageQueueFunctions> _logger;
         private readonly IOptions<FunctionSettings> _settings;
         private readonly IJobsService _jobsService;
         private readonly IJobEventsService _jobEventsService;
 
-        public JobStatusChangeFunctions(ILogger<EventConsumerFunctions> logger, IOptions<FunctionSettings> settings, IJobsService jobsService, IJobEventsService jobEventsService)
+        public JobStatusChangeFunctions(ILogger<StorageQueueFunctions> logger, IOptions<FunctionSettings> settings, IJobsService jobsService, IJobEventsService jobEventsService)
         {
             _logger = logger;
             _settings = settings;
