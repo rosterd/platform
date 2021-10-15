@@ -8,6 +8,12 @@ namespace Rosterd.Domain.Search
     {
         public static string Key() => nameof(StaffId);
 
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+        public string Auth0OrganizationId { get; set; }
+
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+        public string Auth0IdForStaff { get; set; }
+
         [SimpleField(IsKey = true, IsFilterable = true)]
         public string StaffId { get; set; }
 
@@ -40,5 +46,13 @@ namespace Rosterd.Domain.Search
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string SkillIdsCsvString => SkillsIds.IsNullOrEmpty() ? string.Empty : string.Join(',', SkillsIds);
+
+        //Staff Preferences
+
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+        public string StaffPreferenceCity { get; set; }
+
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+        public string StaffPreferenceIsNightShiftOk { get; set; }
     }
 }

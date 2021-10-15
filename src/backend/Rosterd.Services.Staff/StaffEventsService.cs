@@ -55,6 +55,7 @@ namespace Rosterd.Services.Staff
             var staffId = staffCreatedOrUpdatedMessage.StaffId.ToLong();
             var staff = await _context.Staff
                 .Include(s => s.StaffSkills)
+                .Include(s => s.Organization)
                 .FirstAsync(s => s.StaffId == staffId);
 
             //We need the skills names

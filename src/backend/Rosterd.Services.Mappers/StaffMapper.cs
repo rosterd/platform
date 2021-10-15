@@ -43,6 +43,8 @@ namespace Rosterd.Services.Mappers
             var staffSearchModel = new StaffSearchModel()
             {
                 StaffId = dataModel.StaffId.ToString(),
+                Auth0IdForStaff = dataModel.Auth0Id,
+                Auth0OrganizationId = dataModel.Organization.Auth0OrganizationId,
                 Email = dataModel.Email,
                 FirstName = dataModel.FirstName,
                 IsActive = dataModel.IsActive?.ToString() ?? true.ToString(),

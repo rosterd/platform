@@ -9,6 +9,9 @@ namespace Rosterd.Domain.Search
     {
         public static string Key() => nameof(JobId);
 
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+        public string Auth0OrganizationId { get; set; }
+
         [SimpleField(IsKey = true, IsFilterable = true)]
         public string JobId { get; set; }
 

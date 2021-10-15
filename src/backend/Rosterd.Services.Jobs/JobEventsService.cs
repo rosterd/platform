@@ -65,7 +65,7 @@ namespace Rosterd.Services.Jobs
 
             //Translate to domain model to search model and save to search
             var jobsSkills = await GetSkills(job.JobSkills.AlwaysList());
-            var jobModel = job.ToSearchModel(jobsSkills);
+            var jobModel = job.ToSearchModel(jobsSkills, jobCreatedMessage.Auth0OrganizationId);
             await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, new List<JobSearchModel> { jobModel });
         }
 
@@ -84,7 +84,7 @@ namespace Rosterd.Services.Jobs
             var currentJob = await _context.Jobs.Include(s => s.JobSkills).FirstAsync(s => s.JobId == jobId);
 
             var jobsSkills = await GetSkills(currentJob.JobSkills.AlwaysList());
-            var searchModelToUpdate = currentJob.ToSearchModel(jobsSkills);
+            var searchModelToUpdate = currentJob.ToSearchModel(jobsSkills, jobStatusChangedMessage.Auth0OrganizationId);
 
             //Update the existing job document with the new status changes
             await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, new List<JobSearchModel> { searchModelToUpdate });

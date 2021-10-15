@@ -80,11 +80,12 @@ namespace Rosterd.Services.Mappers
             return jobModel;
         }
 
-        public static JobSearchModel ToSearchModel(this Job dataModel, List<Skill> skillsForJob)
+        public static JobSearchModel ToSearchModel(this Job dataModel, List<Skill> skillsForJob, string auth0OrganizationId)
         {
             var jobSearchModel = new JobSearchModel
             {
                 JobId = dataModel.JobId.ToString(),
+                Auth0OrganizationId = auth0OrganizationId,
                 JobTitle = dataModel.JobTitle,
                 Description = dataModel.Description,
                 JobStartDateTimeUtc = dataModel.JobStartDateTimeUtc,

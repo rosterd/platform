@@ -53,6 +53,7 @@ namespace Rosterd.Client.Api.Controllers
                 return UnprocessableEntity(RosterdConstants.ErrorMessages.GenericError);
 
             //TODO
+            //Call elastic
             //Raise a job status change event (job is set to accepted status)
             //await _jobEventsService.GenerateJobStatusChangedEvent(jobId, JobStatus.Accepted, _userContext.UsersAuth0OrganizationId);
 
