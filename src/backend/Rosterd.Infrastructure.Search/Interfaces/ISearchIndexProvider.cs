@@ -49,6 +49,15 @@ namespace Rosterd.Infrastructure.Search.Interfaces
         Task AddOrUpdateDocumentsToIndex<T>(string indexToAddTo, List<T> itemsToAdd);
 
         /// <summary>
+        /// Upsets document to an index
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="indexToAddTo"></param>
+        /// <param name="itemsToAdd"></param>
+        /// <returns></returns>
+        Task AddOrUpdateDocumentToIndex<T>(string indexToAddTo, T itemToAdd);
+
+        /// <summary>
         /// Delete all the given documents from the index
         /// </summary>
         /// <typeparam name="T"></typeparam>

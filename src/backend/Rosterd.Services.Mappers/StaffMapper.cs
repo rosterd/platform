@@ -47,7 +47,7 @@ namespace Rosterd.Services.Mappers
                 Auth0OrganizationId = dataModel.Organization.Auth0OrganizationId,
                 Email = dataModel.Email,
                 FirstName = dataModel.FirstName,
-                IsActive = dataModel.IsActive?.ToString() ?? true.ToString(),
+                IsActive = dataModel.IsActive?.ToString().ToLower() ?? true.ToString(),
                 JobTitle = dataModel.JobTitle,
                 LastName = dataModel.LastName,
                 MobilePhoneNumber = dataModel.MobilePhoneNumber,

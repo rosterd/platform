@@ -12,47 +12,32 @@ namespace Rosterd.Data.TableStorage.Models
         public const string UsersPartitionKey = "userAuth0Id";
         public const string TableName = "RosterdAppUserTable";
 
-        public RosterdAppUser(){}
+        public RosterdAppUser() { }
 
         public RosterdAppUser(string userAuth0Id)
         {
             PartitionKey = UsersPartitionKey;
             RowKey = userAuth0Id;
-            Auth0Id = userAuth0Id; //this just makes things a wee bit easier to read and understand in the tools etc.
+            Auth0Id = userAuth0Id;
         }
+
+        /// <summary>
+        /// The rosterd staffIf for this app user (The primary key for the staff table)
+        /// </summary>
+        public long StaffId { get; set; }
+
+        /// <summary>
+        /// The rosterd organization id for this appuser (The Rosterd organization this staff belongs too)
+        /// </summary>
+        public long OrganizationId { get; set; }
+
+        /// <summary>
+        /// The rosterd auth0 organization id for this appuser (The Rosterd organization's Auth0Id this staff belongs too)
+        /// </summary>
+        public string Auth0OrganizationId { get; set; }
 
         public string GetTableName() => TableName;
 
-        public string DeviceId { get; set; }
-
         public string Auth0Id { get; set; }
-
-        public string IdmUserName { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string MiddleName { get; set; }
-
-        public string LastName { get; set; }
-
-        public bool MondayAvailable { get; set; }
-
-        public bool TuesdayAvailable { get; set; }
-
-        public bool WednesdayAvailable { get; set; }
-
-        public bool ThursdayAvailable { get; set; }
-
-        public bool FridayAvailable { get; set; }
-
-        public bool SaturdayAvailable { get; set; }
-
-        public bool SundayAvailable { get; set; }
-
-        public bool DayShiftOk { get; set; }
-
-        public bool NightShiftOk { get; set; }
-
-        public bool TurnAllNotificationsOff { get; set; }
     }
 }

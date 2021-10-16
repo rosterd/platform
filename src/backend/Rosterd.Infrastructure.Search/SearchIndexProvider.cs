@@ -71,6 +71,8 @@ namespace Rosterd.Infrastructure.Search
             await searchClient.IndexDocumentsAsync(batch);
         }
 
+        public async Task AddOrUpdateDocumentToIndex<T>(string indexToAddTo, T itemToAdd) => await AddOrUpdateDocumentsToIndex(indexToAddTo, new List<T> { itemToAdd });
+
         /// <inheritdoc />
         public async Task DeleteDocumentsFromIndex(string indexToDeleteFrom, string keyName, List<string> keysToDelete)
         {

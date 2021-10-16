@@ -25,6 +25,14 @@ namespace Rosterd.Services.Staff.Interfaces
         Task<StaffModel> GetStaff(long staffId, string auth0OrganizationId);
 
         /// <summary>
+        /// Gets all the mapping id's for a staff
+        /// For a staff with the given auth0Id will return the staffid, organizationid and the auth0OrganizationId
+        /// </summary>
+        /// <param name="staffAuth0Id"></param>
+        /// <returns></returns>
+        Task<(long StaffId, long OrganizationId, string Auth0OrganizationId)> GetStaff(string staffAuth0Id);
+
+        /// <summary>
         /// Adds a new Staff member
         /// </summary>
         /// <param name="staffModel"></param>
@@ -58,21 +66,6 @@ namespace Rosterd.Services.Staff.Interfaces
         /// <param name="auth0OrganizationId"></param>
         /// <returns></returns>
         Task UpdateStaffToActive(long staffId, string userAuth0Id, string auth0OrganizationId);
-
-        /// <summary>
-        /// Gets the staff's preferences
-        /// </summary>
-        /// <param name="userAuth0Id"></param>
-        /// <returns></returns>
-        Task<StaffAppUserPreferencesModel> GetStaffAppUserPreferences(string userAuth0Id);
-
-        /// <summary>
-        /// Updates the staff preferences
-        /// </summary>
-        /// <param name="staffAppUserPreferencesModel"></param>
-        /// <param name="userAuth0Id"></param>
-        /// <returns></returns>
-        Task UpdateStaffAppUserPreferences(StaffAppUserPreferencesModel staffAppUserPreferencesModel, string userAuth0Id);
 
         /// <summary>
         /// Gets a list of facilities this staff member has access too manage

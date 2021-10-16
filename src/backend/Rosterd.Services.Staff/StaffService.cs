@@ -14,7 +14,9 @@ using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.StaffModels;
+using Rosterd.Domain.Search;
 using Rosterd.Infrastructure.Extensions;
+using Rosterd.Infrastructure.Search.Interfaces;
 using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Mappers;
 using Rosterd.Services.Staff.Interfaces;
@@ -27,12 +29,14 @@ namespace Rosterd.Services.Staff
         private readonly IRosterdDbContext _context;
         private readonly IAzureTableStorage _azureTableStorage;
         private readonly IBelongsToValidator _belongsToValidator;
+        private readonly ISearchIndexProvider _searchIndexProvider;
 
-        public StaffService(IRosterdDbContext context, IAzureTableStorage azureTableStorage, IBelongsToValidator belongsToValidator)
+        public StaffService(IRosterdDbContext context, IAzureTableStorage azureTableStorage, IBelongsToValidator belongsToValidator, ISearchIndexProvider searchIndexProvider)
         {
             _context = context;
             _azureTableStorage = azureTableStorage;
             _belongsToValidator = belongsToValidator;
+            _searchIndexProvider = searchIndexProvider;
         }
 
         ///<inheritdoc/>
@@ -64,6 +68,16 @@ namespace Rosterd.Services.Staff
             var skills = await _context.Skills.Where(s => staffSkillIds.Contains(s.SkillId)).ToListAsync();
 
             return staff.ToDomainModel(skills);
+        }
+
+        ///<inheritdoc/>
+        public async Task<(long StaffId, long OrganizationId, string Auth0OrganizationId)> GetStaff(string staffAuth0Id)
+        {
+            var staff = await _context.Staff.Include(s => s.Organization).FirstOrDefaultAsync(s => s.Auth0Id == staffAuth0Id);
+            if(staff == null)
+                throw new EntityNotFoundException("The staff member does not exist");
+
+            return (staff.StaffId, staff.OrganizationId, staff.Organization.Auth0OrganizationId);
         }
 
         ///<inheritdoc/>
@@ -140,7 +154,7 @@ namespace Rosterd.Services.Staff
                 throw new EntityNotFoundException($"staff with staff id {staffId} for auth0-organizationId {auth0OrganizationId}");
 
             staff.IsActive = false;
-            staff.Auth0Id = $"{RosterdConstants.Users.UserRemovedFromAuth0}_{Guid.NewGuid()}";
+            staff.Auth0Id = $"{RosterdConstants.Users.UserRemovedFromAuth0Text}_{Guid.NewGuid()}";
 
             await _context.SaveChangesAsync();
             return oldAuth0Id;
@@ -173,20 +187,6 @@ namespace Rosterd.Services.Staff
 
                 await _context.SaveChangesAsync();
             }
-        }
-
-        public async Task<StaffAppUserPreferencesModel> GetStaffAppUserPreferences(string userAuth0Id)
-        {
-            var rosterdAppUser = await _azureTableStorage.GetAsync<RosterdAppUser>(RosterdAppUser.TableName, RosterdAppUser.UsersPartitionKey, userAuth0Id);
-
-            //We don't have the user in our db, so default the preferences which is true for every thing
-            return rosterdAppUser == null ? StaffAppUserMapper.ToNew() : rosterdAppUser?.ToDomainModel();
-        }
-
-        public async Task UpdateStaffAppUserPreferences(StaffAppUserPreferencesModel staffAppUserPreferencesModel, string userAuth0Id)
-        {
-            var rosterdAppUser = staffAppUserPreferencesModel.ToDataModel(userAuth0Id);
-            await _azureTableStorage.AddOrUpdateAsync(RosterdAppUser.TableName, rosterdAppUser);
         }
 
         public async Task<List<FacilityLiteModel>> GetFacilitiesForStaff(string auth0IdForStaff, string auth0OrganizationId)

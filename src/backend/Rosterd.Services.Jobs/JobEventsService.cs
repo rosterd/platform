@@ -100,6 +100,18 @@ namespace Rosterd.Services.Jobs
             await _searchIndexProvider.DeleteDocumentsFromIndex(RosterdConstants.Search.JobsIndex, JobSearchModel.Key(), jobsToRemove);
         }
 
+        public async Task UpdateStatusOfJobInSearch(long jobId, JobStatus jobStatus)
+        {
+            var jobDocument = await _searchIndexProvider.GetSearchClient(RosterdConstants.Search.JobsIndex).GetDocumentAsync<JobSearchModel>(jobId.ToString());
+            if (jobDocument?.Value != null)
+            {
+                var jobSearchModel = jobDocument.Value;
+                jobSearchModel.JobStatusName = jobStatus.ToString();
+
+                await _searchIndexProvider.AddOrUpdateDocumentToIndex(RosterdConstants.Search.JobsIndex, jobSearchModel);
+            }
+        }
+
         private async Task<List<Skill>> GetSkills(List<JobSkill> jobSkills)
         {
             if (jobSkills.IsNullOrEmpty())

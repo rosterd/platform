@@ -12,10 +12,6 @@ namespace Rosterd.Client.Api.Controllers
     [AuthorizeByRole(RosterdConstants.RosterdRoleNames.Staff)]
     public class HomeController : ControllerBase
     {
-        private IUserContext _userContext;
-
-        public HomeController(IUserContext userContext) => _userContext = userContext;
-
         /// <summary>
         /// Default route (needed for the react app to return 200 so the react admin works with no issues)
         /// </summary>

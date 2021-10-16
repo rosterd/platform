@@ -25,14 +25,12 @@ namespace Rosterd.Client.Api.Controllers
     public class PreferencesController : BaseApiController
     {
         private readonly ILogger<JobsController> _logger;
-        private readonly IStaffService _staffService;
-        private readonly IUserContext _userContext;
+        private readonly IRosterdAppUserService _appUserService;
 
-        public PreferencesController(ILogger<JobsController> logger, IStaffService staffService, IOptions<AppSettings> appSettings, IUserContext userContext) : base(appSettings)
+        public PreferencesController(ILogger<JobsController> logger, IRosterdAppUserService appUserService, IOptions<AppSettings> appSettings, IUserContext userContext) : base(userContext)
         {
             _logger = logger;
-            _staffService = staffService;
-            _userContext = userContext;
+            _appUserService = appUserService;
         }
 
         /// <summary>
@@ -40,7 +38,7 @@ namespace Rosterd.Client.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("my")]
-        public async Task<ActionResult<StaffAppUserPreferencesModel>> GetUserPreferences() => await _staffService.GetStaffAppUserPreferences(_userContext.UserAuth0Id);
+        public async Task<ActionResult<StaffAppUserPreferencesModel>> GetUserPreferences() => await _appUserService.GetStaffAppUserPreferences(UserContext.UserAuth0Id);
 
         /// <summary>
         /// Updates all user profile information for the current user
@@ -49,7 +47,7 @@ namespace Rosterd.Client.Api.Controllers
         [HttpPut("my")]
         public async Task<ActionResult<StaffAppUserPreferencesModel>> UpdateUserPreferences([FromBody] StaffAppUserPreferencesModel staffAppUserPreferencesModel)
         {
-            await _staffService.UpdateStaffAppUserPreferences(staffAppUserPreferencesModel, _userContext.UserAuth0Id);
+            await _appUserService.UpdateStaffAppUserPreferences(staffAppUserPreferencesModel, UserContext.UserAuth0Id, UserContext.UserStaffId);
             return Ok();
         }
     }

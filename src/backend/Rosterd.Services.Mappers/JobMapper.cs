@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Azure.Search.Documents.Models;
 //using System.Runtime.Intrinsics.Arm;
@@ -95,7 +96,7 @@ namespace Rosterd.Services.Mappers
                 NoGracePeriod = dataModel.NoGracePeriod?.ToString(),
                 Responsibilities = dataModel.Responsibilities,
                 Experience = dataModel.Experience,
-                IsNightShift = (dataModel.IsNightShift ?? false).ToString(),
+                IsNightShift = (dataModel.IsNightShift ?? false).ToString().ToLower(),
                 JobPostedDateTimeUtc = dataModel.JobPostedDateTimeUtc,
                 JobStatusName = ((JobStatus?)dataModel.JobStatusId).ToString()
             };
@@ -116,6 +117,8 @@ namespace Rosterd.Services.Mappers
                 jobSearchModel.FacilityPhoneNumber1 = dataModel.Facility.PhoneNumber1;
                 jobSearchModel.FacilityPhoneNumber2 = dataModel.Facility.PhoneNumber2;
                 jobSearchModel.FacilitySuburb = dataModel.Facility.Suburb;
+                jobSearchModel.FacilityLatitude = dataModel.Facility.Latitude.ToString(CultureInfo.InvariantCulture);
+                jobSearchModel.FacilityLongitude = dataModel.Facility.Longitude.ToString(CultureInfo.InvariantCulture);
             }
 
             return jobSearchModel;
@@ -151,6 +154,8 @@ namespace Rosterd.Services.Mappers
                         FacilityName = job.Document.FacilityName,
                         PhoneNumber1 = job.Document.FacilityPhoneNumber1,
                         PhoneNumber2 = job.Document.FacilityPhoneNumber2,
+                        Longitude = job.Document.FacilityLongitude.ToDecimal(),
+                        Latitude = job.Document.FacilityLatitude.ToDecimal(),
                         Suburb = job.Document.FacilitySuburb
                     },
                     GracePeriodToCancelMinutes = job.Document.GracePeriodToCancelMinutes.ToLong(),

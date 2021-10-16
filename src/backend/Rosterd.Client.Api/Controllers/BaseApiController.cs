@@ -1,12 +1,11 @@
 using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using Rosterd.Client.Api.Services;
 using Rosterd.Domain;
 
 namespace Rosterd.Client.Api.Controllers
 {
-    //[Authorize]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status400BadRequest)] //All validation failures and model state errors
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -18,12 +17,20 @@ namespace Rosterd.Client.Api.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public abstract class BaseApiController : ControllerBase
     {
-        protected BaseApiController(IOptions<AppSettings> appSettings)
-        {
-            CurrentEnvironment = appSettings.Value.Environment;
-        }
+        protected IUserContext UserContext;
 
-        protected string CurrentEnvironment { get; set; }
+        protected BaseApiController(IUserContext userContext)
+        {
+            UserContext = userContext;
+
+            //TODO:Move to middleware which sets the user context
+            var rosterdAppUser = UserContext.CreateRosterdAppUserIfNotExists().GetAwaiter().GetResult();
+
+            //Set all the relevant ids to the context
+            UserContext.UsersAuth0OrganizationId = rosterdAppUser.Auth0OrganizationId;
+            UserContext.UserStaffId = rosterdAppUser.StaffId;
+            UserContext.UsersOrganizationId = rosterdAppUser.OrganizationId;
+        }
 
         /// <summary>
         /// Checks if the api key given is valid (ie: its compared against our constant)

@@ -89,5 +89,11 @@ namespace Rosterd.Domain.Search
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string FacilityPhoneNumber2 { get; set; }
+
+        [SimpleField]
+        public string FacilityLatitude { get; set; }
+
+        [SimpleField]
+        public string FacilityLongitude { get; set; }
     }
 }

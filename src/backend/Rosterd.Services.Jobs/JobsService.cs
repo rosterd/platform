@@ -115,17 +115,15 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task<PagedList<JobModel>> GetRelevantJobsForStaff(long staffId, PagingQueryStringParameters pagingParameters)
+        public async Task<PagedList<JobModel>> GetRelevantJobsForStaff(long staffId, string staffAuth0OrganizationId, PagingQueryStringParameters pagingParameters)
         {
-            //TODO:Org Check
-
             var staffSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.StaffIndex);
             var jobsSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.JobsIndex);
 
             //First go and fetch the staff and get the list of skills for that staff
             var staff = await staffSearchClient.GetDocumentAsync<StaffSearchModel>(staffId.ToString());
 
-            //We cant find the staff, may be the staff member was deleted etc, so return no jobs
+            //We cant find the staff, may be the staff member was deleted etc
             if (staff == null)
                 return PagedList<JobModel>.EmptyPagedList();
 
@@ -154,8 +152,6 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetCurrentJobsForStaff(long staffId, PagingQueryStringParameters pagingParameters)
         {
-            //TODO:Org Check
-
             var currentJobsForStaffQuery =
                 _context.JobStaffs
                         .Include(s => s.Job)
@@ -171,18 +167,15 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<PagedList<JobModel>> GetJobsForStaff(long staffId, List<JobStatus> jobsStatusesToQueryFor, PagingQueryStringParameters pagingParameters)
         {
-            //TODO:Org Check
-
             var statusList = jobsStatusesToQueryFor.AlwaysList().Select(s => (long)s).AlwaysList();
 
-            var completedJobsForStaffQuery =
+            var jobsForStaffQuery =
                 from js in _context.JobStaffs
                 join job in _context.Jobs on js.JobId equals job.JobId
-                where js.StaffId == staffId &&
-                      statusList.Contains(job.JobStatusId)
+                where js.StaffId == staffId && statusList.Contains(job.JobStatusId)
                 select job;
 
-            var pagedList = await PagingList<Data.SqlServer.Models.Job>.ToPagingList(completedJobsForStaffQuery, pagingParameters.PageNumber, pagingParameters.PageSize);
+            var pagedList = await PagingList<Data.SqlServer.Models.Job>.ToPagingList(jobsForStaffQuery, pagingParameters.PageNumber, pagingParameters.PageSize);
 
             var domainModels = pagedList.ToDomainModels();
             return new Domain.Models.PagedList<JobModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
@@ -194,8 +187,6 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<bool> AcceptJobForStaff(long jobId, long staffId)
         {
-            //TODO:Org Check
-
             var job = await _context.Jobs.FindAsync(jobId);
             var jobStaff = new JobStaff {JobId = jobId, StaffId = staffId};
 

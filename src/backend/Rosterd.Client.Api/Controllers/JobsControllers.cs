@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Rosterd.Client.Api.Services;
 using Rosterd.Domain;
 using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models;
@@ -26,7 +27,8 @@ namespace Rosterd.Client.Api.Controllers
         private readonly IJobsValidationService _jobsValidationService;
         private readonly IJobEventsService _jobEventsService;
 
-        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobsValidationService jobsValidationService, IJobEventsService jobEventsService, IOptions<AppSettings> appSettings) : base(appSettings)
+
+        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobsValidationService jobsValidationService, IJobEventsService jobEventsService, IOptions<AppSettings> appSettings, IUserContext userContext) : base(userContext)
         {
             _logger = logger;
             _jobService = jobsService;
@@ -47,15 +49,12 @@ namespace Rosterd.Client.Api.Controllers
             if (!isJobValid)
                 return UnprocessableEntity(errorMessages);
 
-            //TODO: When auth is ready pass in a proper staff id
-            var isAcceptSuccessful = await _jobService.AcceptJobForStaff(jobId, 1);
+            var isAcceptSuccessful = await _jobService.AcceptJobForStaff(jobId, UserContext.UserStaffId);
             if (!isAcceptSuccessful)
                 return UnprocessableEntity(RosterdConstants.ErrorMessages.GenericError);
 
-            //TODO
-            //Call elastic
-            //Raise a job status change event (job is set to accepted status)
-            //await _jobEventsService.GenerateJobStatusChangedEvent(jobId, JobStatus.Accepted, _userContext.UsersAuth0OrganizationId);
+            //TODO: at a later time instead of direct update, raise a job status change event (job is set to accepted status)
+            await _jobEventsService.UpdateStatusOfJobInSearch(jobId, JobStatus.Accepted);
 
             return Ok();
         }
@@ -73,14 +72,12 @@ namespace Rosterd.Client.Api.Controllers
             if (!isJobValid)
                 return UnprocessableEntity(errorMessages);
 
-            //TODO: When auth is ready pass in a proper staff id
-            var isAcceptSuccessful = await _jobService.CancelJobForStaff(jobId, 1);
+            var isAcceptSuccessful = await _jobService.CancelJobForStaff(jobId, UserContext.UserStaffId);
             if (!isAcceptSuccessful)
                 return UnprocessableEntity(RosterdConstants.ErrorMessages.GenericError);
 
-            //TODO
-            //Raise a job status change event (job is set back to published status)
-            //await _jobEventsService.GenerateJobStatusChangedEvent(jobId, JobStatus.Published, TODO);
+            //TODO: at a later time instead of direct update, raise a job status change event (job is set to accepted status)
+            await _jobEventsService.UpdateStatusOfJobInSearch(jobId, JobStatus.Published);
 
             return Ok();
         }

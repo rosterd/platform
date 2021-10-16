@@ -10,7 +10,7 @@ namespace Rosterd.Services.Mappers
 {
     public static class StaffAppUserMapper
     {
-        public static StaffAppUserPreferencesModel ToDomainModel(this RosterdAppUser dataModel) =>
+        public static StaffAppUserPreferencesModel ToDomainModel(this RosterdAppUserPreferences dataModel) =>
             new StaffAppUserPreferencesModel
             {
                 DeviceId = dataModel.DeviceId,
@@ -27,11 +27,11 @@ namespace Rosterd.Services.Mappers
                     Saturday = dataModel.SaturdayAvailable,
                     Sunday = dataModel.SundayAvailable
                 },
-                Shift = new Shift {DayShift = dataModel.DayShiftOk, NightShift = dataModel.NightShiftOk}
+                Shift = new Shift {DayShift = dataModel.DayShiftOk, NightShift = dataModel.NightShiftOk},
             };
 
-        public static RosterdAppUser ToDataModel(this StaffAppUserPreferencesModel domainModel, string userAuth0Id) =>
-            new RosterdAppUser(userAuth0Id)
+        public static RosterdAppUserPreferences ToDataModel(this StaffAppUserPreferencesModel domainModel, string userAuth0Id) =>
+            new RosterdAppUserPreferences(userAuth0Id)
             {
                 DeviceId = domainModel.DeviceId,
                 FirstName = domainModel.FirstName,

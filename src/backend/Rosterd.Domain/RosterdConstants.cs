@@ -25,20 +25,7 @@ namespace Rosterd.Domain
         /// </summary>
         public static class CacheKeys
         {
-            /// <summary>
-            ///     Key that holds all the tenants for a given auth0id
-            /// </summary>
-            public static string TenantToAuth0Id(string auth0Id) => $"Tenant_{auth0Id}";
 
-            /// <summary>
-            ///     Key that holds all the staff for a given auth0id
-            /// </summary>
-            public static string StaffToAuth0Id(string auth0Id) => $"Staff_{auth0Id}";
-
-            /// <summary>
-            ///     Key that holds all the TenantIdToAuth0Id's
-            /// </summary>
-            public static string TenantIdToAuth0Id(string auth0Id) => $"TenantId_{auth0Id}";
         }
 
         public static class Messaging
@@ -85,7 +72,7 @@ namespace Rosterd.Domain
 
         public static class Users
         {
-            public const string UserRemovedFromAuth0 = "UserRemovedFromAuth0";
+            public const string UserRemovedFromAuth0Text = "UserRemovedFromAuth0Text";
         }
     }
 }

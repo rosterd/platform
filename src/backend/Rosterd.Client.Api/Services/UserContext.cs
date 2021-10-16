@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Rosterd.Data.TableStorage.Models;
 using Rosterd.Domain;
 using Rosterd.Domain.Enums;
+using Rosterd.Domain.Exceptions;
+using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.Client.Api.Services
 {
@@ -15,8 +19,35 @@ namespace Rosterd.Client.Api.Services
     public class UserContext : IUserContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IRosterdAppUserService _appUserService;
+        private readonly IStaffService _staffService;
 
-        public UserContext(IHttpContextAccessor httpContextAccessor) => _httpContextAccessor = httpContextAccessor;
+        public UserContext(IHttpContextAccessor httpContextAccessor, IRosterdAppUserService appUserService, IStaffService staffService)
+        {
+            _httpContextAccessor = httpContextAccessor;
+            _appUserService = appUserService;
+            _staffService = staffService;
+        }
+
+        public async Task<RosterdAppUser> CreateRosterdAppUserIfNotExists()
+        {
+            if (UserAuth0Id.IsNullOrEmpty())
+                throw new EntityNotFoundException("Forbidden.");
+
+            var rosterdAppUser = await _appUserService.GetStaffAppUser(UserAuth0Id);
+            if (rosterdAppUser == null)
+            {
+                //Grab all necessary mapping details for a staff
+                var (staffId, organizationId, auth0OrganizationId) = await _staffService.GetStaff(UserAuth0Id);
+
+                //Save the details to table storage
+                await _appUserService.CreateOrUpdateStaffAppUser(UserAuth0Id, staffId, auth0OrganizationId, organizationId);
+
+                rosterdAppUser = new RosterdAppUser(UserAuth0Id) { Auth0OrganizationId = auth0OrganizationId, StaffId = staffId, OrganizationId = organizationId };
+            }
+
+            return rosterdAppUser;
+        }
 
         public string UserAuth0Id
         {
@@ -27,14 +58,10 @@ namespace Rosterd.Client.Api.Services
             }
         }
 
-        public string UsersAuth0OrganizationId
-        {
-            get
-            {
-                var auth0OrganizationId = _httpContextAccessor.HttpContext.User.Claims.First(s => s.Type == RosterdConstants.AccessTokenFields.Auth0OrganizationId).Value;
-                return auth0OrganizationId;
-            }
-        }
+        public long UserStaffId { get; set; }
+        public string UsersAuth0OrganizationId { get; set; }
+        public long UsersOrganizationId { get; set; }
+
         public string AccessToken
         {
             get

@@ -47,12 +47,15 @@ namespace Rosterd.Domain.Search
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string SkillIdsCsvString => SkillsIds.IsNullOrEmpty() ? string.Empty : string.Join(',', SkillsIds);
 
-        //Staff Preferences
+        //----------Staff Preferences
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string StaffPreferenceCity { get; set; }
+        public string StaffPreferenceCity { get; set; } = string.Empty;
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string StaffPreferenceIsNightShiftOk { get; set; }
+        public string StaffPreferenceIsNightShiftOk { get; set; } = string.Empty;
+
+        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
+        public string DeviceId { get; set; } = string.Empty;
     }
 }

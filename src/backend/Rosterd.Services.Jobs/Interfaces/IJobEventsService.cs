@@ -45,5 +45,13 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// <param name="jobsIdsToRemoveFromSearch"></param>
         /// <returns></returns>
         Task RemoveFinishedJobsFromSearch(List<long> jobsIdsToRemoveFromSearch);
+
+        /// <summary>
+        /// Updates the status of a job in Azure search
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="jobStatus"></param>
+        /// <returns></returns>
+        Task UpdateStatusOfJobInSearch(long jobId, JobStatus jobStatus);
     }
 }

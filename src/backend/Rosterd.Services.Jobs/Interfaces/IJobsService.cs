@@ -47,9 +47,10 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// Gets all the jobs that are relevant for a given staff
         /// </summary>
         /// <param name="staffId"></param>
+        /// <param name="staffAuth0OrganizationId"></param>
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
-        Task<PagedList<JobModel>> GetRelevantJobsForStaff(long staffId, PagingQueryStringParameters pagingParameters);
+        Task<PagedList<JobModel>> GetRelevantJobsForStaff(long staffId, string staffAuth0OrganizationId, PagingQueryStringParameters pagingParameters)
 
         /// <summary>
         /// Gets all the currently active jobs for a given staff
