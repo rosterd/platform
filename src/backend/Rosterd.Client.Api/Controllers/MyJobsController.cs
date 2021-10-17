@@ -69,7 +69,6 @@ namespace Rosterd.Client.Api.Controllers
         [HttpGet("my/history/completed")]
         public async Task<ActionResult<PagedList<JobModel>>> GetAllHistoricalCompletedJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
-            //TODO: Once auth is done, get the right staff id to check
             pagingParameters ??= new PagingQueryStringParameters();
             var pagedList = await _jobService.GetJobsForStaff(UserContext.UserStaffId, new List<JobStatus> {JobStatus.Completed, JobStatus.FeedbackPending}, pagingParameters);
 
