@@ -61,7 +61,10 @@ namespace Rosterd.Services.Jobs
         {
             //Get the latest job info
             var jobId = jobCreatedMessage.JobId.ToLong();
-            var job = await _context.Jobs.Include(s => s.JobSkills).FirstAsync(s => s.JobId == jobId);
+            var job = await _context.Jobs
+                .Include(s => s.JobSkills)
+                .Include(y => y.Facility)
+                .FirstAsync(s => s.JobId == jobId);
 
             //Translate to domain model to search model and save to search
             var jobsSkills = await GetSkills(job.JobSkills.AlwaysList());

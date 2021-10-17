@@ -50,7 +50,6 @@ namespace Rosterd.AzureFunctions
             //await _searchIndexProvider.DeleteIndex(RosterdConstants.Search.JobsIndex);
 
             //Create all the required indexes
-
             //Staff Index
             var (staffIndexExists, _) = await _searchIndexProvider.GetIndexStatus(RosterdConstants.Search.StaffIndex);
             if (!staffIndexExists)
