@@ -55,7 +55,6 @@ namespace Rosterd.Admin.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("Search")]
-        [AllowAnonymous]
         public async Task<ActionResult<OrganizationModel>> GetOrganization([FromBody][Required] GetOrganizationRequest organizationRequest)
         {
             if (organizationRequest.OrganizationId == null && organizationRequest.OrganizationName.IsNullOrEmpty())
