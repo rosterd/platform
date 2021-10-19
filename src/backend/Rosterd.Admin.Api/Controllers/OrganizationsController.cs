@@ -1,11 +1,13 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Organization;
 using Rosterd.Domain;
+using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.OrganizationModels;
 using Rosterd.Domain.Settings;
@@ -40,7 +42,7 @@ namespace Rosterd.Admin.Api.Controllers
         /// The default is true</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<PagedList<OrganizationModel>>> GetAllOrganizations([FromQuery] PagingQueryStringParameters pagingParameters, [FromQuery] bool activeOrganizationsOnly = true)
+        public async Task<ActionResult<PagedList<OrganizationModel>>> GetOrganizations([FromQuery] PagingQueryStringParameters pagingParameters, [FromQuery] bool activeOrganizationsOnly = true)
         {
             pagingParameters ??= new PagingQueryStringParameters();
             var pagedList = await _organizationService.GetAllOrganizations(pagingParameters, activeOrganizationsOnly);
@@ -49,25 +51,19 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
-        ///     Get Organization by Id
+        ///     Get Organization by Id or name
         /// </summary>
         /// <returns></returns>
-        [HttpGet("{organizationId}")]
-        public async Task<ActionResult<OrganizationModel>> GetOrganization([ValidNumberRequired] long? organizationId)
+        [HttpPost("Search")]
+        [AllowAnonymous]
+        public async Task<ActionResult<OrganizationModel>> GetOrganization([FromBody][Required] GetOrganizationRequest organizationRequest)
         {
-            var organizationModel = await _organizationService.GetOrganization(organizationId.Value);
-            return organizationModel;
-        }
+            if (organizationRequest.OrganizationId == null && organizationRequest.OrganizationName.IsNullOrEmpty())
+                throw new BadRequestException("Organization id or Organization name is required");
 
-        /// <summary>
-        ///     Get Organization by name
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("{organizationName}")]
-        public async Task<ActionResult<OrganizationModel>> GetOrganization([Required] string organizationName)
-        {
-            var organizationModel = await _organizationService.GetOrganization(organizationName);
-            return organizationModel;
+            return organizationRequest.OrganizationId != null
+                ? await _organizationService.GetOrganization(organizationRequest.OrganizationId.Value)
+                : await _organizationService.GetOrganization(organizationRequest.OrganizationName);
         }
 
         /// <summary>
@@ -78,8 +74,6 @@ namespace Rosterd.Admin.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<OrganizationModel>> CreateNewOrganization([Required] [FromBody] AddOrganizationRequest request)
         {
-            //TODO: send a message to create index
-
             var organization = await _organizationService.CreateOrganization(request.ToOrganizationModel());
             return organization;
         }
