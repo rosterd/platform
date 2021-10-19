@@ -42,7 +42,7 @@ namespace Rosterd.AzureFunctions
         [FunctionName(nameof(ProcessEvent))]
         public async Task ProcessEvent([QueueTrigger("staff-queue", Connection = "FunctionSettings:StorageAccount")] string queueItem, ILogger log)
         {
-            _logger.LogInformation($"{nameof(ProcessEvent)} - triggered on NZ Time {DateTime.UtcNow.ToNzstFromUtc()}");
+            //_logger.LogInformation($"{nameof(ProcessEvent)} - triggered on NZ Time {DateTime.UtcNow.ToNzstFromUtc()}");
 
             var rosterdMessage = JsonSerializer.Deserialize<BaseRosterdMessage>(queueItem);
             if (rosterdMessage == null || rosterdMessage.MessageType.IsNullOrEmpty())
