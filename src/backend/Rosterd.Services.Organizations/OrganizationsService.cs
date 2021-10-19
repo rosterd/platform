@@ -14,6 +14,7 @@ using Auth0.AuthenticationApi;
 using Auth0.AuthenticationApi.Models;
 using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
+using Microsoft.EntityFrameworkCore;
 using Rosterd.Infrastructure.Security.Interfaces;
 
 namespace Rosterd.Services.Organizations
@@ -41,6 +42,20 @@ namespace Rosterd.Services.Organizations
         {
             var organization = await _context.Organizations.FindAsync(organizationId);
             return organization?.ToDomainModel();
+        }
+
+        public async Task<OrganizationModel> GetOrganization(string organizationName)
+        {
+            var organizationNameToSearch = organizationName.ToLower();
+
+            var organizations = await (_context.Organizations.Where(s => s.OrganizationName == organizationNameToSearch)).ToListAsync();
+            if (organizations.IsNullOrEmpty())
+                throw new EntityNotFoundException("Organization not found");
+
+            if(organizations.Count > 1)
+                throw new EntityNotFoundException("Multiple matching organization found");
+
+            return organizations[0]?.ToDomainModel();
         }
 
         public async Task<OrganizationModel> CreateOrganization(OrganizationModel organizationModel)

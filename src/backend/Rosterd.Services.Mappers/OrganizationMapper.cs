@@ -41,7 +41,7 @@ namespace Rosterd.Services.Mappers
         {
             var organizationToSave = new Data.SqlServer.Models.Organization
             {
-                OrganizationName = domainModel.OrganizationName,
+                OrganizationName = domainModel.OrganizationName.ToLower(),
                 Address = domainModel.Address,
                 Comments = domainModel.Comments,
                 IsActive = domainModel.IsActive

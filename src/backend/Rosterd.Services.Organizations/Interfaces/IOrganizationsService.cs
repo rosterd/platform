@@ -16,6 +16,13 @@ namespace Rosterd.Services.Organizations.Interfaces
         Task<OrganizationModel> GetOrganization(long organizationId);
 
         /// <summary>
+        /// Gets a matching organization with the name
+        /// </summary>
+        /// <param name="organizationName"></param>
+        /// <returns></returns>
+        Task<OrganizationModel> GetOrganization(string organizationName);
+
+        /// <summary>
         /// Adds a new organization
         /// </summary>
         /// <param name="organizationModel"></param>

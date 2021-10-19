@@ -60,6 +60,17 @@ namespace Rosterd.Admin.Api.Controllers
         }
 
         /// <summary>
+        ///     Get Organization by name
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{organizationName}")]
+        public async Task<ActionResult<OrganizationModel>> GetOrganization([Required] string organizationName)
+        {
+            var organizationModel = await _organizationService.GetOrganization(organizationName);
+            return organizationModel;
+        }
+
+        /// <summary>
         ///     Adds a new Organization
         /// </summary>
         /// <param name="request">The Organization to add</param>
