@@ -26,11 +26,15 @@ namespace Rosterd.Client.Api.Controllers
     {
         private readonly ILogger<JobsController> _logger;
         private readonly IRosterdAppUserService _appUserService;
+        private readonly IOptions<AppSettings> _appSettings;
+        private readonly IUserContext _userContext;
 
-        public PreferencesController(ILogger<JobsController> logger, IRosterdAppUserService appUserService, IOptions<AppSettings> appSettings, IUserContext userContext) : base(userContext)
+        public PreferencesController(ILogger<JobsController> logger, IRosterdAppUserService appUserService, IOptions<AppSettings> appSettings, IUserContext userContext) : base()
         {
             _logger = logger;
             _appUserService = appUserService;
+            _appSettings = appSettings;
+            _userContext = userContext;
         }
 
         /// <summary>
@@ -38,7 +42,7 @@ namespace Rosterd.Client.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("my")]
-        public async Task<ActionResult<StaffAppUserPreferencesModel>> GetUserPreferences() => await _appUserService.GetStaffAppUserPreferences(UserContext.UserAuth0Id);
+        public async Task<ActionResult<StaffAppUserPreferencesModel>> GetUserPreferences() => await _appUserService.GetStaffAppUserPreferences(_userContext.UserAuth0Id);
 
         /// <summary>
         /// Updates all user profile information for the current user
@@ -47,7 +51,7 @@ namespace Rosterd.Client.Api.Controllers
         [HttpPut("my")]
         public async Task<ActionResult<StaffAppUserPreferencesModel>> UpdateUserPreferences([FromBody] StaffAppUserPreferencesModel staffAppUserPreferencesModel)
         {
-            await _appUserService.UpdateStaffAppUserPreferences(staffAppUserPreferencesModel, UserContext.UserAuth0Id, UserContext.UserStaffId);
+            await _appUserService.UpdateStaffAppUserPreferences(staffAppUserPreferencesModel, _userContext.UserAuth0Id, _userContext.UserStaffId);
             return Ok();
         }
     }

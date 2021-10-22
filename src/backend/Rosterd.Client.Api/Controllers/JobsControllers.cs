@@ -26,14 +26,17 @@ namespace Rosterd.Client.Api.Controllers
         private readonly IJobsService _jobService;
         private readonly IJobsValidationService _jobsValidationService;
         private readonly IJobEventsService _jobEventsService;
+        private readonly IOptions<AppSettings> _appSettings;
+        private readonly IUserContext _userContext;
 
-
-        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobsValidationService jobsValidationService, IJobEventsService jobEventsService, IOptions<AppSettings> appSettings, IUserContext userContext) : base(userContext)
+        public JobsController(ILogger<JobsController> logger, IJobsService jobsService, IJobsValidationService jobsValidationService, IJobEventsService jobEventsService, IOptions<AppSettings> appSettings, IUserContext userContext) : base()
         {
             _logger = logger;
             _jobService = jobsService;
             _jobsValidationService = jobsValidationService;
             _jobEventsService = jobEventsService;
+            _appSettings = appSettings;
+            _userContext = userContext;
         }
 
         /// <summary>
@@ -49,7 +52,7 @@ namespace Rosterd.Client.Api.Controllers
             if (!isJobValid)
                 return UnprocessableEntity(errorMessages);
 
-            var isAcceptSuccessful = await _jobService.AcceptJobForStaff(jobId, UserContext.UserStaffId);
+            var isAcceptSuccessful = await _jobService.AcceptJobForStaff(jobId, _userContext.UserStaffId);
             if (!isAcceptSuccessful)
                 return UnprocessableEntity(RosterdConstants.ErrorMessages.GenericError);
 
@@ -72,7 +75,7 @@ namespace Rosterd.Client.Api.Controllers
             if (!isJobValid)
                 return UnprocessableEntity(errorMessages);
 
-            var isAcceptSuccessful = await _jobService.CancelJobForStaff(jobId, UserContext.UserStaffId);
+            var isAcceptSuccessful = await _jobService.CancelJobForStaff(jobId, _userContext.UserStaffId);
             if (!isAcceptSuccessful)
                 return UnprocessableEntity(RosterdConstants.ErrorMessages.GenericError);
 

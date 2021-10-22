@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Rosterd.Client.Api.Infrastructure.Extensions;
+using Rosterd.Client.Api.Infrastructure.Middleware;
 using Rosterd.Domain;
 using Rosterd.Web.Infra;
 using Rosterd.Web.Infra.Extensions;
@@ -78,8 +79,9 @@ namespace Rosterd.Client.Api
             services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInvalidFilter = false);
 
             //Register all custom middleware
-            services.AddTransient<SwaggerAuthenticationMiddleware>();
-            services.AddTransient<ExceptionHandlerMiddleware>();
+            services.AddScoped<SwaggerAuthenticationMiddleware>();
+            services.AddScoped<ExceptionHandlerMiddleware>();
+            services.AddScoped<UserContextBuilderMiddleware>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
@@ -99,6 +101,9 @@ namespace Rosterd.Client.Api
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
             app.UseCustomExceptionMiddleware();
+
+            //Custom Middleware
+            app.UseMiddleware<UserContextBuilderMiddleware>(); //Sets up the user context with all the details for the logged in user
 
             app.UseHttpsRedirection();
 

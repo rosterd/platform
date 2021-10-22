@@ -26,11 +26,15 @@ namespace Rosterd.Client.Api.Controllers
     {
         private readonly ILogger<MyJobsController> _logger;
         private readonly IJobsService _jobService;
+        private readonly IOptions<AppSettings> _appSettings;
+        private readonly IUserContext _userContext;
 
-        public MyJobsController(ILogger<MyJobsController> logger, IJobsService jobsService, IOptions<AppSettings> appSettings, IUserContext userContext) : base(userContext)
+        public MyJobsController(ILogger<MyJobsController> logger, IJobsService jobsService, IOptions<AppSettings> appSettings, IUserContext userContext) : base()
         {
             _logger = logger;
             _jobService = jobsService;
+            _appSettings = appSettings;
+            _userContext = userContext;
         }
 
         /// <summary>
@@ -42,7 +46,7 @@ namespace Rosterd.Client.Api.Controllers
         public async Task<ActionResult<PagedList<JobModel>>> GetAllRelevantJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetRelevantJobsForStaff(UserContext.UserStaffId, UserContext.UsersAuth0OrganizationId, pagingParameters);
+            var pagedList = await _jobService.GetRelevantJobsForStaff(_userContext.UserStaffId, _userContext.UsersAuth0OrganizationId, pagingParameters);
 
             return pagedList;
         }
@@ -56,7 +60,7 @@ namespace Rosterd.Client.Api.Controllers
         public async Task<ActionResult<PagedList<JobModel>>> GetAllCurrentJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetCurrentJobsForStaff(UserContext.UserStaffId, pagingParameters);
+            var pagedList = await _jobService.GetCurrentJobsForStaff(_userContext.UserStaffId, pagingParameters);
 
             return pagedList;
         }
@@ -70,7 +74,7 @@ namespace Rosterd.Client.Api.Controllers
         public async Task<ActionResult<PagedList<JobModel>>> GetAllHistoricalCompletedJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetJobsForStaff(UserContext.UserStaffId, new List<JobStatus> {JobStatus.Completed, JobStatus.FeedbackPending}, pagingParameters);
+            var pagedList = await _jobService.GetJobsForStaff(_userContext.UserStaffId, new List<JobStatus> {JobStatus.Completed, JobStatus.FeedbackPending}, pagingParameters);
 
             return pagedList;
         }
@@ -84,7 +88,7 @@ namespace Rosterd.Client.Api.Controllers
         public async Task<ActionResult<PagedList<JobModel>>> GetAllHistoricalCancelledJobsForUser([FromQuery] PagingQueryStringParameters pagingParameters)
         {
             pagingParameters ??= new PagingQueryStringParameters();
-            var pagedList = await _jobService.GetJobsForStaff(UserContext.UserStaffId, JobStatus.Cancelled, pagingParameters);
+            var pagedList = await _jobService.GetJobsForStaff(_userContext.UserStaffId, JobStatus.Cancelled, pagingParameters);
 
             return pagedList;
         }

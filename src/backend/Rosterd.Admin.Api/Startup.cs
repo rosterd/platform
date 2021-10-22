@@ -96,8 +96,8 @@ namespace Rosterd.Admin.Api
             services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInvalidFilter = false);
 
             //Register all custom middleware
-            services.AddTransient<SwaggerAuthenticationMiddleware>();
-            services.AddTransient<ExceptionHandlerMiddleware>();
+            services.AddScoped<SwaggerAuthenticationMiddleware>();
+            services.AddScoped<ExceptionHandlerMiddleware>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
