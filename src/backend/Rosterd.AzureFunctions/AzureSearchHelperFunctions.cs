@@ -50,7 +50,7 @@ namespace Rosterd.AzureFunctions
             )]
             TimerInfo myTimer, ILogger log)
         {
-            _logger.LogInformation($"{nameof(CreateSearchIndexes)} - triggered on UTC Time {DateTime.UtcNow}");
+            _logger?.LogInformation($"{nameof(CreateSearchIndexes)} - triggered on UTC Time {DateTime.UtcNow}");
 
             //Create a SearchIndexClient to create indexes
             var serviceEndpoint = new Uri(_settings.Value.SearchServiceEndpoint);
@@ -70,25 +70,6 @@ namespace Rosterd.AzureFunctions
         }
 
         /// <summary>
-        /// Helper function for debugging locally when needing to deleting existing indexes, should not be run in prod
-        /// that is why they are disabled
-        /// </summary>
-        /// <param name="myTimer"></param>
-        /// <param name="log"></param>
-        [FunctionName(nameof(DeleteSearchIndexes))]
-        [Disable]
-        public async Task DeleteSearchIndexes([TimerTrigger("0 0 0 * * *"
-#if DEBUG
-            , RunOnStartup = false
-#endif
-            )]
-            TimerInfo myTimer, ILogger log)
-        {
-            await _searchIndexProvider.DeleteIndex(RosterdConstants.Search.StaffIndex);
-            await _searchIndexProvider.DeleteIndex(RosterdConstants.Search.JobsIndex);
-        }
-
-        /// <summary>
         /// Helper function for populating all active staff and job to search,
         /// handy when we have a fresh index and want to get all active entries from db.
         ///
@@ -96,15 +77,23 @@ namespace Rosterd.AzureFunctions
         /// </summary>
         /// <param name="myTimer"></param>
         /// <param name="log"></param>
-        [FunctionName(nameof(PopulateSearchFromDb))]
+        [FunctionName(nameof(ReCreateSearchIndexesAndPopulateFromDb))]
         //[Disable]
-        public async Task PopulateSearchFromDb([TimerTrigger("0 0 0 * * *"
+        public async Task ReCreateSearchIndexesAndPopulateFromDb([TimerTrigger("0 0 0 * * *"
 #if DEBUG
             , RunOnStartup = false
 #endif
             )]
             TimerInfo myTimer, ILogger log)
         {
+            //Delete indexes
+            await _searchIndexProvider.DeleteIndex(RosterdConstants.Search.StaffIndex);
+            await _searchIndexProvider.DeleteIndex(RosterdConstants.Search.JobsIndex);
+
+            //Create indexes
+            await CreateSearchIndexes(null, null);
+
+            //Take everything from db and put into search (in-efficient should not be used for prod)
             await _staffEventsService.AddAllActiveStaffToSearch();
             await _jobEventsService.AddAllActiveJobsToSearch();
         }
