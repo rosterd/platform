@@ -12,20 +12,26 @@ using Rosterd.AzureFunctions.Config;
 using Rosterd.Domain;
 using Rosterd.Domain.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
+using Rosterd.Services.Jobs.Interfaces;
+using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.AzureFunctions
 {
-    public class AzureSearchIndexFunctions
+    public class AzureSearchHelperFunctions
     {
-        private readonly ILogger<AzureSearchIndexFunctions> _logger;
+        private readonly ILogger<AzureSearchHelperFunctions> _logger;
         private readonly IOptions<FunctionSettings> _settings;
         private readonly ISearchIndexProvider _searchIndexProvider;
+        private readonly IStaffEventsService _staffEventsService;
+        private readonly IJobEventsService _jobEventsService;
 
-        public AzureSearchIndexFunctions(ILogger<AzureSearchIndexFunctions> logger, IOptions<FunctionSettings> settings, ISearchIndexProvider searchIndexProvider)
+        public AzureSearchHelperFunctions(ILogger<AzureSearchHelperFunctions> logger, IOptions<FunctionSettings> settings, ISearchIndexProvider searchIndexProvider, IStaffEventsService staffEventsService, IJobEventsService jobEventsService)
         {
             _logger = logger;
             _settings = settings;
             _searchIndexProvider = searchIndexProvider;
+            _staffEventsService = staffEventsService;
+            _jobEventsService = jobEventsService;
         }
 
         /// <summary>
@@ -37,7 +43,12 @@ namespace Rosterd.AzureFunctions
         /// <param name="myTimer"></param>
         /// <param name="log"></param>
         [FunctionName(nameof(CreateSearchIndexes))]
-        public async Task CreateSearchIndexes([TimerTrigger("0 0 0 * * *", RunOnStartup = true)] TimerInfo myTimer, ILogger log)
+        public async Task CreateSearchIndexes([TimerTrigger("0 0 0 * * *"
+#if DEBUG
+            , RunOnStartup = false
+#endif
+            )]
+            TimerInfo myTimer, ILogger log)
         {
             _logger.LogInformation($"{nameof(CreateSearchIndexes)} - triggered on UTC Time {DateTime.UtcNow}");
 
@@ -45,9 +56,6 @@ namespace Rosterd.AzureFunctions
             var serviceEndpoint = new Uri(_settings.Value.SearchServiceEndpoint);
             var credential = new AzureKeyCredential(_settings.Value.SearchServiceApiKey);
             var searchIndexClient = new SearchIndexClient(serviceEndpoint, credential);
-
-            //await _searchIndexProvider.DeleteIndex(RosterdConstants.Search.StaffIndex);
-            //await _searchIndexProvider.DeleteIndex(RosterdConstants.Search.JobsIndex);
 
             //Create all the required indexes
             //Staff Index
@@ -59,6 +67,46 @@ namespace Rosterd.AzureFunctions
             var (jobIndexExists, _) = await _searchIndexProvider.GetIndexStatus(RosterdConstants.Search.JobsIndex);
             if (!jobIndexExists)
                 await _searchIndexProvider.CreateOrUpdateIndex<JobSearchModel>(RosterdConstants.Search.JobsIndex, null);
+        }
+
+        /// <summary>
+        /// Helper function for debugging locally when needing to deleting existing indexes, should not be run in prod
+        /// that is why they are disabled
+        /// </summary>
+        /// <param name="myTimer"></param>
+        /// <param name="log"></param>
+        [FunctionName(nameof(DeleteSearchIndexes))]
+        [Disable]
+        public async Task DeleteSearchIndexes([TimerTrigger("0 0 0 * * *"
+#if DEBUG
+            , RunOnStartup = false
+#endif
+            )]
+            TimerInfo myTimer, ILogger log)
+        {
+            await _searchIndexProvider.DeleteIndex(RosterdConstants.Search.StaffIndex);
+            await _searchIndexProvider.DeleteIndex(RosterdConstants.Search.JobsIndex);
+        }
+
+        /// <summary>
+        /// Helper function for populating all active staff and job to search,
+        /// handy when we have a fresh index and want to get all active entries from db.
+        ///
+        /// THIS IS IN-EFFICIENT DESIGNED FOR TEST/DEV ENVIRONMENTS
+        /// </summary>
+        /// <param name="myTimer"></param>
+        /// <param name="log"></param>
+        [FunctionName(nameof(PopulateSearchFromDb))]
+        //[Disable]
+        public async Task PopulateSearchFromDb([TimerTrigger("0 0 0 * * *"
+#if DEBUG
+            , RunOnStartup = false
+#endif
+            )]
+            TimerInfo myTimer, ILogger log)
+        {
+            await _staffEventsService.AddAllActiveStaffToSearch();
+            await _jobEventsService.AddAllActiveJobsToSearch();
         }
     }
 }

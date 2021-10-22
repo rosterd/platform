@@ -12,9 +12,6 @@ using Rosterd.AzureFunctions.Config;
 using Rosterd.Domain;
 using Rosterd.Domain.Enums;
 using Rosterd.Domain.Search;
-using Rosterd.Infrastructure.Extensions;
-using Rosterd.Services.Jobs.Interfaces;
-using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.AzureFunctions
 {
@@ -22,15 +19,11 @@ namespace Rosterd.AzureFunctions
     {
         private readonly ILogger<StorageQueueFunctions> _logger;
         private readonly IOptions<FunctionSettings> _settings;
-        private readonly IJobsService _jobsService;
-        private readonly IJobEventsService _jobEventsService;
 
-        public JobStatusChangeFunctions(ILogger<StorageQueueFunctions> logger, IOptions<FunctionSettings> settings, IJobsService jobsService, IJobEventsService jobEventsService)
+        public JobStatusChangeFunctions(ILogger<StorageQueueFunctions> logger, IOptions<FunctionSettings> settings)
         {
             _logger = logger;
             _settings = settings;
-            _jobsService = jobsService;
-            _jobEventsService = jobEventsService;
         }
 
         [FunctionName(nameof(MovedJobsPastTimeLimitToExpiredState))]

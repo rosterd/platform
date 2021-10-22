@@ -29,8 +29,8 @@ namespace Rosterd.Domain.Search
         [SearchableField]
         public string MobilePhoneNumber { get; set; }
 
-        [SearchableField]
-        public string IsActive { get; set; }
+        [SimpleField]
+        public bool IsActive { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string JobTitle { get; set; }
@@ -52,8 +52,8 @@ namespace Rosterd.Domain.Search
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string StaffPreferenceCity { get; set; } = string.Empty;
 
-        [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
-        public string StaffPreferenceIsNightShiftOk { get; set; } = string.Empty;
+        [SimpleField]
+        public bool StaffPreferenceIsNightShiftOk { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string DeviceId { get; set; } = string.Empty;

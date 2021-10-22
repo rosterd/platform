@@ -55,12 +55,12 @@ namespace Rosterd.AzureFunctions
                 .AddScoped<ISearchIndexProvider>(s => new SearchIndexProvider(searchServiceEndpoint, searchServiceApiKey))
 
                 //DB
+                .AddScoped<IRosterdDbContext, RosterdDbContext>()
                 .AddDbContextPool<RosterdDbContext>((sp, op) => op.UseSqlServer(rosterdDbConnectionString,
                     sqlOptions => sqlOptions.EnableRetryOnFailure(
                         maxRetryCount: 5,
                         maxRetryDelay: TimeSpan.FromSeconds(5),
                         errorNumbersToAdd: null)))
-
 
                 .AddOptions<FunctionSettings>()
                 .Configure<IConfiguration>((settings, configuration) => configuration.GetSection("FunctionSettings").Bind(settings));

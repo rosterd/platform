@@ -36,5 +36,7 @@ namespace Rosterd.Services.Staff.Interfaces
         /// <param name="staffDeletedMessage"></param>
         /// <returns></returns>
         Task HandleStaffDeletedEvent(StaffDeletedMessage staffDeletedMessage);
+
+        Task AddAllActiveStaffToSearch();
     }
 }

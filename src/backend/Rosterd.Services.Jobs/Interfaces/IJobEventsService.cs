@@ -53,5 +53,7 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// <param name="jobStatus"></param>
         /// <returns></returns>
         Task UpdateStatusOfJobInSearch(long jobId, JobStatus jobStatus);
+
+        Task AddAllActiveJobsToSearch();
     }
 }

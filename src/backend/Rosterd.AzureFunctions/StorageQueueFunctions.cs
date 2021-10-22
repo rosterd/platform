@@ -17,10 +17,8 @@ using Rosterd.Domain.Messaging;
 
 using Rosterd.Domain;
 using Rosterd.Domain.Search;
-using Rosterd.Infrastructure.Extensions;
-
-//using Rosterd.Services.Jobs.Interfaces;
-//using Rosterd.Services.Staff.Interfaces;
+using Rosterd.Services.Jobs.Interfaces;
+using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.AzureFunctions
 {
@@ -28,15 +26,15 @@ namespace Rosterd.AzureFunctions
     {
         private readonly ILogger<StorageQueueFunctions> _logger;
         private readonly IOptions<FunctionSettings> _settings;
-        //private readonly IStaffEventsService _staffEventsService;
-        //private readonly IJobEventsService _jobEventsService;
+        private readonly IStaffEventsService _staffEventsService;
+        private readonly IJobEventsService _jobEventsService;
 
-        public StorageQueueFunctions(ILogger<StorageQueueFunctions> logger, IOptions<FunctionSettings> settings)//, IStaffEventsService staffEventsService, IJobEventsService jobEventsService)
+        public StorageQueueFunctions(ILogger<StorageQueueFunctions> logger, IOptions<FunctionSettings> settings, IStaffEventsService staffEventsService, IJobEventsService jobEventsService)
         {
             _logger = logger;
             _settings = settings;
-            //_staffEventsService = staffEventsService;
-            //_jobEventsService = jobEventsService;
+            _staffEventsService = staffEventsService;
+            _jobEventsService = jobEventsService;
         }
 
         [FunctionName(nameof(ProcessEvent))]

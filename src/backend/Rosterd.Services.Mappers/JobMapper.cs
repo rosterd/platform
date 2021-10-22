@@ -93,10 +93,10 @@ namespace Rosterd.Services.Mappers
                 JobEndDateTimeUtc = dataModel.JobEndDateTimeUtc,
                 Comments = dataModel.Comments,
                 GracePeriodToCancelMinutes = dataModel.GracePeriodToCancelMinutes.ToString(),
-                NoGracePeriod = dataModel.NoGracePeriod?.ToString(),
+                NoGracePeriod = dataModel.NoGracePeriod.ToBooleanOrDefault(),
                 Responsibilities = dataModel.Responsibilities,
                 Experience = dataModel.Experience,
-                IsNightShift = (dataModel.IsNightShift ?? false).ToString().ToLower(),
+                IsNightShift = dataModel.IsNightShift.ToBooleanOrDefault(),
                 JobPostedDateTimeUtc = dataModel.JobPostedDateTimeUtc,
                 JobStatusName = ((JobStatus?)dataModel.JobStatusId).ToString()
             };

@@ -115,6 +115,24 @@ namespace Rosterd.Services.Jobs
             }
         }
 
+        public async Task AddAllActiveJobsToSearch()
+        {
+            //Get the latest job info
+            var publishedJobs = (int)JobStatus.Published;
+            var jobs = await _context.Jobs
+                .Include(s => s.JobSkills)
+                .Include(y => y.Facility)
+                .ThenInclude(s => s.Organzation)
+                .Where(s => s.JobStatusId == publishedJobs).ToListAsync();
+
+            //Translate to domain model to search model and save to search
+            var allJobSkills = jobs.SelectMany(s => s.JobSkills).Distinct();
+            var jobsSkills = await GetSkills(allJobSkills.ToList());
+
+            var jobsToAddToSearch = jobs.Select(job => job.ToSearchModel(jobsSkills, job.Facility.Organzation.Auth0OrganizationId)).ToList();
+            await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, jobsToAddToSearch);
+        }
+
         private async Task<List<Skill>> GetSkills(List<JobSkill> jobSkills)
         {
             if (jobSkills.IsNullOrEmpty())

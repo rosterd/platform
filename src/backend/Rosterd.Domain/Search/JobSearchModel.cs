@@ -36,8 +36,8 @@ namespace Rosterd.Domain.Search
         [SearchableField]
         public string GracePeriodToCancelMinutes { get; set; }
 
-        [SearchableField]
-        public string NoGracePeriod { get; set; }
+        [SimpleField]
+        public bool NoGracePeriod { get; set; }
 
         [SimpleField(IsFilterable = true, IsSortable = true, IsFacetable = true)]
         public DateTimeOffset? JobGracePeriodEndDateTimeUtc { get; set; }
@@ -51,8 +51,8 @@ namespace Rosterd.Domain.Search
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string Experience { get; set; }
 
-        [SearchableField]
-        public string IsNightShift { get; set; }
+        [SimpleField]
+        public bool IsNightShift { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string[] SkillsIds { get; set; }
