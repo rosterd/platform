@@ -48,6 +48,7 @@ namespace Rosterd.AzureFunctions
                 throw new Exception($"Message type {rosterdMessage.MessageType} can not be processed.");
 
             //Get a list of all device id's this job is applicable too
+            //TODO: 
 
             //Send push notification to these devices
 

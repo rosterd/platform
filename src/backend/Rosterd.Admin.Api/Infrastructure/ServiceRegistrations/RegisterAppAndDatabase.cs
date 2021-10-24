@@ -84,7 +84,7 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             services.AddSingleton<IQueueClient<JobsQueueClient>>(s => jobsQueueClient);
 
             //Auth0, auth, roles
-            var domain = $"{config["Auth0:Domain"]}/";
+            var domain = $"{config["Auth0Settings:Domain"]}/";
             services.AddSingleton<IManagementConnection, HttpClientManagementConnection>(); //part of auth0 sdk, auth0 recommends this to be singleton due to reuse of httpclient under the hood
             services.AddSingleton<AuthenticationApiClient>(s => new AuthenticationApiClient(domain)); //part of auth0 sdk, auth0 recommends this to be singleton due to reuse of httpclient under the hood
             services.AddScoped<IAuth0AuthenticationService, Auth0AuthenticationService>();

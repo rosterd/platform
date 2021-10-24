@@ -66,13 +66,6 @@ namespace Rosterd.Client.Api.Infrastructure.ServiceRegistrations
             //Db contexts
             services.AddScoped<IRosterdDbContext, RosterdDbContext>();
             services.AddScoped<IAzureTableStorage>(s => new AzureTableStorage(config.GetConnectionString("TableStorageConnectionString")));
-
-            //Auth0, auth, roles (not required for client api for now)
-            //If we have the use case of user changing their email then we can start adding these in
-            var domain = $"{config["Auth0:Domain"]}/";
-            //services.AddScoped<IAuth0AuthenticationService, Auth0AuthenticationService>();
-            //services.AddScoped<IRolesService, RolesService>();
-            //services.AddScoped<IAuth0UserService, Auth0UserService>();
         }
 
         public static void RegisterDatabaseDependencies(this IServiceCollection services, IConfiguration config, IWebHostEnvironment hostingEnvironment)
