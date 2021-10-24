@@ -131,7 +131,8 @@ namespace Rosterd.Services.Jobs
             var parameters =
                 new SearchOptions
                 {
-                    SearchMode = SearchMode.Any,
+                    SearchMode = SearchMode.All,
+                    QueryType = SearchQueryType.Full,
                     IncludeTotalCount = true,
 
                     //At least one skill that the staff has must match whats in the job

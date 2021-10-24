@@ -73,5 +73,23 @@ namespace Rosterd.Services.Staff
             var staffId = staffDeletedMessage.StaffId;
             await _searchIndexProvider.DeleteDocumentsFromIndex(RosterdConstants.Search.StaffIndex, StaffSearchModel.Key(), new List<string>() { staffId });
         }
+
+        public async Task AddAllActiveStaffToSearch()
+        {
+            //Get the latest staff info
+            var staffs = await _context.Staff
+                .Include(s => s.StaffSkills)
+                .Include(s => s.Organization)
+                .Where(s => s.IsActive == true).ToListAsync();
+
+            //We need the skills names
+            var allStaffSkills = staffs.SelectMany(s => s.StaffSkills).Distinct();
+            var staffSkillIds = allStaffSkills.Select(s => s.SkillId).ToList();
+            var skills = await _context.Skills.Where(s => staffSkillIds.Contains(s.SkillId)).ToListAsync();
+
+            //Convert to search models and store in search
+            var staffToAddToSearch = staffs.Select(staff => staff.ToSearchModel(skills)).ToList();
+            await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.StaffIndex, staffToAddToSearch);
+        }
     }
 }

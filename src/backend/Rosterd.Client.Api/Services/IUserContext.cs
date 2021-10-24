@@ -11,7 +11,7 @@ namespace Rosterd.Client.Api.Services
         /// Creates a rosterd app user
         /// </summary>
         /// <returns></returns>
-        Task<RosterdAppUser> CreateRosterdAppUserIfNotExists();
+        Task<RosterdAppUser> GetRosterdAppUserOrCreateIfNotExists();
 
         /// <summary>
         /// Gets the user id from auth 0

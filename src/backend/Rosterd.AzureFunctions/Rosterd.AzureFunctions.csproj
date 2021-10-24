@@ -11,7 +11,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj" />
+    <ProjectReference Include="..\Rosterd.Data.TableStorage\Rosterd.Data.TableStorage.csproj" />
     <ProjectReference Include="..\Rosterd.Domain\Rosterd.Domain.csproj" />
+    <ProjectReference Include="..\Rosterd.Infrastructure.Messaging\Rosterd.Infrastructure.Messaging.csproj" />
     <ProjectReference Include="..\Rosterd.Infrastructure.Search\Rosterd.Infrastructure.Search.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Jobs\Rosterd.Services.Jobs.csproj" />
     <ProjectReference Include="..\Rosterd.Services.Staff\Rosterd.Services.Staff.csproj" />

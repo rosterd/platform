@@ -17,19 +17,8 @@ namespace Rosterd.Client.Api.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public abstract class BaseApiController : ControllerBase
     {
-        protected IUserContext UserContext;
-
-        protected BaseApiController(IUserContext userContext)
+        protected BaseApiController()
         {
-            UserContext = userContext;
-
-            //TODO:Move to middleware which sets the user context
-            var rosterdAppUser = UserContext.CreateRosterdAppUserIfNotExists().GetAwaiter().GetResult();
-
-            //Set all the relevant ids to the context
-            UserContext.UsersAuth0OrganizationId = rosterdAppUser.Auth0OrganizationId;
-            UserContext.UserStaffId = rosterdAppUser.StaffId;
-            UserContext.UsersOrganizationId = rosterdAppUser.OrganizationId;
         }
 
         /// <summary>

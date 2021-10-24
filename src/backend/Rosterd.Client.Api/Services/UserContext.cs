@@ -29,7 +29,7 @@ namespace Rosterd.Client.Api.Services
             _staffService = staffService;
         }
 
-        public async Task<RosterdAppUser> CreateRosterdAppUserIfNotExists()
+        public async Task<RosterdAppUser> GetRosterdAppUserOrCreateIfNotExists()
         {
             if (UserAuth0Id.IsNullOrEmpty())
                 throw new EntityNotFoundException("Forbidden.");
