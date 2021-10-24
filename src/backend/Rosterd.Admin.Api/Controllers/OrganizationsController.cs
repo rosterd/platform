@@ -54,6 +54,7 @@ namespace Rosterd.Admin.Api.Controllers
         ///     Get Organization by Id or name
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpPost("Search")]
         public async Task<ActionResult<OrganizationModel>> GetOrganization([FromBody][Required] GetOrganizationRequest organizationRequest)
         {

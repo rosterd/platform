@@ -881,6 +881,7 @@ export interface paths {
         query: {
           pageNumber?: number;
           pageSize?: number;
+          status?: string;
         };
         path: {
           version: string;
@@ -1151,9 +1152,9 @@ export interface paths {
       /** The reason for the job cancellation */
       requestBody: {
         content: {
-          "application/json": string;
-          "text/json": string;
-          "application/*+json": string;
+          "application/json": components["schemas"]["DeleteJobRequest"];
+          "text/json": components["schemas"]["DeleteJobRequest"];
+          "application/*+json": components["schemas"]["DeleteJobRequest"];
         };
       };
     };
@@ -1388,10 +1389,74 @@ export interface paths {
     };
   };
   "/api/v{version}/Organizations/{organizationId}": {
-    get: {
+    delete: {
       parameters: {
         path: {
+          /** The Organization to be deleted */
           organizationId: number;
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+  };
+  "/api/v{version}/Organizations/Search": {
+    post: {
+      parameters: {
+        path: {
           version: string;
         };
       };
@@ -1455,68 +1520,12 @@ export interface paths {
         /** Server Error */
         500: unknown;
       };
-    };
-    delete: {
-      parameters: {
-        path: {
-          /** The Organization to be deleted */
-          organizationId: number;
-          version: string;
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["GetOrganizationRequest"];
+          "text/json": components["schemas"]["GetOrganizationRequest"];
+          "application/*+json": components["schemas"]["GetOrganizationRequest"];
         };
-      };
-      responses: {
-        /** Success */
-        200: unknown;
-        /** Bad Request */
-        400: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Unauthorized */
-        401: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Forbidden */
-        403: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Not Found */
-        404: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        422: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Client Error */
-        429: {
-          content: {
-            "text/plain": components["schemas"]["ProblemDetails"];
-            "application/json": components["schemas"]["ProblemDetails"];
-            "text/json": components["schemas"]["ProblemDetails"];
-          };
-        };
-        /** Server Error */
-        500: unknown;
       };
     };
   };
@@ -2868,6 +2877,9 @@ export interface components {
       mobilePhoneNumber?: string | null;
       rosterdRolesForUser?: components["schemas"]["RosterdRoleEnum"][] | null;
     };
+    DeleteJobRequest: {
+      jobCancellationReason?: string | null;
+    };
     FacilityCapabilityModel: { [key: string]: unknown };
     FacilityLiteModel: {
       facilityId?: number;
@@ -2898,6 +2910,10 @@ export interface components {
       hasPrevious?: boolean;
       hasNext?: boolean;
       items?: components["schemas"]["FacilityModel"][] | null;
+    };
+    GetOrganizationRequest: {
+      organizationName?: string | null;
+      organizationId?: number | null;
     };
     JobModel: {
       jobId?: number;
