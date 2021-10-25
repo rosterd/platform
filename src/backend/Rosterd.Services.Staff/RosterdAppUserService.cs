@@ -79,10 +79,10 @@ namespace Rosterd.Services.Staff
 
             var staffSearchModelToUpdate = staffSearchDocument.Value;
             staffSearchModelToUpdate.StaffPreferenceCity = staffAppUserPreferencesModel.City;
-            staffSearchModelToUpdate.StaffPreferenceIsNightShiftOk = staffSearchModelToUpdate.StaffPreferenceIsNightShiftOk;
-            staffSearchModelToUpdate.DeviceId = staffSearchModelToUpdate.DeviceId;
+            staffSearchModelToUpdate.StaffPreferenceIsNightShiftOk = staffAppUserPreferencesModel.Shift.NightShift;
+            staffSearchModelToUpdate.DeviceId = staffAppUserPreferencesModel.DeviceId;
 
-            await _searchIndexProvider.AddOrUpdateDocumentToIndex(RosterdConstants.Search.StaffIndex, staffAppUserPreferencesModel);
+            await _searchIndexProvider.AddOrUpdateDocumentToIndex(RosterdConstants.Search.StaffIndex, staffSearchModelToUpdate);
         }
     }
 }

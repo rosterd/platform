@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
+namespace Rosterd.Client.Api.Infrastructure.Extensions
 {
     public static class RegisterAuthentication
     {

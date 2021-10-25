@@ -146,8 +146,7 @@ namespace Rosterd.Services.Jobs
             var totalResultsFound = (jobSearchResults.Value.TotalCount ?? 0).ToInt32();
             var totalPages = (int)Math.Ceiling(totalResultsFound / (double)pagingParameters.PageSize);
 
-            return new PagedList<JobModel>(jobSearchResults.Value.ToDomainModels(), totalResultsFound, pagingParameters.PageNumber, pagingParameters.PageSize,
-                totalPages);
+            return new PagedList<JobModel>(jobSearchResults.Value.ToDomainModels(), totalResultsFound, pagingParameters.PageNumber, pagingParameters.PageSize, totalPages);
         }
 
         ///<inheritdoc/>
