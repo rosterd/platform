@@ -12,6 +12,6 @@ export const addOrganization = (data: AddOrganizationRequest): AxiosRequestConfi
 
 export const getOrganization = (data: GetOrganizationRequest): AxiosRequestConfig & {scope?: string} => ({
   method: 'POST',
-  url: '/api/v1/organizations/search',
+  url: `${process.env.REACT_APP_API_BASE_URL}/api/v1/organizations/search`,
   data,
 });
