@@ -78,10 +78,10 @@ namespace Rosterd.AzureFunctions
         /// <param name="myTimer"></param>
         /// <param name="log"></param>
         [FunctionName(nameof(ReCreateSearchIndexesAndPopulateFromDb))]
-        /// [Disable]
+        //[Disable]
         public async Task ReCreateSearchIndexesAndPopulateFromDb([TimerTrigger("0 0 0 * * *"
 #if DEBUG
-            , RunOnStartup = false
+            , RunOnStartup = true
 #endif
             )]
             TimerInfo myTimer, ILogger log)

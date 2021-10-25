@@ -102,9 +102,6 @@ namespace Rosterd.Client.Api
             app.UseHsts();
             app.UseCustomExceptionMiddleware();
 
-            //Custom Middleware
-            app.UseMiddleware<UserContextBuilderMiddleware>(); //Sets up the user context with all the details for the logged in user
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -114,6 +111,9 @@ namespace Rosterd.Client.Api
             //Adds authorization middleware to the pipeline to make sure the Api endpoint cannot be accessed by anonymous clients
             app.UseAuthentication();
             app.UseAuthorization();
+
+            //Custom Middleware
+            app.UseMiddleware<UserContextBuilderMiddleware>(); //Sets up the user context with all the details for the logged in user
 
             //Enable Swagger and SwaggerUI (for swagger we have our own basic auth so its not available to everyone)
             app.UseSwaggerAuthenticationCheck();
