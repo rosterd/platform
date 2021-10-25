@@ -10,4 +10,8 @@ export const getOrganizations = (): AxiosRequestConfig & {scope?: string} => ({u
 
 export const addOrganization = (data: AddOrganizationRequest): AxiosRequestConfig & {scope?: string} => ({method: 'POST', url, data});
 
-export const getOrganization = (data: GetOrganizationRequest): AxiosRequestConfig & {scope?: string} => ({method: 'POST', url: 'Organizations/Search', data});
+export const getOrganization = (data: GetOrganizationRequest): AxiosRequestConfig & {scope?: string} => ({
+  method: 'POST',
+  url: '/api/v1/organizations/search',
+  data,
+});
