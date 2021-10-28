@@ -1,0 +1,51 @@
+// === TERMS AND POLICY ===
+.terms {
+    margin: 12em 0 5em 0;
+    color: #25282b;
+    .terms-nav {
+        display: block;
+    }
+    .list {
+        display: block;
+        &__item {
+            padding: 0.5em;
+        }
+
+        &__link {
+            font-size: 1em;
+            font-weight: 400;
+            color: #000;
+
+            &:active,
+            &.active {
+                color: #2edbad;
+            }
+        }
+    }
+    .terms-body {
+        &__title {
+            font-size: 1.75em;
+            font-weight: 700;
+            text-align: left;
+            margin-bottom: 1em;
+        }
+        &__subtitle {
+            font-size: 1em;
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 2em;
+        }
+    }
+    .terms-nav {
+        @include mq("desktop-wide", max) {
+            display: none;
+        }
+    }
+    .content {
+        margin-bottom: 3em;
+        &__title {
+            font-weight: 700;
+        }
+    }
+}
+// === / TERMS AND POLICY ===

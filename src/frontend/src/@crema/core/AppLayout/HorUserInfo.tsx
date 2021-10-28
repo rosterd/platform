@@ -37,8 +37,7 @@ const useStyles = makeStyles((theme) => {
       whiteSpace: 'nowrap',
       fontSize: 15,
       fontWeight: Fonts.MEDIUM,
-      color: (props: {bgType: string}) =>
-        props.bgType === 'colored' ? 'white' : theme.palette.text.primary,
+      color: (props: {bgType: string}) => (props.bgType === 'colored' ? 'white' : theme.palette.text.primary),
     },
   };
 });
@@ -78,27 +77,18 @@ const HorUserInfo: FC<HorUserInfoProps> = ({bgType = 'colored'}) => {
   return (
     <Box py={2} pl={{xs: 2, sm: 3, md: 5}}>
       <Box className={classes.userRoot} display='flex' onClick={handleClick}>
-        {user && user.photoURL ? (
-          <Avatar className={classes.avatar} src={user.photoURL} />
-        ) : (
-          <Avatar className={classes.avatar}>{getUserAvatar()}</Avatar>
-        )}
+        {user && user.photoURL ? <Avatar className={classes.avatar} src={user.photoURL} /> : <Avatar className={classes.avatar}>{getUserAvatar()}</Avatar>}
         <Hidden mdDown>
           <Box ml={3} className={classes.userName}>
             {user && (user.displayName ? user.displayName : user.email)}
             <Box fontSize={13} fontWeight={Fonts.LIGHT}>
-              System Manager
+              {user && user.role}
             </Box>
           </Box>
         </Hidden>
       </Box>
       <Box className={classes.userInfo}>
-        <Menu
-          id='simple-menu'
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}>
+        <Menu id='simple-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
           <MenuItem>My account</MenuItem>
           <MenuItem onClick={onUserSignout}>Logoutt</MenuItem>
         </Menu>
