@@ -20,29 +20,12 @@ namespace Rosterd.Infrastructure.Extensions
         public static List<T> AlwaysList<T>(this IEnumerable<T> enumerable) => (enumerable ?? new List<T>()) as List<T> ?? new List<T>(enumerable ?? Array.Empty<T>());
 
         /// <summary>
-        /// Converts a csv string into a list (if string is null or empty then an empty list is returned)
-        /// </summary>
-        /// <param name="csvString"></param>
-        /// <returns></returns>
-        public static List<long> ConvertCsvStringToList(this string csvString)
-        {
-            if (csvString.IsNullOrEmpty())
-                return new List<long>();
-
-            var splitEntries = csvString.Split(",");
-            if (splitEntries.IsNullOrEmpty())
-                return new List<long>();
-
-            var list = splitEntries.Select(splitEntry => splitEntry.ToInt64()).AlwaysList();
-            return list;
-        }
-
-        /// <summary>
-        /// Converts a list to string
+        /// Converts a list to string to a delimited string
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="itemList"></param>
+        /// <param name="separator"></param>
         /// <returns></returns>
-        public static string ToCsvString<T>(this List<T> itemList) => itemList.IsNullOrEmpty() ? string.Empty :  string.Join(",", itemList);
+        public static string ToDelimitedString<T>(this List<T> itemList, string separator = ",") => itemList.IsNullOrEmpty() ? string.Empty :  string.Join(separator, itemList);
     }
 }

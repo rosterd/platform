@@ -114,14 +114,27 @@ namespace Rosterd.Services.Jobs
             }
         }
 
-        ///<inheritdoc/>
+        /// <summary>
+        /// Query that will be run in azure search
+        /// {
+	    ///     "search": "Auth0OrganizationId:'org_jHHQBIxLVGXxSfLt' AND JobStatusName:Published AND FacilityCity:Auck* AND SkillsIds:/(24|25)/",
+	    ///     "filter": "not IsNightShift and JobEndDateTimeUtc lt 2021-10-11T00:00:00.000Z",
+	    ///     "queryType": "full",
+	    ///     "searchMode": "all",
+	    ///     "count": true
+        /// }
+        /// </summary>
+        /// <param name="staffId"></param>
+        /// <param name="staffAuth0OrganizationId"></param>
+        /// <param name="pagingParameters"></param>
+        /// <returns></returns>
         public async Task<PagedList<JobModel>> GetRelevantJobsForStaff(long staffId, string staffAuth0OrganizationId, PagingQueryStringParameters pagingParameters)
         {
             var staffSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.StaffIndex);
             var jobsSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.JobsIndex);
 
             //First go and fetch the staff and get the list of skills for that staff
-            var staff = await staffSearchClient.GetDocumentAsync<StaffSearchModel>(staffId.ToString());
+            var staff = (await staffSearchClient.GetDocumentAsync<StaffSearchModel>(staffId.ToString()))?.Value;
 
             //We cant find the staff, may be the staff member was deleted etc
             if (staff == null)
@@ -131,22 +144,70 @@ namespace Rosterd.Services.Jobs
             var parameters =
                 new SearchOptions
                 {
-                    SearchMode = SearchMode.All,
-                    QueryType = SearchQueryType.Full,
-                    IncludeTotalCount = true,
+                    SearchMode = SearchMode.All,  QueryType = SearchQueryType.Full,  IncludeTotalCount = true,
 
-                    //At least one skill that the staff has must match whats in the job
-                    Filter = $"search.in(SkillsSpaceSeperatedString, '{staff.Value.SkillsNamesCsvString}', ',')",
+                    //The jobs should still be active
+                    Filter = $"JobEndDateTimeUtc lt {DateTimeOffset.UtcNow:O}",
                     Size = pagingParameters.PageSize,
                     Skip = (pagingParameters.PageNumber - 1) * pagingParameters.PageSize
                 };
 
+            //Build query
+            var staffPreferenceCityQueryElement = staff.StaffPreferenceCity.IsNotNullOrEmpty() ? $" AND FacilityCity:{staff.StaffPreferenceCity.GetTheFirstXCharsOrEmpty(4)}* " : string.Empty;
+            var staffSkillsElement = staff.SkillsIds.IsNotNullOrEmpty() ? $" AND SkillsIds:/({staff.SkillsIds.AlwaysList().ToDelimitedString("|")})/ " : string.Empty;
+            var query = $"Auth0OrganizationId:'{staffAuth0OrganizationId}' AND JobStatusName:{JobStatus.Published} {staffPreferenceCityQueryElement} {staffSkillsElement}";
+
             //Search for matching jobs, map and return
-            var jobSearchResults = await jobsSearchClient.SearchAsync<JobSearchModel>("*", parameters);
+            var jobSearchResults = await jobsSearchClient.SearchAsync<JobSearchModel>(query, parameters);
             var totalResultsFound = (jobSearchResults.Value.TotalCount ?? 0).ToInt32();
             var totalPages = (int)Math.Ceiling(totalResultsFound / (double)pagingParameters.PageSize);
 
             return new PagedList<JobModel>(jobSearchResults.Value.ToDomainModels(), totalResultsFound, pagingParameters.PageNumber, pagingParameters.PageSize, totalPages);
+        }
+
+        /// <summary>
+        /// Query that will be run in azure search
+        /// {
+	    ///     "search": "Auth0OrganizationId:'org_jHHQBIxLVGXxSfLt' AND StaffPreferenceCity:Auck* AND SkillsIds:/(20|26)/",
+	    ///     "filter": "StaffPreferenceIsNightShiftOk and IsActive",
+	    ///     "queryType": "full",
+	    ///     "searchMode": "all",
+	    ///     "count": true
+        /// }
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        public async Task<List<string>> GetRelevantStaffDeviceIdsForJob(long jobId)
+        {
+            var staffSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.StaffIndex);
+            var jobsSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.JobsIndex);
+
+            //First go and fetch the job and get the list of skills for that job
+            var job = (await jobsSearchClient.GetDocumentAsync<JobSearchModel>(jobId.ToString()))?.Value;
+
+            //We cant find the staff, may be the staff member was deleted etc
+            if (job == null)
+                return new List<string>();
+
+            //Go to the staff index and get all matching staff for the job
+            var parameters =
+                new SearchOptions
+                {
+                    SearchMode = SearchMode.All,  QueryType = SearchQueryType.Full,  IncludeTotalCount = true,
+
+                    //The staff should still be active
+                    Filter = $"IsActive",
+                    Size = 1000
+                };
+
+            //Build query
+            var staffPreferenceCityQueryElement = job.FacilityCity.IsNotNullOrEmpty() ? $" AND FacilityCity:{job.FacilityCity.GetTheFirstXCharsOrEmpty(4)}* " : string.Empty;
+            var staffSkillsElement = job.SkillsIds.IsNotNullOrEmpty() ? $" AND SkillsIds:/({job.SkillsIds.AlwaysList().ToDelimitedString("|")})/ " : string.Empty;
+            var query = $"Auth0OrganizationId:'{job.Auth0OrganizationId}' {staffPreferenceCityQueryElement} {staffSkillsElement}";
+
+            //Search for matching jobs, map and return
+            var staffSearchResults = await staffSearchClient.SearchAsync<StaffSearchModel>(query, parameters);
+            return staffSearchResults?.Value == null ? new List<string>() : staffSearchResults.Value.GetResults().Select(s => s.Document.DeviceId).AlwaysList();
         }
 
         ///<inheritdoc/>
@@ -209,8 +270,6 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<bool> CancelJobForStaff(long jobId, long staffId)
         {
-            //TODO:Org Check
-
             var job = await _context.Jobs.FindAsync(jobId);
             var jobStaff = await _context.JobStaffs.FirstOrDefaultAsync(s => s.JobId == jobId && s.StaffId == staffId);
 
@@ -234,7 +293,6 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task CreateJobsStatusChangeRecord(long jobId, JobStatus jobStatusChangedTo, string statusChangeReason, DateTime? eventOccurredDateTime = null) =>
 
-            //TODO:Org Check
             await _context.JobStatusChanges.AddAsync(new JobStatusChange
             {
                 JobId = jobId,
@@ -279,8 +337,6 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<IEnumerable<long>> GetAllJobsThatAreFinished()
         {
-            //TODO:Org Check
-
             var completedStatus = (int) JobStatus.Completed;
             var noShowStatus = (int)JobStatus.NoShow;
 

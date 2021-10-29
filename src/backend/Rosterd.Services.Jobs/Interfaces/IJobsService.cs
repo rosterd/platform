@@ -53,6 +53,13 @@ namespace Rosterd.Services.Jobs.Interfaces
         Task<PagedList<JobModel>> GetRelevantJobsForStaff(long staffId, string staffAuth0OrganizationId, PagingQueryStringParameters pagingParameters);
 
         /// <summary>
+        /// Gets all the staff (their device Id's) that are relevant for the given job
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        Task<List<string>> GetRelevantStaffDeviceIdsForJob(long jobId);
+
+        /// <summary>
         /// Gets all the currently active jobs for a given staff
         /// </summary>
         /// <param name="staffId"></param>
