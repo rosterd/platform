@@ -15,14 +15,14 @@ using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.AzureFunctions
 {
-    public class StorageQueueFunctions
+    public class FuncStorageQueueMessages
     {
         private readonly IJobEventsService _jobEventsService;
-        private readonly ILogger<StorageQueueFunctions> _logger;
+        private readonly ILogger<FuncStorageQueueMessages> _logger;
         private readonly IOptions<FunctionSettings> _settings;
         private readonly IStaffEventsService _staffEventsService;
 
-        public StorageQueueFunctions(ILogger<StorageQueueFunctions> logger, IOptions<FunctionSettings> settings, IStaffEventsService staffEventsService,
+        public FuncStorageQueueMessages(ILogger<FuncStorageQueueMessages> logger, IOptions<FunctionSettings> settings, IStaffEventsService staffEventsService,
             IJobEventsService jobEventsService)
         {
             _logger = logger;
@@ -48,7 +48,7 @@ namespace Rosterd.AzureFunctions
                 throw new Exception($"Message type {rosterdMessage.MessageType} can not be processed.");
 
             //Get a list of all device id's this job is applicable too
-            //TODO: 
+            //TODO:
 
             //Send push notification to these devices
 

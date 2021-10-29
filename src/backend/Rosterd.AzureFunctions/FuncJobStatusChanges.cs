@@ -15,12 +15,12 @@ using Rosterd.Domain.Search;
 
 namespace Rosterd.AzureFunctions
 {
-    public class JobStatusChangeFunctions
+    public class FuncJobStatusChanges
     {
-        private readonly ILogger<StorageQueueFunctions> _logger;
+        private readonly ILogger<FuncStorageQueueMessages> _logger;
         private readonly IOptions<FunctionSettings> _settings;
 
-        public JobStatusChangeFunctions(ILogger<StorageQueueFunctions> logger, IOptions<FunctionSettings> settings)
+        public FuncJobStatusChanges(ILogger<FuncStorageQueueMessages> logger, IOptions<FunctionSettings> settings)
         {
             _logger = logger;
             _settings = settings;

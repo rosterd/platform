@@ -17,15 +17,15 @@ using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.AzureFunctions
 {
-    public class AzureSearchHelperFunctions
+    public class FuncAzureSearchHelpers
     {
-        private readonly ILogger<AzureSearchHelperFunctions> _logger;
+        private readonly ILogger<FuncAzureSearchHelpers> _logger;
         private readonly IOptions<FunctionSettings> _settings;
         private readonly ISearchIndexProvider _searchIndexProvider;
         private readonly IStaffEventsService _staffEventsService;
         private readonly IJobEventsService _jobEventsService;
 
-        public AzureSearchHelperFunctions(ILogger<AzureSearchHelperFunctions> logger, IOptions<FunctionSettings> settings, ISearchIndexProvider searchIndexProvider, IStaffEventsService staffEventsService, IJobEventsService jobEventsService)
+        public FuncAzureSearchHelpers(ILogger<FuncAzureSearchHelpers> logger, IOptions<FunctionSettings> settings, ISearchIndexProvider searchIndexProvider, IStaffEventsService staffEventsService, IJobEventsService jobEventsService)
         {
             _logger = logger;
             _settings = settings;
