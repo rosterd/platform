@@ -39,6 +39,7 @@
     }
   }
   .gallery {
+    text-align: center;
     &__title {
       margin-bottom: 2em;
       @include mq("desktop-wide", max) {
