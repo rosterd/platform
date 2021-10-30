@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.JobModels;
+using Rosterd.Domain.Search;
 
 namespace Rosterd.Services.Jobs.Interfaces
 {
@@ -57,7 +58,7 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// </summary>
         /// <param name="jobId"></param>
         /// <returns></returns>
-        Task<List<string>> GetRelevantStaffDeviceIdsForJob(long jobId);
+        Task<(JobSearchModel job, List<string> staffDeviceIds)> GetRelevantStaffDeviceIdsForJob(string jobId);
 
         /// <summary>
         /// Gets all the currently active jobs for a given staff

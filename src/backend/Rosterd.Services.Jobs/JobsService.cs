@@ -168,26 +168,26 @@ namespace Rosterd.Services.Jobs
         /// <summary>
         /// Query that will be run in azure search
         /// {
-	    ///     "search": "Auth0OrganizationId:'org_jHHQBIxLVGXxSfLt' AND StaffPreferenceCity:Auck* AND SkillsIds:/(20|26)/",
-	    ///     "filter": "StaffPreferenceIsNightShiftOk and IsActive",
-	    ///     "queryType": "full",
-	    ///     "searchMode": "all",
-	    ///     "count": true
+        ///     "search": "Auth0OrganizationId:'org_jHHQBIxLVGXxSfLt' AND StaffPreferenceCity:Auck* AND SkillsIds:/(20|26)/",
+        ///     "filter": "StaffPreferenceIsNightShiftOk and IsActive",
+        ///     "queryType": "full",
+        ///     "searchMode": "all",
+        ///     "count": true
         /// }
         /// </summary>
         /// <param name="jobId"></param>
         /// <returns></returns>
-        public async Task<List<string>> GetRelevantStaffDeviceIdsForJob(long jobId)
+        public async Task<(JobSearchModel job, List<string> staffDeviceIds)> GetRelevantStaffDeviceIdsForJob(string jobId)
         {
             var staffSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.StaffIndex);
             var jobsSearchClient = _searchIndexProvider.GetSearchClient(RosterdConstants.Search.JobsIndex);
 
             //First go and fetch the job and get the list of skills for that job
-            var job = (await jobsSearchClient.GetDocumentAsync<JobSearchModel>(jobId.ToString()))?.Value;
+            var job = (await jobsSearchClient.GetDocumentAsync<JobSearchModel>(jobId))?.Value;
 
             //We cant find the staff, may be the staff member was deleted etc
             if (job == null)
-                return new List<string>();
+                return (null, new List<string>());
 
             //Go to the staff index and get all matching staff for the job
             var parameters =
@@ -207,7 +207,9 @@ namespace Rosterd.Services.Jobs
 
             //Search for matching jobs, map and return
             var staffSearchResults = await staffSearchClient.SearchAsync<StaffSearchModel>(query, parameters);
-            return staffSearchResults?.Value == null ? new List<string>() : staffSearchResults.Value.GetResults().Select(s => s.Document.DeviceId).AlwaysList();
+            var staffDeviceIds = staffSearchResults?.Value == null ? new List<string>() : staffSearchResults.Value.GetResults().Select(s => s.Document.DeviceId).AlwaysList();
+
+            return (job, staffDeviceIds);
         }
 
         ///<inheritdoc/>

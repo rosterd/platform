@@ -1,11 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Azure;
-using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
-using Azure.Search.Documents.Indexes.Models;
+using Expo.Server.Client;
+using Expo.Server.Models;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Rosterd.AzureFunctions.Config;
@@ -19,13 +18,14 @@ namespace Rosterd.AzureFunctions
 {
     public class FuncAzureSearchHelpers
     {
-        private readonly ILogger<FuncAzureSearchHelpers> _logger;
-        private readonly IOptions<FunctionSettings> _settings;
-        private readonly ISearchIndexProvider _searchIndexProvider;
-        private readonly IStaffEventsService _staffEventsService;
         private readonly IJobEventsService _jobEventsService;
+        private readonly ILogger<FuncAzureSearchHelpers> _logger;
+        private readonly ISearchIndexProvider _searchIndexProvider;
+        private readonly IOptions<FunctionSettings> _settings;
+        private readonly IStaffEventsService _staffEventsService;
 
-        public FuncAzureSearchHelpers(ILogger<FuncAzureSearchHelpers> logger, IOptions<FunctionSettings> settings, ISearchIndexProvider searchIndexProvider, IStaffEventsService staffEventsService, IJobEventsService jobEventsService)
+        public FuncAzureSearchHelpers(ILogger<FuncAzureSearchHelpers> logger, IOptions<FunctionSettings> settings, ISearchIndexProvider searchIndexProvider,
+            IStaffEventsService staffEventsService, IJobEventsService jobEventsService)
         {
             _logger = logger;
             _settings = settings;
@@ -35,17 +35,17 @@ namespace Rosterd.AzureFunctions
         }
 
         /// <summary>
-        /// Timer function that runs once a day, the primary purpose is to make sure the search indexes are there and if not create them.
-        /// This also runs on startup so every time this is deployed or restarted then it will do a check for the indexes and create if not there
-        ///
-        /// SCHEDULE IS TO RUN EVERY 24 HOURS
+        ///     Timer function that runs once a day, the primary purpose is to make sure the search indexes are there and if not create them.
+        ///     This also runs on startup so every time this is deployed or restarted then it will do a check for the indexes and create if not there
+        ///     SCHEDULE IS TO RUN EVERY 24 HOURS
         /// </summary>
         /// <param name="myTimer"></param>
         /// <param name="log"></param>
         [FunctionName(nameof(CreateSearchIndexes))]
+        [Disable]
         public async Task CreateSearchIndexes([TimerTrigger("0 0 0 * * *"
 #if DEBUG
-            , RunOnStartup = false
+                , RunOnStartup = false
 #endif
             )]
             TimerInfo myTimer, ILogger log)
@@ -70,18 +70,17 @@ namespace Rosterd.AzureFunctions
         }
 
         /// <summary>
-        /// Helper function for populating all active staff and job to search,
-        /// handy when we have a fresh index and want to get all active entries from db.
-        ///
-        /// THIS IS IN-EFFICIENT DESIGNED FOR TEST/DEV ENVIRONMENTS
+        ///     Helper function for populating all active staff and job to search,
+        ///     handy when we have a fresh index and want to get all active entries from db.
+        ///     THIS IS IN-EFFICIENT DESIGNED FOR TEST/DEV ENVIRONMENTS
         /// </summary>
         /// <param name="myTimer"></param>
         /// <param name="log"></param>
         [FunctionName(nameof(ReCreateSearchIndexesAndPopulateFromDb))]
-        //[Disable]
+        [Disable]
         public async Task ReCreateSearchIndexesAndPopulateFromDb([TimerTrigger("0 0 0 * * *"
 #if DEBUG
-            , RunOnStartup = true
+                , RunOnStartup = false
 #endif
             )]
             TimerInfo myTimer, ILogger log)
