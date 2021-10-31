@@ -45,7 +45,7 @@ namespace Rosterd.Services.Staff
             var staffDeletedMessage = new StaffDeletedMessage(staffId.ToString(), auth0OrganizationId);
 
             //Send to storage queue
-            await _staffQueueClient.SendMessageWithNoExpiry(BinaryData.FromObjectAsJson(staffDeletedMessage));
+            await _staffQueueClient.SendMessageWithNoExpiry(staffDeletedMessage);
         }
 
         ///<inheritdoc/>

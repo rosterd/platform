@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Search.Documents.Indexes;
@@ -95,6 +96,32 @@ namespace Rosterd.AzureFunctions
             //Take everything from db and put into search (in-efficient should not be used for prod)
             await _staffEventsService.AddAllActiveStaffToSearch();
             await _jobEventsService.AddAllActiveJobsToSearch();
+        }
+
+        /// <summary>
+        ///     Helper function for sending some push notifications to a given device id
+        /// </summary>
+        /// <param name="myTimer"></param>
+        /// <param name="log"></param>
+        [FunctionName(nameof(SendPushNotificationToSampleDeviceId))]
+        [Disable]
+        public async Task SendPushNotificationToSampleDeviceId([TimerTrigger("0 0 0 * * *"
+#if DEBUG
+                , RunOnStartup = true
+#endif
+            )]
+            TimerInfo myTimer, ILogger log)
+        {
+            var expoSdkClient = new PushApiClient();
+            var pushTicketReq = new PushTicketRequest()
+            {
+                PushTo = new List<string>{ "ExponentPushToken[PQj7mKOJc3YNyBtsyds_uG]" },
+                PushBadgeCount = 1,
+                PushTitle = "Rosterd New Matching Job Alert",
+                PushBody = $"Found a new matching job for Blah"
+            };
+
+            var result = await expoSdkClient.PushSendAsync(pushTicketReq);
         }
     }
 }

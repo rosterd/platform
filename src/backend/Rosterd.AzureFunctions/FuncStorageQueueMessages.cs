@@ -44,7 +44,7 @@ namespace Rosterd.AzureFunctions
             if (rosterdMessage == null || rosterdMessage.MessageType.IsNullOrEmpty())
             {
                 _logger.LogError($"{nameof(ProcessStorageQueueMessages)} - this is not a Rosterd message, can not process the message");
-                return;
+                throw new Exception($"{nameof(ProcessStorageQueueMessages)} - this is not a Rosterd message, can not process the message");
             }
 
             //We currently only process the new job created message
@@ -52,14 +52,14 @@ namespace Rosterd.AzureFunctions
             {
                 case RosterdConstants.Messaging.NewJobCreatedMessage:
                 {
-                    var (job, staffDeviceIds) = await _jobsService.GetRelevantStaffDeviceIdsForJob(((NewJobCreatedMessage)rosterdMessage).JobId);
+                    var (job, staffDeviceIds) = await _jobsService.GetRelevantStaffDeviceIdsForJob(rosterdMessage.MessageBody);
                     if (staffDeviceIds.IsNotNullOrEmpty())
                     {
                         var pushTicketReq = new PushTicketRequest()
                         {
                             PushTo = staffDeviceIds.Select(s => $"ExponentPushToken[{s}]").ToList(),
                             PushBadgeCount = 1,
-                            PushTitle = "New Matching Job Alert",
+                            PushTitle = "Rosterd New Matching Job Alert",
                             PushBody = $"Found a new matching job for {job.FacilityName} in {job.FacilityCity}"
                         };
 

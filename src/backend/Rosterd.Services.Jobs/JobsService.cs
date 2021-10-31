@@ -207,7 +207,7 @@ namespace Rosterd.Services.Jobs
 
             //Search for matching jobs, map and return
             var staffSearchResults = await staffSearchClient.SearchAsync<StaffSearchModel>(query, parameters);
-            var staffDeviceIds = staffSearchResults?.Value == null ? new List<string>() : staffSearchResults.Value.GetResults().Select(s => s.Document.DeviceId).AlwaysList();
+            var staffDeviceIds = staffSearchResults?.Value == null ? new List<string>() : staffSearchResults.Value.GetResults().Select(s => (s.Document.DeviceId ?? string.Empty).Trim()).Distinct().AlwaysList();
 
             return (job, staffDeviceIds);
         }

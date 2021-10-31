@@ -45,6 +45,7 @@ namespace Rosterd.AzureFunctions
                 //Services
                 .AddScoped<IStaffEventsService, StaffEventsService>()
                 .AddScoped<IJobEventsService, JobEventsService>()
+                .AddScoped<IJobsService, JobsService>()
 
                 .AddSingleton<IQueueClient<StaffQueueClient>>(s => staffQueueClient)
                 .AddSingleton<IQueueClient<JobsQueueClient>>(s => jobsQueueClient)
