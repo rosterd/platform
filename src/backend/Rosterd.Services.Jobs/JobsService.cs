@@ -201,7 +201,7 @@ namespace Rosterd.Services.Jobs
                 };
 
             //Build query
-            var staffPreferenceCityQueryElement = job.FacilityCity.IsNotNullOrEmpty() ? $" AND FacilityCity:{job.FacilityCity.GetTheFirstXCharsOrEmpty(4)}* " : string.Empty;
+            var staffPreferenceCityQueryElement = job.FacilityCity.IsNotNullOrEmpty() ? $" AND StaffPreferenceCity:{job.FacilityCity.GetTheFirstXCharsOrEmpty(4)}* " : string.Empty;
             var staffSkillsElement = job.SkillsIds.IsNotNullOrEmpty() ? $" AND SkillsIds:/({job.SkillsIds.AlwaysList().ToDelimitedString("|")})/ " : string.Empty;
             var query = $"Auth0OrganizationId:'{job.Auth0OrganizationId}' {staffPreferenceCityQueryElement} {staffSkillsElement}";
 
