@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -21,7 +22,7 @@ namespace Rosterd.Client.Api.Controllers
     /// </summary>
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Preferences")]
-    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.Staff)]
+    [Authorize]
     public class PreferencesController : BaseApiController
     {
         private readonly ILogger<JobsController> _logger;

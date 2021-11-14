@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rosterd.Client.Api.Services;
 using Rosterd.Domain;
@@ -9,7 +10,7 @@ namespace Rosterd.Client.Api.Controllers
     [ApiController]
     [Route("")]
     [ApiExplorerSettings(GroupName = "Home")]
-    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.Staff)]
+    [Authorize]
     public class HomeController : ControllerBase
     {
         /// <summary>

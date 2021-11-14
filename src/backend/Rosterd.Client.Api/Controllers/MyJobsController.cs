@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -21,7 +22,7 @@ namespace Rosterd.Client.Api.Controllers
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/jobs")]
     [ApiExplorerSettings(GroupName = "My Jobs")]
-    [AuthorizeByRole(RosterdConstants.RosterdRoleNames.Staff)]
+    [Authorize]
     public class MyJobsController : BaseApiController
     {
         private readonly ILogger<MyJobsController> _logger;
