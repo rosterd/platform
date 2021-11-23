@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -142,6 +143,7 @@ namespace Rosterd.Services.Mappers
             var jobModels = searchResults.GetResults().Select(job =>
                 new JobModel
                 {
+                    JobId = Convert.ToInt64(job.Document.JobId),
                     Comments = job.Document.Comments,
                     Description = job.Document.Description,
                     Experience = job.Document.Experience,
