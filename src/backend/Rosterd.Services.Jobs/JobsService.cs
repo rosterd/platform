@@ -218,6 +218,7 @@ namespace Rosterd.Services.Jobs
             var currentJobsForStaffQuery =
                 _context.JobStaffs
                         .Include(s => s.Job)
+                            .ThenInclude(s => s.Facility)
                         .Where(j => j.StaffId == staffId)
                         .Select(s => s.Job);
 
