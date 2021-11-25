@@ -45,7 +45,8 @@ namespace Rosterd.Services.Mappers
                 SaturdayAvailable = domainModel.AvailableDays.Saturday,
                 SundayAvailable = domainModel.AvailableDays.Sunday,
                 DayShiftOk = domainModel.Shift.DayShift,
-                NightShiftOk = domainModel.Shift.NightShift
+                NightShiftOk = domainModel.Shift.NightShift,
+                City = domainModel.City
             };
 
         public static StaffAppUserPreferencesModel ToNew() =>
