@@ -52,5 +52,7 @@ namespace Rosterd.Data.TableStorage.Models
         public bool NightShiftOk { get; set; }
 
         public bool TurnAllNotificationsOff { get; set; }
+
+        public string City { get; set; }
     }
 }
