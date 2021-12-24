@@ -6,7 +6,7 @@
     <title>Rosterd</title>
   </head>
 
-  <body class="position-relative" data-bs-spy="scroll" data-bs-target="#header-nav" data-bs-offset="100" tabindex="0">
+  <body class="position-relative" data-bs-spy="scroll" data-bs-target="#header-nav" data-bs-offset="200" tabindex="0">
     <include src="src/templates/header.html"></include>
 
     <main>
@@ -23,13 +23,13 @@
                     minutes. Easy to use on any device.
                   </p>
                   <div class="info__links links">
-                    <a href="#" class="links__app-store"><img src="img/app-store.svg" alt="App-store"/></a>
+                    <a href="#" class="links__app-store"><img src="img/app-store.png" alt="App-store"/></a>
 
-                    <a href="#" class="links__google-play"><img src="img/google-play.svg" alt="Google-play"/></a>
+                    <a href="#" class="links__google-play"><img src="img/google-play.png" alt="Google-play"/></a>
                   </div>
                 </div>
                 <div class="col-lg-6 section-header__banner banner">
-                  <img src="img/info-banner.png" class="banner__img" alt="info-banner" />
+                  <img src="img/info-banner-min.png" class="banner__img" alt="info-banner" />
                 </div>
               </div>
             </div>
@@ -42,13 +42,22 @@
       <section class="section-manage">
         <div class="container-lg">
           <div class="row">
-            <h2 class="section-manage__title title">Manage all your shifts in one place</h2>
+            <h2 class="section-manage__title title">Manage all your shift in one place</h2>
             <div class="swiper mySwiper">
-              <div class="swiper-wrapper">                
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <div class="section-manage__card card">
+                    <div class="card__icon"><img src="img/manage-icon__1.svg" alt="" /></div>
+                    <h4 class="card__subtitle subtitle">Build rosters in minutes</h4>
+                    <p class="card__text text">
+                      Easily create job-posting and send them directly to your staff. Post temporary or long-term jobs and fill your next shift within minutes.
+                    </p>
+                  </div>
+                </div>
                 <div class="swiper-slide">
                   <div class="section-manage__card card">
                     <div class="card__icon"><img src="img/manage-icon__2.svg" alt="section-manage__icon-1" /></div>
-                    <h4 class="card__subtitle subtitle">Staff by skillsets</h4>
+                    <h4 class="card__subtitle subtitle">Roster by skillset</h4>
                     <p class="card__text text">
                       Roster employees based on their skills and qualifications. Find the right person to match job requirements.
                     </p>
@@ -57,21 +66,13 @@
                 <div class="swiper-slide">
                   <div class="section-manage__card card">
                     <div class="card__icon"><img src="/img/manage-icon__3.svg" alt="section-manage__icon-1" /></div>
-                    <h4 class="card__subtitle subtitle">Publish shifts</h4>
+                    <h4 class="card__subtitle subtitle">Share rosters instantly</h4>
                     <p class="card__text text">
-                      Easily create job-posting and send them directly to your staff. Post temporary or long-term jobs and fill your next shift within minutes.
+                      Send rosters to your staff directly to their mobile app. Make sure your staff recieves critical updates, by posting them to Rosterd app
+                      feed.
                     </p>
                   </div>
                 </div>
-                <div class="swiper-slide">
-                  <div class="section-manage__card card">
-                    <div class="card__icon"><img src="img/manage-icon__1.svg" alt="" /></div>
-                    <h4 class="card__subtitle subtitle">Find staff in minutes</h4>
-                    <p class="card__text text">
-                      Send available shifts to all registered & qualified staff instantly. Let the Rosterd platform do the rest. 
-                    </p>
-                  </div>
-                </div>                
               </div>
             </div>
             <div class="col-lg-4 mobile-none">
@@ -255,7 +256,7 @@
                 <h2 class="information__title">Get in Touch</h2>
               </div>
               <div class="information__card information-card flex-column">
-                <a class="d-flex mb-5" href="tel:+6402040392445">
+                <!-- <a class="d-flex mb-5" href="tel:+6402040392445">
                   <div class="information-card__icon">
                     <img src="img/information-card__img-tel.svg" alt="phone" />
                   </div>
@@ -263,14 +264,14 @@
                     <p class="details__title">Phone number</p>
                     <p class="details__link">020 4039 2445</p>
                   </div>
-                </a>
-                <a class="d-flex" href="mailto:rosterdhelp@rosterd.co.nz">
+                </a> -->
+                <a class="d-flex" href="mailto:help@rosterd.com">
                   <div class="information-card__icon">
                     <img src="img/information-card__img-email.svg" alt="phone" />
                   </div>
                   <div class="information-card__details details">
                     <p class="details__title">Email</p>
-                    <p class="details__link">rosterdhelp@rosterd.co.nz</p>
+                    <p class="details__link">help@rosterd.com</p>
                   </div>
                 </a>
               </div>
