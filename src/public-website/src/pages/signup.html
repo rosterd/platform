@@ -3,15 +3,39 @@
 
 <head>
     <include src="src/templates/head.html"></include>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js">
+    </script> 
 </head>
 
 <body>
     <include src="src/templates/header-for-pages.html"></include>
-
+    <script type="text/javascript">
+        (function(){
+           emailjs.init("user_UBuT7aemxv7dUul7ypWMn");
+        })();
+     </script>
+    <script>
+        function signup(event) {
+            event.stopPropgation();
+            
+            var templateParams = {
+                name: 'James',
+                notes: 'Check this out!'
+            };
+ 
+            emailjs.send('service_soatjn8', 'template_xo924bn', templateParams)
+            .then(function(response) {
+                console.log('SUCCESS!', response.status, response.text);
+            }, function(error) {
+                console.log('FAILED...', error);
+            });
+        }
+    </script>
     <div class="signup">
         <div class="container">
             <h2 class="signup__title title">Contact our team and learn how Rosterd can bring value to your business</h2>
-            <form action="" class="signup-form-group form-group">
+            <form action="" class="signup-form-group form-group" onsubmit="signup">
                 <div class="form-group__item d-flex mb-2">
                     <div class="form-group__card w-100 px-3">
                         <label for="name" class="form-group__label form-label">First name</label>
