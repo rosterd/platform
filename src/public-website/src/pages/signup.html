@@ -3,39 +3,38 @@
 
 <head>
     <include src="src/templates/head.html"></include>
-    <script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js">
-    </script> 
+
 </head>
 
 <body>
     <include src="src/templates/header-for-pages.html"></include>
-    <script type="text/javascript">
-        (function(){
-           emailjs.init("user_UBuT7aemxv7dUul7ypWMn");
-        })();
-     </script>
+
     <script>
-        function signup(event) {
-            event.stopPropgation();
-            
-            var templateParams = {
-                name: 'James',
-                notes: 'Check this out!'
-            };
- 
-            emailjs.send('service_soatjn8', 'template_xo924bn', templateParams)
-            .then(function(response) {
-                console.log('SUCCESS!', response.status, response.text);
-            }, function(error) {
-                console.log('FAILED...', error);
-            });
-        }
+      const btn = document.getElementById('button');
+
+document.getElementById('form')
+ .addEventListener('submit', function(event) {
+   event.preventDefault();
+
+   btn.value = 'Sending...';
+
+   const serviceID = 'default_service';
+   const templateID = 'template_xo924bn';
+
+   emailjs.sendForm(serviceID, templateID, this)
+    .then(() => {
+      btn.value = 'Send Email';
+      alert('Sent!');
+    }, (err) => {
+      btn.value = 'Send Email';
+      alert(JSON.stringify(err));
+    });
+});
     </script>
     <div class="signup">
         <div class="container">
             <h2 class="signup__title title">Contact our team and learn how Rosterd can bring value to your business</h2>
-            <form action="" class="signup-form-group form-group" onsubmit="signup">
+            <form id="form "class="signup-form-group form-group">
                 <div class="form-group__item d-flex mb-2">
                     <div class="form-group__card w-100 px-3">
                         <label for="name" class="form-group__label form-label">First name</label>
@@ -44,26 +43,26 @@
                     </div>
                     <div class="form-group__card w-100 px-3">
                         <label for="last-name" class="form-group__label form-label">Last name</label>
-                        <input required type="name" id="last-name" class="form-group__input form-control"
+                        <input required type="name"  name="from_name" id="from_name" class="form-group__input form-control"
                             placeholder="Enter Last name">
                     </div>
                 </div>
                 <div class="form-group__item d-flex mb-2">
                     <div class="form-group__card w-100 px-3">
                         <label for="email" class="form-group__label form-label">Email</label>
-                        <input required type="email" id="email" class="form-group__input form-control"
+                        <input required type="email" id="email" name="email" class="form-group__input form-control" 
                             placeholder="Enter email">
                     </div>
                         <div class="form-group__card w-100 px-3">
                             <label for="organization-text" class="form-group__label form-label">Organization name</label>
-                            <input required type="text" id="organization-name" class="form-group__input form-control"
+                            <input required type="text" id="organization_name" name="organization_name" class="form-group__input form-control"
                             placeholder="Enter organization name">
                         </div>
                 </div>
                 <div class="form-group__item d-flex mb-2">
                     <div class="form-group__card w-100 px-3">
                         <label for="message" class="form-group__label form-label">Message</label>
-                        <textarea required rows="5" id="message" class="form-group__textarea form-control"
+                        <textarea required rows="5" id="message" name="message" class="form-group__textarea form-control"
                             placeholder="Enter your message"></textarea>
                     </div>
                 </div>
@@ -76,7 +75,12 @@
         </div>
     </div>
 
-
+    <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  
+  <script type="text/javascript">
+    emailjs.init('user_UBuT7aemxv7dUul7ypWMn')
+  </script>
     <include src="src/templates/footer.html"></include>
 
     <!-- Footer, scripts and modals -->
