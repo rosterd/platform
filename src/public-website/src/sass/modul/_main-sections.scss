@@ -24,7 +24,7 @@ h4 {
     font-weight: 400;
 }
 
-$sectionsPadding: 4em 0 6em 0;
+$sectionsPadding: 4em 0;
 
 
 body {
@@ -39,7 +39,7 @@ body {
 // === SECTION-HEADER ===
 .section-header {
     margin-top: 12em;
-    padding-bottom: 6em;
+    padding-bottom: 4em;
     @include mq('desktop', max) {
         margin-top: 10em;
     }
@@ -301,7 +301,7 @@ body {
 // === START ===
 .section-start {
     background-color: #e8effd;
-    padding: 6em 0 4.5em 0;
+    padding: $sectionsPadding;
     &__info-title {
         font-size: 1.25em;
         margin-bottom: 1em;
