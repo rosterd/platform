@@ -66,7 +66,7 @@ namespace Rosterd.AzureFunctions
                         _logger.LogInformation($"Sending push notifications to device ids {staffDeviceIds.ToDelimitedString()}");
                         var result = await _expoSdkClient.PushSendAsync(pushTicketReq);
 
-                        //TODO: Later (after the mvp) do some error handling for the result
+                        //TODO: Later (after the mvp) do some error handling for the result and resend batch where push has failed
                     }
                     break;
                 }

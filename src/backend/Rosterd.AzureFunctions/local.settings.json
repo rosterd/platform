@@ -23,7 +23,7 @@
     //Move jobs that have past the finished date to feedback state every 6 hours
     "FunctionSettings:MoveJobsPastEndDateToFeedbackStateSchedule": "0 0 */6 * * *",
 
-    //Move finished jobs to feedback state every 24 hours
+    //Move finished jobs from search every 24 hours
     "FunctionSettings:MoveFinishedJobsFromSearchSchedule": "0 0 0 * * *"
   }
 }

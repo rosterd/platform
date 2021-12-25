@@ -315,35 +315,33 @@ namespace Rosterd.Services.Jobs
             });
 
         ///<inheritdoc/>
-        public async Task<List<KeyValuePair<long, string>>> GetAllJobsThatAreExpiredButStatusStillNotSetToExpired()
+        public async Task MovedAllPublishedStatusJobsPastTimeLimitToExpiredState()
         {
             var publishedStatus = (int) JobStatus.Published;
             var currentDateTimeUtc = DateTime.UtcNow;
 
-            var jobsThatNeedToBeExpired =
-                await _context.Jobs
-                    .Include(s => s.Facility).ThenInclude(s => s.Organzation)
-                    .Where(s => s.JobStatusId == publishedStatus && currentDateTimeUtc > s.JobStartDateTimeUtc && currentDateTimeUtc < s.JobEndDateTimeUtc)
-                    .Select(s => new KeyValuePair<long, string>(s.JobId, s.Facility.Organzation.Auth0OrganizationId))
-                    .ToListAsync();
+            var expiredJobs = await _context.Jobs.Where(s => s.JobStatusId == publishedStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).ToListAsync();
+            foreach (var expiredJob in expiredJobs)
+            {
+                expiredJob.JobStatusId = (int)JobStatus.Expired;
+            }
 
-            return jobsThatNeedToBeExpired;
+            await _context.SaveChangesAsync();
         }
 
         ///<inheritdoc/>
-        public async Task<List<KeyValuePair<long, string>>> GetAllJobsThatArePastEndDateButStatusStillNotSetToFeedback()
+        public async Task MoveAllJobsThatArePastEndDateToFeedbackStatus()
         {
             var inProgressStatus = (int) JobStatus.InProgress;
             var currentDateTimeUtc = DateTime.UtcNow;
 
-            var jobsThatAreFinished =
-                await _context.Jobs
-                    .Include(s => s.Facility).ThenInclude(s => s.Organzation)
-                    .Where(s => s.JobStatusId == inProgressStatus && currentDateTimeUtc > s.JobEndDateTimeUtc)
-                    .Select(s => new KeyValuePair<long, string>(s.JobId, s.Facility.Organzation.Auth0OrganizationId))
-                    .ToListAsync();
+            var pendingJobs = await _context.Jobs.Where(s => s.JobStatusId == inProgressStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).ToListAsync();
+            foreach (var pendingJob in pendingJobs)
+            {
+                pendingJob.JobStatusId = (int)JobStatus.FeedbackPending;
+            }
 
-            return jobsThatAreFinished;
+            await _context.SaveChangesAsync();
         }
 
         ///<inheritdoc/>
