@@ -82,6 +82,14 @@ namespace Rosterd.Services.Staff
             staffSearchModelToUpdate.StaffPreferenceIsNightShiftOk = staffAppUserPreferencesModel.Shift.NightShift;
             staffSearchModelToUpdate.DeviceId = staffAppUserPreferencesModel.DeviceId;
 
+            staffSearchModelToUpdate.MondayAvailable = staffAppUserPreferencesModel.AvailableDays.Monday;
+            staffSearchModelToUpdate.TuesdayAvailable = staffAppUserPreferencesModel.AvailableDays.Tuesday;
+            staffSearchModelToUpdate.WednesdayAvailable = staffAppUserPreferencesModel.AvailableDays.Wednesday;
+            staffSearchModelToUpdate.ThursdayAvailable = staffAppUserPreferencesModel.AvailableDays.Thursday;
+            staffSearchModelToUpdate.FridayAvailable = staffAppUserPreferencesModel.AvailableDays.Friday;
+            staffSearchModelToUpdate.SaturdayAvailable = staffAppUserPreferencesModel.AvailableDays.Saturday;
+            staffSearchModelToUpdate.SundayAvailable = staffAppUserPreferencesModel.AvailableDays.Sunday;
+
             await _searchIndexProvider.AddOrUpdateDocumentToIndex(RosterdConstants.Search.StaffIndex, staffSearchModelToUpdate);
         }
     }

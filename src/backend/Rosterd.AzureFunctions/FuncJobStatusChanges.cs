@@ -17,10 +17,10 @@ namespace Rosterd.AzureFunctions
 {
     public class FuncJobStatusChanges
     {
-        private readonly ILogger<FuncStorageQueueMessages> _logger;
+        private readonly ILogger<FuncStorageQueueMessageProcessor> _logger;
         private readonly IOptions<FunctionSettings> _settings;
 
-        public FuncJobStatusChanges(ILogger<FuncStorageQueueMessages> logger, IOptions<FunctionSettings> settings)
+        public FuncJobStatusChanges(ILogger<FuncStorageQueueMessageProcessor> logger, IOptions<FunctionSettings> settings)
         {
             _logger = logger;
             _settings = settings;

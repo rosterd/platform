@@ -47,8 +47,6 @@ namespace Rosterd.Data.TableStorage.Models
 
         public bool SundayAvailable { get; set; }
 
-        public bool DayShiftOk { get; set; }
-
         public bool NightShiftOk { get; set; }
 
         public bool TurnAllNotificationsOff { get; set; }

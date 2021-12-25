@@ -46,8 +46,6 @@ namespace Rosterd.Domain.Models.StaffModels
 
     public class Shift
     {
-        public bool DayShift { get; set; }
-
         public bool NightShift { get; set; }
     }
 }

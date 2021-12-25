@@ -185,31 +185,40 @@ namespace Rosterd.Services.Jobs
             //First go and fetch the job and get the list of skills for that job
             var job = (await jobsSearchClient.GetDocumentAsync<JobSearchModel>(jobId))?.Value;
 
-            //We cant find the staff, may be the staff member was deleted etc
+            //We cant find the job, may be the job was deleted etc
             if (job == null)
                 return (null, new List<string>());
 
             //Go to the staff index and get all matching staff for the job
+            var jobDayFilter = StaffSearchModel.GetDayOfWeekFilter(job.JobStartDateTimeUtc.UtcDateTime.ToNzstFromUtc().DayOfWeek);
+            jobDayFilter = jobDayFilter.IsNullOrEmpty() ? string.Empty : $" and {jobDayFilter}";
+            var isNightShiftFilter = job.IsNightShift ? $" and {nameof(StaffSearchModel.StaffPreferenceIsNightShiftOk)}" : string.Empty;
             var parameters =
                 new SearchOptions
                 {
                     SearchMode = SearchMode.All,  QueryType = SearchQueryType.Full,  IncludeTotalCount = true,
 
                     //The staff should still be active
-                    Filter = $"IsActive",
+                    Filter = $"IsActive {isNightShiftFilter} {jobDayFilter}",
                     Size = 1000
                 };
 
-            //Build query
+            //-------Build query
             var staffPreferenceCityQueryElement = job.FacilityCity.IsNotNullOrEmpty() ? $" AND StaffPreferenceCity:{job.FacilityCity.GetTheFirstXCharsOrEmpty(4)}* " : string.Empty;
             var staffSkillsElement = job.SkillsIds.IsNotNullOrEmpty() ? $" AND SkillsIds:/({job.SkillsIds.AlwaysList().ToDelimitedString("|")})/ " : string.Empty;
             var query = $"Auth0OrganizationId:'{job.Auth0OrganizationId}' {staffPreferenceCityQueryElement} {staffSkillsElement}";
 
             //Search for matching jobs, map and return
             var staffSearchResults = await staffSearchClient.SearchAsync<StaffSearchModel>(query, parameters);
-            var staffDeviceIds = staffSearchResults?.Value == null ? new List<string>() : staffSearchResults.Value.GetResults().Select(s => (s.Document.DeviceId ?? string.Empty).Trim()).Distinct().AlwaysList();
+            var resultPages = staffSearchResults.Value.GetResults().AsPages();
 
-            return (job, staffDeviceIds);
+            var staffDeviceIds = new List<string>();
+            foreach (var page in resultPages)
+            {
+                staffDeviceIds.AddRange(page.Values.Select(s => (s.Document.DeviceId ?? string.Empty).Trim()));
+            }
+
+            return (job, staffDeviceIds.Distinct().AlwaysList());
         }
 
         ///<inheritdoc/>

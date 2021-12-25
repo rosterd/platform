@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="TimeZoneConverter" Version="3.3.0" />
     <PackageReference Include="Z.ExtensionMethods" Version="2.1.1" />
-    <!--<PackageReference Include="TimeZoneConverter" Version="3.3.0" />-->
   </ItemGroup>
 
 </Project>

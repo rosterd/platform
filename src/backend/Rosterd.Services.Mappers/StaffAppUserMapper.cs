@@ -27,7 +27,7 @@ namespace Rosterd.Services.Mappers
                     Saturday = dataModel.SaturdayAvailable,
                     Sunday = dataModel.SundayAvailable
                 },
-                Shift = new Shift {DayShift = dataModel.DayShiftOk, NightShift = dataModel.NightShiftOk},
+                Shift = new Shift {NightShift = dataModel.NightShiftOk},
             };
 
         public static RosterdAppUserPreferences ToDataModel(this StaffAppUserPreferencesModel domainModel, string userAuth0Id) =>
@@ -44,7 +44,6 @@ namespace Rosterd.Services.Mappers
                 FridayAvailable = domainModel.AvailableDays.Friday,
                 SaturdayAvailable = domainModel.AvailableDays.Saturday,
                 SundayAvailable = domainModel.AvailableDays.Sunday,
-                DayShiftOk = domainModel.Shift.DayShift,
                 NightShiftOk = domainModel.Shift.NightShift,
                 City = domainModel.City
             };
@@ -62,7 +61,7 @@ namespace Rosterd.Services.Mappers
                     Saturday = true,
                     Sunday = true
                 },
-                Shift = new Shift {DayShift = true, NightShift = true},
+                Shift = new Shift {NightShift = true},
                 TurnAllNotificationsOff = false
             };
     }

@@ -20,14 +20,14 @@ using Rosterd.Services.Staff.Interfaces;
 
 namespace Rosterd.AzureFunctions
 {
-    public class FuncStorageQueueMessages
+    public class FuncStorageQueueMessageProcessor
     {
         private readonly IJobsService _jobsService;
-        private readonly ILogger<FuncStorageQueueMessages> _logger;
+        private readonly ILogger<FuncStorageQueueMessageProcessor> _logger;
         private readonly IOptions<FunctionSettings> _settings;
         private readonly PushApiClient _expoSdkClient;
 
-        public FuncStorageQueueMessages(ILogger<FuncStorageQueueMessages> logger, IOptions<FunctionSettings> settings, IJobsService jobsService)
+        public FuncStorageQueueMessageProcessor(ILogger<FuncStorageQueueMessageProcessor> logger, IOptions<FunctionSettings> settings, IJobsService jobsService)
         {
             _logger = logger;
             _settings = settings;
