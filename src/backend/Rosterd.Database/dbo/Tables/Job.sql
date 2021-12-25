@@ -32,7 +32,14 @@
 
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_Fk_Job_Facility]
     ON [dbo].[Job]([FacilityId] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_JobStatusId_JobEndDateTimeUTC]
+    ON [dbo].[Job]([JobStatusId] ASC, [JobEndDateTimeUTC] ASC);
 
