@@ -71,7 +71,6 @@ namespace Rosterd.Client.Api.Controllers
         [HttpDelete("{jobId}/cancellations")]
         public async Task<ActionResult> CancelJob(long jobId)
         {
-            //TODO: When auth is ready pass in a proper staff id
             var (isJobValid, errorMessages) = await _jobsValidationService.IsJobStillValidToCancelForStaff(jobId, 1);
             if (!isJobValid)
                 return UnprocessableEntity(errorMessages);

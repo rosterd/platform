@@ -317,13 +317,16 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task MovedAllPublishedStatusJobsPastTimeLimitToExpiredState()
         {
-            var publishedStatus = (int) JobStatus.Published;
+            var publishedStatus = (long) JobStatus.Published;
             var currentDateTimeUtc = DateTime.UtcNow;
 
             var expiredJobs = await _context.Jobs.Where(s => s.JobStatusId == publishedStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).ToListAsync();
             foreach (var expiredJob in expiredJobs)
             {
-                expiredJob.JobStatusId = (int)JobStatus.Expired;
+                expiredJob.JobStatusId = (long)JobStatus.Expired;
+
+                //Record history of this status change
+                await CreateJobsStatusChangeRecord(expiredJob.JobId, JobStatus.Expired, $"Job expired, still in published stated after end time has past current time");
             }
 
             await _context.SaveChangesAsync();
@@ -332,13 +335,16 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task MoveAllJobsThatArePastEndDateToFeedbackStatus()
         {
-            var inProgressStatus = (int) JobStatus.InProgress;
+            var inProgressStatus = (long) JobStatus.InProgress;
             var currentDateTimeUtc = DateTime.UtcNow;
 
             var pendingJobs = await _context.Jobs.Where(s => s.JobStatusId == inProgressStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).ToListAsync();
             foreach (var pendingJob in pendingJobs)
             {
-                pendingJob.JobStatusId = (int)JobStatus.FeedbackPending;
+                pendingJob.JobStatusId = (long)JobStatus.FeedbackPending;
+
+                //Record history of this status change
+                await CreateJobsStatusChangeRecord(pendingJob.JobId, JobStatus.Expired, $"Job set to feedback pending");
             }
 
             await _context.SaveChangesAsync();
