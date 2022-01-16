@@ -54,7 +54,8 @@ function usePaging<N, T extends PagingResponse & {items?: N[] | null}>(
   const deleteData = async (id?: number | null, body?: any) => {
     if (!id) return;
     setLoading(true);
-    const requestConfig = {url: `${baseUrl}/${id}`, method: 'DELETE'} as AxiosRequestConfig;
+    const basePath = baseUrl.split('?')[0];
+    const requestConfig = {url: `${basePath}/${id}`, method: 'DELETE'} as AxiosRequestConfig;
     if (body) requestConfig.data = body;
     await requestMaker<N>(requestConfig);
     setLoading(false);

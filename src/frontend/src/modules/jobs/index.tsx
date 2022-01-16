@@ -37,6 +37,7 @@ const Jobs = (): JSX.Element => {
   const [showDeleteJobModal, setShowDeleteJobModal] = useState(false);
   const {handlePageChange, currentPage, totalCount, items, loading, fetchData, addData, deleteData, setLoading} = usePaging<Job, GetJobsResponse>(
     `jobs?status=${status}`,
+
     'jobId',
   );
 
