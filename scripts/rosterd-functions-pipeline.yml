@@ -55,7 +55,7 @@ stages:
 
 - stage: DeployToDev
   variables:
-    - group: event-function-vars
+    - group: rosterd-azure-functions
   displayName: Deploy To Dev
   jobs:
   - deployment: deploy
@@ -84,10 +84,10 @@ stages:
               appSettings: 
                           '
                             -FunctionSettings:Environment "Dev"
-                            -FunctionSettings:RosterdDbConnectionString "$(RosterdDbConnectionStrin)"
-                            -FunctionSettings:StorageConnectionString "$(StorageConnectionString)"
-                            -FunctionSettings:SearchServiceEndpoint "$(SearchServiceEndpoint)"
-                            -FunctionSettings:SearchServiceApiKey "$(SearchServiceApiKey)"
+                            -FunctionSettings:RosterdDbConnectionString "$(ConnectionStrings.SQLDBConnectionString)"
+                            -FunctionSettings:StorageConnectionString "$(ConnectionStrings.TableStorageConnectionString)"
+                            -FunctionSettings:SearchServiceEndpoint "$(AppSettings.SearchServiceEndpoint)"
+                            -FunctionSettings:SearchServiceApiKey "$(AppSettings.SearchServiceApiKey)"
                             -FunctionSettings:MovedJobsPastTimeLimitToExpiredStateSchedule "0 */30 * * * *"
                             -FunctionSettings:MoveJobsPastEndDateToFeedbackStateSchedule "0 0 */6 * * *"
                             -FunctionSettings:MoveFinishedJobsFromSearchSchedule "0 0 0 * * *"

@@ -5,7 +5,10 @@ trigger:
   paths:
     include:
       - scripts/rosterd-admin-api-pipeline.yml
-      - src/backend/Rosterd.Admin.Api
+      - src/backend/*
+    exclude:
+      - src/backend/Rosterd.Client.Api
+      - src/backend/Rosterd.AzureFunctions
 
 pool:
   vmImage: 'windows-latest'
@@ -55,7 +58,7 @@ stages:
 
 - stage: DeployToDev
   variables:
-    - group: Rosterd-admin-api-dev
+    - group: rosterd-admin-api-dev
   displayName: Deploy To Dev
   jobs:
   - deployment: deploy
