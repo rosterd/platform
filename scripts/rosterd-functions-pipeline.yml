@@ -5,7 +5,10 @@ trigger:
   paths:
     include:
       - scripts/rosterd-functions-pipeline.yml
-      - src/backend/Rosterd.AzureFunctions
+      - src/backend/*
+    exclude:
+      - src/backend/Rosterd.Client.Api
+      - src/backend/Rosterd.Admin.Api
 
 pool:
   vmImage: 'windows-latest'
