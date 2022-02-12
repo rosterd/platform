@@ -4,6 +4,53 @@
         <name>Rosterd.Admin.Api</name>
     </assembly>
     <members>
+        <member name="T:Rosterd.Admin.Api.Controllers.AdminUsersController">
+            <summary>
+            All actions related to admin users
+            </summary>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.AdminUsersController.GetListOfAdmins(Rosterd.Domain.Models.PagingQueryStringParameters)">
+            <summary>
+            Gets a list of all the organization admins for the organization
+            </summary>
+            <param name="pagingParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.AdminUsersController.AddOrganizationAdminUser(Rosterd.Admin.Api.Requests.AdminUser.AddAdminUserRequest)">
+            <summary>
+            Adds a new organization admin user
+            </summary>
+            <param name="request">The admin to add for the organization</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.AdminUsersController.UpdateOrganizationAdminUser(Rosterd.Admin.Api.Requests.AdminUser.UpdateAdminUserRequest)">
+            <summary>
+            Update a organization admin user
+            </summary>
+            <param name="request">The organization admin member to update</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.AdminUsersController.RemoveOrganizationAdmin(System.String)">
+            <summary>
+            Removes the organization admin from auth-0
+            </summary>
+            <param name="auth0UserId">The admin to remove from auth0</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.AdminUsersController.AddFacilityAdminUser(Rosterd.Admin.Api.Requests.AdminUser.AddAdminWhoIsAlsoStaffRequest)">
+            <summary>
+            Adds a new facility admin user
+            </summary>
+            <param name="request">The admin to add for the facility</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.AdminUsersController.RemoveFacilityAdmin(System.String)">
+            <summary>
+            Removes the facility admin from auth-0 and marks staff as inactive in our db
+            </summary>
+            <param name="auth0UserId">The admin to remove from auth0</param>
+            <returns></returns>
+        </member>
         <member name="M:Rosterd.Admin.Api.Controllers.BaseApiController.IsProvidedApiKeyValid(System.String)">
             <summary>
             Checks if the api key given is valid (ie: its compared against our constant)
@@ -24,18 +71,25 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.AddNewFacility(Rosterd.Domain.Requests.Facility.AddUpdateFacilityRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.AddNewFacility(Rosterd.Admin.Api.Requests.Facility.AddFacilityRequest)">
             <summary>
                 Adds a new Facility
             </summary>
             <param name="request">The Facility to add</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.UpdateFacility(Rosterd.Domain.Requests.Facility.AddUpdateFacilityRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.UpdateFacility(Rosterd.Admin.Api.Requests.Facility.UpdateFacilityRequest)">
             <summary>
                 Update a Facility
             </summary>
             <param name="request">The Facility to update</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.ReactivateFacility(System.Nullable{System.Int64})">
+            <summary>
+            Reactivate the facility, status will be set to active again
+            </summary>
+            <param name="facilityId">The facility id to update</param>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.RemoveFacility(System.Nullable{System.Int64})">
@@ -56,11 +110,12 @@
             All actions related to Jobs
             </summary>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.GetAllJobs(Rosterd.Domain.Models.PagingQueryStringParameters)">
+        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.GetAllJobs(Rosterd.Domain.Models.PagingQueryStringParameters,System.String)">
             <summary>
-            Gets all the jobs 
+            Gets all the jobs
             </summary>
             <param name="pagingParameters"></param>
+            <param name="status"></param>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.JobsController.GetJobById(System.Nullable{System.Int64})">
@@ -69,23 +124,97 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.AddNewJob(Rosterd.Domain.Requests.Job.AddJobRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.AddNewJob(Rosterd.Admin.Api.Requests.Jobs.AddJobRequest)">
             <summary>
             Adds a new Job
+            Validation:
+            -------------------
+            1. "Either no-grace-period' or 'grace-period-to-cancel-minutes' must be specified"
+            2. Job end date time must be greater than start date time
             </summary>
             <param name="request">The Job to add</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.RemoveJob(System.Nullable{System.Int64})">
+        <member name="M:Rosterd.Admin.Api.Controllers.JobsController.RemoveJob(System.Nullable{System.Int64},Rosterd.Admin.Api.Requests.Jobs.DeleteJobRequest)">
             <summary>
-            Sets the job status to 'Cancelled' 
+            Sets the job status to 'Cancelled'
             </summary>
             <param name="jobId">The Job to be removed</param>
+            <param name="jobCancellationRequest">The reason for the job cancellation</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.OrganizationsController.GetOrganizations(Rosterd.Domain.Models.PagingQueryStringParameters,System.Boolean)">
+            <summary>
+                Gets all the organizations
+            </summary>
+            <param name="pagingParameters"></param>
+            <param name="activeOrganizationsOnly">True = only active organizations will be returned.
+            False = all organization will be returned
+            The default is true</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.OrganizationsController.GetOrganization(Rosterd.Admin.Api.Requests.Organization.GetOrganizationRequest)">
+            <summary>
+                Get Organization by Id or name
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.OrganizationsController.CreateNewOrganization(Rosterd.Admin.Api.Requests.Organization.AddOrganizationRequest)">
+            <summary>
+                Adds a new Organization
+            </summary>
+            <param name="request">The Organization to add</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.OrganizationsController.UpdateOrganization(Rosterd.Admin.Api.Requests.Organization.UpdateOrganizationRequest)">
+            <summary>
+            Update an Organization.
+            THIS IS NOT IMPLEMENTED, WILL RETURN A 500
+            </summary>
+            <param name="request">The Organization to update</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.OrganizationsController.RemoveOrganization(System.Nullable{System.Int64})">
+            <summary>
+                Deletes Organization
+            </summary>
+            <param name="organizationId">The Organization to be deleted</param>
+            <returns></returns>
+        </member>
+        <member name="T:Rosterd.Admin.Api.Controllers.RolesController">
+            <summary>
+            All actions related to admin users
+            </summary>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.RolesController.GetAllRoles">
+            <summary>
+            Gets all the roles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.RolesController.GetRoleById(System.String)">
+            <summary>
+            Get role by Id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.RolesController.AddNewRole(Rosterd.Admin.Api.Requests.Roles.AddRoleRequest)">
+            <summary>
+            Adds a new role
+            </summary>
+            <param name="request">The role to add</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.RolesController.RemoveRole(System.String)">
+            <summary>
+            Deletes a riven role
+            </summary>
+            <param name="roleId">The role to be deleted</param>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.GetAllSkills(Rosterd.Domain.Models.PagingQueryStringParameters)">
             <summary>
-            Gets all the resources 
+            Gets all the resources
             </summary>
             <param name="pagingParameters"></param>
             <returns></returns>
@@ -96,14 +225,14 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.AddNewSkill(Rosterd.Domain.Requests.Skills.AddUpdateSkillRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.AddNewSkill(Rosterd.Admin.Api.Requests.Skills.AddSkillRequest)">
             <summary>
             Adds a new Skill
             </summary>
             <param name="request">The Skill to add</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.UpdateSkill(Rosterd.Domain.Requests.Skills.AddUpdateSkillRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.SkillsController.UpdateSkill(Rosterd.Admin.Api.Requests.Skills.UpdateSkillRequest)">
             <summary>
             Update a Skill
             </summary>
@@ -119,14 +248,13 @@
         </member>
         <member name="T:Rosterd.Admin.Api.Controllers.StaffController">
             <summary>
-            All actions related to resources
+            All actions related to staff
             </summary>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.GetAllStaff(System.Nullable{System.Int64},Rosterd.Domain.Models.PagingQueryStringParameters)">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.GetAllStaff(Rosterd.Domain.Models.PagingQueryStringParameters)">
             <summary>
-            Gets all the resources 
+            Gets all the resources
             </summary>
-            <param name="facilityId">The facility id to filter all the list of Staff by</param>
             <param name="pagingParameters"></param>
             <returns></returns>
         </member>
@@ -136,18 +264,25 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.AddNewStaffMember(Rosterd.Domain.Requests.Staff.AddUpdateStaffRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.AddNewStaffMember(Rosterd.Admin.Api.Requests.Staff.AddStaffRequest)">
             <summary>
             Adds a new Staff member
             </summary>
             <param name="request">The Staff member to add</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.UpdateStaffMember(Rosterd.Domain.Requests.Staff.AddUpdateStaffRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.UpdateStaffMember(Rosterd.Admin.Api.Requests.Staff.UpdateStaffRequest)">
             <summary>
             Update a Staff member details
             </summary>
             <param name="request">The Staff member to update</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.ReactivateStaffMember(System.Nullable{System.Int64})">
+            <summary>
+            Reactivate the staff member, status will be set to active again
+            </summary>
+            <param name="staffId">The staff id to update</param>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.StaffController.RemoveStaffMember(System.Nullable{System.Int64})">
@@ -157,15 +292,7 @@
             <param name="staffId">The Staff member to mark as inactive</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.MoveStaffMemberToAnotherFacility(System.Nullable{System.Int64},System.Nullable{System.Int64})">
-            <summary>
-            Moves a Staff member from their existing facility to another facility
-            </summary>
-            <param name="facilityId">The facility id to move</param>
-            <param name="staffId">The Staff id</param>
-            <returns></returns>
-        </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.AddSkillToStaff(System.Nullable{System.Int64},Rosterd.Domain.Requests.Staff.AddSkillsToStaffRequest)">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.AddSkillToStaff(System.Nullable{System.Int64},Rosterd.Admin.Api.Requests.Staff.SkillsToStaffRequest)">
             <summary>
             Adds a collection of skills to the Staff member
             </summary>
@@ -173,11 +300,18 @@
             <param name="request">The skills to add</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.DeleteAllSkillsForStaff(System.Nullable{System.Int64})">
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.DeleteSkillsForStaff(System.Nullable{System.Int64},Rosterd.Admin.Api.Requests.Staff.SkillsToStaffRequest)">
             <summary>
-            Removes all skills from a Staff member
+            Deletes a collection of skills from the Staff member
             </summary>
             <param name="staffId">The Staff id</param>
+            <param name="request">The skills to delete</param>
+            <returns></returns>
+        </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.StaffController.GetFacilitiesForFacilityAdmin">
+            <summary>
+            Gets a list of facilities that a facility admin has access too
+            </summary>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Infrastructure.Extensions.ServiceCollectionExtensions.AddAppAndDatabaseDependencies(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
@@ -197,26 +331,64 @@
             <param name="config"></param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Services.IUserContext.DoesTenantAndUserExist">
+        <member name="P:Rosterd.Admin.Api.Requests.AdminUser.AddAdminUserRequest.Auth0OrganizationId">
             <summary>
-            Checks if a tenant and user exists for the currently logged in user
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Rosterd.Admin.Api.Services.IUserContext.GetTenantIdForUser">
-            <summary>
-            Gets the tenant of the current logged in user.
-            NB: This gets the full tenant object and can be a bit expensive if you just need the tenant id
-            then calls the GetTenantIdForUser() method
+            The auth0 organization id to add this admin too
             </summary>
         </member>
-        <member name="M:Rosterd.Admin.Api.Services.IUserContext.GetTenantAndUser">
+        <member name="P:Rosterd.Admin.Api.Requests.AdminUser.AddAdminWhoIsAlsoStaffRequest.SkillIds">
             <summary>
-            Gets the tenant of the current logged in user.
-            NB: This gets the full tenant object and StaffToAuth0Id object from cache
-            can be a bit expensive due to the weight of the object (serializing/deserializing from cache)
-            if you just need the tenant id
-            then call the GetTenantIdForUser() method which is a very light weight and fast
+            The list of skills that the staff has, when creating should at least have one
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Requests.AdminUser.AddAdminWhoIsAlsoStaffRequest.FacilityIds">
+            <summary>
+            Facilities this user has access too, when creating should at least have one
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Requests.AdminUser.UpdateAdminUserRequest.Auth0OrganizationId">
+            <summary>
+            The auth0 organization id to add this admin too
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Requests.AdminUser.UpdateAdminUserRequest.Auth0UserId">
+            <summary>
+            The users auth0 id
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Requests.Staff.AddStaffRequest.SkillIds">
+            <summary>
+            The list of skills that the staff has, when creating should at least have one
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Services.IUserContext.UserAuth0Id">
+            <summary>
+            Gets the user id from auth 0
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Services.IUserContext.UsersAuth0OrganizationId">
+            <summary>
+            Gets the users organization id (from auth 0, the auth0 id of the organization)
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Services.IUserContext.UserEmailAddress">
+            <summary>
+            The email address of the user
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Services.IUserContext.UsersFirstName">
+            <summary>
+            The users first name
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Services.IUserContext.UsersLastName">
+            <summary>
+            The users last name
+            </summary>
+        </member>
+        <member name="P:Rosterd.Admin.Api.Services.IUserContext.UsersPhoneNumber">
+            <summary>
+            The users phone number
             </summary>
         </member>
         <member name="P:Rosterd.Admin.Api.Services.IUserContext.Roles">
@@ -224,15 +396,16 @@
             Gets all the roles for the user
             </summary>
         </member>
-        <member name="P:Rosterd.Admin.Api.Services.IUserContext.IdmUserId">
-            <summary>
-            Gets the unique id from Azure B2C for the user
-            </summary>
-        </member>
         <member name="P:Rosterd.Admin.Api.Services.IUserContext.AccessToken">
             <summary>
             Gets the raw access token received from Auth0,
-            This can be useful if we need to call profile in b2c or anything external call we need to make for the user
+            This can be useful if we need to call profile api in auth0 or anything external call we need to make for the user
+            </summary>
+        </member>
+        <member name="T:Rosterd.Admin.Api.Services.UserContext">
+            <summary>
+                The context provides various bits of information about the logged in user, their roles and claims
+                The tenant this current user belongs to is cached for the specified duration
             </summary>
         </member>
         <member name="P:Rosterd.Admin.Api.Startup.HostingEnvironment">

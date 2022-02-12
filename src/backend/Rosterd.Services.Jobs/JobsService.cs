@@ -61,9 +61,11 @@ namespace Rosterd.Services.Jobs
         {
             var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
-            var job = await _context.Jobs.Include(s => s.Facility)
+            var job = await _context.Jobs
+                .Include(s => s.JobSkills)
+                .Include(y => y.Facility)
                 .Where(s => s.Facility.OrganzationId == organization.OrganizationId)
-                .FirstOrDefaultAsync(s => s.JobId == jobId);
+                .FirstAsync(s => s.JobId == jobId);
 
             return job?.ToDomainModel();
         }
@@ -75,8 +77,6 @@ namespace Rosterd.Services.Jobs
 
             var jobToCreate = jobModel.ToNewJob();
             var utcNow = DateTime.UtcNow;
-
-            //_context.Skills.
 
             //New job specific properties
             jobToCreate.JobStatusId = (int)JobStatus.Published;

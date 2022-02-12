@@ -29,7 +29,7 @@
             <param name="jobId">The job id</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Client.Api.Controllers.JobsController.CancelJobForStaff(System.Int64)">
+        <member name="M:Rosterd.Client.Api.Controllers.JobsController.CancelJob(System.Int64)">
             <summary>
             Removes the current user from the job, if the grace period has run out then a HTTP 422 is thrown back
             </summary>
@@ -74,13 +74,13 @@
             All actions related to the user
             </summary>
         </member>
-        <member name="M:Rosterd.Client.Api.Controllers.PreferencesController.GetStaffAppUserPreferences(System.String)">
+        <member name="M:Rosterd.Client.Api.Controllers.PreferencesController.GetUserPreferences">
             <summary>
             Gets all user profile information for the current user
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Client.Api.Controllers.PreferencesController.UpdateStaffAppUserPreferences(Rosterd.Domain.Models.Users.StaffAppUserPreferencesModel)">
+        <member name="M:Rosterd.Client.Api.Controllers.PreferencesController.UpdateUserPreferences(Rosterd.Domain.Models.StaffModels.StaffAppUserPreferencesModel)">
             <summary>
             Updates all user profile information for the current user
             </summary>
@@ -102,6 +102,59 @@
             <param name="services"></param>
             <param name="config"></param>
             <returns></returns>
+        </member>
+        <member name="M:Rosterd.Client.Api.Services.IUserContext.GetRosterdAppUserOrCreateIfNotExists">
+            <summary>
+            Creates a rosterd app user
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Rosterd.Client.Api.Services.IUserContext.UserAuth0Id">
+            <summary>
+            Gets the user id from auth 0
+            </summary>
+        </member>
+        <member name="P:Rosterd.Client.Api.Services.IUserContext.UsersAuth0OrganizationId">
+            <summary>
+            Gets the users organization id (from auth 0, the auth0 id of the organization)
+            </summary>
+        </member>
+        <member name="P:Rosterd.Client.Api.Services.IUserContext.UserEmailAddress">
+            <summary>
+            The email address of the user
+            </summary>
+        </member>
+        <member name="P:Rosterd.Client.Api.Services.IUserContext.UsersFirstName">
+            <summary>
+            The users first name
+            </summary>
+        </member>
+        <member name="P:Rosterd.Client.Api.Services.IUserContext.UsersLastName">
+            <summary>
+            The users last name
+            </summary>
+        </member>
+        <member name="P:Rosterd.Client.Api.Services.IUserContext.UsersPhoneNumber">
+            <summary>
+            The users phone number
+            </summary>
+        </member>
+        <member name="P:Rosterd.Client.Api.Services.IUserContext.Roles">
+            <summary>
+            Gets all the roles for the user
+            </summary>
+        </member>
+        <member name="P:Rosterd.Client.Api.Services.IUserContext.AccessToken">
+            <summary>
+            Gets the raw access token received from Auth0,
+            This can be useful if we need to call profile api in auth0 or anything external call we need to make for the user
+            </summary>
+        </member>
+        <member name="T:Rosterd.Client.Api.Services.UserContext">
+            <summary>
+                The context provides various bits of information about the logged in user, their roles and claims
+                The tenant this current user belongs to is cached for the specified duration
+            </summary>
         </member>
         <member name="P:Rosterd.Client.Api.Startup.HostingEnvironment">
             <summary>
