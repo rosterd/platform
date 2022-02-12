@@ -46,9 +46,11 @@ namespace Rosterd.Services.Jobs
             else
             {
                 var jobStatusId = (int)jobStatus;
-                query = _context.Jobs.Include(s => s.Facility).Where(s => s.Facility.OrganzationId == organization.OrganizationId && s.JobStatusId == jobStatusId);
+                query = _context.Jobs
+                    .Include(s => s.Facility)
+                    .Include(s => s.JobSkills)
+                    .Where(s => s.Facility.OrganzationId == organization.OrganizationId && s.JobStatusId == jobStatusId);
             }
-
 
             var pagedList = await PagingList<Job>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
 
