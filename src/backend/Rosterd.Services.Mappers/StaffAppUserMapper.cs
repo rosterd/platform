@@ -27,6 +27,7 @@ namespace Rosterd.Services.Mappers
                     Saturday = dataModel.SaturdayAvailable,
                     Sunday = dataModel.SundayAvailable
                 },
+                City = dataModel.City,
                 Shift = new Shift {NightShift = dataModel.NightShiftOk},
             };
 

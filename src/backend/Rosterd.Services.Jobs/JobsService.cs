@@ -149,7 +149,7 @@ namespace Rosterd.Services.Jobs
                     SearchMode = SearchMode.All,  QueryType = SearchQueryType.Full,  IncludeTotalCount = true,
 
                     //The jobs should still be active
-                    Filter = $"JobEndDateTimeUtc lt {DateTimeOffset.UtcNow:O}",
+                    Filter = $"JobEndDateTimeUtc gt {DateTimeOffset.UtcNow:O}",
                     Size = pagingParameters.PageSize,
                     Skip = (pagingParameters.PageNumber - 1) * pagingParameters.PageSize
                 };
