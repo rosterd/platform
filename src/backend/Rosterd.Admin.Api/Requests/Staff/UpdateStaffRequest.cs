@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Rosterd.Data.SqlServer.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.SkillsModels;
 using Rosterd.Domain.Models.StaffModels;
@@ -32,6 +33,11 @@ namespace Rosterd.Admin.Api.Requests.Staff
         [StringLength(1000)]
         public string JobTitle { get; set; }
 
+        /// <summary>
+        /// This is the skill ids that the staff has (all of these will be updated in the db)
+        /// </summary>
+        public List<long> SkillIds { get; set; }
+
         public static StaffModel ToStaffModel(UpdateStaffRequest request) =>
             new StaffModel
             {
@@ -40,7 +46,8 @@ namespace Rosterd.Admin.Api.Requests.Staff
                 JobTitle = request.JobTitle,
                 LastName = request.LastName,
                 MobilePhoneNumber = request.MobilePhoneNumber,
-                Comments = request.Comments
+                Comments = request.Comments,
+                StaffSkills = request.SkillIds.AlwaysList().Select(s => new SkillModel { SkillId = s}).ToList()
             };
     }
 }

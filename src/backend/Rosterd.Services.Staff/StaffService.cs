@@ -139,6 +139,18 @@ namespace Rosterd.Services.Staff
             var staffModelToUpdate = staffModel.ToDataModel(staffFromDb);
             _context.Staff.Update(staffModelToUpdate);
 
+            //Reset the staff skills to new updated skills
+            if (staffModel.StaffSkills.IsNotNullOrEmpty())
+            {
+                var existingSkills = await _context.StaffSkills.Where(s => s.StaffId == staffFromDb.StaffId).ToListAsync();
+                _context.StaffSkills.RemoveRange(existingSkills);
+
+                foreach (var staffSkillToUpdate in staffModel.StaffSkills)
+                {
+                    await _context.StaffSkills.AddAsync(new StaffSkill { SkillId = staffSkillToUpdate.SkillId, StaffId = staffFromDb.StaffId });
+                }
+            }
+
             await _context.SaveChangesAsync();
             return staffModelToUpdate.ToDomainModel();
         }

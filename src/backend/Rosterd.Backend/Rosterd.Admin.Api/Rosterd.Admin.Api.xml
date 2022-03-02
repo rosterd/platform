@@ -361,6 +361,11 @@
             The list of skills that the staff has, when creating should at least have one
             </summary>
         </member>
+        <member name="P:Rosterd.Admin.Api.Requests.Staff.UpdateStaffRequest.SkillIds">
+            <summary>
+            This is the skill ids that the staff has (all of these will be updated in the db)
+            </summary>
+        </member>
         <member name="P:Rosterd.Admin.Api.Services.IUserContext.UserAuth0Id">
             <summary>
             Gets the user id from auth 0
