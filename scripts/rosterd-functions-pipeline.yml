@@ -87,11 +87,13 @@ stages:
               appSettings: 
                           '
                             -FunctionSettings:Environment "Dev"
-                            -FunctionSettings:RosterdDbConnectionString "$(ConnectionStrings.SQLDBConnectionString)"
-                            -FunctionSettings:StorageConnectionString "$(ConnectionStrings.TableStorageConnectionString)"
-                            -FunctionSettings:SearchServiceEndpoint "$(AppSettings.SearchServiceEndpoint)"
-                            -FunctionSettings:SearchServiceApiKey "$(AppSettings.SearchServiceApiKey)"
+                            -FunctionSettings:RosterdDbConnectionString "$(FunctionSettings:RosterdDbConnectionString)"
+                            -FunctionSettings:StorageAccount "$(FunctionSettings:StorageAccount)"
+                            -FunctionSettings:SearchServiceEndpoint "$(FunctionSettings:SearchServiceEndpoint)"
+                            -FunctionSettings:SearchServiceApiKey "$(FunctionSettings:SearchServiceApiKey)"
+                            -FunctionSettings:TableStorageConnectionString "$(FunctionSettings:TableStorageConnectionString)"
                             -FunctionSettings:MovedJobsPastTimeLimitToExpiredStateSchedule "0 */30 * * * *"
                             -FunctionSettings:MoveJobsPastEndDateToFeedbackStateSchedule "0 0 */6 * * *"
                             -FunctionSettings:MoveFinishedJobsFromSearchSchedule "0 0 0 * * *"
+                            -APPINSIGHTS_INSTRUMENTATIONKEY "$(ApplicationInsights.InstrumentationKey)"
                           '
