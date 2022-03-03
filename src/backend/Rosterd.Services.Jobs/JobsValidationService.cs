@@ -39,7 +39,7 @@ namespace Rosterd.Services.Jobs
         {
             var errorMessages = new List<string>();
             var job = await _context.Jobs.FindAsync(jobId);
-            var staffJobs = await _context.JobStaffs.FirstOrDefaultAsync(s => s.JobId == jobId);
+            var staffJobs = await _context.JobStaffs.AsNoTracking().FirstOrDefaultAsync(s => s.JobId == jobId);
 
             //1. Check if the job is still time valid
             if(job.JobStartDateTimeUtc < DateTime.UtcNow)

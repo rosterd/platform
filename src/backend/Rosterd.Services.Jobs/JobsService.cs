@@ -42,11 +42,11 @@ namespace Rosterd.Services.Jobs
             IQueryable<Job> query;
 
             if (jobStatus == null)
-                query = _context.Jobs.Include(s => s.Facility).Where(s => s.Facility.OrganzationId == organization.OrganizationId);
+                query = _context.Jobs.AsNoTracking().Include(s => s.Facility).Where(s => s.Facility.OrganzationId == organization.OrganizationId);
             else
             {
                 var jobStatusId = (int)jobStatus;
-                query = _context.Jobs
+                query = _context.Jobs.AsNoTracking()
                     .Include(s => s.Facility)
                     .Include(s => s.JobSkills)
                     .Where(s => s.Facility.OrganzationId == organization.OrganizationId && s.JobStatusId == jobStatusId);
@@ -245,8 +245,8 @@ namespace Rosterd.Services.Jobs
             var statusList = jobsStatusesToQueryFor.AlwaysList().Select(s => (long)s).AlwaysList();
 
             var jobsForStaffQuery =
-                from js in _context.JobStaffs
-                join job in _context.Jobs on js.JobId equals job.JobId
+                from js in _context.JobStaffs.AsNoTracking()
+                join job in _context.Jobs.AsNoTracking() on js.JobId equals job.JobId
                 where js.StaffId == staffId && statusList.Contains(job.JobStatusId)
                 select job;
 
@@ -263,8 +263,8 @@ namespace Rosterd.Services.Jobs
             {
                 var cancelledStatus = (long) JobStatus.Cancelled;
                 var cancelledJobsForStaff =
-                    from js in _context.JobStatusChanges
-                    join job in _context.Jobs on js.JobId equals job.JobId
+                    from js in _context.JobStatusChanges.AsNoTracking()
+                    join job in _context.Jobs.AsNoTracking() on js.JobId equals job.JobId
                     where js.JobStatusId == cancelledStatus && js.StaffId == staffId
                     select job;
 
@@ -310,7 +310,8 @@ namespace Rosterd.Services.Jobs
                 _context.JobStaffs.Remove(jobStaff);
 
             //Record history of this status change
-            await CreateJobsStatusChangeRecord(jobId, staffId, JobStatus.Published, $"Job rejected by staff {staffId}");
+            await CreateJobsStatusChangeRecord(jobId, staffId, JobStatus.Cancelled, $"Job rejected by staff {staffId}");
+            await CreateJobsStatusChangeRecord(jobId, staffId, JobStatus.Published, $"Job reset back to published due to being cancelled by staff {staffId}");
 
             //Change status in the main job table
             job.JobStatusId = JobStatus.Published.ToInt32();
@@ -341,7 +342,7 @@ namespace Rosterd.Services.Jobs
             var publishedStatus = (long) JobStatus.Published;
             var currentDateTimeUtc = DateTime.UtcNow;
 
-            var expiredJobs = await _context.Jobs.Where(s => s.JobStatusId == publishedStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).ToListAsync();
+            var expiredJobs = await _context.Jobs.Where(s => s.JobStatusId == publishedStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).Take(100).ToListAsync();
             foreach (var expiredJob in expiredJobs)
             {
                 expiredJob.JobStatusId = (long)JobStatus.Expired;
@@ -359,7 +360,7 @@ namespace Rosterd.Services.Jobs
             var inProgressStatus = (long) JobStatus.InProgress;
             var currentDateTimeUtc = DateTime.UtcNow;
 
-            var pendingJobs = await _context.Jobs.Where(s => s.JobStatusId == inProgressStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).ToListAsync();
+            var pendingJobs = await _context.Jobs.Where(s => s.JobStatusId == inProgressStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).Take(100).ToListAsync();
             foreach (var pendingJob in pendingJobs)
             {
                 pendingJob.JobStatusId = (long)JobStatus.FeedbackPending;
@@ -378,7 +379,7 @@ namespace Rosterd.Services.Jobs
             var noShowStatus = (int)JobStatus.NoShow;
 
             var jobsThatAreFinished =
-                await _context.Jobs.Where(s => s.JobStatusId == completedStatus || s.JobStatusId == noShowStatus)
+                await _context.Jobs.AsNoTracking().Where(s => s.JobStatusId == completedStatus || s.JobStatusId == noShowStatus)
                     .Select(s => s.JobId)
                     .ToListAsync();
 
