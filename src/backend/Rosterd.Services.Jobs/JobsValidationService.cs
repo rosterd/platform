@@ -49,7 +49,7 @@ namespace Rosterd.Services.Jobs
             if(staffJobs != null)
                 errorMessages.Add("This job has already been accepted by another person");
 
-            return (errorMessages.IsNotNullOrEmpty(), errorMessages);
+            return (errorMessages.IsNullOrEmpty(), errorMessages);
         }
 
         public async Task<(bool isJobValid, IEnumerable<string> errorMessages)> IsJobStillValidToCancelForStaff(long jobId, long staff)
@@ -64,7 +64,7 @@ namespace Rosterd.Services.Jobs
             if (job.GracePeriodToCancelMinutes != null && job.JobStartDateTimeUtc.AddMinutes(-job.GracePeriodToCancelMinutes.Value) < DateTime.UtcNow)
                 errorMessages.Add("You have past the grace time to cancel this job.");
 
-            return (errorMessages.IsNotNullOrEmpty(), errorMessages);
+            return (errorMessages.IsNullOrEmpty(), errorMessages);
         }
     }
 }
