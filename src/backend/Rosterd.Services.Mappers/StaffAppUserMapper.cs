@@ -51,7 +51,7 @@ namespace Rosterd.Services.Mappers
                 City = domainModel.City
             };
 
-        public static StaffAppUserPreferencesModel ToNew() =>
+        public static StaffAppUserPreferencesModel ToNew(StaffModel staffModel) =>
             new StaffAppUserPreferencesModel
             {
                 AvailableDays = new AvailableDays
@@ -65,7 +65,10 @@ namespace Rosterd.Services.Mappers
                     Sunday = true
                 },
                 Shift = new Shift {NightShift = true},
-                TurnAllNotificationsOff = false
+                TurnAllNotificationsOff = false,
+
+                FirstName = staffModel.FirstName,
+                LastName = staffModel.LastName
             };
     }
 }

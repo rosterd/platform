@@ -30,13 +30,15 @@ namespace Rosterd.Services.Staff
         private readonly IAzureTableStorage _azureTableStorage;
         private readonly IBelongsToValidator _belongsToValidator;
         private readonly ISearchIndexProvider _searchIndexProvider;
+        private readonly IStaffService _staffService;
 
-        public RosterdAppUserService(IRosterdDbContext context, IAzureTableStorage azureTableStorage, IBelongsToValidator belongsToValidator, ISearchIndexProvider searchIndexProvider)
+        public RosterdAppUserService(IRosterdDbContext context, IAzureTableStorage azureTableStorage, IBelongsToValidator belongsToValidator, ISearchIndexProvider searchIndexProvider, IStaffService staffService)
         {
             _context = context;
             _azureTableStorage = azureTableStorage;
             _belongsToValidator = belongsToValidator;
             _searchIndexProvider = searchIndexProvider;
+            _staffService = staffService;
         }
 
         public async Task<RosterdAppUser> GetStaffAppUser(string userAuth0Id)
@@ -60,9 +62,13 @@ namespace Rosterd.Services.Staff
         public async Task<StaffAppUserPreferencesModel> GetStaffAppUserPreferences(string userAuth0Id)
         {
             var rosterdAppUser = await _azureTableStorage.GetAsync<RosterdAppUserPreferences>(RosterdAppUserPreferences.TableName, RosterdAppUserPreferences.UsersPartitionKey, userAuth0Id);
+            if (rosterdAppUser == null)
+            {
+                var staff = await _staffService.GetStaffFromAuth0Id(userAuth0Id);
+                return StaffAppUserMapper.ToNew(staff);
+            }
 
-            //We don't have the user in our db, so default the preferences which is true for every thing
-            return rosterdAppUser == null ? StaffAppUserMapper.ToNew() : rosterdAppUser?.ToDomainModel();
+            return rosterdAppUser.ToDomainModel();
         }
 
         public async Task UpdateStaffAppUserPreferences(StaffAppUserPreferencesModel staffAppUserPreferencesModel, string userAuth0Id, long staffId)

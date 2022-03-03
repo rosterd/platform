@@ -32,6 +32,8 @@ namespace Rosterd.Services.Staff.Interfaces
         /// <returns></returns>
         Task<(long StaffId, long OrganizationId, string Auth0OrganizationId)> GetStaff(string staffAuth0Id);
 
+        Task<StaffModel> GetStaffFromAuth0Id(string staffAuth0Id);
+
         /// <summary>
         /// Adds a new Staff member
         /// </summary>

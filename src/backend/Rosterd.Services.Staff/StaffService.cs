@@ -80,6 +80,15 @@ namespace Rosterd.Services.Staff
             return (staff.StaffId, staff.OrganizationId, staff.Organization.Auth0OrganizationId);
         }
 
+        public async Task<StaffModel> GetStaffFromAuth0Id(string staffAuth0Id)
+        {
+            var staff = await _context.Staff.Include(s => s.Organization).FirstOrDefaultAsync(s => s.Auth0Id == staffAuth0Id);
+            if (staff == null)
+                throw new EntityNotFoundException("The staff member does not exist");
+
+            return staff.ToDomainModel();
+        }
+
         ///<inheritdoc/>
         public async Task<StaffModel> CreateStaff(StaffModel staffModel, string auth0OrganizationId)
         {
