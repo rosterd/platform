@@ -82,6 +82,9 @@ namespace Rosterd.Client.Api.Controllers
             //TODO: at a later time instead of direct update, raise a job status change event (job is set to accepted status)
             await _jobEventsService.UpdateStatusOfJobInSearch(jobId, JobStatus.Published);
 
+            //Raise an event so the function app can send push notifications to the right people
+            await _jobEventsService.GenerateNewJobCreatedEvent(jobId, _userContext.UsersAuth0OrganizationId);
+
             return Ok();
         }
     }
