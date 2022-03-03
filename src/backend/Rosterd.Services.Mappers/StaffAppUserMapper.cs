@@ -38,7 +38,7 @@ namespace Rosterd.Services.Mappers
                 DeviceId = domainModel.DeviceId,
                 FirstName = domainModel.FirstName,
                 MiddleName = domainModel.MiddleName,
-                LastName = domainModel.LastName
+                LastName = domainModel.LastName,
                 TurnAllNotificationsOff = domainModel.TurnAllNotificationsOff,
                 MondayAvailable = domainModel.AvailableDays.Monday,
                 TuesdayAvailable = domainModel.AvailableDays.Tuesday,
