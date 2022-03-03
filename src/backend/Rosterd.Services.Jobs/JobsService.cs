@@ -92,7 +92,7 @@ namespace Rosterd.Services.Jobs
             await _context.SaveChangesAsync();
 
             //Create a status change record for this job (with the job id)
-            await CreateJobsStatusChangeRecord(jobCreated.Entity.JobId, JobStatus.Published, "New job created", utcNow);
+            await CreateJobsStatusChangeRecord(jobCreated.Entity.JobId, null, JobStatus.Published, "New job created", utcNow);
             await _context.SaveChangesAsync();
 
             return jobCreated.Entity.ToDomainModelWithNoFacilityDetails();
@@ -110,7 +110,7 @@ namespace Rosterd.Services.Jobs
                 job.JobsStatusName = JobStatus.Cancelled.ToString();
                 job.LastJobStatusChangeDateTimeUtc = DateTime.UtcNow;
 
-                await CreateJobsStatusChangeRecord(jobId, JobStatus.Cancelled, auth0OrganizationId);
+                await CreateJobsStatusChangeRecord(jobId, null, JobStatus.Cancelled, auth0OrganizationId);
 
                 await _context.SaveChangesAsync();
             }
@@ -257,7 +257,25 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task<PagedList<JobModel>> GetJobsForStaff(long staffId, JobStatus jobsStatusToQueryFor, PagingQueryStringParameters pagingParameters) => await GetJobsForStaff(staffId, new List<JobStatus> {jobsStatusToQueryFor}, pagingParameters);
+        public async Task<PagedList<JobModel>> GetJobsForStaff(long staffId, JobStatus jobsStatusToQueryFor, PagingQueryStringParameters pagingParameters)
+        {
+            if (jobsStatusToQueryFor == JobStatus.Cancelled)
+            {
+                var cancelledStatus = (long) JobStatus.Cancelled;
+                var cancelledJobsForStaff =
+                    from js in _context.JobStatusChanges
+                    join job in _context.Jobs on js.JobId equals job.JobId
+                    where js.JobStatusId == cancelledStatus && js.StaffId == staffId
+                    select job;
+
+                var pagedList = await PagingList<Data.SqlServer.Models.Job>.ToPagingList(cancelledJobsForStaff, pagingParameters.PageNumber, pagingParameters.PageSize);
+
+                var domainModels = pagedList.ToDomainModels();
+                return new Domain.Models.PagedList<JobModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
+            }
+
+            return await GetJobsForStaff(staffId, new List<JobStatus> { jobsStatusToQueryFor }, pagingParameters);
+        }
 
         ///<inheritdoc/>
         public async Task<bool> AcceptJobForStaff(long jobId, long staffId)
@@ -269,7 +287,7 @@ namespace Rosterd.Services.Jobs
             await _context.JobStaffs.AddAsync(jobStaff);
 
             //Record history of this status change
-            await CreateJobsStatusChangeRecord(jobId, JobStatus.Accepted, $"Job accepted by staff {staffId}");
+            await CreateJobsStatusChangeRecord(jobId, staffId, JobStatus.Accepted, $"Job accepted by staff {staffId}");
 
             //Change status in the main job table
             job.JobStatusId = JobStatus.Accepted.ToInt32();
@@ -292,7 +310,7 @@ namespace Rosterd.Services.Jobs
                 _context.JobStaffs.Remove(jobStaff);
 
             //Record history of this status change
-            await CreateJobsStatusChangeRecord(jobId, JobStatus.Published, $"Job rejected by staff {staffId}");
+            await CreateJobsStatusChangeRecord(jobId, staffId, JobStatus.Published, $"Job rejected by staff {staffId}");
 
             //Change status in the main job table
             job.JobStatusId = JobStatus.Published.ToInt32();
@@ -305,12 +323,13 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task CreateJobsStatusChangeRecord(long jobId, JobStatus jobStatusChangedTo, string statusChangeReason, DateTime? eventOccurredDateTime = null) =>
+        public async Task CreateJobsStatusChangeRecord(long jobId, long? staffId, JobStatus jobStatusChangedTo, string statusChangeReason, DateTime? eventOccurredDateTime = null) =>
 
             await _context.JobStatusChanges.AddAsync(new JobStatusChange
             {
                 JobId = jobId,
                 JobStatusId = (int)jobStatusChangedTo,
+                StaffId = staffId,
                 JobStatusName = jobStatusChangedTo.ToString(),
                 JobStatusChangeDateTimeUtc = eventOccurredDateTime ?? DateTime.UtcNow,
                 JobStatusChangeReason = statusChangeReason
@@ -328,7 +347,7 @@ namespace Rosterd.Services.Jobs
                 expiredJob.JobStatusId = (long)JobStatus.Expired;
 
                 //Record history of this status change
-                await CreateJobsStatusChangeRecord(expiredJob.JobId, JobStatus.Expired, $"Job expired, still in published stated after end time has past current time");
+                await CreateJobsStatusChangeRecord(expiredJob.JobId, null, JobStatus.Expired, $"AUTO-MOVE: Job expired, still in published stated after end time has past current time");
             }
 
             await _context.SaveChangesAsync();
@@ -346,7 +365,7 @@ namespace Rosterd.Services.Jobs
                 pendingJob.JobStatusId = (long)JobStatus.FeedbackPending;
 
                 //Record history of this status change
-                await CreateJobsStatusChangeRecord(pendingJob.JobId, JobStatus.Expired, $"Job set to feedback pending");
+                await CreateJobsStatusChangeRecord(pendingJob.JobId, null, JobStatus.Expired, $"AUTO-MOVE: Job set to feedback pending");
             }
 
             await _context.SaveChangesAsync();

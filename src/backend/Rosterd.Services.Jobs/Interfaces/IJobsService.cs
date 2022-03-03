@@ -108,11 +108,12 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// method if this needs to be saved to the db
         /// </summary>
         /// <param name="jobId"></param>
+        /// <param name="staffId"></param>
         /// <param name="jobStatusChangedTo"></param>
         /// <param name="statusChangeReason"></param>
         /// <param name="eventOccurredDateTime"></param>
         /// <returns></returns>
-        Task CreateJobsStatusChangeRecord(long jobId, JobStatus jobStatusChangedTo, string statusChangeReason, DateTime? eventOccurredDateTime = null);
+        Task CreateJobsStatusChangeRecord(long jobId, long? staffId, JobStatus jobStatusChangedTo, string statusChangeReason, DateTime? eventOccurredDateTime = null);
 
         /// <summary>
         /// Gets all the jobs that have past their end datetime and needs to be expired
