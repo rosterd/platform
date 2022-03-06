@@ -68,7 +68,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Infrastructure.Sear
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Organizations", "Rosterd.Services.Organizations\Rosterd.Services.Organizations.csproj", "{32CFF422-C4A4-41CA-875D-051E3E2A28B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Infrastructure.Messaging", "Rosterd.Infrastructure.Messaging\Rosterd.Infrastructure.Messaging.csproj", "{7F05AD10-AC7A-4433-8884-C805C47E445C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Infrastructure.Messaging", "Rosterd.Infrastructure.Messaging\Rosterd.Infrastructure.Messaging.csproj", "{7F05AD10-AC7A-4433-8884-C805C47E445C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,7 +129,6 @@ Global
 		{38309DAA-D5A4-42C1-AFE1-E94D0FD9F930}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38309DAA-D5A4-42C1-AFE1-E94D0FD9F930}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8C170552-FEC9-4AB3-B345-A3CED491C6A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C170552-FEC9-4AB3-B345-A3CED491C6A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C170552-FEC9-4AB3-B345-A3CED491C6A1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{8C170552-FEC9-4AB3-B345-A3CED491C6A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C170552-FEC9-4AB3-B345-A3CED491C6A1}.Release|Any CPU.Build.0 = Release|Any CPU

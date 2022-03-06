@@ -149,7 +149,7 @@ namespace Rosterd.Services.Jobs
                     SearchMode = SearchMode.All,  QueryType = SearchQueryType.Full,  IncludeTotalCount = true,
 
                     //The jobs should still be active
-                    Filter = $"JobEndDateTimeUtc gt {DateTimeOffset.UtcNow:O}",
+                    Filter = $"JobStartDateTimeUtc lt {DateTimeOffset.UtcNow:O}",
                     Size = pagingParameters.PageSize,
                     Skip = (pagingParameters.PageNumber - 1) * pagingParameters.PageSize
                 };
@@ -342,16 +342,20 @@ namespace Rosterd.Services.Jobs
             var publishedStatus = (long) JobStatus.Published;
             var currentDateTimeUtc = DateTime.UtcNow;
 
-            var expiredJobs = await _context.Jobs.Where(s => s.JobStatusId == publishedStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).Take(100).ToListAsync();
-            foreach (var expiredJob in expiredJobs)
+            var expiredJobs = await _context.Jobs.Where(s => s.JobStatusId == publishedStatus && s.JobStartDateTimeUtc < currentDateTimeUtc).Take(50).ToListAsync();
+            while (expiredJobs.IsNotNullOrEmpty())
             {
-                expiredJob.JobStatusId = (long)JobStatus.Expired;
+                foreach (var expiredJob in expiredJobs)
+                {
+                    expiredJob.JobStatusId = (long)JobStatus.Expired;
 
-                //Record history of this status change
-                await CreateJobsStatusChangeRecord(expiredJob.JobId, null, JobStatus.Expired, $"AUTO-MOVE: Job expired, still in published stated after end time has past current time");
+                    //Record history of this status change
+                    await CreateJobsStatusChangeRecord(expiredJob.JobId, null, JobStatus.Expired, $"AUTO-MOVE: Job expired, still in published stated after end time has past current time");
+                }
+
+                await _context.SaveChangesAsync();
+                expiredJobs = await _context.Jobs.Where(s => s.JobStatusId == publishedStatus && s.JobStartDateTimeUtc < currentDateTimeUtc).Take(50).ToListAsync();
             }
-
-            await _context.SaveChangesAsync();
         }
 
         ///<inheritdoc/>
@@ -360,16 +364,20 @@ namespace Rosterd.Services.Jobs
             var inProgressStatus = (long) JobStatus.InProgress;
             var currentDateTimeUtc = DateTime.UtcNow;
 
-            var pendingJobs = await _context.Jobs.Where(s => s.JobStatusId == inProgressStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).Take(100).ToListAsync();
-            foreach (var pendingJob in pendingJobs)
+            var pendingJobs = await _context.Jobs.Where(s => s.JobStatusId == inProgressStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).Take(50).ToListAsync();
+            while (pendingJobs.IsNotNullOrEmpty())
             {
-                pendingJob.JobStatusId = (long)JobStatus.FeedbackPending;
+                foreach (var pendingJob in pendingJobs)
+                {
+                    pendingJob.JobStatusId = (long)JobStatus.FeedbackPending;
 
-                //Record history of this status change
-                await CreateJobsStatusChangeRecord(pendingJob.JobId, null, JobStatus.Expired, $"AUTO-MOVE: Job set to feedback pending");
+                    //Record history of this status change
+                    await CreateJobsStatusChangeRecord(pendingJob.JobId, null, JobStatus.Expired, $"AUTO-MOVE: Job set to feedback pending");
+                }
+
+                await _context.SaveChangesAsync();
+                pendingJobs = await _context.Jobs.Where(s => s.JobStatusId == inProgressStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).Take(50).ToListAsync();
             }
-
-            await _context.SaveChangesAsync();
         }
 
         ///<inheritdoc/>
