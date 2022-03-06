@@ -47,7 +47,7 @@ namespace Rosterd.Services.Jobs
 
             //2. check if it hasn't been accepted by another person already
             if(staffJobs != null)
-                errorMessages.Add("This job has already been accepted by another person");
+                errorMessages.Add("This job has already been accepted");
 
             return (errorMessages.IsNullOrEmpty(), errorMessages);
         }
