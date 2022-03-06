@@ -16,7 +16,7 @@ namespace Rosterd.Services.Mappers
 {
     public static class JobMapper
     {
-        public static JobModel ToDomainModel(this Job dataModel)
+        public static JobModel ToDomainModel(this Job dataModel, List<Skill> skills)
         {
             var jobModel = new JobModel
             {
@@ -38,11 +38,11 @@ namespace Rosterd.Services.Mappers
                 JobSkills = new List<JobSkillModel>(),
             };
 
-            if (dataModel.JobSkills.IsNotNullOrEmpty())
+            if (skills.IsNotNullOrEmpty())
             {
-                foreach (var jobModelJobSkill in jobModel.JobSkills)
+                foreach (var jobModelJobSkill in skills)
                 {
-                    jobModel.JobSkills.Add(new JobSkillModel { JobSkillId = jobModelJobSkill.JobSkillId, SkillId = jobModelJobSkill.SkillId, SkillName = jobModelJobSkill.SkillName});
+                    jobModel.JobSkills.Add(new JobSkillModel {JobSkillId = 0, JobId = dataModel.JobId, SkillId = jobModelJobSkill.SkillId, SkillName = jobModelJobSkill.SkillName});
                 }
             }
 
@@ -131,7 +131,7 @@ namespace Rosterd.Services.Mappers
             if (pagedList.IsNullOrEmpty())
                 return new List<JobModel>();
 
-            var jobModels = pagedList.Select(job => job.ToDomainModel()).AlwaysList();
+            var jobModels = pagedList.Select(job => job.ToDomainModel(null)).AlwaysList();
             return jobModels;
         }
 
