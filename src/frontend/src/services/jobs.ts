@@ -13,3 +13,5 @@ export const getJobs = (): AxiosRequestConfig & {scope?: string} => ({url});
 export const publishJob = (data: AddJobRequest): AxiosRequestConfig & {scope?: string} => ({url, method: 'POST', data});
 
 export const deleteJob = (jobId = 0, data): AxiosRequestConfig & {scope?: string} => ({url: `${url}/${jobId}`, method: 'DELETE', data});
+
+export const getJob = (jobId = 0): AxiosRequestConfig & {scope?: string} => ({url: `${url}/${jobId}`, method: 'GET'});

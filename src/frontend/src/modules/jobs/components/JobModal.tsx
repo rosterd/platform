@@ -1,9 +1,13 @@
 import {createStyles, Dialog, DialogContent, DialogTitle, makeStyles, Theme} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import React from 'react';
+import {AxiosRequestConfig} from 'axios';
+import React, {useEffect, useState} from 'react';
+import {getJob} from 'services';
+import useRequest from 'shared/hooks/useRequest';
 import {components} from 'types/models';
 
 type Job = components['schemas']['JobModel'];
+type JobSkill = components['schemas']['JobSkillModel'];
 
 interface Props {
   details: Job;
@@ -32,11 +36,23 @@ const JobModal = (props: Props): JSX.Element => {
     jobEndDateTimeUtc,
     gracePeriodToCancelMinutes,
     isNightShift,
-    jobSkills,
     experience,
     comments,
     responsibilities,
   } = details;
+  const [skillsString, setSkillsString] = useState('');
+  const {requestMaker} = useRequest();
+
+  const fetchData = async (config: AxiosRequestConfig) => {
+    const skills = await requestMaker<JobSkill[]>(config);
+    setSkillsString((skills || []).map((job) => job.skillName).join(','));
+  };
+
+  useEffect(() => {
+    (async () => {
+      await fetchData(getJob(details.jobId));
+    })();
+  }, [details]);
 
   return (
     <Dialog fullWidth maxWidth='sm' open={open} onClose={handleClose} aria-labelledby='job details'>
@@ -85,7 +101,7 @@ const JobModal = (props: Props): JSX.Element => {
         <TextField
           label='Skills'
           disabled
-          defaultValue={(jobSkills || []).join(',')}
+          defaultValue={skillsString}
           InputProps={{
             readOnly: true,
           }}
