@@ -57,7 +57,7 @@ namespace Rosterd.AzureFunctions
                     {
                         var pushTicketReq = new PushTicketRequest()
                         {
-                            PushTo = staffDeviceIds.Select(s => $"ExponentPushToken[{s}]").ToList(),
+                            PushTo = staffDeviceIds,
                             PushBadgeCount = 1,
                             PushTitle = "Rosterd New Matching Job Alert",
                             PushBody = $"Found a new matching job for {job.FacilityName} in {job.FacilityCity}"
