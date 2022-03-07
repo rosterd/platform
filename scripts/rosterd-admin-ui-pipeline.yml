@@ -24,9 +24,9 @@ stages:
       displayName: 'Install Node.js'
 
     - script: |
-        npm install
+        npm ci
         npm run build
-      displayName: 'npm install and build'
+      displayName: 'npm ci and build'
       workingDirectory: 'src/frontend'
 
     - task: CopyFiles@2
