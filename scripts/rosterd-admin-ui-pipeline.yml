@@ -59,7 +59,7 @@ stages:
 
           - task: AzureFileCopy@4
             inputs:
-              SourcePath: '$(Pipeline.Workspace)/build'
+              SourcePath: '$(Pipeline.Workspace)/build/'
               azureSubscription: 'rosterd-service-connection'
               Destination: 'AzureBlob'
               storage: 'strosterdstoragedev'
