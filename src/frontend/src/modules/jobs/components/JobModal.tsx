@@ -7,7 +7,6 @@ import useRequest from 'shared/hooks/useRequest';
 import {components} from 'types/models';
 
 type Job = components['schemas']['JobModel'];
-type JobSkill = components['schemas']['JobSkillModel'];
 
 interface Props {
   details: Job;
@@ -44,12 +43,15 @@ const JobModal = (props: Props): JSX.Element => {
   const {requestMaker} = useRequest();
 
   const fetchData = async (config: AxiosRequestConfig) => {
-    const skills = await requestMaker<JobSkill[]>(config);
-    setSkillsString((skills || []).map((job) => job.skillName).join(','));
+    const job = await requestMaker<Job>(config);
+    setSkillsString((job.jobSkills || []).map((jobSkill) => jobSkill.skillName).join(','));
   };
 
   useEffect(() => {
     (async () => {
+      if (!details.jobId) {
+        return;
+      }
       await fetchData(getJob(details.jobId));
     })();
   }, [details]);
