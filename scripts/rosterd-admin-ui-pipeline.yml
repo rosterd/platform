@@ -58,7 +58,7 @@ stages:
             artifact: build
           - task: AzureFileCopy@4         
             inputs:
-              SourcePath: $(Pipeline.Workspace)/build
+              SourcePath: $(Pipeline.Workspace)
               azureSubscription: 'rosterd-service-connection'
               Destination: 'AzureBlob'
               storage: $(storageaccountname)
