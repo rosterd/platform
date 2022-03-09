@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -19,13 +19,13 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
     <PackageReference Include="Flurl.Http" Version="3.2.0" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\..\Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj" />
     <ProjectReference Include="..\..\Rosterd.Domain\Rosterd.Domain.csproj" />
     <ProjectReference Include="..\..\Rosterd.Admin.Api\Rosterd.Admin.Api.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="Tests\" />
@@ -39,7 +39,7 @@
     <Folder Include="Tests\Staff\" />
     <Folder Include="Fixtures\" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <EmbeddedResource Include="Resources\**\*.json" />
   </ItemGroup>
