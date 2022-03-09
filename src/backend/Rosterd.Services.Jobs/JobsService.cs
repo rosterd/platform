@@ -124,7 +124,7 @@ namespace Rosterd.Services.Jobs
         /// Query that will be run in azure search
         /// {
 	    ///     "search": "Auth0OrganizationId:'org_jHHQBIxLVGXxSfLt' AND JobStatusName:Published AND FacilityCity:Auck* AND SkillsIds:/(24|25)/",
-	    ///     "filter": "not IsNightShift and JobEndDateTimeUtc lt 2021-10-11T00:00:00.000Z",
+	    ///     "filter": "not IsNightShift and JobStartDateTimeUtc gt 2021-10-11T00:00:00.000Z",
 	    ///     "queryType": "full",
 	    ///     "searchMode": "all",
 	    ///     "count": true
@@ -389,9 +389,10 @@ namespace Rosterd.Services.Jobs
         {
             var completedStatus = (int) JobStatus.Completed;
             var noShowStatus = (int)JobStatus.NoShow;
+            var expired = (int)JobStatus.Expired;
 
             var jobsThatAreFinished =
-                await _context.Jobs.AsNoTracking().Where(s => s.JobStatusId == completedStatus || s.JobStatusId == noShowStatus)
+                await _context.Jobs.AsNoTracking().Where(s => s.JobStatusId == completedStatus || s.JobStatusId == noShowStatus || s.JobStatusId == expired)
                     .Select(s => s.JobId)
                     .ToListAsync();
 
