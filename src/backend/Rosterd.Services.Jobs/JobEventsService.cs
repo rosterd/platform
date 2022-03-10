@@ -94,7 +94,7 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
-        public async Task RemoveFinishedJobsFromSearch(List<long> jobsIdsToRemoveFromSearch)
+        public async Task RemoveJobsFromSearch(List<long> jobsIdsToRemoveFromSearch)
         {
             if (jobsIdsToRemoveFromSearch.IsNullOrEmpty())
                 return;

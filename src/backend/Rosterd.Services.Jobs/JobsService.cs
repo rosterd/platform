@@ -341,10 +341,11 @@ namespace Rosterd.Services.Jobs
             });
 
         ///<inheritdoc/>
-        public async Task MovedAllPublishedStatusJobsPastTimeLimitToExpiredState()
+        public async Task<List<long>> MovedAllPublishedStatusJobsPastTimeLimitToExpiredState()
         {
             var publishedStatus = (long) JobStatus.Published;
             var currentDateTimeUtc = DateTime.UtcNow;
+            var expiredJobIds = new List<long>();
 
             var expiredJobs = await _context.Jobs.Where(s => s.JobStatusId == publishedStatus && s.JobStartDateTimeUtc < currentDateTimeUtc).Take(50).ToListAsync();
             while (expiredJobs.IsNotNullOrEmpty())
@@ -355,11 +356,15 @@ namespace Rosterd.Services.Jobs
 
                     //Record history of this status change
                     await CreateJobsStatusChangeRecord(expiredJob.JobId, null, JobStatus.Expired, $"AUTO-MOVE: Job expired, still in published stated after end time has past current time");
+
+                    expiredJobIds.Add(expiredJob.JobId);
                 }
 
                 await _context.SaveChangesAsync();
                 expiredJobs = await _context.Jobs.Where(s => s.JobStatusId == publishedStatus && s.JobStartDateTimeUtc < currentDateTimeUtc).Take(50).ToListAsync();
             }
+
+            return expiredJobIds;
         }
 
         ///<inheritdoc/>

@@ -38,7 +38,8 @@ namespace Rosterd.AzureFunctions
             _logger.LogInformation($"{nameof(MovedAllPublishedStatusJobsPastTimeLimitToExpiredState)} - triggered on UTC Time {DateTime.UtcNow}");
 
             //All the published jobs (ie: jobs that didn't get taken) if they have expired then move them to expired status
-            await _jobsService.MovedAllPublishedStatusJobsPastTimeLimitToExpiredState();
+            var expiredJobs = await _jobsService.MovedAllPublishedStatusJobsPastTimeLimitToExpiredState();
+            await _jobEventsService.RemoveJobsFromSearch(expiredJobs);
         }
 
         [FunctionName(nameof(MoveJobsPastEndDateToFeedbackState))]
@@ -57,7 +58,7 @@ namespace Rosterd.AzureFunctions
 
             //Get all the jobs that are finished and remove them from Azure Search
             var JobsThatHaveFinished = (await _jobsService.GetAllJobsThatAreFinished()).AlwaysList();
-            await _jobEventsService.RemoveFinishedJobsFromSearch(JobsThatHaveFinished);
+            await _jobEventsService.RemoveJobsFromSearch(JobsThatHaveFinished);
         }
     }
 }
