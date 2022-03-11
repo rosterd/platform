@@ -70,6 +70,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Organizati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Infrastructure.Messaging", "Rosterd.Infrastructure.Messaging\Rosterd.Infrastructure.Messaging.csproj", "{7F05AD10-AC7A-4433-8884-C805C47E445C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.UnitTests", "Tests\Rosterd.UnitTests\Rosterd.UnitTests.csproj", "{95DDB494-EC87-4B8A-B2FD-306066EB5803}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -160,6 +162,10 @@ Global
 		{7F05AD10-AC7A-4433-8884-C805C47E445C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F05AD10-AC7A-4433-8884-C805C47E445C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F05AD10-AC7A-4433-8884-C805C47E445C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95DDB494-EC87-4B8A-B2FD-306066EB5803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95DDB494-EC87-4B8A-B2FD-306066EB5803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95DDB494-EC87-4B8A-B2FD-306066EB5803}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95DDB494-EC87-4B8A-B2FD-306066EB5803}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,6 +194,7 @@ Global
 		{CA656106-0AB4-4703-80BB-B4E00AF8B2ED} = {49EB7B71-D49C-48A9-B929-B4FCC1D0DFC6}
 		{32CFF422-C4A4-41CA-875D-051E3E2A28B9} = {C16B881C-491C-4B94-92DA-ACE6A9D489BF}
 		{7F05AD10-AC7A-4433-8884-C805C47E445C} = {49EB7B71-D49C-48A9-B929-B4FCC1D0DFC6}
+		{95DDB494-EC87-4B8A-B2FD-306066EB5803} = {9E7345FE-4E82-4ECA-87F8-A7A43A5153F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2DA4ED17-3CA8-499E-A97F-35DAF7C0E6C3}
