@@ -32,7 +32,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
         }
 
         [Fact]
-        public async Task GivenValidOrIdWhenGetAllFacilitiesThenReturnPagedList()
+        public async Task GivenValidOrgIdWhenGetAllFacilitiesThenReturnPagedList()
         {
             //Build Request
             FacilitiesDataHelper.ArrangeFacilitiesTestData(_context);

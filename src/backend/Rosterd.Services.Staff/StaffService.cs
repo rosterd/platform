@@ -172,7 +172,7 @@ namespace Rosterd.Services.Staff
             var oldAuth0Id = staff.Auth0Id;
 
             if (staff == null)
-                throw new EntityNotFoundException($"staff with staff id {staffId} for auth0-organizationId {auth0OrganizationId}");
+                throw new EntityNotFoundException($"staff with staff id {staffId} for auth0-organizationId {auth0OrganizationId} not found");
 
             staff.IsActive = false;
             staff.Auth0Id = $"{RosterdConstants.Users.UserRemovedFromAuth0Text}_{Guid.NewGuid()}";

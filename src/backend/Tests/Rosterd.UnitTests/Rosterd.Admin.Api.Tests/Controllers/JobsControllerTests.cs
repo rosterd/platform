@@ -105,7 +105,8 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Controllers
             _jobServiceMock.Setup(x => x.GetJob(jobId, _userContextMock.Object.UserAuth0Id))
                 .ReturnsAsync(new JobModel
                 {
-                    JobId = jobId
+                    JobId = jobId,
+                    JobStatus = JobStatus.Published
                 });
 
             //Call GetJobById function
