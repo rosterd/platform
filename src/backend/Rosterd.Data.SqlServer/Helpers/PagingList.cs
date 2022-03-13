@@ -29,7 +29,7 @@ namespace Rosterd.Data.SqlServer.Helpers
 
         public static async Task<PagingList<T>> ToPagingList(IQueryable<T> source, int pageNumber, int pageSize)
         {
-            //TODO: If performance becomes a concern then we can get rid of this count here 
+            //TODO: If performance becomes a concern then we can get rid of this count here
             var count = await source.CountAsync();
             var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 

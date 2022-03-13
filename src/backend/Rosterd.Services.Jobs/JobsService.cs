@@ -39,14 +39,16 @@ namespace Rosterd.Services.Jobs
         public async Task<PagedList<JobModel>> GetAllJobs(PagingQueryStringParameters pagingParameters, string userContextUsersAuth0OrganizationId, JobStatus? jobStatus = null)
         {
             var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(userContextUsersAuth0OrganizationId);
-            IQueryable<Job> query = _context.Jobs.AsNoTracking().Include(s => s.Facility);
+            IQueryable<Job> query =
+                _context.Jobs.AsNoTracking()
+                    .Include(s => s.Facility)
+                    .Where(s => s.Facility.OrganzationId == organization.OrganizationId)
+                    .OrderByDescending(s => s.JobId);
 
-            if (jobStatus == null)
-                query = query.Where(s => s.Facility.OrganzationId == organization.OrganizationId);
-            else
+            if (jobStatus != null)
             {
                 var jobStatusId = (int)jobStatus;
-                query = query.Where(s => s.Facility.OrganzationId == organization.OrganizationId && s.JobStatusId == jobStatusId);
+                query = query.Where(s => s.JobStatusId == jobStatusId);
             }
 
             var pagedList = await PagingList<Job>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
