@@ -1,0 +1,9 @@
+{
+  "AdminApiBaseUrl": "https://localhost:5001",
+  "ClientApiBaseUrl": "https://localhost:6001",
+  "AuthUrl": "https://localhost:5001",
+  "UserName": "",
+  "Password":  "",
+  "AdminAccessToken":"",
+  "OrgAdminAccessToken": ""
+}
