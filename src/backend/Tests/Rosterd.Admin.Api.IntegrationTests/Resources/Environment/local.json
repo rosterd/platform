@@ -1,0 +1,7 @@
+{
+  "BaseUrl": "https://app-rosterd-admin-api-dev.azurewebsites.net",
+  "AuthUrl": "https://localhost:5001",
+  "UserName": "",
+  "Password": "",
+  "AccessToken": ""
+}

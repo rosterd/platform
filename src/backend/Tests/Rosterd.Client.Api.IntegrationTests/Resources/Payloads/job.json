@@ -1,0 +1,33 @@
+{
+  "jobTitle": "",
+  "description": "Developer Java",
+  "facility": {
+    "facilityId": 39,
+    "facilityName": "The Sands",
+    "address": "9 Bayview Road, Bayview, Auckland 0629, New Zealand",
+    "suburb": "Bayview",
+    "city": "Auckland",
+    "country": "New Zealand",
+    "latitude": 0,
+    "longitude": 0,
+    "phoneNumber1": "0224321007",
+    "isActive": true,
+    "phoneNumber2": "",
+    "organization": {
+      "organizationId": 1,
+      "isActive": false
+    }
+  },
+  "jobStartDateTimeUtc": "2022-03-16T09:21:00",
+  "jobEndDateTimeUtc": "2022-03-17T09:21:00",
+  "jobPostedDateTimeUtc": "2022-03-07T09:25:17.9939298",
+  "comments": "",
+  "gracePeriodToCancelMinutes": 60,
+  "jobGracePeriodEndDateTimeUtc": "2022-03-15T23:00:00",
+  "jobStatus": "Published",
+  "jobStatusName": "Published",
+  "responsibilities": "",
+  "experience": "1 year",
+  "isNightShift": false,
+  "SkillsRequiredForJob": [ 26 ]
+}
