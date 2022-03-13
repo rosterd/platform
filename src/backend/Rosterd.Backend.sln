@@ -58,6 +58,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "Integra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Admin.Api.IntegrationTests", "Tests\Rosterd.Admin.Api.IntegrationTests\Rosterd.Admin.Api.IntegrationTests.csproj", "{8308F751-A7DE-4369-A077-46627D85FC0F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Admin.Api.ComponentTests", "Tests\Rosterd.Admin.Api.ComponentTests\Rosterd.Admin.Api.ComponentTests.csproj", "{6264D138-E753-4530-B560-C6F25A7996A9}"
+>>>>>>> Add Integration tests for client apis
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure Functions", "Azure Functions", "{9D54CBC3-F894-415E-A94C-885229B7EE36}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.AzureFunctions", "Rosterd.AzureFunctions\Rosterd.AzureFunctions.csproj", "{0A156225-BED5-4CC9-8ECE-18B2D035B878}"
@@ -71,7 +74,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.UnitTests", "Tests\Rosterd.UnitTests\Rosterd.UnitTests.csproj", "{95DDB494-EC87-4B8A-B2FD-306066EB5803}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Client.Api.IntegrationTests", "Tests\Rosterd.Client.Api.IntegrationTests\Rosterd.Client.Api.IntegrationTests.csproj", "{A3FD9B26-2B18-43EB-8721-CA6560146EF4}"
-EndProject
 
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,6 +146,11 @@ Global
 		{8308F751-A7DE-4369-A077-46627D85FC0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8308F751-A7DE-4369-A077-46627D85FC0F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8308F751-A7DE-4369-A077-46627D85FC0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+
+		{6264D138-E753-4530-B560-C6F25A7996A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6264D138-E753-4530-B560-C6F25A7996A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6264D138-E753-4530-B560-C6F25A7996A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6264D138-E753-4530-B560-C6F25A7996A9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A156225-BED5-4CC9-8ECE-18B2D035B878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0A156225-BED5-4CC9-8ECE-18B2D035B878}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A156225-BED5-4CC9-8ECE-18B2D035B878}.Release|Any CPU.ActiveCfg = Release|Any CPU

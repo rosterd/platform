@@ -14,6 +14,15 @@ namespace Rosterd.Domain.Models
             Items = items;
         }
 
+        public PagedList(List<T> items, int totalCount, int currentPage, int pageSize, bool hasPrevious, bool hasNext)
+        {
+            TotalCount = totalCount;
+            PageSize = pageSize;
+            CurrentPage = currentPage;
+            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            Items = items;
+        }
+
         public PagedList(List<T> items, int totalCount, int currentPage, int pageSize)
         {
             TotalCount = totalCount;

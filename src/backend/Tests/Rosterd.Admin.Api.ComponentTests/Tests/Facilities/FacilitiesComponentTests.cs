@@ -25,11 +25,6 @@ namespace Rosterd.ComponentTests.Tests.Facilities
 
         private readonly ApiHelper _apiHelper;
 
-        public FacilitiesComponentTests(InMemoryWebApplicationFactory factory)
-        {
-            _apiHelper = new ApiHelper();
-        }
-
         [Fact]
         public async Task GivenFacilitiesWhenGetAllFacilitiesThenPagedListWithNumberOfFacilitiesRequested()
         {
