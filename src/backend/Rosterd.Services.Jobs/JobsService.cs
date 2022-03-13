@@ -268,7 +268,7 @@ namespace Rosterd.Services.Jobs
                 var cancelledStatus = (long) JobStatus.Cancelled;
                 var cancelledJobsForStaff =
                     from js in _context.JobStatusChanges.AsNoTracking()
-                    join job in _context.Jobs.AsNoTracking() on js.JobId equals job.JobId
+                    join job in _context.Jobs.AsNoTracking().Include(s => s.Facility) on js.JobId equals job.JobId
                     where js.JobStatusId == cancelledStatus && js.StaffId == staffId
                     select job;
 
