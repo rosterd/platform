@@ -23,12 +23,14 @@
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="5.0.6" />
     <PackageReference Include="Autofac" Version="6.2.0" />
     <PackageReference Include="FluentAssertions" Version="5.4.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj" />
     <ProjectReference Include="..\..\Rosterd.Domain\Rosterd.Domain.csproj" />
     <ProjectReference Include="..\..\Rosterd.Admin.Api\Rosterd.Admin.Api.csproj" />
+    <ProjectReference Include="..\..\Rosterd.Client.Api\Rosterd.Client.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,8 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Rosterd.Client.Api.Tests\Controllers" />
     <Folder Include="Rosterd.Client.Api.Tests\Services" />
-    <Folder Include="Rosterd.Client.Api.Utilities" />
   </ItemGroup>
 </Project>

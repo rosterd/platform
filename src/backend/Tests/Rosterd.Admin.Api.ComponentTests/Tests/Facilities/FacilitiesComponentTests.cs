@@ -1,8 +1,11 @@
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Flurl.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Rosterd.Admin.Api.Requests.Facility;
 using Rosterd.ComponentTests.Fixture;
@@ -20,22 +23,27 @@ namespace Rosterd.ComponentTests.Tests.Facilities
     public class FacilitiesComponentTests
     {
 
-        private readonly ApplicationFixture _appFixture = new ApplicationFixture();
+        private readonly ApiHelper _apiHelper;
 
+        public FacilitiesComponentTests(InMemoryWebApplicationFactory factory)
+        {
+            _apiHelper = new ApiHelper();
+        }
 
         [Fact]
         public async Task GivenFacilitiesWhenGetAllFacilitiesThenPagedListWithNumberOfFacilitiesRequested()
         {
-            // ENDPOINT URL
-            var url = ApiConstants.FACILITIES_ENDPOINT + "?PageNumber=1&PageSize=1";
 
             // GET FACILITIES
-            var response = await _appFixture.HttpClient.GetAsync(url);
+            var response = _apiHelper.GetApiRequest(ApiConstants.FACILITIES_ENDPOINT)
+                .SetQueryParam("PageNumber", 1)
+                .SetQueryParam("PageSize", 10)
+                .GetAsync().Result;
 
             // ASSERT
-            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(200);
 
-            var responsePagedList = JsonConvert.DeserializeObject<PagedList<FacilityModel>>(response.Content.ReadAsStringAsync().Result);
+            var responsePagedList = JsonConvert.DeserializeObject<PagedList<FacilityModel>>(response.ResponseMessage.Content.ReadAsStringAsync().Result);
 
             responsePagedList.PageSize.Should().Be(1);
             responsePagedList.Items.Count.Should().Be(1);
@@ -49,12 +57,12 @@ namespace Rosterd.ComponentTests.Tests.Facilities
             var url = ApiConstants.FACILITIES_ENDPOINT + "/" + facilityId;
 
             // GET FACILITIES
-            var response = await _appFixture.HttpClient.GetAsync(url);
+            var response =_apiHelper.GetApiRequest(url).GetAsync().Result;
 
             // ASSERT
-            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(200);
 
-            var facilityModel = JsonConvert.DeserializeObject<FacilityModel>(response.Content.ReadAsStringAsync().Result);
+            var facilityModel = JsonConvert.DeserializeObject<FacilityModel>(response.ResponseMessage.Content.ReadAsStringAsync().Result);
 
             await deleteFacilityAsync(facilityId);
         }
@@ -68,12 +76,12 @@ namespace Rosterd.ComponentTests.Tests.Facilities
             var url = ApiConstants.FACILITIES_ENDPOINT + "/" + facilityId;
 
             // GET FACILITIES
-            var response = await _appFixture.HttpClient.GetAsync(url);
+            var response = _apiHelper.GetApiRequest(url).GetAsync().Result;
 
             // ASSERT
-            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(200);
 
-            var facility = JsonConvert.DeserializeObject<FacilityModel>(response.Content.ReadAsStringAsync().Result);
+            var facility = JsonConvert.DeserializeObject<FacilityModel>(response.ResponseMessage.Content.ReadAsStringAsync().Result);
 
             await deleteFacilityAsync(facilityId);
         }
@@ -87,10 +95,10 @@ namespace Rosterd.ComponentTests.Tests.Facilities
             var url = ApiConstants.FACILITIES_ENDPOINT + "/" + facilityId;
 
             // GET FACILITIES
-            var response = await _appFixture.HttpClient.GetAsync(url);
+            var response = _apiHelper.GetApiRequest(url).GetAsync().Result;
 
             // ASSERT
-            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(200);
 
             await deleteFacilityAsync(facilityId);
         }
@@ -111,15 +119,15 @@ namespace Rosterd.ComponentTests.Tests.Facilities
                     PhoneNumber2 = "090898490"
             };
             var stringContent = new StringContent(JsonConvert.SerializeObject(addUpdateFacilityRequest), Encoding.UTF8, "application/json");
-            var response = await _appFixture.HttpClient.PostAsync(ApiConstants.FACILITIES_ENDPOINT, stringContent);
-            response.EnsureSuccessStatusCode();
+            var response = _apiHelper.GetApiRequest(ApiConstants.FACILITIES_ENDPOINT).PostAsync(stringContent).Result;
+            response.StatusCode.Should().Be(204);
             return facilityId;
         }
 
         private async Task deleteFacilityAsync(int facilityId)
         {
-            var response = await _appFixture.HttpClient.DeleteAsync(ApiConstants.FACILITIES_ENDPOINT+"/"+facilityId);
-            response.EnsureSuccessStatusCode();
+            var response =  _apiHelper.GetApiRequest(ApiConstants.FACILITIES_ENDPOINT).AppendPathSegment(facilityId).DeleteAsync().Result;
+            response.StatusCode.Should().Be(200);
         }
     }
 }
