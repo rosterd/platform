@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Flurl.Http;
+using Microsoft.AspNetCore.Mvc;
 using Rosterd.Client.Api.IntegrationTests.Helpers;
 using Rosterd.Client.Api.IntegrationTests.Utitlities;
 using Xunit;
@@ -37,11 +38,16 @@ namespace Rosterd.Client.Api.IntegrationTests.Tests.MyJobs
             var jobId = new JobDataHelper().publishJob(26, 2880);
 
             //call api
-            var response = _apiHelper.GetClientApiRequest(String.Format(ApiConstants.CANCEL_MY_ACCEPTED_JOBS, jobId))
-                .DeleteAsync().Result;
-
-            response.StatusCode.Should().Be(422);
-            response.ResponseMessage.Content.Should().Be("You have past the grace time to cancel this job.");
+            try
+            {
+                _apiHelper.GetClientApiRequest(String.Format(ApiConstants.CANCEL_MY_ACCEPTED_JOBS, jobId))
+                    .DeleteAsync();
+            }
+            catch (Exception exception)
+            {
+                exception.Should().BeOfType<UnprocessableEntityResult>();
+                exception.Message.Should().BeEquivalentTo("You have past the grace time to cancel this job.");
+            }
         }
     }
 }
