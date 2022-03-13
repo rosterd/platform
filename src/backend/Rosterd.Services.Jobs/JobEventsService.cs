@@ -117,13 +117,15 @@ namespace Rosterd.Services.Jobs
 
         public async Task AddAllActiveJobsToSearch()
         {
-            //Get the latest job info
             var publishedJobs = (int)JobStatus.Published;
+            var inprogressJobs = (int)JobStatus.InProgress;
+
+            //Get the latest job info
             var jobs = await _context.Jobs
                 .Include(s => s.JobSkills)
                 .Include(y => y.Facility)
                 .ThenInclude(s => s.Organzation)
-                .Where(s => s.JobStatusId == publishedJobs).ToListAsync();
+                .Where(s => s.JobStatusId == publishedJobs || s.JobStatusId == inprogressJobs).ToListAsync();
 
             //Translate to domain model to search model and save to search
             var allJobSkills = jobs.SelectMany(s => s.JobSkills).Distinct();
