@@ -24,8 +24,10 @@ namespace Rosterd.Services.Mappers
                 PhoneNumber1 = dataModel.PhoneNumber1,
                 PhoneNumber2 = dataModel.PhoneNumber2,
                 Organization = new OrganizationModel { OrganizationId = dataModel.OrganzationId},
-                IsActive = dataModel.IsActive
-            };
+                IsActive = dataModel.IsActive,
+                Latitude = dataModel.Latitude,
+                Longitude = dataModel.Longitude,
+        };
 
             return facilityModel;
         }
