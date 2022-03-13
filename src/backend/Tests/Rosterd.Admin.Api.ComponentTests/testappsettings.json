@@ -1,0 +1,41 @@
+{
+  "AppSettings": {
+    "StaticDataCacheDurationMinutes": 360, //The duration for which all server side static data will be cached (in minutes)
+    "Environment": "Dev",
+
+    "EventGridTopicEndpoint": "https://evgt-rosterd-nonprod.westus2-1.eventgrid.azure.net/api/events",
+    "EventGridTopicKey": "5iSIJsZ6sBWEf4u1TlbTQlylh3/ghgXOlfMkoWMVRUs=",
+
+    "SearchServiceEndpoint": "https://rosterd-dev-search.search.windows.net",
+    "SearchServiceApiKey": "DE7B3AC40CDD847B2AB8B8427BF42E19"
+  },
+
+  "ApplicationInsights": {
+    "InstrumentationKey": "7e2ebf37-9a6a-495a-81c6-2fcf6902cbb9"
+  },
+
+  "ConnectionStrings": {
+    "TableStorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=strosterdstoragedev;AccountKey=EoM27f5fmt0siT+uQmspne8jhgSdw9J55woZtn6CcpJzJVgHI9esz7nFOvMUQMMFMbG3L9IpjdLfRYrVXu1fzg==;EndpointSuffix=core.windows.net"
+  },
+
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    },
+    "ApplicationInsights": {
+      "LogLevel": {
+        "Default": "Information"
+      }
+    }
+  },
+
+  "AllowedHosts": "*",
+  "Auth0Settings": {
+    "Domain": "rosterd-dev1.au.auth0.com",
+    "Audience": "http://localhost:3000/dummy-api",
+    "ClientId": "gCwuvFSdacLuQ86jd3eStnChowVpw2cc",
+    "ClientSecret": "mM4svpI6f53vJMoD06ZKrjvKx5FdKnDfV0lWhBWRrPmj7vfbc58mEBtgVwKPCVw2",
+    "ConnectionId": "con_EmhlZoAB3zEz6FOH",
+    "ConnectionName": "Username-Password-Authentication"
+  }
+}
