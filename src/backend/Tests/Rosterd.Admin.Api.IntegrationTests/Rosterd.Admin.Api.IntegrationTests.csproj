@@ -33,9 +33,7 @@
     <Folder Include="Tests\" />
     <Folder Include="Config\" />
     <Folder Include="Resources\" />
-    <Folder Include="Resources\Environment\" />
     <Folder Include="Resources\Payloads\" />
-    <Folder Include="Tests\Facilities" />
     <Folder Include="Tests\Facilities\" />
     <Folder Include="Tests\Jobs" />
     <Folder Include="Tests\Jobs\" />

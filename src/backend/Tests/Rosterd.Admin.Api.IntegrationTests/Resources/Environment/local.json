@@ -1,7 +1,9 @@
 {
-  "BaseUrl": "https://app-rosterd-admin-api-dev.azurewebsites.net",
+  "AdminApiBaseUrl": "https://localhost:5001",
+  "ClientApiBaseUrl": "https://localhost:6001",
   "AuthUrl": "https://localhost:5001",
   "UserName": "",
-  "Password": "",
-  "AccessToken": ""
+  "Password":  "",
+  "AdminAccessToken":"",
+  "OrgAdminAccessToken": ""
 }
