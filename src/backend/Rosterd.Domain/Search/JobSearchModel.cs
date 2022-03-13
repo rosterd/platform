@@ -12,7 +12,7 @@ namespace Rosterd.Domain.Search
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
         public string Auth0OrganizationId { get; set; }
 
-        [SimpleField(IsKey = true, IsFilterable = true)]
+        [SimpleField(IsKey = true, IsFilterable = true, IsSortable = true)]
         public string JobId { get; set; }
 
         [SearchableField(AnalyzerName = LexicalAnalyzerName.Values.EnLucene)]
