@@ -250,7 +250,7 @@ namespace Rosterd.Services.Jobs
 
             var jobsForStaffQuery =
                 from js in _context.JobStaffs.AsNoTracking()
-                join job in _context.Jobs.AsNoTracking() on js.JobId equals job.JobId
+                join job in _context.Jobs.AsNoTracking().Include(s => s.Facility) on js.JobId equals job.JobId
                 where js.StaffId == staffId && statusList.Contains(job.JobStatusId)
                 select job;
 
