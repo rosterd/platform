@@ -11,11 +11,11 @@ using Xunit.Sdk;
 
 namespace Rosterd.Admin.Api.IntegrationTests.Tests.Facilities
 {
-    public class FacilitiesApiIntegrationTests
+    public class FacilitiesIntegrationTests
     {
         private ApiHelper _apiHelper;
 
-        public FacilitiesApiIntegrationTests()
+        public FacilitiesIntegrationTests()
         {
             _apiHelper = new ApiHelper();
         }
@@ -62,5 +62,6 @@ namespace Rosterd.Admin.Api.IntegrationTests.Tests.Facilities
             // assert
             facilityId.Should().NotBe(null);
         }
+
     }
 }

@@ -35,11 +35,8 @@
     <Folder Include="Resources\" />
     <Folder Include="Resources\Payloads\" />
     <Folder Include="Tests\Facilities\" />
-    <Folder Include="Tests\Jobs" />
     <Folder Include="Tests\Jobs\" />
-    <Folder Include="Tests\Skills" />
     <Folder Include="Tests\Skills\" />
-    <Folder Include="Tests\Staff" />
     <Folder Include="Tests\Staff\" />
     <Folder Include="Fixtures\" />
   </ItemGroup>
