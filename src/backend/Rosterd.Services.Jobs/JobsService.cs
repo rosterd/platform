@@ -236,10 +236,10 @@ namespace Rosterd.Services.Jobs
         {
             var currentJobsForStaffQuery =
                 _context.JobStaffs
-                        .Include(s => s.Job)
-                            .ThenInclude(s => s.Facility)
+                        .Include(s => s.Job).ThenInclude(s => s.Facility)
                         .Where(j => j.StaffId == staffId)
-                        .Select(s => s.Job);
+                        .Select(s => s.Job)
+                        .OrderBy(s => s.JobStartDateTimeUtc);
 
             var pagedList = await PagingList<Data.SqlServer.Models.Job>.ToPagingList(currentJobsForStaffQuery, pagingParameters.PageNumber, pagingParameters.PageSize);
 
@@ -256,6 +256,7 @@ namespace Rosterd.Services.Jobs
                 from js in _context.JobStaffs.AsNoTracking()
                 join job in _context.Jobs.AsNoTracking().Include(s => s.Facility) on js.JobId equals job.JobId
                 where js.StaffId == staffId && statusList.Contains(job.JobStatusId)
+                orderby job.JobEndDateTimeUtc descending
                 select job;
 
             var pagedList = await PagingList<Data.SqlServer.Models.Job>.ToPagingList(jobsForStaffQuery, pagingParameters.PageNumber, pagingParameters.PageSize);
@@ -274,6 +275,7 @@ namespace Rosterd.Services.Jobs
                     from js in _context.JobStatusChanges.AsNoTracking()
                     join job in _context.Jobs.AsNoTracking().Include(s => s.Facility) on js.JobId equals job.JobId
                     where js.JobStatusId == cancelledStatus && js.StaffId == staffId
+                    orderby job.JobEndDateTimeUtc descending
                     select job;
 
                 var pagedList = await PagingList<Data.SqlServer.Models.Job>.ToPagingList(cancelledJobsForStaff, pagingParameters.PageNumber, pagingParameters.PageSize);
