@@ -129,7 +129,8 @@ namespace Rosterd.Services.Jobs
 	    ///     "filter": "not IsNightShift and JobStartDateTimeUtc gt 2021-10-11T00:00:00.000Z",
 	    ///     "queryType": "full",
 	    ///     "searchMode": "all",
-	    ///     "count": true
+	    ///     "count": true,
+	    ///     "orderby": "JobId desc"
         /// }
         /// </summary>
         /// <param name="staffId"></param>
@@ -157,7 +158,8 @@ namespace Rosterd.Services.Jobs
                     //The jobs should still be active
                     Filter = $"JobStartDateTimeUtc gt {DateTimeOffset.UtcNow:O}",
                     Size = pagingParameters.PageSize,
-                    Skip = (pagingParameters.PageNumber - 1) * pagingParameters.PageSize
+                    Skip = (pagingParameters.PageNumber - 1) * pagingParameters.PageSize,
+                    OrderBy = { "JobId desc" }
                 };
 
             //Build query
