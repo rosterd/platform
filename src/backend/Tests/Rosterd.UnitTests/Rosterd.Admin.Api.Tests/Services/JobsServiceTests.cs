@@ -190,7 +190,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
             //Call CreateJob function
             var createResponse = _jobsService.CreateJob(job, auth0OrganizationId).Result;
 
-            await _jobsService.MovedAllPublishedStatusJobsPastTimeLimitToExpiredState();
+            await _jobsService.MoveAllPublishedStatusJobsPastTimeLimitToExpiredState();
 
             var getResponse = _jobsService.GetJob(createResponse.JobId, auth0OrganizationId).Result;
 

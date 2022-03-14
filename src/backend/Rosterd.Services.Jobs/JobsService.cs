@@ -347,7 +347,7 @@ namespace Rosterd.Services.Jobs
             });
 
         ///<inheritdoc/>
-        public async Task<List<long>> MovedAllPublishedStatusJobsPastTimeLimitToExpiredState()
+        public async Task<List<long>> MoveAllPublishedStatusJobsPastTimeLimitToExpiredState()
         {
             var publishedStatus = (long) JobStatus.Published;
             var currentDateTimeUtc = DateTime.UtcNow;
@@ -375,7 +375,7 @@ namespace Rosterd.Services.Jobs
 
 
         ///<inheritdoc/>
-        public async Task<List<long>> MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState()
+        public async Task<List<long>> MoveAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState()
         {
             var acceptedStatus = (long) JobStatus.Accepted;
             var currentDateTimeUtc = DateTime.UtcNow;

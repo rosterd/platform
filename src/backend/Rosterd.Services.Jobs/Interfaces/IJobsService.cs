@@ -119,7 +119,7 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// Gets all the jobs that have past their end datetime and needs to be expired
         /// </summary>
         /// <returns>Returns, the (jobid, Auth0organizationId) as key value pair</returns>
-        Task<List<long>> MovedAllPublishedStatusJobsPastTimeLimitToExpiredState();
+        Task<List<long>> MoveAllPublishedStatusJobsPastTimeLimitToExpiredState();
 
         /// <summary>
         /// Gets all accepted jobs that have past their start time and before end time

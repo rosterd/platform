@@ -38,7 +38,7 @@ namespace Rosterd.AzureFunctions
             _logger.LogInformation($"{nameof(MovedAllPublishedStatusJobsPastTimeLimitToExpiredState)} - triggered on UTC Time {DateTime.UtcNow}");
 
             //All the published jobs (ie: jobs that didn't get taken) if they have expired then move them to expired status
-            var expiredJobs = await _jobsService.MovedAllPublishedStatusJobsPastTimeLimitToExpiredState();
+            var expiredJobs = await _jobsService.MoveAllPublishedStatusJobsPastTimeLimitToExpiredState();
             await _jobEventsService.RemoveJobsFromSearch(expiredJobs);
         }
 
@@ -48,7 +48,7 @@ namespace Rosterd.AzureFunctions
             _logger.LogInformation($"{nameof(MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState)} - triggered on UTC Time {DateTime.UtcNow}");
 
             //All the accepted jobs, after start time and before end time move them to in progress status
-             await _jobsService.MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
+             await _jobsService.MoveAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
         }
 
         [FunctionName(nameof(MoveJobsPastEndDateToFeedbackState))]
