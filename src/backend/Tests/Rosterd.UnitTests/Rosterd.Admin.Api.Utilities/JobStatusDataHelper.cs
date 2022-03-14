@@ -13,8 +13,8 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
             var jobStatus3 = new JobStatusChange {JobStatusId = 3, JobStatusName = "In Progress"};
             var jobStatus4 = new JobStatusChange {JobStatusId = 4, JobStatusName = "Feedback Pending"};
             var jobStatus5 = new JobStatusChange {JobStatusId = 5, JobStatusName = "No Show"};
-            var jobStatus6 = new JobStatusChange {JobStatusId = 5, JobStatusName = "Completed"};
-            var jobStatus7 = new JobStatusChange {JobStatusId = 5, JobStatusName = "Expired"};
+            var jobStatus6 = new JobStatusChange {JobStatusId = 6, JobStatusName = "Completed"};
+            var jobStatus7 = new JobStatusChange {JobStatusId = 7, JobStatusName = "Expired"};
 
             context.JobStatusChanges.Add(jobStatus1);
             context.JobStatusChanges.Add(jobStatus2);

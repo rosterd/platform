@@ -42,6 +42,15 @@ namespace Rosterd.AzureFunctions
             await _jobEventsService.RemoveJobsFromSearch(expiredJobs);
         }
 
+        [FunctionName(nameof(MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState))]
+        public async Task MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState([TimerTrigger("%FunctionSettings:MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressStateSchedule%", RunOnStartup = false)] TimerInfo myTimer)
+        {
+            _logger.LogInformation($"{nameof(MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState)} - triggered on UTC Time {DateTime.UtcNow}");
+
+            //All the accepted jobs, after start time and before end time move them to in progress status
+             await _jobsService.MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
+        }
+
         [FunctionName(nameof(MoveJobsPastEndDateToFeedbackState))]
         public async Task MoveJobsPastEndDateToFeedbackState([TimerTrigger("%FunctionSettings:MoveJobsPastEndDateToFeedbackStateSchedule%", RunOnStartup = false)] TimerInfo myTimer)
         {

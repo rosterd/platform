@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -132,35 +133,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
         public async Task GivenJobWithRequiredFieldsWhenCreateJobThenJobCreated()
         {
             //Build Request
-            JobsDataHelper.ArrangeJobsTestData(_context);
-
-            var job8 = new JobModel()
-            {
-                JobId = 8,
-                JobTitle = "Level 1 HCA",
-                Description = "Level 1 HCA to cover a shift of 8 hours",
-                JobStartDateTimeUtc = new DateTime().AddDays(2),
-                JobEndDateTimeUtc = new DateTime().AddDays(2).AddHours(8),
-                JobPostedDateTimeUtc = new DateTime(),
-                Facility = new FacilityModel
-                {
-                    FacilityId = 1
-                },
-                Comments = "Unit test job",
-                GracePeriodToCancelMinutes = 60,
-                Responsibilities = "Showering, Lifting",
-                Experience = "1+ year",
-                IsNightShift = false,
-                JobSkills = new List<JobSkillModel>
-                {
-                    new JobSkillModel
-                    {
-                        SkillId = 1,
-                        SkillName = "Tester"
-                    }
-                }
-            };
-
+            var job = buildJobModel(DateTime.Now.AddDays(2), DateTime.Now.AddDays(2).AddHours(8));
             var organizationId = 1L;
             var auth0OrganizationId= "auth0|Test";
 
@@ -169,7 +142,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
                 .ReturnsAsync(new Organization { OrganizationId = organizationId});
 
             //Call CreateJob function
-            var createResponse = _jobsService.CreateJob(job8, auth0OrganizationId).Result;;
+            var createResponse = _jobsService.CreateJob(job, auth0OrganizationId).Result;;
 
             var getResponse = _jobsService.GetJob(createResponse.JobId, auth0OrganizationId).Result;
 
@@ -199,7 +172,120 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
             _belongsToValidatorMock.Verify(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()));
             exception.Should().BeOfType<AggregateException>();
             }
+        }
+
+        [Fact]
+        public async Task GivenPublishedJobPastEndTimeWhenChronJobThenMovedToExpiry()
+        {
+            //Build Request
+            var job = buildJobModel(DateTime.UtcNow.AddHours(-12), DateTime.UtcNow.AddHours(-4));
+
+            var organizationId = 1L;
+            var auth0OrganizationId= "auth0|Test";
+
+            //Mock Service Response Setup
+            _belongsToValidatorMock.Setup(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()))
+                .ReturnsAsync(new Organization { OrganizationId = organizationId});
+
+            //Call CreateJob function
+            var createResponse = _jobsService.CreateJob(job, auth0OrganizationId).Result;
+
+            await _jobsService.MovedAllPublishedStatusJobsPastTimeLimitToExpiredState();
+
+            var getResponse = _jobsService.GetJob(createResponse.JobId, auth0OrganizationId).Result;
+
+            //Assert
+            _belongsToValidatorMock.Verify(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()));
+            getResponse.JobStatus.Should().Be(JobStatus.Expired);
 
         }
+
+         [Fact]
+        public async Task GivenAcceptedJobPastStartTimeWhenChronJobThenMovedToInProgress()
+        {
+            //Build Request
+            StaffDataHelper.ArrangeStaffTestData(_context);
+
+            var job = buildJobModel(DateTime.UtcNow.AddMinutes(-5), DateTime.UtcNow.AddHours(7).AddMinutes(55));
+
+            var organizationId = 1L;
+            var auth0OrganizationId= "auth0|Test";
+
+            //Mock Service Response Setup
+            _belongsToValidatorMock.Setup(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()))
+                .ReturnsAsync(new Organization { OrganizationId = organizationId});
+
+            //Call CreateJob function
+            var createResponse = _jobsService.CreateJob(job, auth0OrganizationId).Result;
+
+            await _jobsService.AcceptJobForStaff(createResponse.JobId, 1);
+
+            await _jobsService.MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
+
+            var getResponse = _jobsService.GetJob(createResponse.JobId, auth0OrganizationId).Result;
+
+            //Assert
+            _belongsToValidatorMock.Verify(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()));
+            getResponse.JobStatus.Should().Be(JobStatus.InProgress);
+
+        }
+
+        [Fact]
+        public async Task GivenCompletedJobWhenChronJobThenMovedToFeebackPending()
+        {
+            //Build Request
+            StaffDataHelper.ArrangeStaffTestData(_context);
+
+            var job = buildJobModel(DateTime.UtcNow.AddHours(-7).AddMinutes(-59), DateTime.UtcNow.AddSeconds(1));
+
+            var organizationId = 1L;
+            var auth0OrganizationId= "auth0|Test";
+
+            //Mock Service Response Setup
+            _belongsToValidatorMock.Setup(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()))
+                .ReturnsAsync(new Organization { OrganizationId = organizationId});
+
+            //Call CreateJob function
+            var createResponse = _jobsService.CreateJob(job, auth0OrganizationId).Result;
+
+            await _jobsService.AcceptJobForStaff(createResponse.JobId, 1);
+
+            await _jobsService.MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
+
+            Thread.Sleep(1000);
+
+            await _jobsService.MoveAllJobsThatArePastEndDateToFeedbackStatus();
+
+            var getResponse = _jobsService.GetJob(createResponse.JobId, auth0OrganizationId).Result;
+
+            //Assert
+            _belongsToValidatorMock.Verify(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()));
+            getResponse.JobStatus.Should().Be(JobStatus.FeedbackPending);
+
+        }
+
+
+
+
+        private JobModel buildJobModel(DateTime startTime, DateTime endTime)
+        {
+            JobsDataHelper.ArrangeJobsTestData(_context);
+            return new JobModel
+            {
+                JobTitle = "Level 1 HCA",
+                Description = "Level 1 HCA to cover a shift of 8 hours",
+                JobStartDateTimeUtc = startTime,
+                JobEndDateTimeUtc = endTime,
+                Facility = new FacilityModel {FacilityId = 1},
+                Comments = "Unit test job",
+                GracePeriodToCancelMinutes = 60,
+                Responsibilities = "Showering, Lifting",
+                Experience = "1+ year",
+                IsNightShift = false,
+                JobSkills = new List<JobSkillModel> {new JobSkillModel {SkillId = 1, SkillName = "Tester"}}
+            };
+        }
+
+
     }
 }

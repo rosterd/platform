@@ -373,6 +373,34 @@ namespace Rosterd.Services.Jobs
             return expiredJobIds;
         }
 
+
+        ///<inheritdoc/>
+        public async Task<List<long>> MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState()
+        {
+            var acceptedStatus = (long) JobStatus.Accepted;
+            var currentDateTimeUtc = DateTime.UtcNow;
+            var inProgressJobIds = new List<long>();
+
+            var inProgressJobs = await _context.Jobs.Where(s => s.JobStatusId == acceptedStatus && s.JobStartDateTimeUtc < currentDateTimeUtc && s.JobEndDateTimeUtc > currentDateTimeUtc).Take(50).ToListAsync();
+            while (inProgressJobs.IsNotNullOrEmpty())
+            {
+                foreach (var inProgressJob in inProgressJobs)
+                {
+                    inProgressJob.JobStatusId = (long)JobStatus.InProgress;
+
+                    //Record history of this status change
+                    await CreateJobsStatusChangeRecord(inProgressJob.JobId, null, JobStatus.InProgress, $"AUTO-MOVE: Job InProgress, Accepted Job moved to In Progress status after the start time and before end time");
+
+                    inProgressJobIds.Add(inProgressJob.JobId);
+                }
+
+                await _context.SaveChangesAsync();
+                inProgressJobs = await _context.Jobs.Where(s => s.JobStatusId == acceptedStatus && s.JobStartDateTimeUtc < currentDateTimeUtc && s.JobEndDateTimeUtc > currentDateTimeUtc).Take(50).ToListAsync();
+            }
+
+            return inProgressJobIds;
+        }
+
         ///<inheritdoc/>
         public async Task MoveAllJobsThatArePastEndDateToFeedbackStatus()
         {
