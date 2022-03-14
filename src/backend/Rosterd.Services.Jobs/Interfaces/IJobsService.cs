@@ -125,7 +125,7 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// Gets all accepted jobs that have past their start time and before end time
         /// </summary>
         /// <returns>Returns, the (jobid, Auth0organizationId) as key value pair</returns>
-        Task<List<long>> MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
+        Task<List<long>> MoveAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
 
         /// <summary>
         /// Gets all the jobs that are finished and the status needs to be set to feedback

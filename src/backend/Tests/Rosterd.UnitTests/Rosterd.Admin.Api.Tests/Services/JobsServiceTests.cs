@@ -220,7 +220,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
 
             await _jobsService.AcceptJobForStaff(createResponse.JobId, 1);
 
-            await _jobsService.MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
+            await _jobsService.MoveAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
 
             var getResponse = _jobsService.GetJob(createResponse.JobId, auth0OrganizationId).Result;
 
@@ -250,7 +250,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
 
             await _jobsService.AcceptJobForStaff(createResponse.JobId, 1);
 
-            await _jobsService.MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
+            await _jobsService.MoveAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
 
             Thread.Sleep(1000);
 
