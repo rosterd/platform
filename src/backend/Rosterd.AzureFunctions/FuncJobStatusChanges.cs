@@ -51,14 +51,26 @@ namespace Rosterd.AzureFunctions
              await _jobsService.MoveAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
         }
 
-        [FunctionName(nameof(MoveJobsPastEndDateToFeedbackState))]
-        public async Task MoveJobsPastEndDateToFeedbackState([TimerTrigger("%FunctionSettings:MoveJobsPastEndDateToFeedbackStateSchedule%", RunOnStartup = false)] TimerInfo myTimer)
+        // This is for MVP only
+        [FunctionName(nameof(MoveInProgressJobsPastEndDateToCompletedState))]
+        public async Task MoveInProgressJobsPastEndDateToCompletedState([TimerTrigger("%FunctionSettings:MoveInProgressJobsPastEndDateToCompletedState%", RunOnStartup = false)] TimerInfo myTimer)
         {
-            _logger.LogInformation($"{nameof(MoveJobsPastEndDateToFeedbackState)} - triggered on UTC Time {DateTime.UtcNow}");
+            _logger.LogInformation($"{nameof(MoveInProgressJobsPastEndDateToCompletedState)} - triggered on UTC Time {DateTime.UtcNow}");
 
-            //Move all the jobs that need to be moved to feedback pending
-            await _jobsService.MoveAllJobsThatArePastEndDateToFeedbackStatus();
+            //Move all the inprogress after the endtime to completed
+            await _jobsService.MoveInProgressJobsPastEndDateToCompletedState();
         }
+
+        // Commenting this as this feature is deployed after MVP
+
+        // [FunctionName(nameof(MoveJobsPastEndDateToFeedbackState))]
+        // public async Task MoveJobsPastEndDateToFeedbackState([TimerTrigger("%FunctionSettings:MoveJobsPastEndDateToFeedbackStateSchedule%", RunOnStartup = false)] TimerInfo myTimer)
+        // {
+        //     _logger.LogInformation($"{nameof(MoveJobsPastEndDateToFeedbackState)} - triggered on UTC Time {DateTime.UtcNow}");
+        //
+        //     //Move all the jobs that need to be moved to feedback pending
+        //     await _jobsService.MoveAllJobsThatArePastEndDateToFeedbackStatus();
+        // }
 
         [FunctionName(nameof(MoveFinishedJobsFromSearch))]
         public async Task MoveFinishedJobsFromSearch([TimerTrigger("%FunctionSettings:MoveFinishedJobsFromSearchSchedule%", RunOnStartup = false)] TimerInfo myTimer)

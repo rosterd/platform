@@ -231,12 +231,12 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
         }
 
         [Fact]
-        public async Task GivenCompletedJobWhenChronJobThenMovedToFeebackPending()
+        public async Task GivenInProgressJobPastEndTimeWhenChronJobThenMovedCompleted()
         {
             //Build Request
             StaffDataHelper.ArrangeStaffTestData(_context);
 
-            var job = buildJobModel(DateTime.UtcNow.AddHours(-7).AddMinutes(-59), DateTime.UtcNow.AddSeconds(1));
+            var job = buildJobModel(DateTime.UtcNow.AddHours(-7).AddMinutes(-59), DateTime.UtcNow.AddMilliseconds(1000));
 
             var organizationId = 1L;
             var auth0OrganizationId= "auth0|Test";
@@ -254,15 +254,49 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
 
             Thread.Sleep(1000);
 
-            await _jobsService.MoveAllJobsThatArePastEndDateToFeedbackStatus();
+            await _jobsService.MoveInProgressJobsPastEndDateToCompletedState();
 
             var getResponse = _jobsService.GetJob(createResponse.JobId, auth0OrganizationId).Result;
 
             //Assert
             _belongsToValidatorMock.Verify(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()));
-            getResponse.JobStatus.Should().Be(JobStatus.FeedbackPending);
+            getResponse.JobStatus.Should().Be(JobStatus.Completed);
 
         }
+
+        // [Fact]
+        // public async Task GivenCompletedJobWhenChronJobThenMovedToFeebackPending()
+        // {
+        //     //Build Request
+        //     StaffDataHelper.ArrangeStaffTestData(_context);
+        //
+        //     var job = buildJobModel(DateTime.UtcNow.AddHours(-7).AddMinutes(-59), DateTime.UtcNow.AddSeconds(1));
+        //
+        //     var organizationId = 1L;
+        //     var auth0OrganizationId= "auth0|Test";
+        //
+        //     //Mock Service Response Setup
+        //     _belongsToValidatorMock.Setup(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()))
+        //         .ReturnsAsync(new Organization { OrganizationId = organizationId});
+        //
+        //     //Call CreateJob function
+        //     var createResponse = _jobsService.CreateJob(job, auth0OrganizationId).Result;
+        //
+        //     await _jobsService.AcceptJobForStaff(createResponse.JobId, 1);
+        //
+        //     await _jobsService.MoveAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
+        //
+        //     Thread.Sleep(1000);
+        //
+        //     await _jobsService.MoveAllJobsThatArePastEndDateToFeedbackStatus();
+        //
+        //     var getResponse = _jobsService.GetJob(createResponse.JobId, auth0OrganizationId).Result;
+        //
+        //     //Assert
+        //     _belongsToValidatorMock.Verify(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()));
+        //     getResponse.JobStatus.Should().Be(JobStatus.FeedbackPending);
+        //
+        // }
 
 
 

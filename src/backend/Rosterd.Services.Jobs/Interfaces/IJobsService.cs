@@ -127,6 +127,13 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// <returns>Returns, the (jobid, Auth0organizationId) as key value pair</returns>
         Task<List<long>> MoveAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
 
+
+        /// <summary>
+        /// Gets all completed jobs
+        /// </summary>
+        /// <returns>Returns, the (jobid, Auth0organizationId) as key value pair</returns>
+        Task<List<long>> MoveInProgressJobsPastEndDateToCompletedState();
+
         /// <summary>
         /// Gets all the jobs that are finished and the status needs to be set to feedback
         /// </summary>

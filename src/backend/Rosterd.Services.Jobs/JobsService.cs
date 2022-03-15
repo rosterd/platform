@@ -402,6 +402,33 @@ namespace Rosterd.Services.Jobs
         }
 
         ///<inheritdoc/>
+        public async Task<List<long>> MoveInProgressJobsPastEndDateToCompletedState()
+        {
+            var inProgressStatus = (long) JobStatus.InProgress;
+            var currentDateTimeUtc = DateTime.UtcNow;
+            var completedJobIds = new List<long>();
+
+            var completedJobs = await _context.Jobs.Where(s => s.JobStatusId == inProgressStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).Take(50).ToListAsync();
+            while (completedJobs.IsNotNullOrEmpty())
+            {
+                foreach (var completedJob in completedJobs)
+                {
+                    completedJob.JobStatusId = (long)JobStatus.Completed;
+
+                    //Record history of this status change
+                    await CreateJobsStatusChangeRecord(completedJob.JobId, null, JobStatus.Completed, $"AUTO-MOVE: Job Completed, InProgress Job moved to Completed status after the end time");
+
+                    completedJobIds.Add(completedJob.JobId);
+                }
+
+                await _context.SaveChangesAsync();
+                completedJobs = await _context.Jobs.Where(s => s.JobStatusId == inProgressStatus && s.JobEndDateTimeUtc < currentDateTimeUtc).Take(50).ToListAsync();
+            }
+
+            return completedJobIds;
+        }
+
+        ///<inheritdoc/>
         public async Task MoveAllJobsThatArePastEndDateToFeedbackStatus()
         {
             var inProgressStatus = (long) JobStatus.InProgress;
