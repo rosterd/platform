@@ -1,17 +1,17 @@
-import React, {useState} from 'react';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import LanguageSwitcher from '../../LanguageSwitcher';
+// import MoreIcon from '@material-ui/icons/MoreVert';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import Menu from '@material-ui/core/Menu';
+// import LanguageSwitcher from '../../LanguageSwitcher';
 import Hidden from '@material-ui/core/Hidden';
 import Box from '@material-ui/core/Box';
 import useStyles from './AppHeader.style';
-import HeaderMessages from '../../HeaderMessages';
-import Notifications from '../../Notifications';
+// import HeaderMessages from '../../HeaderMessages';
+// import Notifications from '../../Notifications';
 import AppLogo from '../../../../shared/components/AppLogo';
 import clsx from 'clsx';
 import {toggleNavCollapsed, useLayoutActionsContext} from '../LayoutContextProvider';
@@ -22,35 +22,35 @@ const AppHeader: React.FC<AppHeaderProps> = () => {
   const classes = useStyles();
   const dispatch = useLayoutActionsContext()!;
 
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
+  // const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
 
-  function handleMobileMenuClose() {
-    setMobileMoreAnchorEl(null);
-  }
+  // function handleMobileMenuClose() {
+  //   setMobileMoreAnchorEl(null);
+  // }
 
-  function handleMobileMenuOpen(event: React.MouseEvent<HTMLElement>) {
-    setMobileMoreAnchorEl(event.currentTarget);
-  }
+  // function handleMobileMenuOpen(event: React.MouseEvent<HTMLElement>) {
+  //   setMobileMoreAnchorEl(event.currentTarget);
+  // }
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{vertical: 'top', horizontal: 'right'}}
-      open={Boolean(mobileMoreAnchorEl)}
-      onClose={handleMobileMenuClose}>
-      <MenuItem className={classes.menuItemRoot}>
-        <HeaderMessages />
-      </MenuItem>
-      <MenuItem className={classes.menuItemRoot}>
-        <Notifications />
-      </MenuItem>
-      <LanguageSwitcher />
-    </Menu>
-  );
+  // const mobileMenuId = 'primary-search-account-menu-mobile';
+  // // const renderMobileMenu = (
+  // //   <Menu
+  // //     anchorEl={mobileMoreAnchorEl}
+  // //     anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+  // //     id={mobileMenuId}
+  // //     keepMounted
+  // //     transformOrigin={{vertical: 'top', horizontal: 'right'}}
+  // //     open={Boolean(mobileMoreAnchorEl)}
+  // //     onClose={handleMobileMenuClose}>
+  // //     <MenuItem className={classes.menuItemRoot}>
+  // //       <HeaderMessages />
+  // //     </MenuItem>
+  // //     {/* <MenuItem className={classes.menuItemRoot}>
+  // //       <Notifications />
+  // //     </MenuItem> */}
+  // //     <LanguageSwitcher />
+  // //   </Menu>
+  // // );
 
   return (
     <>
@@ -63,17 +63,16 @@ const AppHeader: React.FC<AppHeaderProps> = () => {
           </Hidden>
           <AppLogo />
           <Box className={classes.grow} />
-          <Box className={classes.sectionDesktop}>
+          {/* <Box className={classes.sectionDesktop}>
             <Notifications />
-          </Box>
-          <Box className={classes.sectionMobile}>
+          </Box> */}
+          {/* <Box className={classes.sectionMobile}>
             <IconButton aria-label='show more' aria-controls={mobileMenuId} aria-haspopup='true' onClick={handleMobileMenuOpen} color='inherit'>
               <MoreIcon />
             </IconButton>
-          </Box>
+          </Box> */}
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
     </>
   );
 };

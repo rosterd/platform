@@ -1,30 +1,27 @@
-import React from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import LanguageSwitcher from "../../LanguageSwitcher";
-import Hidden from "@material-ui/core/Hidden";
-import Box from "@material-ui/core/Box";
-import HeaderMessages from "../../HeaderMessages";
-import Notifications from "../../Notifications";
-import SearchBar from "../../SearchBar";
-import useStyles from "./AppHeader.style";
-import AppLogo from "../../../../shared/components/AppLogo";
-import { toggleNavCollapsed, useLayoutActionsContext } from "../LayoutContextProvider";
+import React from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import LanguageSwitcher from '../../LanguageSwitcher';
+import Hidden from '@material-ui/core/Hidden';
+import Box from '@material-ui/core/Box';
+import HeaderMessages from '../../HeaderMessages';
+import Notifications from '../../Notifications';
+import SearchBar from '../../SearchBar';
+import useStyles from './AppHeader.style';
+import AppLogo from '../../../../shared/components/AppLogo';
+import {toggleNavCollapsed, useLayoutActionsContext} from '../LayoutContextProvider';
 
 interface AppHeaderProps {}
 
 const AppHeader: React.FC<AppHeaderProps> = () => {
   const classes = useStyles();
   const dispatch = useLayoutActionsContext()!;
-  const [
-    mobileMoreAnchorEl,
-    setMobileMoreAnchorEl,
-  ] = React.useState<null | HTMLElement>(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -61,12 +58,7 @@ const AppHeader: React.FC<AppHeaderProps> = () => {
       <AppBar className='app-bar' color='inherit'>
         <Toolbar className={classes.appToolbar}>
           <Hidden lgUp>
-            <IconButton
-              edge='start'
-              className={classes.menuButton}
-              color='inherit'
-              aria-label='open drawer'
-              onClick={() => dispatch(toggleNavCollapsed())}>
+            <IconButton edge='start' className={classes.menuButton} color='inherit' aria-label='open drawer' onClick={() => dispatch(toggleNavCollapsed())}>
               <MenuIcon className={classes.menuIcon} />
             </IconButton>
           </Hidden>
@@ -80,12 +72,7 @@ const AppHeader: React.FC<AppHeaderProps> = () => {
             <Notifications />
           </Box>
           <Box className={classes.sectionMobile}>
-            <IconButton
-              aria-label='show more'
-              aria-controls={mobileMenuId}
-              aria-haspopup='true'
-              onClick={handleMobileMenuOpen}
-              color='inherit'>
+            <IconButton aria-label='show more' aria-controls={mobileMenuId} aria-haspopup='true' onClick={handleMobileMenuOpen} color='inherit'>
               <MoreIcon />
             </IconButton>
           </Box>

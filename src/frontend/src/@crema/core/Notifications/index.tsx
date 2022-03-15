@@ -1,9 +1,7 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
-import notification, {
-  NotificationData,
-} from '../../services/db/notifications/notification';
+import notification, {NotificationData} from '../../services/db/notifications/notification';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import {makeStyles, Popover} from '@material-ui/core';
 import List from '@material-ui/core/List';
@@ -94,14 +92,9 @@ const useStyles = makeStyles((theme: CremaTheme) => ({
 interface NotificationsProps {}
 
 const Notifications: React.FC<NotificationsProps> = () => {
-  const [
-    anchorNotification,
-    setAnchorNotification,
-  ] = React.useState<HTMLButtonElement | null>(null);
+  const [anchorNotification, setAnchorNotification] = React.useState<HTMLButtonElement | null>(null);
 
-  const onClickNotificationButton = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
+  const onClickNotificationButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorNotification(event.currentTarget);
   };
 
@@ -109,26 +102,12 @@ const Notifications: React.FC<NotificationsProps> = () => {
 
   return (
     <>
-      <IconButton
-        className={clsx(classes.notiBtn, 'notiBtn')}
-        aria-label='show 17 new notifications'
-        color='inherit'
-        onClick={onClickNotificationButton}>
-        <Badge
-          className={classes.badge}
-          badgeContent={notification.length}
-          color='secondary'>
-          <NotificationsActiveIcon
-            className={clsx(classes.notiIcon, 'notiIcon')}
-          />
+      <IconButton className={clsx(classes.notiBtn, 'notiBtn')} aria-label='show 17 new notifications' color='inherit' onClick={onClickNotificationButton}>
+        <Badge className={classes.badge} badgeContent={notification.length} color='primary'>
+          <NotificationsActiveIcon className={clsx(classes.notiIcon, 'notiIcon')} />
         </Badge>
         <Hidden mdUp>
-          <Box
-            ml={4}
-            fontSize={16}
-            fontFamily='Poppins'
-            fontWeight={Fonts.REGULAR}
-            component='span'>
+          <Box ml={4} fontSize={16} fontFamily='Poppins' fontWeight={Fonts.REGULAR} component='span'>
             <IntlMessages id='common.notifications' />
           </Box>
         </Hidden>
@@ -167,10 +146,7 @@ const Notifications: React.FC<NotificationsProps> = () => {
             </List>
           </Scrollbar>
           <Box mt={2}>
-            <Button
-              className={classes.btnPopover}
-              variant='contained'
-              color='primary'>
+            <Button className={classes.btnPopover} variant='contained' color='primary'>
               <IntlMessages id='common.viewAll' />
             </Button>
           </Box>
