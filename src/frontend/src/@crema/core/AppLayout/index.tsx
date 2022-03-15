@@ -26,12 +26,13 @@ const CremaLayout: React.FC<CremaLayoutProps> = () => {
         if (orgId) localStorage.setItem('organization_id', orgId);
 
         updateAuthUser({
-          uid: '',
-          displayName: user?.nickname,
+          uid: user?.sub || '',
+          displayName: user?.given_name,
           email: user?.email,
           authType: AuthType.AUTH0,
           role: roles || [],
           orgId: idToken?.org_id,
+          photoURL: user?.picture,
         });
       }
     })();

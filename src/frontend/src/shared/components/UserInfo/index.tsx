@@ -43,8 +43,7 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: 'nowrap',
     fontSize: 16,
     fontWeight: Fonts.MEDIUM,
-    color: (props: {themeMode: ThemeMode}) =>
-      props.themeMode === ThemeMode.LIGHT ? '#313541' : 'white',
+    color: (props: {themeMode: ThemeMode}) => (props.themeMode === ThemeMode.LIGHT ? '#313541' : 'white'),
   },
   designation: {
     marginTop: -2,
@@ -60,9 +59,7 @@ const useStyles = makeStyles((theme) => ({
 const UserInfo = (): JSX.Element => {
   const {logout} = useAuth0();
 
-  const {themeMode, updateAuthUser} = useContext<AppContextPropsType>(
-    AppContext,
-  );
+  const {themeMode, updateAuthUser} = useContext<AppContextPropsType>(AppContext);
   const user: AuthUser | null = useAuthUser();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -91,12 +88,30 @@ const UserInfo = (): JSX.Element => {
     return '';
   };
 
-  const classes = useStyles({themeMode});
+  const getRole = () => {
+    if (user && user.role) {
+      const role = user.role[0];
+      switch (role) {
+        case 'FacilityAdmin': {
+          return 'Facility Manager';
+        }
+        case 'OrganizationAdmin': {
+          return 'Organization Admin';
+        }
+        case 'RosterdAdmin': {
+          return 'Rosterd Admin';
+        }
+        default: {
+          return 'Manager';
+        }
+      }
+    }
+    return 'Admin';
+  };
 
+  const classes = useStyles({themeMode});
   return (
-    <Box
-      px={{xs: 4, xl: 7}}
-      className={clsx(classes.crUserInfo, 'cr-user-info')}>
+    <Box px={{xs: 4, xl: 7}} className={clsx(classes.crUserInfo, 'cr-user-info')}>
       <Box display='flex' alignItems='center'>
         {user && user.photoURL ? (
           <Avatar className={classes.profilePic} src={user.photoURL} />
@@ -104,30 +119,18 @@ const UserInfo = (): JSX.Element => {
           <Avatar className={classes.profilePic}>{getUserAvatar()}</Avatar>
         )}
         <Box ml={4} className={clsx(classes.userInfo, 'user-info')}>
-          <Box
-            display='flex'
-            alignItems='center'
-            justifyContent='space-between'>
+          <Box display='flex' alignItems='center' justifyContent='space-between'>
             <Box mb={0} className={clsx(classes.userName)}>
-              {user && (user.displayName ? 'Kishore varma' : 'Admin User ')}
+              {user && (user.displayName ? user.displayName : 'Admin User ')}
             </Box>
-            <Box
-              ml={3}
-              className={classes.pointer}
-              color={themeMode === 'light' ? '#313541' : 'white'}>
+            <Box ml={3} className={classes.pointer} color={themeMode === 'light' ? '#313541' : 'white'}>
               <ExpandMoreIcon onClick={handleClick} />
-              <Menu
-                id='simple-menu'
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}>
-                <MenuItem>My account</MenuItem>
+              <Menu id='simple-menu' anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
                 <MenuItem onClick={onUserSignout}>Logout</MenuItem>
               </Menu>
             </Box>
           </Box>
-          <Box className={classes.designation}>System Manager</Box>
+          <Box className={classes.designation}>{getRole()}</Box>
         </Box>
       </Box>
     </Box>
