@@ -71,4 +71,4 @@ stages:
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az cdn endpoint purge -g rg-rosterd-common --profile-name rosterd --content-paths "/$web/index.html" --name rosterd
+                az cdn endpoint purge -g rg-rosterd-common --profile-name rosterd --content-paths "/$web/*" --name rosterd
