@@ -93,7 +93,8 @@ stages:
                             -FunctionSettings:SearchServiceApiKey "$(FunctionSettings:SearchServiceApiKey)"
                             -FunctionSettings:TableStorageConnectionString "$(FunctionSettings:TableStorageConnectionString)"
                             -FunctionSettings:MovedJobsPastTimeLimitToExpiredStateSchedule "0 */5 * * * *"
-                            -FunctionSettings:MoveJobsPastEndDateToFeedbackStateSchedule "0 */5 * * * *"
-                            -FunctionSettings:MoveFinishedJobsFromSearchSchedule "0 */5 * * * *"
+                            -FunctionSettings:MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressStateSchedule "0 */5 * * * *"
+                            -FunctionSettings:MoveInProgressJobsPastEndDateToCompletedState "0 */5 * * * *"
+                            -FunctionSettings:MoveFinishedJobsFromSearchSchedule "0 */5 * * * *"                           
                             -APPINSIGHTS_INSTRUMENTATIONKEY "$(ApplicationInsights.InstrumentationKey)"
                           '
