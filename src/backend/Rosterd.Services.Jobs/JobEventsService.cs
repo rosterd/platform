@@ -132,7 +132,9 @@ namespace Rosterd.Services.Jobs
             var jobsSkills = await GetSkills(allJobSkills.ToList());
 
             var jobsToAddToSearch = jobs.Select(job => job.ToSearchModel(jobsSkills, job.Facility.Organzation.Auth0OrganizationId)).ToList();
-            await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, jobsToAddToSearch);
+
+            if(jobsToAddToSearch.IsNotNullOrEmpty())
+                await _searchIndexProvider.AddOrUpdateDocumentsToIndex(RosterdConstants.Search.JobsIndex, jobsToAddToSearch);
         }
 
         private async Task<List<Skill>> GetSkills(List<JobSkill> jobSkills)

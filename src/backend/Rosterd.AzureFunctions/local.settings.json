@@ -24,6 +24,8 @@
     "FunctionSettings:MoveJobsPastEndDateToFeedbackStateSchedule": "0 0 */6 * * *",
 
     //Move finished jobs from search every 24 hours
-    "FunctionSettings:MoveFinishedJobsFromSearchSchedule": "0 0 0 * * *"
+    "FunctionSettings:MoveFinishedJobsFromSearchSchedule": "0 0 0 * * *",
+    "FunctionSettings:MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressStateSchedule": "0 0 0 * * *",
+    "FunctionSettings:MoveInProgressJobsPastEndDateToCompletedState": "0 0 0 * * *"
   }
 }
