@@ -17,15 +17,17 @@
     //Time trigger schedules and settings
     //----------------------------------------------
 
-    //Move expired jobs to expired state every 30 minutes
-    "FunctionSettings:MovedJobsPastTimeLimitToExpiredStateSchedule": "0 */30 * * * *",
+    //Move expired jobs to expired state every 5 minutes for testing
+    "FunctionSettings:MovedJobsPastTimeLimitToExpiredStateSchedule": "0 */05 * * * *",
+    //Move accepted jobs to inprogress state every 5 minutes for testing
+    "FunctionSettings:MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressStateSchedule": "0 */05 * * * *",
+    //Move inprogress jobs to complete state every 5 minutes for testing
+    "FunctionSettings:MoveInProgressJobsPastEndDateToCompletedState": "0 */05 * * * *",
 
     //Move jobs that have past the finished date to feedback state every 6 hours
     "FunctionSettings:MoveJobsPastEndDateToFeedbackStateSchedule": "0 0 */6 * * *",
 
     //Move finished jobs from search every 24 hours
-    "FunctionSettings:MoveFinishedJobsFromSearchSchedule": "0 0 0 * * *",
-    "FunctionSettings:MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressStateSchedule": "0 0 0 * * *",
-    "FunctionSettings:MoveInProgressJobsPastEndDateToCompletedState": "0 0 0 * * *"
+    "FunctionSettings:MoveFinishedJobsFromSearchSchedule": "0 0 0 * * *"
   }
 }
