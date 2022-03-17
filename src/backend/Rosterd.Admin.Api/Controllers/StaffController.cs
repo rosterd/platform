@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Messaging;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
@@ -74,20 +75,6 @@ namespace Rosterd.Admin.Api.Controllers
             return staffModel;
         }
 
-        ///// <summary>
-        ///// Adds a new Staff member
-        ///// </summary>
-        ///// <param name="request">The Staff member to add</param>
-        ///// <returns></returns>
-        //[HttpPost("Test")]
-        //[AllowAnonymous]
-        //public async Task<ActionResult<StaffModel>> Test([FromBody] AddStaffRequest request)
-        //{
-        //    //Generate a new staff created event
-        //    await _staffEventsService.GenerateStaffCreatedOrUpdatedEvent(10, "test");
-        //    return Ok();
-        //}
-
         /// <summary>
         /// Adds a new Staff member
         /// </summary>
@@ -106,6 +93,8 @@ namespace Rosterd.Admin.Api.Controllers
             //2. Create the staff in our db
             var staffToCreateInDb = request.ToStaffModel();
             staffToCreateInDb.Auth0Id = userCreatedInAuth0.UserAuth0Id;
+            staffToCreateInDb.StaffRole = RosterdRoleEnum.Staff.ToString();
+
             var staff = await _staffService.CreateStaff(staffToCreateInDb, _userContext.UsersAuth0OrganizationId);
 
             //A new staff added, update the Azure Search

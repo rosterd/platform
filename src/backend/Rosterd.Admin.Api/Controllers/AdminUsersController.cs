@@ -9,6 +9,7 @@ using Rosterd.Admin.Api.Requests.AdminUser;
 using Rosterd.Admin.Api.Requests.Staff;
 using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.AdminUserModels;
@@ -74,6 +75,17 @@ namespace Rosterd.Admin.Api.Controllers
 
             var auth0OrganizationId = _userContext.IsUserRosterdAdmin() ? request.Auth0OrganizationId : _userContext.UsersAuth0OrganizationId;
             var adminUserModel = await _adminUserService.AddOrganizationAdminToAuth0(auth0OrganizationId, request.ToModel());
+
+            if (_userContext.IsUserOrganizationAdmin())
+            {
+                //2. Create the staff record in our db
+                var staffToCreate = request.ToStaffModel();
+                staffToCreate.Auth0Id = adminUserModel.UserAuth0Id;
+                staffToCreate.StaffRole = RosterdRoleEnum.OrganizationAdmin.ToString();
+
+                var staffCreated = await _staffService.CreateStaff(staffToCreate, _userContext.UsersAuth0OrganizationId);
+            }
+
             return adminUserModel;
         }
 
@@ -90,6 +102,17 @@ namespace Rosterd.Admin.Api.Controllers
 
             var auth0OrganizationId = _userContext.IsUserRosterdAdmin() ? request.Auth0OrganizationId : _userContext.UsersAuth0OrganizationId;
             var adminUserModel = await _adminUserService.UpdateOrganizationAdminInAuth0(auth0OrganizationId, request.ToAuth0UserModel());
+
+            if (_userContext.IsUserOrganizationAdmin())
+            {
+                //2. Create the staff record in our db
+                var staffToCreate = request.ToStaffModel();
+                staffToCreate.Auth0Id = adminUserModel.UserAuth0Id;
+                staffToCreate.StaffRole = RosterdRoleEnum.OrganizationAdmin.ToString();
+
+                var staffCreated = await _staffService.CreateStaff(staffToCreate, _userContext.UsersAuth0OrganizationId);
+            }
+
             return adminUserModel;
         }
 
@@ -120,6 +143,8 @@ namespace Rosterd.Admin.Api.Controllers
             //2. Create the staff record in our db
             var staffToCreate = request.ToStaffModel();
             staffToCreate.Auth0Id = adminUserModel.UserAuth0Id;
+            staffToCreate.StaffRole = RosterdRoleEnum.FacilityAdmin.ToString();
+
             var staffCreated = await _staffService.CreateStaff(staffToCreate, _userContext.UsersAuth0OrganizationId);
 
             return staffCreated;

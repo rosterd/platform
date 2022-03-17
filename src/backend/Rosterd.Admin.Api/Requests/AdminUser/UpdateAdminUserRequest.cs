@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Rosterd.Admin.Api.Services;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Models.AdminUserModels;
 using Rosterd.Domain.Models.FacilitiesModels;
 using Rosterd.Domain.Models.SkillsModels;
@@ -39,5 +40,19 @@ namespace Rosterd.Admin.Api.Requests.AdminUser
         public string PhoneNumber { get; set; }
 
         public Auth0UserModel ToAuth0UserModel() => new Auth0UserModel {FirstName = FirstName, LastName = LastName, MobilePhoneNumber = PhoneNumber, UserAuth0Id = Auth0UserId};
+
+        public StaffModel ToStaffModel() =>
+           new StaffModel
+           {
+               FirstName = FirstName,
+               IsActive = true,
+               JobTitle = RosterdRoleEnum.OrganizationAdmin.ToString(),
+               LastName = LastName,
+               MobilePhoneNumber = "NA",
+               Comments = "NA",
+
+               StaffSkills = new List<SkillModel>(),
+               StaffFacilities = new List<FacilityModel>()
+           };
     }
 }

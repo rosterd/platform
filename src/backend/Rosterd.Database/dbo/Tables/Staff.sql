@@ -9,9 +9,12 @@
     [Email]             NVARCHAR (1000) NULL,
     [MobilePhoneNumber] NVARCHAR (1000) NULL,
     [Comments]          NVARCHAR (1000) NULL,
+    [StaffRole]         NVARCHAR (1000) NULL,
     CONSTRAINT [Pk_Staff_StaffId] PRIMARY KEY CLUSTERED ([StaffId] ASC),
     CONSTRAINT [FK_Staff_Organization] FOREIGN KEY ([OrganizationId]) REFERENCES [dbo].[Organization] ([OrganizationId])
 );
+
+
 
 
 

@@ -43,6 +43,9 @@ namespace Rosterd.Data.SqlServer.Models
         [StringLength(1000)]
         public string Comments { get; set; }
 
+        [Required]
+        public string StaffRole { get; set; }
+
         [ForeignKey(nameof(OrganizationId))]
         [InverseProperty("Staff")]
         public virtual Organization Organization { get; set; }

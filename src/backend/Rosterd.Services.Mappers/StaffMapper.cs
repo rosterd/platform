@@ -79,6 +79,7 @@ namespace Rosterd.Services.Mappers
             staffFromDb.MobilePhoneNumber = domainModel.MobilePhoneNumber;
             staffFromDb.JobTitle = domainModel.JobTitle;
             staffFromDb.Comments = domainModel.Comments;
+            staffFromDb.StaffRole = domainModel.StaffRole;
 
             return staffFromDb;
         }
@@ -94,7 +95,8 @@ namespace Rosterd.Services.Mappers
                 MobilePhoneNumber = domainModel.MobilePhoneNumber,
                 JobTitle = domainModel.JobTitle,
                 Comments = domainModel.Comments,
-                Auth0Id = domainModel.Auth0Id
+                Auth0Id = domainModel.Auth0Id,
+                StaffRole = domainModel.StaffRole
             };
 
             return staffToSave;
