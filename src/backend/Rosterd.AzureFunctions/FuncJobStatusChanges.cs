@@ -38,8 +38,7 @@ namespace Rosterd.AzureFunctions
             _logger.LogInformation($"{nameof(MovedAllPublishedStatusJobsPastTimeLimitToExpiredState)} - triggered on UTC Time {DateTime.UtcNow}");
 
             //All the published jobs (ie: jobs that didn't get taken) if they have expired then move them to expired status
-            var expiredJobs = await _jobsService.MoveAllPublishedStatusJobsPastTimeLimitToExpiredState();
-            await _jobEventsService.RemoveJobsFromSearch(expiredJobs);
+            await _jobsService.MoveAllPublishedStatusJobsPastTimeLimitToExpiredState();
         }
 
         [FunctionName(nameof(MovedAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState))]
@@ -60,17 +59,6 @@ namespace Rosterd.AzureFunctions
             //Move all the inprogress after the endtime to completed
             await _jobsService.MoveInProgressJobsPastEndDateToCompletedState();
         }
-
-        // Commenting this as this feature is deployed after MVP
-
-        // [FunctionName(nameof(MoveJobsPastEndDateToFeedbackState))]
-        // public async Task MoveJobsPastEndDateToFeedbackState([TimerTrigger("%FunctionSettings:MoveJobsPastEndDateToFeedbackStateSchedule%", RunOnStartup = false)] TimerInfo myTimer)
-        // {
-        //     _logger.LogInformation($"{nameof(MoveJobsPastEndDateToFeedbackState)} - triggered on UTC Time {DateTime.UtcNow}");
-        //
-        //     //Move all the jobs that need to be moved to feedback pending
-        //     await _jobsService.MoveAllJobsThatArePastEndDateToFeedbackStatus();
-        // }
 
         [FunctionName(nameof(MoveFinishedJobsFromSearch))]
         public async Task MoveFinishedJobsFromSearch([TimerTrigger("%FunctionSettings:MoveFinishedJobsFromSearchSchedule%", RunOnStartup = false)] TimerInfo myTimer)

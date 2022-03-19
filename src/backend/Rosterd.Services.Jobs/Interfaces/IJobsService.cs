@@ -119,26 +119,20 @@ namespace Rosterd.Services.Jobs.Interfaces
         /// Gets all the jobs that have past their end datetime and needs to be expired
         /// </summary>
         /// <returns>Returns, the (jobid, Auth0organizationId) as key value pair</returns>
-        Task<List<long>> MoveAllPublishedStatusJobsPastTimeLimitToExpiredState();
+        Task MoveAllPublishedStatusJobsPastTimeLimitToExpiredState();
 
         /// <summary>
         /// Gets all accepted jobs that have past their start time and before end time
         /// </summary>
         /// <returns>Returns, the (jobid, Auth0organizationId) as key value pair</returns>
-        Task<List<long>> MoveAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
+        Task MoveAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState();
 
 
         /// <summary>
         /// Gets all completed jobs
         /// </summary>
         /// <returns>Returns, the (jobid, Auth0organizationId) as key value pair</returns>
-        Task<List<long>> MoveInProgressJobsPastEndDateToCompletedState();
-
-        /// <summary>
-        /// Gets all the jobs that are finished and the status needs to be set to feedback
-        /// </summary>
-        /// <returns>Returns, the (jobid, Auth0organizationId) as key value pair</returns>
-        Task MoveAllJobsThatArePastEndDateToFeedbackStatus();
+        Task MoveInProgressJobsPastEndDateToCompletedState();
 
         /// <summary>
         /// Gets a list of jobs that are finished (in statuses completed or noshow)

@@ -110,7 +110,7 @@ namespace Rosterd.Admin.Api.Controllers
                 staffToCreate.Auth0Id = adminUserModel.UserAuth0Id;
                 staffToCreate.StaffRole = RosterdRoleEnum.OrganizationAdmin.ToString();
 
-                var staffCreated = await _staffService.CreateStaff(staffToCreate, _userContext.UsersAuth0OrganizationId);
+                var staffCreated = await _staffService.UpdateStaff(staffToCreate, _userContext.UsersAuth0OrganizationId);
             }
 
             return adminUserModel;
