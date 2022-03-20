@@ -373,7 +373,6 @@ namespace Rosterd.Services.Jobs
             }
         }
 
-
         ///<inheritdoc/>
         public async Task MoveAllAcceptedStatusJobsPastStartTimeBeforeEndTimeToInProgressState()
         {

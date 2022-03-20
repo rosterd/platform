@@ -10,6 +10,7 @@ using Rosterd.Data.SqlServer.Models;
 using Rosterd.Data.TableStorage.Context;
 using Rosterd.Data.TableStorage.Models;
 using Rosterd.Domain;
+using Rosterd.Domain.Enums;
 using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.FacilitiesModels;
@@ -20,7 +21,6 @@ using Rosterd.Infrastructure.Search.Interfaces;
 using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Mappers;
 using Rosterd.Services.Staff.Interfaces;
-
 
 namespace Rosterd.Services.Staff
 {
@@ -37,6 +37,18 @@ namespace Rosterd.Services.Staff
             _azureTableStorage = azureTableStorage;
             _belongsToValidator = belongsToValidator;
             _searchIndexProvider = searchIndexProvider;
+        }
+
+        public async Task<PagedList<StaffModel>> GetAllAdmins(PagingQueryStringParameters pagingParameters, string auth0OrganizationId)
+        {
+            var staffRole = RosterdRoleEnum.Staff.ToString();
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
+
+            var query = _context.Staff.Where(s => s.StaffRole != staffRole && s.OrganizationId == organization.OrganizationId);
+            var pagedList = await PagingList<Data.SqlServer.Models.Staff>.ToPagingList(query, pagingParameters.PageNumber, pagingParameters.PageSize);
+
+            var domainModels = pagedList.ToDomainModels();
+            return new PagedList<StaffModel>(domainModels, pagedList.TotalCount, pagedList.CurrentPage, pagedList.PageSize, pagedList.TotalPages);
         }
 
         ///<inheritdoc/>

@@ -8,6 +8,8 @@ namespace Rosterd.Services.Staff.Interfaces
 {
     public interface IStaffService
     {
+        Task<PagedList<StaffModel>> GetAllAdmins(PagingQueryStringParameters pagingParameters, string auth0OrganizationId);
+
         /// <summary>
         /// Gets all the Staff members
         /// </summary>

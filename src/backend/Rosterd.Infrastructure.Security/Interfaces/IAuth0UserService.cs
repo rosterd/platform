@@ -46,7 +46,5 @@ namespace Rosterd.Infrastructure.Security.Interfaces
         Task<Auth0UserModel> AddUserToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel, RosterdRoleEnum roleToAddForUser);
 
         Task RemoveUserFromAuth0(string auth0Id);
-
-        Task<List<Auth0UserModel>> GetAdminUsers(string auth0OrganizationId, PagingQueryStringParameters pagingParams);
     }
 }

@@ -87,44 +87,5 @@ namespace Rosterd.Infrastructure.Security
             adminUserModel.UserAuth0Id = userCreatedInAuth0.UserId;
             return adminUserModel;
         }
-
-        public async Task<List<Auth0UserModel>> GetAdminUsers(string auth0OrganizationId, PagingQueryStringParameters pagingParams)
-        {
-            //TODO: REFACTOR THIS SO WE DONT NEED TO CALL AUTH0 AT A LATER TIME AND RECORD ALL THE ADMINS FOR AN ORGANIZATION IN OUR DB
-            var auth0ApiManagementClient = await _auth0AuthenticationService.GetAuth0ApiManagementClient();
-
-            var allOrganizationMembers = await auth0ApiManagementClient.Organizations.GetAllMembersAsync(auth0OrganizationId,
-                new PaginationInfo(pagingParams.PageNumber - 1, pagingParams.PageSize, true));
-
-            if (allOrganizationMembers == null || allOrganizationMembers.IsNullOrEmpty())
-                return new List<Auth0UserModel>();
-
-            var auth0UserModels = new List<Auth0UserModel>();
-            foreach (var organizationMember in allOrganizationMembers)
-            {
-                var userRoles = await auth0ApiManagementClient.Organizations.GetAllMemberRolesAsync(auth0OrganizationId, organizationMember.UserId, new PaginationInfo());
-
-                //Only admin users
-                if (userRoles.IsNullOrEmpty())
-                    continue;
-
-                //If user is staff role then not an admin
-                var isStaff = userRoles.FirstOrDefault(s => s.Name == RosterdRoleEnum.Staff.ToString());
-                if (isStaff != null)
-                    continue;
-
-                auth0UserModels.Add(new Auth0UserModel
-                {
-                    Email = organizationMember.Email,
-                    FirstName = organizationMember.Name,
-                    LastName = string.Empty,
-                    MobilePhoneNumber = string.Empty,
-                    UserAuth0Id = organizationMember.UserId,
-                    RosterdRolesForUser = userRoles.AlwaysList().Select(s => s.Name.ToEnum<RosterdRoleEnum>()).AlwaysList()
-                });
-            }
-
-            return auth0UserModels;
-        }
     }
 }

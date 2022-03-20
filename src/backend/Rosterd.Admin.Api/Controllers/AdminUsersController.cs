@@ -56,10 +56,10 @@ namespace Rosterd.Admin.Api.Controllers
         /// <param name="pagingParameters"></param>
         /// <returns></returns>
         [HttpGet()]
-        public async Task<ActionResult<List<Auth0UserModel>>> GetListOfAdmins([FromQuery] PagingQueryStringParameters pagingParameters)
+        public async Task<ActionResult<PagedList<StaffModel>>> GetListOfAdmins([FromQuery] PagingQueryStringParameters pagingParameters)
         {
-            var organizationAdmins = await _adminUserService.GetAdminUsers(_userContext.UsersAuth0OrganizationId, pagingParameters);
-            return organizationAdmins;
+            var adminUsers = await _staffService.GetAllAdmins(pagingParameters, _userContext.UsersAuth0OrganizationId);
+            return adminUsers;
         }
 
         /// <summary>
