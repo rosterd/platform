@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import {Form, Field} from 'formik';
+import {Field} from 'formik';
 import {FormControl, FormControlLabel, InputLabel, MenuItem} from '@material-ui/core';
 import {Select, Switch, TextField} from 'formik-material-ui';
 import {DateTimePicker} from 'formik-material-ui-pickers';
@@ -13,6 +13,7 @@ import * as yup from 'yup';
 import {useAuthUser} from '@crema/utility/AppHooks';
 import {AuthUser} from 'types/models/AuthUser';
 import FormModal, {FormProps, ModalProps} from 'shared/components/FormModal';
+import moment from 'moment';
 
 interface PublishJobModalProps {
   open: boolean;
@@ -30,8 +31,8 @@ const initialFacilitiesState: Facility[] = [];
 const formValues = {
   jobTitle: '',
   description: '',
-  jobStartDateTimeUtc: '',
-  jobEndDateTimeUtc: '',
+  jobStartDateTimeUtc: moment().toDate(),
+  jobEndDateTimeUtc: moment().toDate(),
   comments: '',
   gracePeriodToCancelMinutes: 0,
   responsibilities: '',
@@ -52,8 +53,19 @@ const PublishJobModal = (props: PublishJobModalProps): JSX.Element => {
   const validationSchema = yup.object({
     jobTitle: yup.string().required('Please enter Job Title'),
     description: yup.string().required('Please enter Job Description'),
-    jobStartDateTimeUtc: yup.date().required('Please select the start time'),
-    jobEndDateTimeUtc: yup.date().required('Please select the end time'),
+    jobStartDateTimeUtc: yup
+      .date()
+      .required('Please select the start time')
+      .test('is-greater', 'start time should be greater', (value) => moment(value, 'HH:mm').isAfter()),
+    jobEndDateTimeUtc: yup
+      .date()
+      .required('Please select the end time')
+      .test('is-greater', 'end time should be greater', function (value) {
+        // eslint-disable-next-line no-unused-expressions
+        // eslint-disable-next-line react/no-this-in-sfc
+        const start = this.parent?.jobStartDateTimeUtc;
+        return moment(value, 'HH:mm').isAfter(moment(start, 'HH:mm'));
+      }),
     gracePeriodToCancelMinutes: yup.number().typeError('Grace period must be a number in minutes'),
     skillsRequiredForJob: yup.array().min(1, 'At least one skill is required'),
   });
@@ -90,46 +102,44 @@ const PublishJobModal = (props: PublishJobModalProps): JSX.Element => {
   return (
     <FormModal formProps={formProps} modalProps={modalProps}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Form>
-          {isOrganisationAdmin && (
-            <FormControl fullWidth>
-              <InputLabel htmlFor='age-simple'>Facility</InputLabel>
-              <Field
-                component={Select}
-                name='facilityId'
-                inputProps={{
-                  id: 'facilityId',
-                  fullWidth: true,
-                }}>
-                {facilities.map((facility) => (
-                  <MenuItem key={facility.facilityId} value={facility?.facilityId || 0}>
-                    {facility.facilityName}
-                  </MenuItem>
-                ))}
-              </Field>
-            </FormControl>
-          )}
-          <Field component={TextField} name='jobTitle' label='Title' fullWidth />
-          <br />
-          <Field component={TextField} name='description' label='Description' fullWidth multiline />
-          <br />
-          <Field component={DateTimePicker} name='jobStartDateTimeUtc' label='Start Time' fullWidth />
-          <br />
-          <Field component={DateTimePicker} name='jobEndDateTimeUtc' label='End Time' fullWidth />
-          <br />
-          <Field component={TextField} name='gracePeriodToCancelMinutes' label='Grace Period(in mins)' fullWidth />
-          <br />
-          <br />
-          <FormControlLabel control={<Field name='isNightShift' type='checkbox' component={Switch} />} label='Night Shift' />
-          <br />
-          <SkillsInput skills={skills} label='Skills' name='skillsRequiredForJob' />
-          <br />
-          <Field component={TextField} name='experience' label='Experience' fullWidth multiline />
-          <br />
-          <Field component={TextField} name='comments' label='Comments' fullWidth multiline />
-          <br />
-          <Field component={TextField} name='responsibilities' label='Responsibilities' fullWidth multiline />
-        </Form>
+        {isOrganisationAdmin && (
+          <FormControl fullWidth>
+            <InputLabel htmlFor='age-simple'>Facility</InputLabel>
+            <Field
+              component={Select}
+              name='facilityId'
+              inputProps={{
+                id: 'facilityId',
+                fullWidth: true,
+              }}>
+              {facilities.map((facility) => (
+                <MenuItem key={facility.facilityId} value={facility?.facilityId || 0}>
+                  {facility.facilityName}
+                </MenuItem>
+              ))}
+            </Field>
+          </FormControl>
+        )}
+        <Field component={TextField} name='jobTitle' label='Title' fullWidth />
+        <br />
+        <Field component={TextField} name='description' label='Description' fullWidth multiline />
+        <br />
+        <Field component={DateTimePicker} name='jobStartDateTimeUtc' label='Start Time' fullWidth />
+        <br />
+        <Field component={DateTimePicker} name='jobEndDateTimeUtc' label='End Time' fullWidth />
+        <br />
+        <Field component={TextField} name='gracePeriodToCancelMinutes' label='Grace Period(in mins)' fullWidth />
+        <br />
+        <br />
+        <FormControlLabel control={<Field name='isNightShift' type='checkbox' component={Switch} />} label='Night Shift' />
+        <br />
+        <SkillsInput skills={skills} label='Skills' name='skillsRequiredForJob' />
+        <br />
+        <Field component={TextField} name='experience' label='Experience' fullWidth multiline />
+        <br />
+        <Field component={TextField} name='comments' label='Comments' fullWidth multiline />
+        <br />
+        <Field component={TextField} name='responsibilities' label='Responsibilities' fullWidth multiline />
       </MuiPickersUtilsProvider>
     </FormModal>
   );
