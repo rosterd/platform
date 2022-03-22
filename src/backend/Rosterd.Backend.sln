@@ -68,10 +68,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Services.Organizati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Infrastructure.Messaging", "Rosterd.Infrastructure.Messaging\Rosterd.Infrastructure.Messaging.csproj", "{7F05AD10-AC7A-4433-8884-C805C47E445C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.UnitTests", "Tests\Rosterd.UnitTests\Rosterd.UnitTests.csproj", "{95DDB494-EC87-4B8A-B2FD-306066EB5803}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.UnitTests", "Tests\Rosterd.UnitTests\Rosterd.UnitTests.csproj", "{95DDB494-EC87-4B8A-B2FD-306066EB5803}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Client.Api.IntegrationTests", "Tests\Rosterd.Client.Api.IntegrationTests\Rosterd.Client.Api.IntegrationTests.csproj", "{A3FD9B26-2B18-43EB-8721-CA6560146EF4}"
-
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosterd.Client.Api.IntegrationTests", "Tests\Rosterd.Client.Api.IntegrationTests\Rosterd.Client.Api.IntegrationTests.csproj", "{A3FD9B26-2B18-43EB-8721-CA6560146EF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rosterd.Helpers", "Rosterd.Helpers\Rosterd.Helpers.csproj", "{EEC789C1-1245-49BD-AF02-766748345E95}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HelpersAndHarnessess", "HelpersAndHarnessess", "{02437056-8BF9-4F0B-AC66-AEEAD9D129F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,13 +144,9 @@ Global
 		{24431ED7-CB6E-4B09-89D6-CDAE1973C467}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24431ED7-CB6E-4B09-89D6-CDAE1973C467}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8308F751-A7DE-4369-A077-46627D85FC0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8308F751-A7DE-4369-A077-46627D85FC0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8308F751-A7DE-4369-A077-46627D85FC0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8308F751-A7DE-4369-A077-46627D85FC0F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8308F751-A7DE-4369-A077-46627D85FC0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6264D138-E753-4530-B560-C6F25A7996A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6264D138-E753-4530-B560-C6F25A7996A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6264D138-E753-4530-B560-C6F25A7996A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6264D138-E753-4530-B560-C6F25A7996A9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A156225-BED5-4CC9-8ECE-18B2D035B878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0A156225-BED5-4CC9-8ECE-18B2D035B878}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A156225-BED5-4CC9-8ECE-18B2D035B878}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -171,7 +171,10 @@ Global
 		{A3FD9B26-2B18-43EB-8721-CA6560146EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3FD9B26-2B18-43EB-8721-CA6560146EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3FD9B26-2B18-43EB-8721-CA6560146EF4}.Release|Any CPU.Build.0 = Release|Any CPU
-
+		{EEC789C1-1245-49BD-AF02-766748345E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEC789C1-1245-49BD-AF02-766748345E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEC789C1-1245-49BD-AF02-766748345E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEC789C1-1245-49BD-AF02-766748345E95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -201,7 +204,8 @@ Global
 		{7F05AD10-AC7A-4433-8884-C805C47E445C} = {49EB7B71-D49C-48A9-B929-B4FCC1D0DFC6}
 		{95DDB494-EC87-4B8A-B2FD-306066EB5803} = {9E7345FE-4E82-4ECA-87F8-A7A43A5153F8}
 		{A3FD9B26-2B18-43EB-8721-CA6560146EF4} = {8BDF13B1-AD91-452C-B08B-722D564C2753}
-
+		{EEC789C1-1245-49BD-AF02-766748345E95} = {02437056-8BF9-4F0B-AC66-AEEAD9D129F5}
+		{02437056-8BF9-4F0B-AC66-AEEAD9D129F5} = {E2CF2B03-6E67-4789-83C2-C14074B6257B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2DA4ED17-3CA8-499E-A97F-35DAF7C0E6C3}

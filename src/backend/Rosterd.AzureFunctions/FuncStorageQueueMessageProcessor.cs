@@ -17,6 +17,7 @@ using Rosterd.Domain.Messaging;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Services.Jobs.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
+using System.Text.Json.Serialization;
 
 namespace Rosterd.AzureFunctions
 {
@@ -60,7 +61,8 @@ namespace Rosterd.AzureFunctions
                             PushTo = staffDeviceIds,
                             PushBadgeCount = 1,
                             PushTitle = "Rosterd New Matching Job Alert",
-                            PushBody = $"Found a new matching job for {job.FacilityName} in {job.FacilityCity}"
+                            PushBody = $"Found a new matching job for {job.FacilityName} in {job.FacilityCity}",
+                            PushData = JsonSerializer.Serialize(job)
                         };
 
                         _logger.LogInformation($"Sending push notifications to device ids {staffDeviceIds.ToDelimitedString()}");
