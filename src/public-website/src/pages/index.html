@@ -263,19 +263,19 @@
                     <p class="details__link">020 4039 2445</p>
                   </div>
                 </a> -->
-                <a class="d-flex" href="mailto:help@rosterd.com">
+                <a class="d-flex" href="mailto:admin@rosterd.com">
                   <div class="information-card__icon">
                     <img src="img/information-card__img-email.svg" alt="phone" />
                   </div>
                   <div class="information-card__details details">
                     <p class="details__title">Email</p>
-                    <p class="details__link">help@rosterd.com</p>
+                    <p class="details__link">admin@rosterd.com</p>
                   </div>
                 </a>
               </div>
             </div>
             <div class="col-lg-6 contact__pos-a pt-5" id="contact">
-              <form class="contact__form-group form-group d-flex flex-column">
+              <form class="contact__form-group form-group d-flex flex-column" id="contactForm">
                 <h2 class="form-group__title title">Contact Us</h2>
                 <label class="form-group__label form-label" for="name">Full name</label>
                 <input class="form-group__input form-control" type="text" id="name" placeholder="Enter your name" />
@@ -285,7 +285,7 @@
                 <input class="form-group__input form-control" type="tel" id="tel" placeholder="Enter your phone number" />
                 <label class="form-group__label form-label" for="message">Message</label>
                 <textarea class="form-group__input form-control" name="message" id="message" cols="30" rows="5" placeholder="Enter your message"></textarea>
-                <button type="submit" class="form-group__button btn">Send</button>
+                <button type="submit" class="form-group__button btn" id="submitButton">Send</button>
               </form>
             </div>
           </div>
@@ -294,9 +294,40 @@
       <!-- / contact -->
     </main>
 
+   
     <!-- Footer, scripts and modals -->
     <include src="src/templates/modals.html"></include>
     <include src="src/templates/footer.html"></include>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  
+    <script type="text/javascript">
+      emailjs.init('user_UBuT7aemxv7dUul7ypWMn')
+    </script>
+  
+      <script type="text/javascript">
+          const btn = document.getElementById('submitButton');
+          document.addEventListener("DOMContentLoaded", function () {
+              var myModal = new bootstrap.Modal(document.getElementById('modalSucces'))
+              var contactForm = document.getElementById('contactForm')
+              contactForm.addEventListener('submit', function(event) {
+                  event.preventDefault();
+                  btn.innerHTML = 'Sending...';
+    
+                  const serviceID = 'default_service';
+                  const templateID = 'template_xo924bn';
+    
+                  emailjs.sendForm(serviceID, templateID, this)
+                  .then(() => {
+                      btn.innerHTML = 'Send';
+                      contactForm.reset();
+                      myModal.show();
+                  }, (err) => {
+                      btn.innerHTML = 'Send';
+                  });
+              });   
+          });
+    
+        </script>
     <!-- <include src="src/templates/footer-scripts.html"></include> -->
   </body>
 </html>
