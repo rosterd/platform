@@ -60,7 +60,7 @@ const PublishJobModal = (props: PublishJobModalProps): JSX.Element => {
     jobEndDateTimeUtc: yup
       .date()
       .required('Please select the end time')
-      .test('is-greater', 'end time should be greater', function (value) {
+      .test('is-greater', 'end time should be greater than start time', function (value) {
         // eslint-disable-next-line no-unused-expressions
         // eslint-disable-next-line react/no-this-in-sfc
         const start = this.parent?.jobStartDateTimeUtc;

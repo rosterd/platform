@@ -13,7 +13,8 @@ import AddAdminModal from 'shared/components/AddAdminModal';
 import {AxiosRequestConfig} from 'axios';
 
 type AddAdminUserRequest = components['schemas']['AddAdminUserRequest'];
-type AdminUserModel = components['schemas']['Auth0UserModel'];
+type StaffModel = components['schemas']['StaffModel'];
+type StaffModelPagedList = components['schemas']['StaffModelPagedList'];
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const initialState: AdminUserModel[] = [];
+const initialState: StaffModel[] = [];
 
 const OrganizationAdmin: React.FC = (): JSX.Element => {
   const classes = useStyles();
@@ -37,9 +38,9 @@ const OrganizationAdmin: React.FC = (): JSX.Element => {
 
   const fetchData = async (config: AxiosRequestConfig) => {
     setLoading(true);
-    const allAdmins = await requestMaker<AdminUserModel[]>(config);
-    const facilityAdmins = allAdmins.filter((admin) => admin.rosterdRolesForUser?.indexOf('OrganizationAdmin') !== -1);
-    setAdmins(facilityAdmins);
+    const adminResponse = await requestMaker<StaffModelPagedList>(config);
+    const facilityAdmins = adminResponse.items?.filter((admin) => admin.staffRole?.indexOf('OrganizationAdmin') !== -1);
+    setAdmins(facilityAdmins || []);
     setLoading(false);
   };
 
@@ -55,15 +56,15 @@ const OrganizationAdmin: React.FC = (): JSX.Element => {
     if (!values.auth0OrganizationId) {
       delete data.auth0OrganizationId;
     }
-    const admin = await requestMaker<AdminUserModel>(addOrganizationAdmin(data));
+    const admin = await requestMaker<StaffModel>(addOrganizationAdmin(data));
     setAdmins([...admins, admin]);
   };
 
-  const onDelete = async (adminToDelete: AdminUserModel) => {
+  const onDelete = async (adminToDelete: StaffModel) => {
     setLoading(true);
-    await requestMaker(deleteOrganizationAdmin(adminToDelete.userAuth0Id));
+    await requestMaker(deleteOrganizationAdmin(adminToDelete.staffId));
     setLoading(false);
-    setAdmins(admins.filter((admin) => admin.userAuth0Id !== adminToDelete.userAuth0Id));
+    setAdmins(admins.filter((admin) => admin.staffId !== adminToDelete.staffId));
   };
 
   return (

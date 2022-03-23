@@ -31,9 +31,9 @@ export interface paths {
         /** Success */
         200: {
           content: {
-            "text/plain": components["schemas"]["Auth0UserModel"][];
-            "application/json": components["schemas"]["Auth0UserModel"][];
-            "text/json": components["schemas"]["Auth0UserModel"][];
+            "text/plain": components["schemas"]["StaffModelPagedList"];
+            "application/json": components["schemas"]["StaffModelPagedList"];
+            "text/json": components["schemas"]["StaffModelPagedList"];
           };
         };
         /** Bad Request */
@@ -3020,6 +3020,7 @@ export interface components {
       isActive?: boolean;
       comments?: string | null;
       jobTitle?: string | null;
+      staffRole?: string | null;
       staffSkills?: components["schemas"]["SkillModel"][] | null;
       staffFacilities?: components["schemas"]["FacilityModel"][] | null;
     };
@@ -3072,6 +3073,8 @@ export interface components {
       mobilePhoneNumber?: string | null;
       comments?: string | null;
       jobTitle?: string | null;
+      /** This is the skill ids that the staff has (all of these will be updated in the db) */
+      skillIds?: number[] | null;
     };
   };
 }

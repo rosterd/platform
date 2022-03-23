@@ -19,14 +19,14 @@ export const addOrganizationAdmin = (data: AddAdminUserRequest): AxiosRequestCon
   data,
 });
 
-export const deleteOrganizationAdmin = (auth0UserId: string): AxiosRequestConfig & {scope?: string} => ({
+export const deleteOrganizationAdmin = (staffId: number | undefined | null): AxiosRequestConfig & {scope?: string} => ({
   method: 'DELETE',
-  url: `${organizationUrl}/${auth0UserId}`,
+  url: `${organizationUrl}/${staffId}`,
 });
 
-export const deleteFacilityAdmin = (auth0UserId: string): AxiosRequestConfig & {scope?: string} => ({
+export const deleteFacilityAdmin = (staffId: number | undefined | null): AxiosRequestConfig & {scope?: string} => ({
   method: 'DELETE',
-  url: `${facilityUrl}/${auth0UserId}`,
+  url: `${facilityUrl}/${staffId}`,
 });
 
 export const getAdmins = (): AxiosRequestConfig & {scope?: string} => ({url});

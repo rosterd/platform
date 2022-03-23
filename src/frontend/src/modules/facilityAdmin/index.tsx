@@ -13,7 +13,8 @@ import AddAdminModal from 'shared/components/AddAdminModal';
 import {AxiosRequestConfig} from 'axios';
 
 type AddAdminWhoIsAlsoStaffRequest = components['schemas']['AddAdminWhoIsAlsoStaffRequest'];
-type AdminUserModel = components['schemas']['Auth0UserModel'];
+type StaffModel = components['schemas']['StaffModel'];
+type StaffModelPagedList = components['schemas']['StaffModelPagedList'];
 
 const useStyles = makeStyles(() => ({
   materialTable: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const initialState: AdminUserModel[] = [];
+const initialState: StaffModel[] = [];
 
 const FacilityAdmin: React.FC = (): JSX.Element => {
   const classes = useStyles();
@@ -37,9 +38,9 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
 
   const fetchData = async (config: AxiosRequestConfig) => {
     setLoading(true);
-    const allAdmins = await requestMaker<AdminUserModel[]>(config);
-    const facilityAdmins = allAdmins.filter((admin) => admin.rosterdRolesForUser?.indexOf('FacilityAdmin') !== -1);
-    setAdmins(facilityAdmins);
+    const allAdmins = await requestMaker<StaffModelPagedList>(config);
+    const facilityAdmins = allAdmins.items?.filter((admin) => admin.staffRole?.indexOf('FacilityAdmin') !== -1);
+    setAdmins(facilityAdmins || []);
     setLoading(false);
   };
 
@@ -50,15 +51,15 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
   }, []);
 
   const handleAddFacilityAdmin = async (values: AddAdminWhoIsAlsoStaffRequest) => {
-    const admin = await requestMaker<AdminUserModel>(addFacilityAdmin(values));
+    const admin = await requestMaker<StaffModel>(addFacilityAdmin(values));
     setAdmins([...admins, admin]);
   };
 
-  const onDelete = async (adminToDelete: AdminUserModel) => {
+  const onDelete = async (adminToDelete: StaffModel) => {
     setLoading(true);
     try {
-      await requestMaker(deleteFacilityAdmin(adminToDelete.userAuth0Id));
-      setAdmins(admins.filter((admin) => admin.userAuth0Id !== adminToDelete.userAuth0Id));
+      await requestMaker(deleteFacilityAdmin(adminToDelete.staffId));
+      setAdmins(admins.filter((admin) => admin.staffId !== adminToDelete.staffId));
     } finally {
       setLoading(false);
     }
