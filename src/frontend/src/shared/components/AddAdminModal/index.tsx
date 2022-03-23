@@ -11,6 +11,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import SkillsInput from 'shared/components/Skills';
+import {useAuthUser} from '@crema/utility/AppHooks';
+import {AuthUser} from 'types/models/AuthUser';
+
 import FormModal, {FormProps, ModalProps} from '../FormModal';
 
 type AddAdminUserRequest = components['schemas']['AddAdminUserRequest'];
@@ -36,13 +39,14 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
   const [origanizations, setOrganizatons] = useState(initialOrganizationsState);
   const [facilities, setFacilities] = useState(initialFacilitiesState);
   const [skills, setSkills] = useState(initialSkillsState);
-
+  const user: AuthUser | null = useAuthUser();
   const {requestMaker} = useRequest();
   const {isOrganisationAdmin = false, open, handleClose, onAddAdmin} = props;
+  const isRosterdAdmin = user?.role.indexOf('RosterdAdmin') !== -1;
 
   useEffect(() => {
     (async () => {
-      if (isOrganisationAdmin) {
+      if (isRosterdAdmin) {
         const origanizationsResponse = await requestMaker<GetOrganizationsResponse>(getOrganizations());
         setOrganizatons(origanizationsResponse.items || []);
       } else {
@@ -52,7 +56,7 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
         setSkills(skillsResponse.items || []);
       }
     })();
-  }, [isOrganisationAdmin]);
+  }, [user, isRosterdAdmin]);
 
   const validationSchema = yup.object({
     firstName: yup.string().required('Please enter First Name'),
@@ -83,7 +87,7 @@ const AddAdminModal: React.FC<AddAdminModalProps> = (props): JSX.Element => {
 
   return (
     <FormModal formProps={formProps} modalProps={modalProps}>
-      {isOrganisationAdmin && !!origanizations.length && (
+      {isRosterdAdmin && !!origanizations.length && (
         <FormControl fullWidth>
           <InputLabel htmlFor='age-simple'>Organizationn</InputLabel>
           <Field name='auth0OrganizationId'>

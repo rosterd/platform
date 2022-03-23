@@ -11,6 +11,8 @@ import {addOrganizationAdmin, deleteOrganizationAdmin, getAdmins} from 'services
 import {components} from 'types/models';
 import AddAdminModal from 'shared/components/AddAdminModal';
 import {AxiosRequestConfig} from 'axios';
+import {useAuthUser} from '@crema/utility/AppHooks';
+import {AuthUser} from 'types/models/AuthUser';
 
 type AddAdminUserRequest = components['schemas']['AddAdminUserRequest'];
 type StaffModel = components['schemas']['StaffModel'];
@@ -35,6 +37,7 @@ const OrganizationAdmin: React.FC = (): JSX.Element => {
   const [showAddAdminModal, setShowAddAdminModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const {requestMaker} = useRequest();
+  const user: AuthUser | null = useAuthUser();
 
   const fetchData = async (config: AxiosRequestConfig) => {
     setLoading(true);
@@ -50,11 +53,10 @@ const OrganizationAdmin: React.FC = (): JSX.Element => {
     })();
   }, []);
 
-  const handleAddFacilityAdmin = async (values: AddAdminUserRequest) => {
-    const data = {...values};
-    // TODO: split create admin modal to organization admin and facility admin modals. This is not a good fix
-    if (!values.auth0OrganizationId) {
-      delete data.auth0OrganizationId;
+  const handleAddOrganizationAdmin = async (values: AddAdminUserRequest) => {
+    const data = {...values, auth0OrganizationId: user?.orgId};
+    if (values.auth0OrganizationId) {
+      data.auth0OrganizationId = values.auth0OrganizationId;
     }
     const admin = await requestMaker<StaffModel>(addOrganizationAdmin(data));
     setAdmins([...admins, admin]);
@@ -104,7 +106,9 @@ const OrganizationAdmin: React.FC = (): JSX.Element => {
             }}
           />
         </Box>
-        <AddAdminModal isOrganisationAdmin open={showAddAdminModal} onAddAdmin={handleAddFacilityAdmin} handleClose={() => setShowAddAdminModal(false)} />
+        {showAddAdminModal && (
+          <AddAdminModal isOrganisationAdmin open={showAddAdminModal} onAddAdmin={handleAddOrganizationAdmin} handleClose={() => setShowAddAdminModal(false)} />
+        )}
       </Box>
     </AppAnimate>
   );
