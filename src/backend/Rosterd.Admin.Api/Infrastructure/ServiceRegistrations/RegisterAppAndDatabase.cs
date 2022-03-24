@@ -18,6 +18,8 @@ using Rosterd.Infrastructure.Search;
 using Rosterd.Infrastructure.Search.Interfaces;
 using Rosterd.Infrastructure.Security;
 using Rosterd.Infrastructure.Security.Interfaces;
+using Rosterd.Services.Dashboards;
+using Rosterd.Services.Dashboards.Interfaces;
 using Rosterd.Services.Facilities;
 using Rosterd.Services.Facilities.Interfaces;
 using Rosterd.Services.Jobs;
@@ -49,6 +51,7 @@ namespace Rosterd.Admin.Api.Infrastructure.ServiceRegistrations
             services.AddScoped<IStaffFacilitiesService, StaffFacilitiesService>();
             services.AddScoped<IStaffSkillsService, StaffSkillsService>();
             services.AddScoped<IFacilitiesService, FacilitiesService>();
+            services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<ISkillsService, SkillsService>();
             services.AddScoped<IJobsService, JobsService>();
             services.AddScoped<IOrganizationsService, OrganizationsService>();

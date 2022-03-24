@@ -83,4 +83,7 @@
     <None Include="LocalDbToProjectCompare.scmp" />
     <None Include="LocalProjectToAzureDevSqlCompare.scmp" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="dbo\Tables\Notification.sql" />
+  </ItemGroup>
 </Project>
