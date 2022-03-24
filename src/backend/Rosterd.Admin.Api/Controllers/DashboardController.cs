@@ -17,9 +17,6 @@ using Rosterd.Web.Infra.Security;
 
 namespace Rosterd.Admin.Api.Controllers
 {
-    /// <summary>
-        /// All actions related to Jobs
-        /// </summary>
         [ApiVersion("1.0")]
         [ApiExplorerSettings(GroupName = "Dashboards")]
         [AuthorizeByRole(RosterdConstants.RosterdRoleNames.FacilityAdmin, RosterdConstants.RosterdRoleNames.OrganizationAdmin, RosterdConstants.RosterdRoleNames.RosterdAdmin)]
@@ -39,6 +36,10 @@ namespace Rosterd.Admin.Api.Controllers
             }
 
 
+            /// <summary>
+            ///     Get Dashboards
+            /// </summary>
+            /// <returns></returns>
             [HttpGet]
             public async Task<ActionResult<DashboardModel>> GetDashBoard()
             {

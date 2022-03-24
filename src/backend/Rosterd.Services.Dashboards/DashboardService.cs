@@ -21,9 +21,9 @@ namespace Rosterd.Services.Dashboards
             //var publishedJobsCount = _context.Jobs.Count();
             var completedJobsCount = _context.Jobs.Count();
             var staff = _context.Staff.Count();
-            var amountSaved = completedJobsCount * 5;
+            var amountSaved = completedJobsCount * 8 * 5;
 
-            return new DashboardModel {TotalJobs = completedJobsCount, TotalStaff = "" + staff, AmountSaved = "" + amountSaved};
+            return new DashboardModel {TotalJobs = completedJobsCount, TotalStaff = staff, AmountSaved = amountSaved};
         }
     }
 }

@@ -7,6 +7,10 @@ namespace Rosterd.Services.Dashboards.Interfaces
 {
     public interface IDashboardService
     {
+        /// <summary>
+        /// Gets Dashboards
+        /// </summary>
+        /// <returns>DashboardModel</returns>
         Task<DashboardModel> GetDashBoard();
     }
 }
