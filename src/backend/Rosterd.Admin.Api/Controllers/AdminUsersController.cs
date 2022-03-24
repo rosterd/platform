@@ -11,6 +11,7 @@ using Rosterd.Admin.Api.Services;
 using Rosterd.Domain;
 using Rosterd.Domain.Enums;
 using Rosterd.Domain.Exceptions;
+using Rosterd.Domain.Messaging;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.AdminUserModels;
 using Rosterd.Domain.Models.StaffModels;
@@ -153,18 +154,18 @@ namespace Rosterd.Admin.Api.Controllers
         /// <summary>
         /// Removes the facility admin from auth-0 and marks staff as inactive in our db
         /// </summary>
-        /// <param name="auth0UserId">The admin to remove from auth0</param>
+        /// <param name="staffId"></param>
         /// <returns></returns>
-        [HttpDelete("facility-admins/{auth0UserId}")]
-        public async Task<ActionResult<StaffModel>> RemoveFacilityAdmin([Required] string auth0UserId)
+        [HttpDelete("facility-admins/{staffId}")]
+        public async Task<ActionResult<StaffModel>> RemoveFacilityAdmin([Required] long staffId)
         {
             //1. Mark as not active in our db
-            var staffModel = await _staffService.UpdateStaffToInactive(auth0UserId, _userContext.UsersAuth0OrganizationId);
+            var staffAuth0Id = await _staffService.UpdateStaffToInactive(staffId, _userContext.UsersAuth0OrganizationId);
 
             //2. Remove from auth0
-            await _auth0UserService.RemoveUserFromAuth0(auth0UserId);
+            await _auth0UserService.RemoveUserFromAuth0(staffAuth0Id);
 
-            await _staffEventsService.GenerateStaffDeletedEvent(staffModel.StaffId.Value, _userContext.UsersAuth0OrganizationId);
+            await _staffEventsService.HandleStaffDeletedEvent(new StaffDeletedMessage(staffId.ToString(), _userContext.UsersAuth0OrganizationId));
             return Ok();
         }
     }

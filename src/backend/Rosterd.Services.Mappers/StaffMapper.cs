@@ -26,7 +26,8 @@ namespace Rosterd.Services.Mappers
                 LastName = dataModel.LastName,
                 MobilePhoneNumber = dataModel.MobilePhoneNumber,
                 Comments = dataModel.Comments,
-                Auth0Id = dataModel.Auth0Id
+                Auth0Id = dataModel.Auth0Id,
+                StaffRole = dataModel.StaffRole
             };
 
             staffModel.StaffSkills = dataModel.StaffSkills.AlwaysList().Select(s => new SkillModel

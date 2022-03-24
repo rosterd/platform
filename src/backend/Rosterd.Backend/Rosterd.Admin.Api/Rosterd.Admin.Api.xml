@@ -44,11 +44,11 @@
             <param name="request">The admin to add for the facility</param>
             <returns></returns>
         </member>
-        <member name="M:Rosterd.Admin.Api.Controllers.AdminUsersController.RemoveFacilityAdmin(System.String)">
+        <member name="M:Rosterd.Admin.Api.Controllers.AdminUsersController.RemoveFacilityAdmin(System.Int64)">
             <summary>
             Removes the facility admin from auth-0 and marks staff as inactive in our db
             </summary>
-            <param name="auth0UserId">The admin to remove from auth0</param>
+            <param name="staffId"></param>
             <returns></returns>
         </member>
         <member name="M:Rosterd.Admin.Api.Controllers.BaseApiController.IsProvidedApiKeyValid(System.String)">
