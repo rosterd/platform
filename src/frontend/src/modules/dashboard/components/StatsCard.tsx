@@ -28,13 +28,11 @@ interface StatsCardProps {
   bgColor: string;
   heading: JSX.Element;
   data: {
-    count: string;
+    count: number;
   };
 }
 
-const StatsCard: React.FC<StatsCardProps> = (
-  props: StatsCardProps,
-): JSX.Element => {
+const StatsCard: React.FC<StatsCardProps> = (props: StatsCardProps): JSX.Element => {
   const {icon, bgColor = '', data, heading} = props;
   const classes = useStyles({bgColor});
 

@@ -4,3 +4,4 @@ export * from './jobs';
 export * from './organizations';
 export * from './adminUsers';
 export * from './staff';
+export * from './dashboard';

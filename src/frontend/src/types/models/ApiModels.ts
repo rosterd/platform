@@ -166,12 +166,11 @@ export interface paths {
       };
     };
   };
-  "/api/v{version}/adminusers/facility-admins/{auth0userid}": {
+  "/api/v{version}/adminusers/facility-admins/{staffid}": {
     delete: {
       parameters: {
         path: {
-          /** The admin to remove from auth0 */
-          auth0UserId: string;
+          staffId: number;
           version: string;
         };
       };
@@ -401,6 +400,75 @@ export interface paths {
       responses: {
         /** Success */
         200: unknown;
+        /** Bad Request */
+        400: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Unauthorized */
+        401: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Forbidden */
+        403: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Not Found */
+        404: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        422: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Client Error */
+        429: {
+          content: {
+            "text/plain": components["schemas"]["ProblemDetails"];
+            "application/json": components["schemas"]["ProblemDetails"];
+            "text/json": components["schemas"]["ProblemDetails"];
+          };
+        };
+        /** Server Error */
+        500: unknown;
+      };
+    };
+  };
+  "/api/v{version}/dashboard": {
+    get: {
+      parameters: {
+        path: {
+          version: string;
+        };
+      };
+      responses: {
+        /** Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["DashboardModel"];
+            "application/json": components["schemas"]["DashboardModel"];
+            "text/json": components["schemas"]["DashboardModel"];
+          };
+        };
         /** Bad Request */
         400: {
           content: {
@@ -2876,6 +2944,11 @@ export interface components {
       email: string;
       mobilePhoneNumber?: string | null;
       rosterdRolesForUser?: components["schemas"]["RosterdRoleEnum"][] | null;
+    };
+    DashboardModel: {
+      totalJobs?: number;
+      totalStaff?: number;
+      amountSaved?: number;
     };
     DeleteJobRequest: {
       jobCancellationReason?: string | null;
