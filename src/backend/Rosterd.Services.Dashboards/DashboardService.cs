@@ -10,7 +10,6 @@ namespace Rosterd.Services.Dashboards
     {
         private readonly IRosterdDbContext _context;
 
-
         public DashboardService(IRosterdDbContext context)
         {
             _context = context;
@@ -18,7 +17,6 @@ namespace Rosterd.Services.Dashboards
 
         public async Task<DashboardModel> GetDashBoard()
         {
-            //var publishedJobsCount = _context.Jobs.Count();
             var completedJobsCount = _context.Jobs.Count();
             var staff = _context.Staff.Count();
             var amountSaved = completedJobsCount * 8 * 5;
