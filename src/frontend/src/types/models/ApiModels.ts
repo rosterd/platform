@@ -2947,6 +2947,9 @@ export interface components {
     };
     DashboardModel: {
       totalJobs?: number;
+      totalCompletedJobs?: number;
+      totalExpiredJobs?: number;
+      totalInprogressJobs?: number;
       totalStaff?: number;
       amountSaved?: number;
     };

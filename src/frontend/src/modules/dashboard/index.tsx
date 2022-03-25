@@ -57,6 +57,30 @@ const Dashboard = (): JSX.Element => {
               <StatsCard
                 icon={<PersonIcon style={{fontSize: isBreakPointDown('md') ? 30 : 40}} />}
                 bgColor={blue[500]}
+                data={{count: stats.totalCompletedJobs || 0}}
+                heading={<IntlMessages id='dashboard.stats.jobsCompleted' />}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <StatsCard
+                icon={<MonetizationOnIcon style={{fontSize: isBreakPointDown('md') ? 30 : 40}} />}
+                bgColor={indigo[500]}
+                data={{count: stats.totalExpiredJobs || 0}}
+                heading={<IntlMessages id='dashboard.stats.jobsExipred' />}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <StatsCard
+                icon={<WorkIcon style={{fontSize: isBreakPointDown('md') ? 30 : 40}} />}
+                bgColor={red[500]}
+                data={{count: stats.totalInprogressJobs || 0}}
+                heading={<IntlMessages id='dashboard.stats.jobsInProgress' />}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <StatsCard
+                icon={<PersonIcon style={{fontSize: isBreakPointDown('md') ? 30 : 40}} />}
+                bgColor={blue[500]}
                 data={{count: stats.totalStaff || 0}}
                 heading={<IntlMessages id='dashboard.stats.staff' />}
               />
