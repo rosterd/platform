@@ -1,6 +1,7 @@
 import {createStyles, Dialog, DialogContent, DialogTitle, makeStyles, Theme} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import {AxiosRequestConfig} from 'axios';
+import moment from 'moment';
 import React, {useEffect, useState} from 'react';
 import {getJob} from 'services';
 import useRequest from 'shared/hooks/useRequest';
@@ -42,6 +43,9 @@ const JobModal = (props: Props): JSX.Element => {
   const [skillsString, setSkillsString] = useState('');
   const {requestMaker} = useRequest();
 
+  const localStartDateTime = moment.utc(jobStartDateTimeUtc).local().format('YYYY-MM-DD hh:mm:ss A');
+  const localEndDateTime = moment.utc(jobEndDateTimeUtc).local().format('YYYY-MM-DD hh:mm:ss A');
+
   const fetchData = async (config: AxiosRequestConfig) => {
     const job = await requestMaker<Job>(config);
     setSkillsString((job.jobSkills || []).map((jobSkill) => jobSkill.skillName).join(','));
@@ -71,14 +75,14 @@ const JobModal = (props: Props): JSX.Element => {
         <TextField label='Description' disabled multiline defaultValue={description} />
         <TextField
           label='Start Time'
-          defaultValue={jobStartDateTimeUtc}
+          defaultValue={localStartDateTime}
           InputProps={{
             readOnly: true,
           }}
         />
         <TextField
           label='End Time'
-          defaultValue={jobEndDateTimeUtc}
+          defaultValue={localEndDateTime}
           InputProps={{
             readOnly: true,
           }}
