@@ -39,7 +39,7 @@ namespace Rosterd.Domain.Models.JobModels
 
         public DateTime? JobGracePeriodEndDateTimeUtc => GracePeriodToCancelMinutes == null
             ? (DateTime?)null
-            : JobStartDateTimeUtc.Date.AddMinutes(-GracePeriodToCancelMinutes.Value);
+            : JobStartDateTimeUtc.AddMinutes(-GracePeriodToCancelMinutes.Value);
 
         [Required]
         public JobStatus? JobStatus { get; set; }
