@@ -11,6 +11,6 @@ namespace Rosterd.Services.Dashboards.Interfaces
         /// Gets Dashboards
         /// </summary>
         /// <returns>DashboardModel</returns>
-        Task<DashboardModel> GetDashBoard();
+        Task<DashboardModel> GetDashBoard(string auth0OrganizationId);
     }
 }

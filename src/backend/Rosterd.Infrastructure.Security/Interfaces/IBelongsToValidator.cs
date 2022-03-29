@@ -15,7 +15,7 @@ namespace Rosterd.Infrastructure.Security.Interfaces
         /// <param name="facilityId">the facility id</param>
         /// <param name="auth0OrganizationId">The auth0 organization id</param>
         /// <returns></returns>
-        Task ValidateFacilityBelongsToOrganization(long facilityId, string auth0OrganizationId);
+        Task<Organization> ValidateFacilityBelongsToOrganization(long facilityId, string auth0OrganizationId);
 
         // <summary>
         /// Checks to see if the facilities belongs to the organization.

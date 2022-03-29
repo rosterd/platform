@@ -24,7 +24,7 @@ namespace Rosterd.Infrastructure.Security
         }
 
         ///<inheritdoc/>
-        public async Task ValidateFacilityBelongsToOrganization(long facilityId, string auth0OrganizationId)
+        public async Task<Organization> ValidateFacilityBelongsToOrganization(long facilityId, string auth0OrganizationId)
         {
             var organization = await ValidateOrganizationExistsAndGetIfValid(auth0OrganizationId);
 
@@ -41,6 +41,8 @@ namespace Rosterd.Infrastructure.Security
             //This means facility is there but does not belong to the organization
             if (cacheEntry.ToString() != auth0OrganizationId)
                 throw new EntityNotFoundException($"Facility {facilityId} does not belong to organization {organization.OrganizationId}");
+
+            return organization;
         }
 
         ///<inheritdoc/>

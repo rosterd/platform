@@ -81,7 +81,7 @@ namespace Rosterd.Services.Jobs
         ///<inheritdoc/>
         public async Task<JobModel> CreateJob(JobModel jobModel, string auth0OrganizationId)
         {
-            await _belongsToValidator.ValidateFacilityBelongsToOrganization(jobModel.Facility.FacilityId, auth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateFacilityBelongsToOrganization(jobModel.Facility.FacilityId, auth0OrganizationId);
 
             var jobToCreate = jobModel.ToNewJob();
             var utcNow = DateTime.UtcNow;
@@ -92,6 +92,7 @@ namespace Rosterd.Services.Jobs
             jobToCreate.JobPostedDateTimeUtc = jobToCreate.LastJobStatusChangeDateTimeUtc = utcNow;
             jobToCreate.LastJobStatusChangeDateTimeUtc = utcNow;
             jobToCreate.FacilityId = jobModel.Facility.FacilityId;
+            jobToCreate.OrganizationId = organization.OrganizationId;
 
             //Add the job to be created and insert the job so we get the job id bad
             var jobCreated = await _context.Jobs.AddAsync(jobToCreate);

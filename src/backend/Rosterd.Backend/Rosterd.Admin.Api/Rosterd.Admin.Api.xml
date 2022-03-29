@@ -58,6 +58,12 @@
             <param name="apiKey"></param>
             <returns></returns>
         </member>
+        <member name="M:Rosterd.Admin.Api.Controllers.DashboardController.GetDashBoard">
+            <summary>
+                Get Dashboards
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Rosterd.Admin.Api.Controllers.FacilitiesController.GetAllFacilities(Rosterd.Domain.Models.PagingQueryStringParameters)">
             <summary>
                 Gets all the facilities
