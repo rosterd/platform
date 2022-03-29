@@ -13,9 +13,10 @@ namespace Rosterd.Services.Dashboards
         private readonly IRosterdDbContext _context;
         private readonly IBelongsToValidator _belongsToValidator;
 
-        public DashboardService(IRosterdDbContext context)
+        public DashboardService(IRosterdDbContext context, IBelongsToValidator belongsToValidator)
         {
             _context = context;
+            _belongsToValidator = belongsToValidator;
         }
 
         public async Task<DashboardModel> GetDashBoard(string auth0OrganizationId)
