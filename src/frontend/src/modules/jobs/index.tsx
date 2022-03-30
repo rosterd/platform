@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import moment from 'moment';
 import Box from '@material-ui/core/Box';
 import AppAnimate from '@crema/core/AppAnimate';
 import {makeStyles, Button, Grid} from '@material-ui/core';
@@ -65,6 +66,8 @@ const Jobs = (): JSX.Element => {
     setShowDeleteJobModal(true);
   };
 
+  const getLocalDateTime = (dateTime) => moment.utc(dateTime).local().format('DD/MM/YYYY hh:mm:ss A');
+
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <Box>
@@ -89,8 +92,20 @@ const Jobs = (): JSX.Element => {
               title=''
               columns={[
                 {title: 'Title', field: 'jobTitle'},
-                {title: 'From', field: 'jobStartDateTimeUtc', type: 'datetime'},
-                {title: 'To', field: 'jobEndDateTimeUtc', type: 'datetime'},
+                {
+                  title: 'From',
+                  field: 'jobStartDateTimeUtc',
+                  type: 'datetime',
+                  // eslint-disable-next-line react/prop-types
+                  render: ({jobStartDateTimeUtc}) => <span>{getLocalDateTime(jobStartDateTimeUtc)}</span>,
+                },
+                {
+                  title: 'To',
+                  field: 'jobEndDateTimeUtc',
+                  type: 'datetime',
+                  // eslint-disable-next-line react/prop-types
+                  render: ({jobEndDateTimeUtc}) => <span>{getLocalDateTime(jobEndDateTimeUtc)}</span>,
+                },
                 {title: 'Status', field: 'jobStatus'},
               ]}
               actions={[
