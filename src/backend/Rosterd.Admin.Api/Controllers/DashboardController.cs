@@ -35,16 +35,11 @@ namespace Rosterd.Admin.Api.Controllers
 
             }
 
-
             /// <summary>
             ///     Get Dashboards
             /// </summary>
             /// <returns></returns>
             [HttpGet]
-            public async Task<ActionResult<DashboardModel>> GetDashBoard()
-            {
-                return await _dashboardService.GetDashBoard();
-            }
-
-    }
+            public async Task<ActionResult<DashboardModel>> GetDashBoard() => await _dashboardService.GetDashBoard(_userContext.UsersAuth0OrganizationId);
+        }
 }
