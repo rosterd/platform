@@ -97,6 +97,7 @@ namespace Rosterd.Admin.Api.Controllers
 
             var staff = await _staffService.CreateStaff(staffToCreateInDb, _userContext.UsersAuth0OrganizationId);
 
+            //3. Add to Azure Search
             //A new staff added, update the Azure Search
             //At a later time we can raise an event for this (not needed for this MPV)
             await _staffEventsService.HandleStaffCreatedOrUpdatedEvent(new StaffCreatedOrUpdatedMessage(staff.StaffId.Value.ToString(), _userContext.UsersAuth0OrganizationId));
