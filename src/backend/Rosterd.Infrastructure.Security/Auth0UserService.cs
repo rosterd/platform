@@ -1,14 +1,18 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Auth0.ManagementApi.Models;
 using Auth0.ManagementApi.Paging;
+using Rosterd.Domain;
 using Rosterd.Domain.Enums;
 using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.AdminUserModels;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Infrastructure.Security.Interfaces;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace Rosterd.Infrastructure.Security
 {
@@ -67,15 +71,14 @@ namespace Rosterd.Infrastructure.Security
         {
             var auth0ApiManagementClient = await _auth0AuthenticationService.GetAuth0ApiManagementClient();
 
-            //1. Create the user in auth0 with a random password
-            //2. Add this user to the organization
+            //1. Create the user in auth0 with a random password and add this user to the organization
             var userCreatedInAuth0 = await _auth0AuthenticationService.CreateUserAndAddToOrganization(auth0OrganizationId, adminUserModel.Email,
                 adminUserModel.FirstName, adminUserModel.LastName, adminUserModel.MobilePhoneNumber);
 
-            //3. Add the organization admin role to this user
+            //2. Add the right role to this user
             var roleToAdd = await _rolesService.GetRole(roleToAddForUser);
             if (roleToAdd == null)
-                throw new RoleDoesNotExistException("The organization admin role does not exist");
+                throw new RoleDoesNotExistException("The role specified does not exist");
 
             await auth0ApiManagementClient.Organizations.AddMemberRolesAsync(auth0OrganizationId, userCreatedInAuth0.UserId,
                 new OrganizationAddMemberRolesRequest { Roles = new List<string> { roleToAdd.RoleId } });
@@ -86,6 +89,30 @@ namespace Rosterd.Infrastructure.Security
 
             adminUserModel.UserAuth0Id = userCreatedInAuth0.UserId;
             return adminUserModel;
+        }
+
+        public async Task<string> GetPasswordResetLink(string auth0UserId) => await _auth0AuthenticationService.GetPasswordResetLink(auth0UserId);
+
+        public async Task SendWelcomeEmailToStaff(string welcomeEmailLinkToSetPassword, string sendGridEmailApiKey, string staffName, string email, string organizationName)
+        {
+            var sendGridClient = new SendGridClient(sendGridEmailApiKey);
+
+            var sendGridMessage = new SendGridMessage();
+            sendGridMessage.SetFrom(new EmailAddress(RosterdConstants.Email.AdminFromEmailAddress, RosterdConstants.Email.AdminFromEmailName));
+            sendGridMessage.AddTo(new EmailAddress(email));
+            sendGridMessage.SetSubject(RosterdConstants.Email.WelcomeEmailSubject);
+            sendGridMessage.SetTemplateId(RosterdConstants.Email.WelcomeEmailTemplateId);
+            sendGridMessage.SetTemplateData(new
+            {
+                //These property-names should match exactly to the email template variables (be care its case-sensitive)
+                name = staffName,
+                organization = organizationName,
+                registrationUrl = welcomeEmailLinkToSetPassword
+            });
+
+            var response = await sendGridClient.SendEmailAsync(sendGridMessage);
+            if ((int) response.StatusCode > 400)
+                throw new Exception($"Email could not be sent, got response from SendGrid of {response.StatusCode}");
         }
     }
 }

@@ -46,5 +46,9 @@ namespace Rosterd.Infrastructure.Security.Interfaces
         Task<Auth0UserModel> AddUserToAuth0(string auth0OrganizationId, Auth0UserModel adminUserModel, RosterdRoleEnum roleToAddForUser);
 
         Task RemoveUserFromAuth0(string auth0Id);
+
+        Task<string> GetPasswordResetLink(string auth0UserId);
+
+        Task SendWelcomeEmailToStaff(string welcomeEmailLinkToSetPassword, string sendGridEmailApiKey, string staffName, string email, string organizationName);
     }
 }

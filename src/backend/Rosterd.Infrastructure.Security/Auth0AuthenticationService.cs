@@ -62,6 +62,14 @@ namespace Rosterd.Infrastructure.Security
             return managementClient;
         }
 
+        public async Task<string> GetPasswordResetLink(string auth0UserId)
+        {
+            var auth0ApiManagementClient = await GetAuth0ApiManagementClient();
+            var passwordChangeTicketAsync = await auth0ApiManagementClient.Tickets.CreatePasswordChangeTicketAsync(new PasswordChangeTicketRequest { UserId = auth0UserId });
+
+            return passwordChangeTicketAsync.Value;
+        }
+
         public async Task SendPasswordResetEmailToUser(string usersEmailAddress) =>
             await _auth0AuthenticationApiClient.ChangePasswordAsync(new ChangePasswordRequest
             {

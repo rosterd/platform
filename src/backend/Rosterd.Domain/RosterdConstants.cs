@@ -74,5 +74,14 @@ namespace Rosterd.Domain
         {
             public const string UserRemovedFromAuth0Text = "UserRemovedFromAuth0Text";
         }
+
+        public static class Email
+        {
+            public const string AdminFromEmailAddress = "amdin@rosterd.com";
+            public const string AdminFromEmailName = "Rosterd";
+
+            public const string WelcomeEmailSubject = "Welcome To Rosterd";
+            public const string WelcomeEmailTemplateId = "d-a18ecbcc7f364341a0d7bf1a5e6fc170";
+        }
     }
 }

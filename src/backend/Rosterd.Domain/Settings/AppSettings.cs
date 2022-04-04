@@ -13,5 +13,7 @@ namespace Rosterd.Domain.Settings
         public string SearchServiceEndpoint { get; set; }
 
         public string SearchServiceApiKey { get; set; }
+
+        public string SendGridEmailApiKey { get; set; }
     }
 }

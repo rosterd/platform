@@ -35,6 +35,7 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IStaffService _staffService;
         private readonly IStaffSkillsService _staffSkillsService;
         private readonly IStaffEventsService _staffEventsService;
+        private readonly AppSettings _appSettings;
         private readonly IAuth0UserService _auth0UserService;
         private readonly IUserContext _userContext;
         private readonly IBelongsToValidator _belongsToValidator;
@@ -45,6 +46,7 @@ namespace Rosterd.Admin.Api.Controllers
             _staffService = staffService;
             _staffSkillsService = staffSkillsService;
             _staffEventsService = staffEventsService;
+            _appSettings = appSettings.Value;
             _auth0UserService = auth0UserService;
             _userContext = userContext;
             _belongsToValidator = belongsToValidator;
@@ -84,7 +86,7 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<StaffModel>> AddNewStaffMember([FromBody] AddStaffRequest request)
         {
             //Validation checks before we create the user in Auth0
-            await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(_userContext.UsersAuth0OrganizationId);
+            var organization = await _belongsToValidator.ValidateOrganizationExistsAndGetIfValid(_userContext.UsersAuth0OrganizationId);
             await _belongsToValidator.ValidateSkillsBelongsToOrganization(request.SkillIds, _userContext.UsersAuth0OrganizationId);
 
             //1. Create the staff in auth0
@@ -94,8 +96,12 @@ namespace Rosterd.Admin.Api.Controllers
             var staffToCreateInDb = request.ToStaffModel();
             staffToCreateInDb.Auth0Id = userCreatedInAuth0.UserAuth0Id;
             staffToCreateInDb.StaffRole = RosterdRoleEnum.Staff.ToString();
-
             var staff = await _staffService.CreateStaff(staffToCreateInDb, _userContext.UsersAuth0OrganizationId);
+
+            //3. Send Staff welcome email
+            var passwordResetLink = await _auth0UserService.GetPasswordResetLink(staffToCreateInDb.Auth0Id);
+            await _auth0UserService.SendWelcomeEmailToStaff(passwordResetLink, _appSettings.SendGridEmailApiKey,
+                $"{staffToCreateInDb.FirstName} {staffToCreateInDb.LastName}", staffToCreateInDb.Email, organization.OrganizationName);
 
             //3. Add to Azure Search
             //A new staff added, update the Azure Search

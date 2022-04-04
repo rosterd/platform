@@ -14,5 +14,7 @@ namespace Rosterd.Infrastructure.Security.Interfaces
 
         Task<User> CreateUserAndAddToOrganization(string auth0OrganizationId, string email, string firstName, string lastName,
             string phoneNumber);
+
+        Task<string> GetPasswordResetLink(string auth0UserId);
     }
 }
