@@ -83,10 +83,6 @@ namespace Rosterd.Infrastructure.Security
             await auth0ApiManagementClient.Organizations.AddMemberRolesAsync(auth0OrganizationId, userCreatedInAuth0.UserId,
                 new OrganizationAddMemberRolesRequest { Roles = new List<string> { roleToAdd.RoleId } });
 
-            //By this point we have created the user, add them to the to the organization and assigned them the role org-admin
-            //4. Now, final thing we need to do is trigger a password-change event so the user will get an email
-            await _auth0AuthenticationService.SendPasswordResetEmailToUser(adminUserModel.Email);
-
             adminUserModel.UserAuth0Id = userCreatedInAuth0.UserId;
             return adminUserModel;
         }

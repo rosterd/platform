@@ -70,12 +70,6 @@ namespace Rosterd.Infrastructure.Security
             return passwordChangeTicketAsync.Value;
         }
 
-        public async Task SendPasswordResetEmailToUser(string usersEmailAddress) =>
-            await _auth0AuthenticationApiClient.ChangePasswordAsync(new ChangePasswordRequest
-            {
-                ClientId = _auth0Settings.ClientId, Connection = _auth0Settings.ConnectionName, Email = usersEmailAddress
-            });
-
         public async Task<User> CreateUserAndAddToOrganization(string auth0OrganizationId, string email, string firstName, string lastName, string phoneNumber)
         {
             try
