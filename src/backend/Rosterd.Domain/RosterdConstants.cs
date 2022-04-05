@@ -80,6 +80,8 @@ namespace Rosterd.Domain
             public const string AdminFromEmailAddress = "amdin@rosterd.com";
             public const string AdminFromEmailName = "Rosterd";
 
+            public const string AppDownloadWelcomeUrl = "www.rosterd.com/welcome";
+
             public const string WelcomeEmailSubject = "Welcome To Rosterd";
             public const string WelcomeEmailTemplateId = "d-a18ecbcc7f364341a0d7bf1a5e6fc170";
         }

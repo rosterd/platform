@@ -9,6 +9,7 @@ using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Rosterd.Domain;
 using Rosterd.Domain.Exceptions;
 using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Security.Interfaces;
@@ -65,7 +66,7 @@ namespace Rosterd.Infrastructure.Security
         public async Task<string> GetPasswordResetLink(string auth0UserId)
         {
             var auth0ApiManagementClient = await GetAuth0ApiManagementClient();
-            var passwordChangeTicketAsync = await auth0ApiManagementClient.Tickets.CreatePasswordChangeTicketAsync(new PasswordChangeTicketRequest { UserId = auth0UserId });
+            var passwordChangeTicketAsync = await auth0ApiManagementClient.Tickets.CreatePasswordChangeTicketAsync(new PasswordChangeTicketRequest { UserId = auth0UserId, ResultUrl = RosterdConstants.Email.AppDownloadWelcomeUrl});
 
             return passwordChangeTicketAsync.Value;
         }

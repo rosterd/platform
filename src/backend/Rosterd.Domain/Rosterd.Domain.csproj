@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Emails\" />
     <Folder Include="Models\OrganizationModels\" />
   </ItemGroup>
 
