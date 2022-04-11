@@ -1,56 +1,57 @@
 .welcome {
-    margin: 12em 0 10em 0;
+  margin: 12em 0 10em 0;
 
-    & > div:first-child {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+  & > div:first-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-        & > * {
-            margin-bottom: 30px;
-        }
-
-        @include mq("tablet-wide", max) {
-            .links img{
-                width: 150px;
-            }
-        }
-       
+    & > * {
+      margin-bottom: 30px;
     }
-    
-    .image-block {
-        position: relative;
 
-        &__img{
-            top: 0;
-            left: 0;
-            @include mq("tablet-wide", max) {
-                margin-left: -100px;
-            }
-        }
-
-        &__img-buttons {
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            top:20%;
-            left: 20%;
-            &::after {
-                content: "";
-                width: 548px;
-                height: 548px;
-                display: block;
-                position: absolute;
-                bottom: 0;
-                border-radius: 100%;
-                background-color: #e8effd;
-                z-index: -1;
-                left: -40%;
-                top: -29%;
-            }            
-        }
-
+    p {
+      padding: 0 32px;
     }
+
+    @include mq("tablet-wide", max) {
+      .links img {
+        width: 150px;
+      }
+    }
+  }
+
+  .image-block {
+    position: relative;
+
+    &__img {
+      top: 0;
+      left: 0;
+      @include mq("tablet-wide", max) {
+        margin-left: -100px;
+      }
+    }
+
+    &__roundel {
+      width: 548px;
+      height: 548px;
+      display: block;
+      position: absolute;
+      bottom: 0;
+      border-radius: 100%;
+      background-color: #e8effd;
+      z-index: -1;
+      @include mq("tablet-wide", max) {
+        margin-left: -100px;
+      }
+    }
+    &__img-buttons {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      top: 20%;
+      left: 20%;
+    }
+  }
 }
-
