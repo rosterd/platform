@@ -10,13 +10,24 @@
         & > * {
             margin-bottom: 30px;
         }
+
+        @include mq("tablet-wide", max) {
+            .links img{
+                width: 150px;
+            }
+        }
+       
     }
     
     .image-block {
         position: relative;
+
         &__img{
             top: 0;
             left: 0;
+            @include mq("tablet-wide", max) {
+                margin-left: -100px;
+            }
         }
 
         &__img-buttons {
