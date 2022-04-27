@@ -73,7 +73,7 @@ namespace Rosterd.Infrastructure.Security
 
             //1. Create the user in auth0 with a random password and add this user to the organization
             var userCreatedInAuth0 = await _auth0AuthenticationService.CreateUserAndAddToOrganization(auth0OrganizationId, adminUserModel.Email,
-                adminUserModel.FirstName, adminUserModel.LastName, adminUserModel.MobilePhoneNumber);
+                adminUserModel.FirstName, adminUserModel.LastName, adminUserModel.MobilePhoneNumber, adminUserModel.Auth0UserMetaData);
 
             //2. Add the right role to this user
             var roleToAdd = await _rolesService.GetRole(roleToAddForUser);

@@ -26,5 +26,7 @@ namespace Rosterd.Domain.Models.AdminUserModels
         public string MobilePhoneNumber { get; set; }
 
         public List<RosterdRoleEnum> RosterdRolesForUser { get; set; }
+
+        public Auth0UserMetaData Auth0UserMetaData { get; set; } = new Auth0UserMetaData();
     }
 }

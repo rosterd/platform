@@ -16,6 +16,7 @@ using Rosterd.Domain.Models;
 using Rosterd.Domain.Models.AdminUserModels;
 using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Domain.Settings;
+using Rosterd.Infrastructure.Extensions;
 using Rosterd.Infrastructure.Security.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
@@ -139,11 +140,13 @@ namespace Rosterd.Admin.Api.Controllers
         public async Task<ActionResult<StaffModel>> AddFacilityAdminUser([FromBody] AddAdminWhoIsAlsoStaffRequest request)
         {
             //1. Create user in auth0
-            var adminUserModel = await _adminUserService.AddFacilityAdminToAuth0(_userContext.UsersAuth0OrganizationId, request.ToAdminUserModel());
+            var adminUserModel = request.ToAdminUserModel();
+            adminUserModel.Auth0UserMetaData = new Auth0UserMetaData { FacilityIdsCsvString = request.FacilityIds.ToDelimitedString() };
+            var auth0AdminUser = await _adminUserService.AddFacilityAdminToAuth0(_userContext.UsersAuth0OrganizationId, adminUserModel);
 
             //2. Create the staff record in our db
             var staffToCreate = request.ToStaffModel();
-            staffToCreate.Auth0Id = adminUserModel.UserAuth0Id;
+            staffToCreate.Auth0Id = auth0AdminUser.UserAuth0Id;
             staffToCreate.StaffRole = RosterdRoleEnum.FacilityAdmin.ToString();
 
             var staffCreated = await _staffService.CreateStaff(staffToCreate, _userContext.UsersAuth0OrganizationId);
