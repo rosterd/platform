@@ -96,6 +96,7 @@ stages:
                             -AppSettings:EventGridTopicKey "$(AppSettings.EventGridTopicKey)"
                             -AppSettings:SearchServiceEndpoint "$(AppSettings.SearchServiceEndpoint)"
                             -AppSettings:SearchServiceApiKey "$(AppSettings.SearchServiceApiKey)"
+                            -AppSettings:SendGridEmailApiKey "$(AppSettings.SendGridEmailApiKey)"
                             -APPINSIGHTS_INSTRUMENTATIONKEY "$(ApplicationInsights.InstrumentationKey)"
                             -ApplicationInsights:InstrumentationKey "$(ApplicationInsights.InstrumentationKey)"
                             -ConnectionStrings:SQLDBConnectionString "$(ConnectionStrings.SQLDBConnectionString)"

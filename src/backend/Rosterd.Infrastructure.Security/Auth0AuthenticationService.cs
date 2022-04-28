@@ -78,7 +78,6 @@ namespace Rosterd.Infrastructure.Security
             try
             {
                 var auth0ApiManagementClient = await GetAuth0ApiManagementClient();
-                var auth0UserMetaDataJson = auth0UserMetaData == null ? string.Empty : JsonSerializer.Serialize(auth0UserMetaData);
 
                 //Create the user in auth0 with a random password
                 var userCreatedInAuth0 = await auth0ApiManagementClient.Users.CreateAsync(new UserCreateRequest
