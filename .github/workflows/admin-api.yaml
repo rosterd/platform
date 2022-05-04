@@ -1,0 +1,25 @@
+name: admin-api
+
+on:
+  push:
+    branches: 
+      - main
+      - 'feature/**'
+    paths:
+      - 'src/backend/**'
+      - '!**/README.md'
+      - '!src/backend/Rosterd.Client.Api'
+      - '!src/backend/Rosterd.AzureFunctions'
+  workflow_dispatch:
+
+env:
+  BUILD_ARGS: "ABC"
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    name: Build
+    steps:
+    - uses: actions/checkout@v2
+    
