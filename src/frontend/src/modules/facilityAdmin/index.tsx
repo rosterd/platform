@@ -39,7 +39,7 @@ const FacilityAdmin: React.FC = (): JSX.Element => {
   const fetchData = async (config: AxiosRequestConfig) => {
     setLoading(true);
     const allAdmins = await requestMaker<StaffModelPagedList>(config);
-    const facilityAdmins = allAdmins.items?.filter((admin) => admin.staffRole?.indexOf('FacilityAdmin') !== -1);
+    const facilityAdmins = allAdmins.items?.filter((admin) => admin.staffRole?.indexOf('FacilityAdmin') !== -1 && admin.isActive);
     setAdmins(facilityAdmins || []);
     setLoading(false);
   };

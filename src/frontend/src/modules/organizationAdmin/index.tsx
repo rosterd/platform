@@ -42,7 +42,7 @@ const OrganizationAdmin: React.FC = (): JSX.Element => {
   const fetchData = async (config: AxiosRequestConfig) => {
     setLoading(true);
     const adminResponse = await requestMaker<StaffModelPagedList>(config);
-    const facilityAdmins = adminResponse.items?.filter((admin) => admin.staffRole?.indexOf('OrganizationAdmin') !== -1);
+    const facilityAdmins = adminResponse.items?.filter((admin) => admin.staffRole?.indexOf('OrganizationAdmin') !== -1 && admin.isActive);
     setAdmins(facilityAdmins || []);
     setLoading(false);
   };
