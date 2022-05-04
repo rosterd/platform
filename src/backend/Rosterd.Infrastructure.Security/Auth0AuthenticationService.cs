@@ -11,8 +11,10 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Rosterd.Domain;
 using Rosterd.Domain.Exceptions;
+using Rosterd.Domain.Models.AdminUserModels;
 using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Security.Interfaces;
+using System.Text.Json;
 
 namespace Rosterd.Infrastructure.Security
 {
@@ -71,7 +73,7 @@ namespace Rosterd.Infrastructure.Security
             return passwordChangeTicketAsync.Value;
         }
 
-        public async Task<User> CreateUserAndAddToOrganization(string auth0OrganizationId, string email, string firstName, string lastName, string phoneNumber)
+        public async Task<User> CreateUserAndAddToOrganization(string auth0OrganizationId, string email, string firstName, string lastName, string phoneNumber, Auth0UserMetaData auth0UserMetaData)
         {
             try
             {
@@ -87,6 +89,7 @@ namespace Rosterd.Infrastructure.Security
                     FullName = $"{firstName} {lastName}",
                     Password = Guid.NewGuid().ToString(),
                     Connection = _auth0Settings.ConnectionName,
+                    UserMetadata = auth0UserMetaData,
                     VerifyEmail = false //setting this to true will send a verify your email to the user, we don't want to do that at this stage
                 });
 
