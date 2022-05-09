@@ -35,7 +35,6 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IStaffService _staffService;
         private readonly IStaffSkillsService _staffSkillsService;
         private readonly IStaffEventsService _staffEventsService;
-        private readonly AppSettings _appSettings;
         private readonly IAuth0UserService _auth0UserService;
         private readonly IUserContext _userContext;
         private readonly IBelongsToValidator _belongsToValidator;
@@ -46,7 +45,6 @@ namespace Rosterd.Admin.Api.Controllers
             _staffService = staffService;
             _staffSkillsService = staffSkillsService;
             _staffEventsService = staffEventsService;
-            _appSettings = appSettings.Value;
             _auth0UserService = auth0UserService;
             _userContext = userContext;
             _belongsToValidator = belongsToValidator;
@@ -100,7 +98,7 @@ namespace Rosterd.Admin.Api.Controllers
 
             //3. Send Staff welcome email
             var passwordResetLink = await _auth0UserService.GetPasswordResetLink(staffToCreateInDb.Auth0Id);
-            await _auth0UserService.SendWelcomeEmailToStaff(passwordResetLink, _appSettings.SendGridEmailApiKey,
+            await _auth0UserService.SendWelcomeEmailToStaff(passwordResetLink, AppSettings.SendGridEmailApiKey,
                 $"{staffToCreateInDb.FirstName} {staffToCreateInDb.LastName}", staffToCreateInDb.Email, organization.OrganizationName);
 
             //3. Add to Azure Search
