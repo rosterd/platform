@@ -18,6 +18,7 @@ using Rosterd.Domain.Models.StaffModels;
 using Rosterd.Domain.Settings;
 using Rosterd.Infrastructure.Extensions;
 using Rosterd.Infrastructure.Security.Interfaces;
+using Rosterd.Services.Organizations.Interfaces;
 using Rosterd.Services.Staff.Interfaces;
 using Rosterd.Web.Infra.Filters.Swagger;
 using Rosterd.Web.Infra.Security;
@@ -39,10 +40,11 @@ namespace Rosterd.Admin.Api.Controllers
         private readonly IUserContext _userContext;
         private readonly IStaffService _staffService;
         private readonly IAuth0UserService _auth0UserService;
+        private readonly IOrganizationsService _organizationsService;
 
         public AdminUsersController(ILogger<StaffController> logger, IAuth0UserService adminUserService,
             IStaffEventsService staffEventsService, IOptions<AppSettings> appSettings, IUserContext userContext,
-            IStaffService staffService, IAuth0UserService auth0UserService) : base(appSettings)
+            IStaffService staffService, IAuth0UserService auth0UserService, IOrganizationsService organizationsService) : base(appSettings)
         {
             _logger = logger;
             _adminUserService = adminUserService;
@@ -50,6 +52,7 @@ namespace Rosterd.Admin.Api.Controllers
             _userContext = userContext;
             _staffService = staffService;
             _auth0UserService = auth0UserService;
+            _organizationsService = organizationsService;
         }
 
         /// <summary>
@@ -148,8 +151,12 @@ namespace Rosterd.Admin.Api.Controllers
             var staffToCreate = request.ToStaffModel();
             staffToCreate.Auth0Id = auth0AdminUser.UserAuth0Id;
             staffToCreate.StaffRole = RosterdRoleEnum.FacilityAdmin.ToString();
-
             var staffCreated = await _staffService.CreateStaff(staffToCreate, _userContext.UsersAuth0OrganizationId);
+
+            //3. Send Staff welcome email
+            var passwordResetLink = await _auth0UserService.GetPasswordResetLink(auth0AdminUser.UserAuth0Id);
+            await _auth0UserService.SendWelcomeEmailToStaff(passwordResetLink, AppSettings.SendGridEmailApiKey,
+                $"{staffCreated.FirstName} {staffCreated.LastName}", staffCreated.Email, string.Empty);
 
             return staffCreated;
         }

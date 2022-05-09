@@ -20,9 +20,9 @@ namespace Rosterd.Admin.Api.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public abstract class BaseApiController : ControllerBase
     {
-        protected BaseApiController(IOptions<AppSettings> appSettings)
-        {
-        }
+        protected readonly AppSettings AppSettings;
+
+        protected BaseApiController(IOptions<AppSettings> appSettings) => AppSettings = appSettings.Value;
 
         //protected readonly IUserContext UserContext;
 
