@@ -1,0 +1,26 @@
+name: functions
+
+on:
+  push:
+    branches: 
+      - main
+      - 'feature/**'
+    paths:
+      - 'src/backend/*'
+      - '.github/workflows/functions.yaml'
+      - '!**/README.md'
+      - '!src/backend/Rosterd.Client.Api'
+      - '!src/backend/Rosterd.Admin.Api'
+
+  workflow_dispatch:
+
+env:
+  BUILD_ARGS: "ABC"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2

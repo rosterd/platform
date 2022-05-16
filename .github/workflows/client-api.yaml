@@ -1,0 +1,24 @@
+name: client-api
+
+on:
+  push:
+    branches: 
+      - main
+      - 'feature/**'
+    paths:
+      - 'src/backend/*'
+      - '.github/workflows/client-api.yaml'
+      - '!**/README.md'
+
+  workflow_dispatch:
+
+env:
+  BUILD_ARGS: "ABC"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
