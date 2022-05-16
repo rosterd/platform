@@ -1,0 +1,40 @@
+name: admin-ui
+
+on:
+  push:
+    branches: 
+      - main
+      - 'feature/**'
+    paths:
+      - 'src/frontend/**'
+      - '.github/workflows/admin-ui.yaml'
+      - '!**/README.md'
+  workflow_dispatch:
+
+env:
+  BUILD_ARGS: "ABC"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+          cache: 'npm'
+
+      - name: Run Build
+        run: |
+          npm ci
+          npm run build
+
+      - name: PublishPipelineArtifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: portal
+          path: 'src/frontend/build'
