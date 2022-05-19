@@ -5,7 +5,7 @@ This repo will hold all things related to the Rosterd platform.  The solution is
 - src
   - backend (this will contain all the backend apis / microservices)
   - databases (this will contains all the db schemas and upgrade/roll back scripts)
-  - ui (this will contain all the UI's -> admin app + mobile app)
+  - frontend (this will contain all the UI's -> admin app)
 
 # Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
