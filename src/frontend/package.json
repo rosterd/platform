@@ -34,7 +34,7 @@
     "jss-rtl": "^0.3.0",
     "lodash": "^4.17.21",
     "material-table": "^1.69.2",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "namor": "^2.0.2",
     "prism-react-renderer": "^1.1.1",
     "qs": "^6.9.4",
