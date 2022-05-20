@@ -15,6 +15,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
                 Address = "63 Allendale Rd",
                 Suburb = "Mt Albert",
                 City = "Auckland",
+                Country = "NZ",
                 PhoneNumber1 = "09-1234567",
                 IsActive = true
             };
@@ -26,6 +27,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
                 Address = "9 Bayview Road",
                 Suburb = "Browns Bay",
                 City = "Auckland",
+                Country = "NZ",
                 PhoneNumber1 = "09-2345678",
                 IsActive = true
             };
@@ -37,6 +39,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
                 Address = "227 Mount Eden Rd",
                 Suburb = "Mt Eden",
                 City = "Auckland",
+                Country = "NZ",
                 PhoneNumber1 = "09-33456789",
                 IsActive = true
             };
@@ -48,6 +51,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
                 Address = "499 Don Buck Rd",
                 Suburb = "Massey",
                 City = "Auckland",
+                Country = "NZ",
                 PhoneNumber1 = "09-43456789",
                 IsActive = true
             };
@@ -58,6 +62,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
                 Address = "148 Meadowbank Rd",
                 Suburb = "Meadowbank",
                 City = "Auckland",
+                Country = "NZ",
                 PhoneNumber1 = "09-53456789",
                 IsActive = true
             };
@@ -68,6 +73,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
                 Address = "63 Allendale Rd",
                 Suburb = "Mt Albert",
                 City = "Auckland",
+                Country = "NZ",
                 PhoneNumber1 = "09-1234567",
                 IsActive = false
             };

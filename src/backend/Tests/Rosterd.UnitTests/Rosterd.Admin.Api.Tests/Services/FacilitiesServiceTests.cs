@@ -160,6 +160,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
                 FacilityName = "Everyl Orr Test",
                 Address = "63 Allendale Rd",
                 City = "Auckland",
+                Country = "NZ",
                 PhoneNumber1 = "09-1234567"
             };
             var organizationId = 1L;
@@ -191,6 +192,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
                 FacilityName = "Everyl Orr Test",
                 Address = "63 Allendale Rd",
                 City = "Auckland",
+                Country = "NZ",
                 PhoneNumber1 = "09-1234567"
             };
             var organizationId = 1L;

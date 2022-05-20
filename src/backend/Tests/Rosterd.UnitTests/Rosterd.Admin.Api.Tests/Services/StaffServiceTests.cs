@@ -125,6 +125,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
                 Email = "seven.test@gmail.com",
                 Auth0Id = auth0OrganizationId,
                 IsActive = false,
+                StaffRole = "Admin",
                 StaffSkills = new List<SkillModel> {
                     new SkillModel
                     {
@@ -218,6 +219,7 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
                 Email = "seven.test@gmail.com",
                 Auth0Id = auth0OrganizationId,
                 IsActive = false,
+                StaffRole = "Admin",
                 StaffSkills = new List<SkillModel> {
                     new SkillModel
                     {

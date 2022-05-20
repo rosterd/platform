@@ -18,6 +18,8 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
                 Email = "one.test@gmail.com",
                 IsActive = true,
                 OrganizationId = 1,
+                Auth0Id = "Test01",
+                StaffRole = "Admin",
                 StaffSkills = new List<StaffSkill> {context.StaffSkills.Find(1L)}
             };
             var staff2 = new Staff
@@ -29,6 +31,8 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
                 Email = "two.test@gmail.com",
                 IsActive = true,
                 OrganizationId = 1,
+                Auth0Id = "Test01",
+                StaffRole = "Admin",
                 StaffSkills = new List<StaffSkill> {context.StaffSkills.Find(2L)}
             };
             var staff3 = new Staff
@@ -40,6 +44,8 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
                 Email = "three.test@gmail.com",
                 IsActive = true,
                 OrganizationId = 1,
+                Auth0Id = "Test01",
+                StaffRole = "Admin",
                 StaffSkills = new List<StaffSkill> {context.StaffSkills.Find(3L)}
             };
             var staff4 = new Staff
@@ -51,6 +57,8 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
                 Email = "four.test@gmail.com",
                 IsActive = true,
                 OrganizationId = 1,
+                Auth0Id = "Test01",
+                StaffRole = "Admin",
                 StaffSkills = new List<StaffSkill> {context.StaffSkills.Find(4L)}
             };
             var staff5 = new Staff
@@ -62,6 +70,8 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
                 Email = "five.test@gmail.com",
                 IsActive = true,
                 OrganizationId = 1,
+                Auth0Id = "Test01",
+                StaffRole = "Admin",
                 StaffSkills = new List<StaffSkill> {context.StaffSkills.Find(5L)}
             };
             var staff6 = new Staff
@@ -72,6 +82,8 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Utilities
                 JobTitle = "Tester",
                 Email = "six.test@gmail.com",
                 OrganizationId = 1,
+                Auth0Id = "Test01",
+                StaffRole = "Admin",
                 IsActive = false,
                 StaffSkills = new List<StaffSkill> {context.StaffSkills.Find(6L)}
             };

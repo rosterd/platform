@@ -138,6 +138,8 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
             var auth0OrganizationId= "auth0|Test";
 
             //Mock Service Response Setup
+            _belongsToValidatorMock.Setup(x => x.ValidateFacilityBelongsToOrganization(It.IsAny<long>(), It.IsAny<string>()))
+                .ReturnsAsync(new Organization { OrganizationId = organizationId});
             _belongsToValidatorMock.Setup(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()))
                 .ReturnsAsync(new Organization { OrganizationId = organizationId});
 
@@ -184,6 +186,8 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
             var auth0OrganizationId= "auth0|Test";
 
             //Mock Service Response Setup
+            _belongsToValidatorMock.Setup(x => x.ValidateFacilityBelongsToOrganization(It.IsAny<long>(), It.IsAny<string>()))
+                .ReturnsAsync(new Organization { OrganizationId = organizationId});
             _belongsToValidatorMock.Setup(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()))
                 .ReturnsAsync(new Organization { OrganizationId = organizationId});
 
@@ -212,6 +216,8 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
             var auth0OrganizationId= "auth0|Test";
 
             //Mock Service Response Setup
+            _belongsToValidatorMock.Setup(x => x.ValidateFacilityBelongsToOrganization(It.IsAny<long>(), It.IsAny<string>()))
+                .ReturnsAsync(new Organization { OrganizationId = organizationId});
             _belongsToValidatorMock.Setup(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()))
                 .ReturnsAsync(new Organization { OrganizationId = organizationId});
 
@@ -242,6 +248,8 @@ namespace Rosterd.UnitTests.Rosterd.Admin.Api.Tests.Services
             var auth0OrganizationId= "auth0|Test";
 
             //Mock Service Response Setup
+            _belongsToValidatorMock.Setup(x => x.ValidateFacilityBelongsToOrganization(It.IsAny<long>(), It.IsAny<string>()))
+                .ReturnsAsync(new Organization { OrganizationId = organizationId});
             _belongsToValidatorMock.Setup(x => x.ValidateOrganizationExistsAndGetIfValid(It.IsAny<string>()))
                 .ReturnsAsync(new Organization { OrganizationId = organizationId});
 

@@ -58,24 +58,23 @@ namespace Rosterd.UnitTests.Rosterd.Client.Api.Tests.Controllers
         }
 
         [Fact]
-        public async Task GivenJobsCompletedAndFeedbackPendingWhenGetHistoricJobsForUserThenReturnPagedList()
+        public async Task GivenJobsCompletedWhenGetHistoricJobsForUserThenReturnPagedList()
         {
             //Build request and setup
             _userContextMock.Setup(x => x.UserStaffId).Returns(1);
-            _jobServiceMock.Setup(x => x.GetJobsForStaff(It.IsAny<long>(), It.IsAny<List<JobStatus>>(),It.IsAny<PagingQueryStringParameters>()))
+            _jobServiceMock.Setup(x => x.GetJobsForStaff(It.IsAny<long>(), JobStatus.Completed, It.IsAny<PagingQueryStringParameters>()))
                 .ReturnsAsync(new PagedList<JobModel>(new List<JobModel>
                 {
                     JobModelDataHelper.createJobModel(JobStatus.Completed),
-                    JobModelDataHelper.createJobModel(JobStatus.Completed),
-                    JobModelDataHelper.createJobModel(JobStatus.FeedbackPending)
-                }, 3, 1, 10, 1));
+                    JobModelDataHelper.createJobModel(JobStatus.Completed)
+                }, 2, 1, 10, 1));
 
             //Call api
             var response = _myJobsController.GetAllHistoricalCompletedJobsForUser(new PagingQueryStringParameters{PageNumber = 1, PageSize = 10} ).Result;
 
             //Assert
             response.Value.PageSize.Should().Be(10);
-            response.Value.Items.Count.Should().Be(3);
+            response.Value.Items.Count.Should().Be(2);
         }
 
         [Fact]

@@ -30,11 +30,16 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Restore dependencies
-        run: dotnet restore '**/*.csproj'
-
+        working-directory: 'src/backend'
+        run: dotnet restore Rosterd.Backend.sln
+        
       - name: Build
+        working-directory: 'src/backend/Rosterd.Admin.Api'
         run: dotnet build -c Release --no-restore
 
       - name: Test
-        run: dotnet test -c Release --no-build --verbosity normal --filter "Category!=LongRunning"
+        working-directory: 'src/backend/Tests/Rosterd.UnitTests'
+        run: |
+          dotnet build -c Release --no-restore
+          dotnet test -c Release --no-build --verbosity normal --filter "Category!=LongRunning"
 
