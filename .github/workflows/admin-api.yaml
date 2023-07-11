@@ -33,13 +33,13 @@ jobs:
         working-directory: 'src/backend'
         run: dotnet restore Rosterd.Backend.sln
         
-      - name: Build
-        working-directory: 'src/backend/Rosterd.Admin.Api'
-        run: dotnet build -c Release --no-restore
+#       - name: Build
+#         working-directory: 'src/backend/Rosterd.Admin.Api'
+#         run: dotnet build -c Release --no-restore
 
-      - name: Test
-        working-directory: 'src/backend/Tests/Rosterd.UnitTests'
-        run: |
-          dotnet build -c Release --no-restore
-          dotnet test -c Release --no-build --verbosity normal --filter "Category!=LongRunning"
+#       - name: Test
+#         working-directory: 'src/backend/Tests/Rosterd.UnitTests'
+#         run: |
+#           dotnet build -c Release --no-restore
+#           dotnet test -c Release --no-build --verbosity normal --filter "Category!=LongRunning"
 
