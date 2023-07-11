@@ -30,7 +30,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.3.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="Z.ExtensionMethods" Version="2.1.1" />
-    <PackageReference Include="Azure.Storage.Queues" Version="12.9.0" />
+    <PackageReference Include="Azure.Storage.Queues" Version="12.11.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rosterd.Data.SqlServer\Rosterd.Data.SqlServer.csproj" />
